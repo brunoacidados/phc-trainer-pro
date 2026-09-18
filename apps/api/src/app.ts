@@ -12,7 +12,7 @@ import { aiRouter } from "./routes/ai.ts";
 import { metaRouter } from "./routes/meta.ts";
 import { errorHandler, notFoundHandler } from "./middleware/error.ts";
 
-export const APP_VERSION = "6.0.0-alpha.3";
+export const APP_VERSION = "6.0.0-alpha.4";
 
 export function createApp(): express.Express {
   const app = express();
