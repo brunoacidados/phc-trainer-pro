@@ -143,7 +143,7 @@ export function AppFooter() {
         dos respetivos proprietários ·{" "}
         <a
           className="text-info hover:underline"
-          href="https://github.com/bfrpaulondev/phc-trainer-pro"
+          href="https://github.com/brunoacidados/phc-trainer-pro"
           target="_blank"
           rel="noreferrer"
         >

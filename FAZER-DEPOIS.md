@@ -33,7 +33,7 @@ Guia detalhado com screenshots mentais em **`docs/DEPLOY.md`**. Resumo:
 
 ### 2.2 API no Render (~10 min — 1 clique graças ao `render.yaml`)
 
-1. https://render.com → **New → Blueprint** → escolher o repo `bfrpaulondev/phc-trainer-pro`
+1. https://render.com → **New → Blueprint** → escolher o repo `brunoacidados/phc-trainer-pro`
 2. O blueprint cria o serviço sozinho; pede 2 variáveis:
    - `MONGODB_URI` → colar a URI do Atlas (2.1)
    - `CORS_ORIGIN` → deixe provisoriamente `http://localhost:5173`; **volte aqui** após o 2.3 e ponha o URL da Vercel (ex.: `https://phc-trainer-pro.vercel.app`)

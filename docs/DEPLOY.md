@@ -21,7 +21,7 @@ variáveis marcadas `sync: false` para preencher: **MONGODB_URI** e **CORS_ORIGI
 
 ### Opção B — manual
 
-1. https://render.com → **New → Web Service** → repo `bfrpaulondev/phc-trainer-pro`.
+1. https://render.com → **New → Web Service** → repo `brunoacidados/phc-trainer-pro`.
 2. Configuração:
    - **Root Directory:** `apps/api`
    - **Runtime:** Node 22 · **Build:** `corepack enable && pnpm install` (ou `pnpm install` se já tiver pnpm)

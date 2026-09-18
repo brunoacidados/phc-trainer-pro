@@ -112,7 +112,7 @@ async function callProvider(
       "Content-Type": "application/json",
     };
     if (def.id === "openrouter") {
-      headers["HTTP-Referer"] = "https://github.com/bfrpaulondev/phc-trainer-pro";
+      headers["HTTP-Referer"] = "https://github.com/brunoacidados/phc-trainer-pro";
       headers["X-Title"] = "PHC Trainer Pro";
     }
     const mt = def.id === "groq" ? Math.max(2048, maxTokens * 2) : maxTokens;

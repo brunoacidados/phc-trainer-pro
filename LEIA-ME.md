@@ -2,7 +2,7 @@
 
 Plataforma de **formação prática** para o módulo Gestão do Cegid PHC Evolution/CS Desktop.
 
-**🌐 Site:** https://bfrpaulondev.github.io/phc-trainer-pro/ (instale como app pelo ícone ⊕ do navegador — funciona offline após a 1ª visita)
+**🌐 Site:** https://brunoacidados.github.io/phc-trainer-pro/ (instale como app pelo ícone ⊕ do navegador — funciona offline após a 1ª visita)
 
 ## Ficheiros
 

@@ -2,7 +2,7 @@
 
 > Plataforma web (PWA) de **formação prática** para dominar o módulo **Gestão do Cegid PHC Evolution / PHC CS Desktop**: 57 missões passo-a-passo num PHC real, **tutor de IA** que explica cada parágrafo em linguagem simples aplicado à sua **empresa de treino** (12 segmentos de negócio portugueses realistas), flashcards com repetição espaçada, testes por nível e portfólio de evidências.
 
-**🌐 Produção:** https://bfrpaulondev.github.io/phc-trainer-pro/
+**🌐 Produção:** https://brunoacidados.github.io/phc-trainer-pro/
 
 Material educativo **não oficial**, baseado em fontes públicas da Cegid PHC (Help Center, programa oficial de certificação, documentação de parceiros). _Cegid PHC® é marca dos respetivos proprietários — projeto sem afiliação._
 
@@ -102,7 +102,7 @@ A API da NVIDIA NIM não envia CORS, logo o navegador não a chama diretamente. 
 Sem build (React 18 + Ant Design 5 via CDN; JSX transpilado no navegador):
 
 ```bash
-git clone https://github.com/bfrpaulondev/phc-trainer-pro.git
+git clone https://github.com/brunoacidados/phc-trainer-pro.git
 cd phc-trainer-pro
 python3 -m http.server 8080   # http://localhost:8080  (ou abra index.html)
 ```

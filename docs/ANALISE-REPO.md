@@ -4,7 +4,7 @@
 
 ## 1. O que é o projeto
 
-**PWA de formação prática** para dominar o módulo **Gestão do Cegid PHC Evolution / PHC CS Desktop**. 100% estático, sem build, sem backend — progresso em `localStorage`. Produção: https://bfrpaulondev.github.io/phc-trainer-pro/ (GitHub Pages, raiz do repo).
+**PWA de formação prática** para dominar o módulo **Gestão do Cegid PHC Evolution / PHC CS Desktop**. 100% estático, sem build, sem backend — progresso em `localStorage`. Produção: https://brunoacidados.github.io/phc-trainer-pro/ (GitHub Pages, raiz do repo).
 
 **Stack:** React 18.3 + Ant Design 5.21 via CDN · JSX transpilado **no navegador** (Babel standalone 7.25.6) · service worker offline-first (cache `phc-trainer-v14`) · PWA instalável.
 

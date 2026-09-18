@@ -23,7 +23,7 @@ A v5.x era um PWA estático de ficheiro único (progresso no `localStorage` de c
 | Qualidade | **ESLint 9 + Prettier + Husky + lint-staged** · **GitHub Actions** (lint, typecheck, testes, build)                                                                                                                                                              |
 | Gestor    | **pnpm workspaces**                                                                                                                                                                                                                                              |
 | Deploy    | Web: **Vercel/Cloudflare Pages** · API: **Render/Railway** · BD: **Atlas** · Erros: **Sentry** (opcional)                                                                                                                                                        |
-| Legado    | O PWA v5.3 continua publicado em https://bfrpaulondev.github.io/phc-trainer-pro/ (ficheiros na raiz; guia em `docs/LEGADO-v5.md`)                                                                                                                                |
+| Legado    | O PWA v5.3 continua publicado em https://brunoacidados.github.io/phc-trainer-pro/ (ficheiros na raiz; guia em `docs/LEGADO-v5.md`)                                                                                                                               |
 
 ### Estrutura do monorepo
 
