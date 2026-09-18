@@ -1,6 +1,6 @@
 {
-  "enabled": false,
-  "url": "",
+  "enabled": true,
+  "url": "https://phc-trainer-pro-web.vercel.app",
   "message": "🚀 Chegou o PHC Trainer Pro v6 — multiutilizador: contas na cloud, equipas com painel do formador, IA com chaves partilhadas e progresso em qualquer dispositivo. O seu progresso antigo importa-se em 1 clique (Definições → 💾 Importar).",
   "cta": "Migrar para a v6 →"
 }
