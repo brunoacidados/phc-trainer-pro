@@ -50,3 +50,21 @@ export const ttsResponseSchema = z.object({
   provider: z.string(),
 });
 export type TtsResponse = z.infer<typeof ttsResponseSchema>;
+
+/** pedido de teste de fornecedores (id opcional → testa só esse; senão testa todos) */
+export const aiTestSchema = z.object({
+  id: z.string().min(1).max(40).optional(),
+});
+export type AiTestRequest = z.infer<typeof aiTestSchema>;
+
+export const providerTestResultSchema = z.object({
+  id: z.string(),
+  nome: z.string(),
+  ok: z.boolean(),
+  status: z.enum(["ok", "sem-chave", "erro"]),
+  ms: z.number().optional(),
+  httpStatus: z.number().optional(),
+  error: z.string().optional(),
+  model: z.string().optional(),
+});
+export type ProviderTestResultVM = z.infer<typeof providerTestResultSchema>;

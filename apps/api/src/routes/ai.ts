@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   aiChatRequestSchema,
+  aiTestSchema,
   buildSystemPrompt,
   contextFromProgress,
   encContext,
@@ -14,7 +15,13 @@ import { badRequest } from "../lib/errors.ts";
 import { Team } from "../models/Team.ts";
 import { getOrCreateProgress } from "../models/Progress.ts";
 import { requireUser, validate } from "../middleware/auth.ts";
-import { routeChat, providersStatus, DEFAULT_ORDER } from "../services/aiRouter.ts";
+import {
+  routeChat,
+  providersStatus,
+  testAllProviders,
+  testOneProvider,
+  DEFAULT_ORDER,
+} from "../services/aiRouter.ts";
 import { resolveTeamKeys } from "./teams.ts";
 import { elevenlabsTts, geminiTts, groqTts } from "../services/tts.ts";
 import { globalAiKeys } from "../config/env.ts";
@@ -105,6 +112,20 @@ aiRouter.post("/tts", validate(ttsRequestSchema), async (req, res) => {
   const key = keys.groq;
   if (!key) throw badRequest("Chave Groq não configurada.");
   res.json(await groqTts(key, text, voice || "troy"));
+});
+
+/**
+ * POST /api/ai/test — testa as chaves configuradas (todas ou uma, via {id}).
+ * Pede "responda OK" a cada fornecedor e devolve ok/latência/erro por fornecedor.
+ * Não altera cooldowns; pode correr-se as vezes que se quiser.
+ */
+aiRouter.post("/test", validate(aiTestSchema), async (req, res) => {
+  const { id } = req.body as { id?: string };
+  const { keys } = await resolveKeysAndOrder(req.auth!.teamId, req.auth!.sub);
+  const results = id ? [await testOneProvider(id, keys)] : await testAllProviders(keys);
+  const ok = results.filter((r) => r.ok).length;
+  const withKey = results.filter((r) => r.status !== "sem-chave").length;
+  res.json({ ok, tested: results.length, withKey, results });
 });
 
 /** GET /api/ai/status — resumo rápido (chaves globais ativas no servidor) */

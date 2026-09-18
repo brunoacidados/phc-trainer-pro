@@ -78,3 +78,52 @@ describe("routeChat", () => {
     expect(DEFAULT_ORDER).toContain("nvidia");
   });
 });
+
+describe("testOneProvider", () => {
+  it("sem chave → status 'sem-chave' (sem chamar rede)", async () => {
+    const { testOneProvider } = await import("../src/services/aiRouter.ts");
+    const r = await testOneProvider("groq", {});
+    expect(r.status).toBe("sem-chave");
+    expect(r.ok).toBe(false);
+  });
+
+  it("chave + resposta OK → ok com latência", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(
+        async () =>
+          ({
+            ok: true,
+            status: 200,
+            json: async () => ({ choices: [{ message: { content: "OK" } }] }),
+            text: async () => "",
+          }) as unknown as globalThis.Response,
+      ),
+    );
+    const { testOneProvider } = await import("../src/services/aiRouter.ts");
+    const r = await testOneProvider("groq", { groq: "gsk_x" });
+    expect(r.ok).toBe(true);
+    expect(r.status).toBe("ok");
+    expect(typeof r.ms).toBe("number");
+  });
+
+  it("chave inválida → status 'erro' com httpStatus", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(
+        async () =>
+          ({
+            ok: false,
+            status: 401,
+            json: async () => ({}),
+            text: async () => "invalid api key",
+          }) as unknown as globalThis.Response,
+      ),
+    );
+    const { testOneProvider } = await import("../src/services/aiRouter.ts");
+    const r = await testOneProvider("groq", { groq: "gsk_errada" });
+    expect(r.ok).toBe(false);
+    expect(r.status).toBe("erro");
+    expect(r.httpStatus).toBe(401);
+  });
+});

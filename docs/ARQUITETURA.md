@@ -109,7 +109,8 @@ GET    /api/teams/:id/dashboard   (formador)   POST /api/teams/:id/rotate-invite
 GET/PUT /api/teams/:id/ai-settings (formador — chaves cifradas)
 POST   /api/ai/chat   (router multi-fornecedor; persona+contexto injetados)
 POST   /api/ai/tts    (gemini/elevenlabs/groq → base64; cliente faz cache IDB)
-GET    /api/ai/providers
+GET    /api/ai/providers       (estado: configurado? origem? em pausa?)
+POST   /api/ai/test            (testa chaves: {} = todos, {id} = um; devolve ok/latência/erro por fornecedor)
 POST   /api/meta/import-legacy    GET /api/meta/content-stats   POST /api/meta/reset
 GET    /api/health
 ```

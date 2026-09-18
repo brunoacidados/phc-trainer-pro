@@ -217,5 +217,59 @@ export function providersStatus(keys: Record<string, string>, scope: string) {
   });
 }
 
-/** visível apenas para testes */
+/* ---------- teste de fornecedores (diagnóstico, sem efeitos em cooldowns) ---------- */
+
+export interface ProviderTestResult {
+  id: string;
+  nome: string;
+  ok: boolean;
+  /** "ok" | "sem-chave" | "erro" */
+  status: "ok" | "sem-chave" | "erro";
+  ms?: number;
+  httpStatus?: number;
+  error?: string;
+  model?: string;
+}
+
+const TEST_PROMPT = [{ role: "user", content: "Responda apenas com a palavra: OK" }];
+
+/** testa UM fornecedor com um pedido mínimo; devolve ok/latência/erro. Não altera cooldowns. */
+export async function testOneProvider(
+  id: string,
+  keys: Record<string, string>,
+): Promise<ProviderTestResult> {
+  const def = AI_PROVIDERS.find((p) => p.id === id);
+  if (!def) return { id, nome: id, ok: false, status: "erro", error: "fornecedor desconhecido" };
+  const key = (keys[id] || globalAiKeys[id] || "").trim();
+  if (!key)
+    return { id, nome: def.nome, ok: false, status: "sem-chave", error: "sem chave configurada" };
+  const model = def.id === "openrouter" ? env.AI_MODEL_OPENROUTER : (def.model ?? undefined);
+  const t0 = Date.now();
+  try {
+    const text = await callProvider(def, key, TEST_PROMPT, 60, false);
+    return { id, nome: def.nome, ok: !!text, status: "ok", ms: Date.now() - t0, model };
+  } catch (e) {
+    return {
+      id,
+      nome: def.nome,
+      ok: false,
+      status: "erro",
+      ms: Date.now() - t0,
+      httpStatus: (e as { status?: number }).status || undefined,
+      error: String((e as Error).message || e).slice(0, 140),
+      model,
+    };
+  }
+}
+
+/** testa todos os fornecedores (sequencial, para não disparar rate limits) */
+export async function testAllProviders(
+  keys: Record<string, string>,
+): Promise<ProviderTestResult[]> {
+  const out: ProviderTestResult[] = [];
+  for (const p of AI_PROVIDERS) out.push(await testOneProvider(p.id, keys));
+  return out;
+}
+
+/** visível apenas para testes unitários */
 export const __test = { cooldowns, markFail, markOk, isHealthy };

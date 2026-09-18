@@ -2,7 +2,12 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Copy, KeyRound, RefreshCw, Users } from "lucide-react";
 import { BELTS } from "@phc/content";
-import { aiKeyNames, type MemberSummary, type TeamDashboard } from "@phc/shared";
+import {
+  aiKeyNames,
+  type MemberSummary,
+  type ProviderTestResultVM,
+  type TeamDashboard,
+} from "@phc/shared";
 import { apiFetch } from "../lib/api.ts";
 import { useSession } from "../stores/session.ts";
 import { toast } from "../components/ui/toast.tsx";
@@ -144,6 +149,34 @@ function TeamView({
   const qc = useQueryClient();
   const [keys, setKeys] = useState<Record<string, string>>({});
   const [savingKeys, setSavingKeys] = useState(false);
+  const [testResults, setTestResults] = useState<Record<string, ProviderTestResultVM> | null>(null);
+  const [testing, setTesting] = useState(false);
+
+  async function testProviders() {
+    setTesting(true);
+    try {
+      const r = await apiFetch<{ results: ProviderTestResultVM[]; ok: number; withKey: number }>(
+        "/api/ai/test",
+        {
+          method: "POST",
+          body: {},
+        },
+      );
+      const map: Record<string, ProviderTestResultVM> = {};
+      for (const x of r.results) map[x.id] = x;
+      setTestResults(map);
+      const okN = r.results.filter((x) => x.ok).length;
+      if (r.withKey === 0)
+        toast.error("Nenhuma chave configurada — cole as chaves da equipa primeiro.");
+      else if (okN === 0) toast.error("Nenhum fornecedor respondeu — veja os erros abaixo.");
+      else
+        toast.success(`Teste concluído: ${okN}/${r.withKey} fornecedor(es) com chave a responder.`);
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setTesting(false);
+    }
+  }
 
   const dash = useQuery({
     queryKey: ["team-dashboard", teamId],
@@ -288,11 +321,19 @@ function TeamView({
 
       {/* chaves de IA da equipa */}
       <Card>
-        <CardHeader>
+        <CardHeader className="flex-row flex-wrap items-center justify-between gap-2 space-y-0">
           <CardTitle>
             <KeyRound className="mr-2 inline h-4 w-4 text-primary" />
             Fornecedores de IA {isOwner ? "(chaves da equipa — cifradas no servidor)" : "(estado)"}
           </CardTitle>
+          <Button
+            size="sm"
+            variant="outline"
+            loading={testing}
+            onClick={() => void testProviders()}
+          >
+            🔬 Testar todos
+          </Button>
         </CardHeader>
         <CardContent className="space-y-4">
           <Alert variant="info">
@@ -317,6 +358,26 @@ function TeamView({
                       : "sem chave"}
                     {p.paused && " · em pausa (cooldown)"}
                   </div>
+                  {testResults?.[p.id] && (
+                    <div className="mt-1 text-xs">
+                      {testResults[p.id].status === "sem-chave" ? (
+                        <span className="text-muted-foreground">— sem chave</span>
+                      ) : testResults[p.id].ok ? (
+                        <span className="text-success">
+                          ✔ respondeu em {testResults[p.id].ms} ms
+                          {testResults[p.id].model ? ` · ${testResults[p.id].model}` : ""}
+                        </span>
+                      ) : (
+                        <span className="text-destructive">
+                          ✘{" "}
+                          {testResults[p.id].httpStatus
+                            ? `HTTP ${testResults[p.id].httpStatus} · `
+                            : ""}
+                          {testResults[p.id].error}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
                 {isOwner && (
                   <Input

@@ -79,6 +79,37 @@ pnpm --filter @phc/web exec playwright install --with-deps chromium   # 1ª vez
 pnpm test:e2e
 ```
 
+## 5b. Testar as chaves de IA que configurou
+
+Depois de colar as chaves em **👥 Equipa → Fornecedores de IA**, tem 3 formas de testar:
+
+**A) Na app (mais fácil):** no cartão "Fornecedores de IA" clique **🔬 Testar todos**.
+Cada fornecedor mostra o resultado em tempo real:
+
+- `✔ respondeu em 640 ms · openai/gpt-oss-120b` → chave boa
+- `✘ HTTP 401 · invalid api key` → chave errada/expirada
+- `— sem chave` → não configurado
+
+**B) Teste real de uso:** abra uma missão → **🧠 Explicar** (ou o chat do mascote). Se responder,
+o router está a funcionar; se todas as chaves falharem devolve `502` com o diagnóstico de cada uma.
+
+**C) Por HTTP (curl/terminal)** — precisa de um token de acesso:
+
+```bash
+# token = accessToken devolvido pelo login (ou pelo /api/auth/refresh)
+curl -X POST https://<api>.onrender.com/api/ai/test \
+  -H "Authorization: Bearer <ACCESS_TOKEN>" -H "Content-Type: application/json" -d '{}'
+# → {"ok":2,"tested":6,"withKey":2,"results":[{"id":"groq","ok":true,"ms":640,...}, ...]}
+
+# testar só um fornecedor:
+curl -X POST https://<api>.onrender.com/api/ai/test \
+  -H "Authorization: Bearer <ACCESS_TOKEN>" -H "Content-Type: application/json" -d '{"id":"gemini"}'
+```
+
+> Notas: o teste faz um pedido mínimo ("responda OK") a cada fornecedor — gasta o equivalente a
+> 1 chamada pequena por chave. Não altera os cooldowns do router, pode repetir à vontade.
+> A **voz (TTS)** testa-se em ⚙️ Definições → 🔊 "Testar voz" (usa a chave Gemini/ElevenLabs).
+
 ## 6. Smoke test pós-deploy
 
 ```bash

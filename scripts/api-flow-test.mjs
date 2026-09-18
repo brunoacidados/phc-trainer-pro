@@ -228,6 +228,22 @@ check(
   String(chat.json?.error).slice(0, 110),
 );
 
+const test1 = await req("POST", "/api/ai/test", { token: tkA, body: {} });
+const byId = Object.fromEntries((test1.json?.results || []).map((r) => [r.id, r]));
+check(
+  "POST /ai/test → testa todos: groq 'erro' (chave falsa), gemini 'sem-chave'",
+  test1.status === 200 && byId.groq?.status === "erro" && byId.gemini?.status === "sem-chave",
+  JSON.stringify({ groq: byId.groq?.status, gemini: byId.gemini?.status }),
+);
+
+const test2 = await req("POST", "/api/ai/test", { token: tkA, body: { id: "groq" } });
+check(
+  "POST /ai/test {id} → testa só o groq",
+  test2.status === 200 &&
+    test2.json?.results?.length === 1 &&
+    test2.json?.results?.[0]?.id === "groq",
+);
+
 console.log("5. ROTAÇÃO DE REFRESH + SEGURANÇA");
 const ref1 = await req("POST", "/api/auth/refresh", { body: { refreshToken: rtA } });
 check(
