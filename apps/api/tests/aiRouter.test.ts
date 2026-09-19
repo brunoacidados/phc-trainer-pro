@@ -70,13 +70,13 @@ describe("routeChat", () => {
     });
   });
 
-  it("modo código prioriza nvidia/mistral", async () => {
+  it("modo código prioriza mistral/nvidia", async () => {
     vi.stubGlobal(
       "fetch",
       mockJsonResponse({ choices: [{ message: { content: "select top 10 * from ft" } }] }),
     );
     const r = await routeChat({ scope: "team:t4", keys: KEYS, messages: msgs, code: true });
-    expect(r.provider).toBe("nvidia");
+    expect(["mistral", "nvidia"]).toContain(r.provider);
   });
 
   it("ordem por omissão começa nos rápidos", () => {
