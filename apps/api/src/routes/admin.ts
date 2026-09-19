@@ -87,7 +87,7 @@ import { randomBytes } from "node:crypto";
 import { PasswordResetToken } from "../models/PasswordResetToken.ts";
 import { sha256 } from "../lib/crypto.ts";
 import { env } from "../config/env.ts";
-import { emailConfigWarning } from "../services/email.ts";
+import { emailConfigWarning, emailProvider } from "../services/email.ts";
 import { hashPassword } from "../lib/password.ts";
 
 /** POST /api/admin/users/:id/verify — marca email como verificado */
@@ -126,6 +126,8 @@ adminRouter.post("/users/:id/temp-password", async (req, res) => {
 adminRouter.get("/email-status", (_req, res) => {
   res.json({
     warning: emailConfigWarning(),
+    provider: emailProvider(),
+    smtpConfigured: !!(env.SMTP_HOST && env.SMTP_USER && env.SMTP_PASS),
     resendConfigured: !!env.RESEND_API_KEY,
     appUrl: env.APP_URL,
     emailFrom: env.EMAIL_FROM,

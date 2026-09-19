@@ -110,6 +110,37 @@ curl -X POST https://<api>.onrender.com/api/ai/test \
 > 1 chamada pequena por chave. Não altera os cooldowns do router, pode repetir à vontade.
 > A **voz (TTS)** testa-se em ⚙️ Definições → 🔊 "Testar voz" (usa a chave Gemini/ElevenLabs).
 
+## 5b-2. Configurar EMAIL (recuperação de password + verificação) — OBRIGATÓRIO p/ equipa
+
+O erro **Resend 403** ("only send testing emails to your own email") acontece porque o from
+default `onboarding@resend.dev` só envia p/ o dono da conta. Duas soluções:
+
+**OPÇÃO A — SMTP do Gmail (funciona JÁ, sem verificar domínio):**
+
+1. Em https://myaccount.google.com/apppasswords cria uma **app password** (precisa de 2FA ativo).
+2. No Render (serviço da API) define:
+   ```
+   SMTP_HOST=smtp.gmail.com
+   SMTP_PORT=465
+   SMTP_SECURE=true
+   SMTP_USER=oseuemail@gmail.com
+   SMTP_PASS=<app-password>
+   EMAIL_FROM=PHC Trainer Pro <oseuemail@gmail.com>
+   APP_URL=https://phc-trainer-pro-web.vercel.app
+   ```
+3. Redeploy. Testa "Esqueci-me da password" — deve chegar a qualquer destinatário.
+
+**OPÇÃO B — Resend com domínio próprio (recomendado p/ produção):**
+
+1. Em https://resend.com/domains adiciona um domínio teu e confirma os registos DNS (SPF/DKIM/MX).
+2. No Render: `RESEND_API_KEY=re_...`, `EMAIL_FROM=noreply@oteudominio.com`, `APP_URL=<url web>`.
+   (Não definas SMTP_* para usar Resend.)
+3. Redeploy.
+
+**Sempre:** define `APP_URL` = URL público da **web** (senão os links vão p/ localhost).
+Diagnóstico em tempo real: **🛡 Admin → Estado do email** (diz a causa exata e a correção).
+Fallback sem email: Admin → por utilizador → 🔑 link de reset / 🛡 password temporária / ✉ verificar.
+
 ## 5c. Ativar o RAG semântico (opcional, recomendado — 1 comando)
 
 O tutor de IA já funciona sem isto (usa mini-RAG por palavras-chave). Para a **busca semântica**

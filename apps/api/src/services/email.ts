@@ -1,31 +1,53 @@
 /**
- * Serviço de email (Resend). NUNCA lança: devolve {sent, error?} para o caller decidir.
- * Notas Resend importantes:
- *  - Sem domínio verificado, o from default `onboarding@resend.dev` SÓ envia para o
- *    email dono da conta Resend. Para enviar a任意 utilizador, verifica um domínio
- *    teu e define EMAIL_FROM="algo@oteudominio.com" no Render.
- *  - APP_URL tem de ser o URL público da web (senão os links vão para localhost).
+ * Serviço de email com DOIS transportadores (escolhidos por env):
+ *  1) SMTP (nodemailer) — se SMTP_HOST/SMTP_USER/SMTP_PASS definidos. Funciona para
+ *     QUALQUER destinatário sem verificar domínio (ex.: Gmail c/ app-password).
+ *  2) Resend — se RESEND_API_KEY definido. NOTA: com from default onboarding@resend.dev
+ *     SÓ envia p/ o dono da conta; para outros destinatários verifica um domínio e
+ *     usa EMAIL_FROM=algo@oteudominio.com.
+ * NUNCA lança: devolve {sent, error?, devToken?}.
  */
+import nodemailer, { type Transporter } from "nodemailer";
 import { env, isProd } from "../config/env.ts";
 
 export interface SendResult {
   sent: boolean;
   error?: string;
-  /** em dev sem Resend (ou falha), expõe o token/link para testes/admin */
   devToken?: string;
 }
 
+const smtpConfigured = () => !!(env.SMTP_HOST && env.SMTP_USER && env.SMTP_PASS);
+const resendConfigured = () => !!env.RESEND_API_KEY;
+const resendFromIsDefault = () => /onboarding@resend\.dev/.test(env.EMAIL_FROM);
+
+export function emailProvider(): "smtp" | "resend" | "none" {
+  if (smtpConfigured()) return "smtp";
+  if (resendConfigured()) return "resend";
+  return "none";
+}
+
 export function emailConfigWarning(): string | null {
-  const problems: string[] = [];
-  if (!env.RESEND_API_KEY) problems.push("RESEND_API_KEY não definida");
+  const p = emailProvider();
+  if (p === "none")
+    return "Nenhum transportador de email configurado (define SMTP_HOST/SMTP_USER/SMTP_PASS ou RESEND_API_KEY)";
+  if (p === "resend" && resendFromIsDefault())
+    return "Resend com from default onboarding@resend.dev SÓ envia p/ o dono da conta — verifica um domínio (resend.com/domains) e define EMAIL_FROM, ou configura SMTP";
   if (/localhost|127\.0\.0\.1/.test(env.APP_URL))
-    problems.push(`APP_URL parece local (${env.APP_URL}) — define o URL público da web`);
-  if (!env.RESEND_API_KEY) return problems.join("; ");
-  if (/onboarding@resend\.dev/.test(env.EMAIL_FROM))
-    problems.push(
-      "EMAIL_FROM é o default onboarding@resend.dev (só envia p/ o dono da conta Resend) — verifica um domínio e define EMAIL_FROM",
-    );
-  return problems.length ? problems.join("; ") : null;
+    return `APP_URL parece local (${env.APP_URL}) — define o URL público da web para os links funcionarem`;
+  return null;
+}
+
+let transporter: Transporter | null = null;
+function getTransporter(): Transporter {
+  if (transporter) return transporter;
+  const secure = env.SMTP_SECURE ? env.SMTP_SECURE === "true" : Number(env.SMTP_PORT) === 465;
+  transporter = nodemailer.createTransport({
+    host: env.SMTP_HOST,
+    port: Number(env.SMTP_PORT) || (secure ? 465 : 587),
+    secure,
+    auth: { user: env.SMTP_USER, pass: env.SMTP_PASS },
+  });
+  return transporter;
 }
 
 export async function sendEmail(
@@ -34,19 +56,26 @@ export async function sendEmail(
   html: string,
   token?: string,
 ): Promise<SendResult> {
-  if (!env.RESEND_API_KEY) {
-    const devToken = token ?? (html.match(/token=([A-Za-z0-9._-]+)/) || [])[1];
-    console.log(
-      `[email] SEM RESEND_API_KEY — não enviado. para=${to} assunto="${subject}" token=${devToken ?? "-"}`,
-    );
-    if (isProd)
-      return {
-        sent: false,
-        error: "Servidor de email não configurado (RESEND_API_KEY).",
-        devToken,
-      };
-    return { sent: false, error: "Sem RESEND_API_KEY (dev): usa o link direto.", devToken };
+  const devToken = token ?? (html.match(/token=([A-Za-z0-9._-]+)/) || [])[1];
+  const p = emailProvider();
+
+  if (p === "none") {
+    console.log(`[email] SEM transportador — não enviado. para=${to} assunto="${subject}"`);
+    return { sent: false, error: "Servidor de email não configurado.", devToken };
   }
+
+  if (p === "smtp") {
+    try {
+      await getTransporter().sendMail({ from: env.EMAIL_FROM, to, subject, html });
+      return { sent: true };
+    } catch (e) {
+      const msg = (e as Error).message;
+      console.error(`[email] SMTP erro: ${msg}`);
+      return { sent: false, error: `SMTP: ${msg}`, devToken };
+    }
+  }
+
+  // resend
   try {
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -59,15 +88,17 @@ export async function sendEmail(
     if (!r.ok) {
       const t = (await r.text()).slice(0, 200);
       console.error(`[email] Resend HTTP ${r.status}: ${t}`);
-      return { sent: false, error: `Resend HTTP ${r.status}: ${t}`, devToken: token };
+      return { sent: false, error: `Resend HTTP ${r.status}: ${t}`, devToken };
     }
     return { sent: true };
   } catch (e) {
     console.error("[email] erro:", (e as Error).message);
-    return { sent: false, error: (e as Error).message, devToken: token };
+    return { sent: false, error: (e as Error).message, devToken };
   }
 }
 
 export function buttonHtml(href: string, label: string): string {
   return `<a href="${href}" style="background:#f5a623;color:#171103;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:700">${label}</a>`;
 }
+
+export { isProd };
