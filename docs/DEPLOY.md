@@ -110,6 +110,33 @@ curl -X POST https://<api>.onrender.com/api/ai/test \
 > 1 chamada pequena por chave. Não altera os cooldowns do router, pode repetir à vontade.
 > A **voz (TTS)** testa-se em ⚙️ Definições → 🔊 "Testar voz" (usa a chave Gemini/ElevenLabs).
 
+### Provedores de email GRÁTIS e fáceis (compara)
+
+| Provedor                 | Tipo | Configuração                                                                                                       | Limite grátis | Envia a qualquer destinatário? |
+| ------------------------ | ---- | ------------------------------------------------------------------------------------------------------------------ | ------------- | ------------------------------ |
+| **Gmail SMTP**           | SMTP | `SMTP_HOST=smtp.gmail.com` `SMTP_PORT=465` `SMTP_SECURE=true` `SMTP_USER=<gmail>` `SMTP_PASS=<app-password>`       | ~500/dia      | ✅ SIM (sem verificar domínio) |
+| **Outlook/Hotmail SMTP** | SMTP | `SMTP_HOST=smtp-mail.outlook.com` `SMTP_PORT=587` `SMTP_SECURE=false` `SMTP_USER=<outlook>` `SMTP_PASS=<password>` | ~300/dia      | ✅ SIM                         |
+| **Zoho SMTP**            | SMTP | `SMTP_HOST=smtp.zoho.com` `SMTP_PORT=465` `SMTP_SECURE=true` `SMTP_USER=<zoho>` `SMTP_PASS=<pass>`                 | 50/dia        | ✅ SIM                         |
+| **Resend SMTP**          | SMTP | `SMTP_HOST=smtp.resend.com` `SMTP_PORT=465` `SMTP_USER=resend` `SMTP_PASS=<RESEND_API_KEY>`                        | 100/dia       | ⚠️ só c/ domínio verificado    |
+| **Resend REST**          | REST | `RESEND_API_KEY=re_...`                                                                                            | 100/dia       | ⚠️ só c/ domínio verificado    |
+| **Brevo**                | REST | conta grátis + verificar 1 email remetente                                                                         | 300/dia       | ✅ após verificar o remetente  |
+| **Mailjet**              | REST | conta grátis + verificar remetente                                                                                 | 200/dia       | ✅ após verificar o remetente  |
+
+> **Recomendação:** para começar JÁ sem domínio → **Gmail SMTP** (app-password). Para produção
+> com marca própria → **Resend/Brevo com domínio verificado**. O código já suporta SMTP genérico
+> (qualquer linha da tabela) e Resend REST.
+
+### Templates do Resend (marca consistente)
+
+```bash
+RESEND_API_KEY=re_... node scripts/resend-templates.mjs   # ou: corepack pnpm resend:templates
+```
+
+Cria + publica 4 templates (`phc-welcome`, `phc-verify-email`, `phc-reset-password`,
+`phc-assignment`) com variáveis `{{{NAME}}}`, `{{{LINK}}}`, `{{{TITLE}}}`, `{{{DUE}}}`.
+A app usa os mesmos layouts inline (funciona em qualquer transportador); os templates do
+Resend ficam no dashboard para campanhas/edição visual.
+
 ## 5b-2. Configurar EMAIL (recuperação de password + verificação) — OBRIGATÓRIO p/ equipa
 
 O erro **Resend 403** ("only send testing emails to your own email") acontece porque o from

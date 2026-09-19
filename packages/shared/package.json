@@ -1,6 +1,6 @@
 {
   "name": "@phc/shared",
-  "version": "6.7.1",
+  "version": "6.8.0",
   "private": true,
   "type": "module",
   "description": "Contratos (Zod), tipos e lógica de domínio partilhada entre web e API (SRS, conquistas, prompts de IA).",

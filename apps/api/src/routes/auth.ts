@@ -78,7 +78,7 @@ authRouter.post("/register", validate(registerSchema), async (req, res) => {
     const vr = await sendEmail(
       user.email,
       "Confirme o seu email — PHC Trainer Pro",
-      `<p>Bem-vindo(a), ${user.name}!</p><p>Confirme o seu email para ativar todas as funcionalidades.</p><p>${buttonHtml(link, "Confirmar email")}</p><p>Ou abra: ${link}</p>`,
+      verifyEmailHtml(user.name, link),
       vt,
     );
     if (!vr.sent)
@@ -212,7 +212,8 @@ import { sha256 } from "../lib/crypto.ts";
 import type { Types } from "mongoose";
 import { env } from "../config/env.ts";
 import { PasswordResetToken } from "../models/PasswordResetToken.ts";
-import { sendEmail, buttonHtml } from "../services/email.ts";
+import { sendEmail } from "../services/email.ts";
+import { verifyEmailHtml, resetEmailHtml, welcomeEmailHtml } from "../services/emailTemplates.ts";
 import { forgotPasswordSchema, resetPasswordSchema } from "@phc/shared";
 
 function newToken(): { plain: string; hash: string } {
@@ -251,7 +252,7 @@ authRouter.post("/forgot-password", validate(forgotPasswordSchema), async (req, 
   const r = await sendEmail(
     user.email,
     "Recuperar password — PHC Trainer Pro",
-    `<p>Olá ${user.name},</p><p>Pediu para repor a sua password.</p><p>${buttonHtml(link, "Repor password")}</p><p>Ou abra: ${link}</p><p>O link expira em 60 minutos. Se não foi você, ignore.</p>`,
+    resetEmailHtml(user.name, link),
     token,
   );
   if (!r.sent)
@@ -311,7 +312,7 @@ authRouter.post("/resend-verification", requireUser, async (req, res) => {
   const r = await sendEmail(
     user.email,
     "Confirme o seu email — PHC Trainer Pro",
-    `<p>Olá ${user.name},</p><p>Confirme o seu email para ativar todas as funcionalidades.</p><p>${buttonHtml(link, "Confirmar email")}</p><p>Ou abra: ${link}</p>`,
+    verifyEmailHtml(user.name, link),
     token,
   );
   res.json({

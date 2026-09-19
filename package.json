@@ -1,6 +1,6 @@
 {
   "name": "phc-trainer-pro",
-  "version": "6.7.1",
+  "version": "6.8.0",
   "private": true,
   "description": "PHC Trainer Pro — plataforma multiutilizador de formação prática em Cegid PHC Evolution (monorepo pnpm)",
   "type": "module",
@@ -21,7 +21,8 @@
     "test": "pnpm -r test",
     "extract:legacy": "node scripts/extract-legacy-content.mjs",
     "prepare": "husky",
-    "test:e2e": "pnpm --filter @phc/web test:e2e"
+    "test:e2e": "pnpm --filter @phc/web test:e2e",
+    "resend:templates": "node scripts/resend-templates.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
