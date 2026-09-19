@@ -424,15 +424,49 @@ body {
   background: var(--color-background);
   color: var(--color-foreground);
 }
-[data-theme="light"] .chatTxt { background: #eef1f7; border-color: #d5dae6; color: #1a2233; }
-[data-theme="light"] .chatMsg.user .chatTxt { background: #fbeedd; border-color: #e0c9a8; }
-[data-theme="light"] .origCard, [data-theme="light"] .focusCard { background: #f2f4fa; border-color: #d5dae6; }
-[data-theme="light"] .origText { color: #44506a; }
-[data-theme="light"] .expText { color: #1a2233; }
-[data-theme="light"] .mascotBubble { background: #ffffff; color: #1a2233; }
-[data-theme="light"] .prose-phc { --tw-prose-body: #33405a; --tw-prose-headings: #b06a10; --tw-prose-links: #1f6fd0; --tw-prose-code: #177245; --tw-prose-pre-bg: #eef1f7; --tw-prose-pre-code: #177245; --tw-prose-th-borders: #d5dae6; --tw-prose-td-borders: #d5dae6; }
-[data-theme="light"] .prose-phc th { background: #e8ebf3; color: #b06a10; }
-[data-theme="light"] .prose-phc pre, [data-theme="light"] .prose-phc code { background: #eef1f7; border-color: #d5dae6; }
+[data-theme="light"] .chatTxt {
+  background: #eef1f7;
+  border-color: #d5dae6;
+  color: #1a2233;
+}
+[data-theme="light"] .chatMsg.user .chatTxt {
+  background: #fbeedd;
+  border-color: #e0c9a8;
+}
+[data-theme="light"] .origCard,
+[data-theme="light"] .focusCard {
+  background: #f2f4fa;
+  border-color: #d5dae6;
+}
+[data-theme="light"] .origText {
+  color: #44506a;
+}
+[data-theme="light"] .expText {
+  color: #1a2233;
+}
+[data-theme="light"] .mascotBubble {
+  background: #ffffff;
+  color: #1a2233;
+}
+[data-theme="light"] .prose-phc {
+  --tw-prose-body: #33405a;
+  --tw-prose-headings: #b06a10;
+  --tw-prose-links: #1f6fd0;
+  --tw-prose-code: #177245;
+  --tw-prose-pre-bg: #eef1f7;
+  --tw-prose-pre-code: #177245;
+  --tw-prose-th-borders: #d5dae6;
+  --tw-prose-td-borders: #d5dae6;
+}
+[data-theme="light"] .prose-phc th {
+  background: #e8ebf3;
+  color: #b06a10;
+}
+[data-theme="light"] .prose-phc pre,
+[data-theme="light"] .prose-phc code {
+  background: #eef1f7;
+  border-color: #d5dae6;
+}
 
 /* ---------- A11y: foco visível + skip-link ---------- */
 :focus-visible {
@@ -451,7 +485,97 @@ body {
   border-radius: 0 0 8px 0;
   font-weight: 600;
 }
-.skip-link:focus { left: 0; }
+.skip-link:focus {
+  left: 0;
+}
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------- Responsivo: mobile-first ajustes ---------- */
+@media (max-width: 767px) {
+  .appHeader {
+    padding: 8px 12px !important;
+  }
+  .brandTitle {
+    font-size: 16px;
+  }
+  .drawerPanel {
+    width: 100% !important;
+    max-width: 100%;
+    border-left: none;
+  }
+  .dialogPanel {
+    max-width: 100% !important;
+    width: 100%;
+    max-height: 100vh;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+  .paletteWrap {
+    padding: 0;
+    padding-top: 8vh;
+  }
+  .palettePanel {
+    max-width: 100% !important;
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  /* alvos de toque >=44px */
+  button,
+  a,
+  summary,
+  select,
+  input,
+  textarea {
+    min-height: 0;
+  }
+  .qopt,
+  button {
+    touch-action: manipulation;
+  }
+}
+@media (max-width: 640px) {
+  /* tabelas: permitir scroll horizontal sem quebrar layout */
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+/* ---------- Polish: transições/interação ---------- */
+.card,
+[class*="rounded-lg border"] {
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+button:active {
+  transform: scale(0.98);
+}
+::selection {
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] > summary {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }

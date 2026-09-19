@@ -66,7 +66,8 @@ export function AppHeader() {
   const theme = useTheme((s) => s.theme);
   const toggleTheme = useTheme((s) => s.toggle);
   const { canInstall, promptInstall } = usePwaInstall();
-  const nav = user?.role === "admin" ? [...NAV, { to: "/admin", label: "Admin", icon: ShieldAlert }] : NAV;
+  const nav =
+    user?.role === "admin" ? [...NAV, { to: "/admin", label: "Admin", icon: ShieldAlert }] : NAV;
   const state = useProgress((s) => s.state);
   const navigate = useNavigate();
 
@@ -109,11 +110,21 @@ export function AppHeader() {
             </kbd>
           </Button>
           {canInstall && (
-            <Button variant="outline" size="sm" title="Instalar aplicação" onClick={() => void promptInstall()}>
+            <Button
+              variant="outline"
+              size="sm"
+              title="Instalar aplicação"
+              onClick={() => void promptInstall()}
+            >
               <Download className="h-4 w-4" />
             </Button>
           )}
-          <Button variant="ghost" size="icon" title={theme === "dark" ? "Tema claro" : "Tema escuro"} onClick={toggleTheme}>
+          <Button
+            variant="ghost"
+            size="icon"
+            title={theme === "dark" ? "Tema claro" : "Tema escuro"}
+            onClick={toggleTheme}
+          >
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </Button>
           <NotificationBell />
@@ -154,7 +165,7 @@ export function AppHeader() {
         </div>
       </div>
 
-      <nav className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 pb-2">
+      <nav className="mx-auto hidden max-w-6xl gap-1 overflow-x-auto px-4 pb-2 md:flex">
         {nav.map((n) => (
           <NavLink
             key={n.to}

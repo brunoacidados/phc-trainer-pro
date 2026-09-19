@@ -15,7 +15,7 @@ import { Card, CardContent } from "../components/ui/card.tsx";
 import { Badge } from "../components/ui/badge.tsx";
 import { Spinner } from "../components/ui/misc.tsx";
 import { cn } from "../lib/utils.ts";
-import { levelImage } from "../lib/levelImages.ts";
+import { LevelImage } from "../components/ui/LevelImage.tsx";
 
 export function MissionsPage() {
   const state = useProgress((s) => s.state);
@@ -57,11 +57,10 @@ export function MissionsPage() {
                 style={{ borderLeft: `4px solid ${belt.cor}` }}
               >
                 <div className="flex items-center gap-3">
-                  <img
-                    src={levelImage(belt.n)}
+                  <LevelImage
+                    lv={belt.n}
                     alt=""
-                    className="hidden h-10 w-16 rounded-md border border-border object-cover object-top sm:block"
-                    loading="lazy"
+                    className="hidden h-10 w-16 rounded-md border border-border sm:block"
                   />
                   <div>
                     <span className="font-semibold" style={{ color: belt.cor }}>

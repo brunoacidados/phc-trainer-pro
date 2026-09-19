@@ -176,12 +176,12 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
 
   let lastGroup = "";
   return (
-    <div className="fixed inset-0 z-[1300] flex items-start justify-center p-4 pt-[12vh]">
+    <div className="paletteWrap fixed inset-0 z-[1300] flex items-start justify-center p-4 pt-[12vh]">
       <div className="absolute inset-0 bg-black/70" onClick={onClose} />
       <div
         role="dialog"
         aria-label="Pesquisa global"
-        className="relative z-10 w-full max-w-xl overflow-hidden rounded-lg border border-border bg-card shadow-2xl"
+        className="palettePanel relative z-10 w-full max-w-xl overflow-hidden rounded-lg border border-border bg-card shadow-2xl"
       >
         <div className="flex items-center gap-2 border-b border-border px-4">
           <Search className="h-4 w-4 text-muted-foreground" />

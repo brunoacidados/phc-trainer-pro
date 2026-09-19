@@ -3,6 +3,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSession } from "../../stores/session.ts";
 import { useProgress } from "../../stores/progress.ts";
 import { AppFooter, AppHeader } from "./AppHeader.tsx";
+import { BottomNav } from "./BottomNav.tsx";
 import { Alert } from "../ui/alert.tsx";
 import { Button } from "../ui/button.tsx";
 import { apiFetch } from "../../lib/api.ts";
@@ -73,7 +74,9 @@ function EmailVerifyBanner() {
         variant="outline"
         onClick={async () => {
           try {
-            const r = await apiFetch<{ message: string }>("/api/auth/resend-verification", { method: "POST" });
+            const r = await apiFetch<{ message: string }>("/api/auth/resend-verification", {
+              method: "POST",
+            });
             toast.success(r.message);
           } catch (e) {
             toast.error((e as Error).message);
@@ -106,13 +109,19 @@ export function AppLayout() {
   }, [setPalette]);
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <a href="#main" className="skip-link">Saltar para o conteúdo</a>
+      <a href="#main" className="skip-link">
+        Saltar para o conteúdo
+      </a>
       <AppHeader />
-      <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">
+      <main
+        id="main"
+        className="mx-auto w-full max-w-6xl flex-1 px-3 py-4 pb-20 sm:px-4 sm:py-6 md:pb-6"
+      >
         <EmailVerifyBanner />
         <Outlet />
       </main>
       <AppFooter />
+      <BottomNav />
       <Mascot />
       <ChatDrawer />
       <FocusModal />

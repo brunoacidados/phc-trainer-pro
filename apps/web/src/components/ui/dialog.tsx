@@ -41,7 +41,7 @@ export function Dialog({
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
         className={cn(
-          "relative z-10 max-h-[88vh] w-full overflow-y-auto rounded-lg border border-border bg-card p-5 shadow-xl",
+          "dialogPanel relative z-10 max-h-[88vh] w-full overflow-y-auto rounded-lg border border-border bg-card p-5 shadow-xl",
           wide ? "max-w-3xl" : "max-w-lg",
           className,
         )}
