@@ -35,6 +35,7 @@ import { Alert } from "../components/ui/alert.tsx";
 import { Input, Select, Textarea } from "../components/ui/input.tsx";
 import { Spinner } from "../components/ui/misc.tsx";
 import { cn } from "../lib/utils.ts";
+import { levelImage } from "../lib/levelImages.ts";
 
 export function MissionDetailPage() {
   const { id = "" } = useParams();
@@ -206,6 +207,18 @@ export function MissionDetailPage() {
           🎓 Aula guiada
         </Button>
       </div>
+
+      <figure className="overflow-hidden rounded-xl border border-border bg-card">
+        <img
+          src={levelImage(lab.lv)}
+          alt={`Exemplo visual do nível ${lab.lv}`}
+          className="h-44 w-full object-cover object-top sm:h-56"
+          loading="lazy"
+        />
+        <figcaption className="border-t border-border px-3 py-1.5 text-[11px] text-muted-foreground">
+          💡 Exemplo ilustrativo do que vai fazer neste nível (imagem gerada para orientação).
+        </figcaption>
+      </figure>
 
       {/* objetivo + conceito */}
       <Card className="border-info/40">

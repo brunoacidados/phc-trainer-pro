@@ -8,6 +8,7 @@ import { useProgress } from "../../stores/progress.ts";
 import { useAi } from "../../hooks/useAi.ts";
 import { useTts } from "../../hooks/useTts.ts";
 import { useMascot } from "../../stores/mascot.ts";
+import { Markdown } from "../../components/ui/Markdown.tsx";
 import { Button } from "../../components/ui/button.tsx";
 import { Badge } from "../../components/ui/badge.tsx";
 import { Alert } from "../../components/ui/alert.tsx";
@@ -251,7 +252,7 @@ export function LessonDrawer() {
                 </div>
               </Alert>
             )}
-            {exp && !err && <p className="expText mt-2">{exp}</p>}
+            {exp && !err && <Markdown className="mt-2">{exp}</Markdown>}
             {!exp && !err && !ai.loading && state.settings.economy && (
               <div className="mt-2">
                 <p className="text-sm text-muted-foreground">

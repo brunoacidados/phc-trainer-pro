@@ -13,6 +13,7 @@ import { Badge } from "../../components/ui/badge.tsx";
 import { Alert } from "../../components/ui/alert.tsx";
 import { ProgressBar } from "../../components/ui/progress.tsx";
 import { toast } from "../../components/ui/toast.tsx";
+import { Markdown } from "../../components/ui/Markdown.tsx";
 
 /* ---------- store do Modo Foco (equivalente ao FOC do legado) ---------- */
 type Phase = "steps" | "proofs" | "asks" | "done";
@@ -112,7 +113,7 @@ export function FocusModal() {
         {exp[foc.i] && (
           <div className="mt-2 rounded-md border border-info/40 bg-[#0f1d33] p-3">
             <b className="text-sm text-info">🧠 Professor Einstein</b>
-            <p className="expText mt-1">{exp[foc.i]}</p>
+            <Markdown className="mt-1">{exp[foc.i]}</Markdown>
           </div>
         )}
         <div className="mt-4 flex flex-wrap gap-2">

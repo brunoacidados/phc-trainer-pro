@@ -5,6 +5,8 @@ import { useAi } from "../../hooks/useAi.ts";
 import { useTts } from "../../hooks/useTts.ts";
 import { useMascot } from "../../stores/mascot.ts";
 import { EinsteinSVG } from "../../components/mascot/Mascot.tsx";
+import { Markdown } from "../../components/ui/Markdown.tsx";
+import { Copy, Check } from "lucide-react";
 import { Button } from "../../components/ui/button.tsx";
 import { Textarea } from "../../components/ui/input.tsx";
 import { Badge } from "../../components/ui/badge.tsx";
@@ -167,18 +169,19 @@ export function ChatDrawer() {
 
         <div className="drawerBody" ref={listRef}>
           <div className="chatList">
-            {msgs.map((m, i) => (
-              <div key={i} className={`chatMsg ${m.role === "user" ? "user" : ""}`}>
-                {m.role === "assistant" && (
-                  <div className="chatAv">
-                    <EinsteinSVG mood={streamingRef.current ? "talk" : "idle"} />
-                  </div>
-                )}
-                <div className="chatTxt">
-                  {m.txt || (i === msgs.length - 1 && streamingRef.current ? "…" : "")}
+            {msgs.map((m, i) =>
+              m.role === "user" ? (
+                <div key={i} className="flex justify-end">
+                  <div className="chatTxt max-w-[85%] whitespace-pre-wrap">{m.txt}</div>
                 </div>
-              </div>
-            ))}
+              ) : (
+                <AssistantBubble
+                  key={i}
+                  text={m.txt}
+                  streaming={i === msgs.length - 1 && streamingRef.current}
+                />
+              ),
+            )}
           </div>
           {msgs.length <= 1 && (
             <div className="mt-4 flex flex-wrap gap-1.5">
@@ -249,5 +252,42 @@ export function ChatDrawer() {
         </div>
       </div>
     </>
+  );
+}
+
+function AssistantBubble({ text, streaming }: { text: string; streaming: boolean }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <div className="flex items-start gap-2.5">
+      <div className="chatAv mt-0.5 shrink-0">
+        <EinsteinSVG mood={streaming ? "talk" : "idle"} />
+      </div>
+      <div className="group min-w-0 flex-1">
+        {text ? (
+          <Markdown className="rounded-lg border border-border/60 bg-card/60 px-3.5 py-2.5">
+            {text}
+          </Markdown>
+        ) : streaming ? (
+          <div className="flex items-center gap-1.5 py-2 text-muted-foreground">
+            <span className="h-2 w-2 animate-bounce rounded-full bg-primary [animation-delay:0ms]" />
+            <span className="h-2 w-2 animate-bounce rounded-full bg-primary [animation-delay:150ms]" />
+            <span className="h-2 w-2 animate-bounce rounded-full bg-primary [animation-delay:300ms]" />
+          </div>
+        ) : null}
+        {text && !streaming && (
+          <button
+            className="mt-1 flex cursor-pointer items-center gap-1 text-[11px] text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100"
+            onClick={() => {
+              navigator.clipboard.writeText(text);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 1500);
+            }}
+          >
+            {copied ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
+            {copied ? "copiado" : "copiar resposta"}
+          </button>
+        )}
+      </div>
+    </div>
   );
 }
