@@ -47,14 +47,49 @@ export const corsOrigins = env.CORS_ORIGIN.split(",")
   .map((s) => s.trim())
   .filter(Boolean);
 
-/** chaves de IA globais (fallback), por fornecedor */
+/**
+ * Chaves de IA globais (fallback), por fornecedor.
+ * Aceita VÁRIOS nomes de variável de ambiente por fornecedor — use o que preferir:
+ *   groq:      AI_KEY_GROQ      | GROQ_API_KEY
+ *   gemini:    AI_KEY_GEMINI    | GEMINI_API_KEY | GOOGLE_API_KEY | GOOGLE_GENAI_API_KEY
+ *   mistral:   AI_KEY_MISTRAL   | MISTRAL_API_KEY
+ *   cerebras:  AI_KEY_CEREBRAS  | CEREBRAS_API_KEY
+ *   nvidia:    AI_KEY_NVIDIA    | NVIDIA_API_KEY
+ *   openrouter:AI_KEY_OPENROUTER| OPENROUTER_API_KEY
+ * (Lê diretamente de process.env para aceitar todos os alias sem os declarar no schema.)
+ */
+const KEY_ALIASES: Record<string, string[]> = {
+  groq: ["AI_KEY_GROQ", "GROQ_API_KEY"],
+  gemini: ["AI_KEY_GEMINI", "GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_GENAI_API_KEY"],
+  mistral: ["AI_KEY_MISTRAL", "MISTRAL_API_KEY"],
+  cerebras: ["AI_KEY_CEREBRAS", "CEREBRAS_API_KEY"],
+  nvidia: ["AI_KEY_NVIDIA", "NVIDIA_API_KEY"],
+  openrouter: ["AI_KEY_OPENROUTER", "OPENROUTER_API_KEY"],
+};
+
+function firstEnv(names: string[]): string | undefined {
+  for (const n of names) {
+    const v = process.env[n];
+    if (v && v.trim()) return v.trim();
+  }
+  return undefined;
+}
+
 export const globalAiKeys: Record<string, string> = Object.fromEntries(
-  Object.entries({
-    groq: env.AI_KEY_GROQ,
-    gemini: env.AI_KEY_GEMINI,
-    mistral: env.AI_KEY_MISTRAL,
-    cerebras: env.AI_KEY_CEREBRAS,
-    nvidia: env.AI_KEY_NVIDIA,
-    openrouter: env.AI_KEY_OPENROUTER,
-  }).filter(([, v]) => !!v) as [string, string][],
+  Object.entries(KEY_ALIASES)
+    .map(([provider, names]) => [provider, firstEnv(names)] as [string, string | undefined])
+    .filter(([, v]) => !!v) as [string, string][],
+);
+
+/** modelo OpenRouter (aceita alias) */
+export const openRouterModel =
+  firstEnv(["AI_MODEL_OPENROUTER", "OPENROUTER_MODEL", "OPENROUTER_DEFAULT_MODEL"]) ?? env.AI_MODEL_OPENROUTER;
+
+// diagnóstico no arranque: que chaves de IA (de ambiente) o servidor viu — só os ids, nunca os valores
+console.log(
+  `[env] chaves de IA via ambiente: ${
+    Object.keys(globalAiKeys).length
+      ? Object.keys(globalAiKeys).join(", ")
+      : "(nenhuma — use AI_KEY_* ou *_API_KEY, ou configure na app em Equipa → Fornecedores de IA)"
+  }`,
 );

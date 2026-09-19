@@ -4,7 +4,7 @@
  * e chaves guardadas no servidor (equipa) — nunca expostas ao cliente.
  */
 import { AI_PROVIDERS, type AiProviderDef } from "@phc/content";
-import { env, globalAiKeys } from "../config/env.ts";
+import { globalAiKeys, openRouterModel } from "../config/env.ts";
 import { ApiError } from "../lib/errors.ts";
 
 /** ordem por omissão: rápidos primeiro; NVIDIA já funciona direta no servidor */
@@ -77,7 +77,7 @@ async function callProvider(
   code: boolean,
 ): Promise<string> {
   let model = def.model;
-  if (def.id === "openrouter") model = env.AI_MODEL_OPENROUTER;
+  if (def.id === "openrouter") model = openRouterModel;
   if (code && def.codeModel) model = def.codeModel;
   if (!model) throw Object.assign(new Error(`${def.nome}: sem modelo`), { status: 0 });
 
@@ -243,7 +243,7 @@ export async function testOneProvider(
   const key = (keys[id] || globalAiKeys[id] || "").trim();
   if (!key)
     return { id, nome: def.nome, ok: false, status: "sem-chave", error: "sem chave configurada" };
-  const model = def.id === "openrouter" ? env.AI_MODEL_OPENROUTER : (def.model ?? undefined);
+  const model = def.id === "openrouter" ? openRouterModel : (def.model ?? undefined);
   const t0 = Date.now();
   try {
     const text = await callProvider(def, key, TEST_PROMPT, 60, false);
