@@ -72,6 +72,18 @@ Na web: criar conta → cria equipa → ver o código de convite. (A IA só resp
 
 ---
 
+## 🧠 3b. (Opcional) Ativar o RAG semântico — 1 comando
+
+Deixa o Professor mais fundamentado (busca vetorial da Enciclopédia/esquema/missões em vez de só
+palavras-chave). Na raiz do repo, apontando para o **mesmo Atlas** da API:
+
+```bash
+MONGODB_URI="mongodb+srv://.../phc-trainer" GEMINI_API_KEY="a-sua-chave-gemini" pnpm --filter @phc/api rag:seed
+```
+
+(~4.200 chunks, 1×; precisa da chave Gemini — a mesma do TTS). Detalhes em `docs/DEPLOY.md` §5c.
+Sem isto a IA funciona na mesma (fallback por palavras-chave).
+
 ## 🟢 4. Piloto com a equipa (1–2 semanas)
 
 Checklist por técnico:

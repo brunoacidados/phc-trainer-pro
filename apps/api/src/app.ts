@@ -9,10 +9,11 @@ import { authRouter } from "./routes/auth.ts";
 import { progressRouter } from "./routes/progress.ts";
 import { teamsRouter } from "./routes/teams.ts";
 import { aiRouter } from "./routes/ai.ts";
+import { chatRouter } from "./routes/chat.ts";
 import { metaRouter } from "./routes/meta.ts";
 import { errorHandler, notFoundHandler } from "./middleware/error.ts";
 
-export const APP_VERSION = "6.0.0-alpha.6";
+export const APP_VERSION = "6.0.0-alpha.7";
 
 export function createApp(): express.Express {
   const app = express();
@@ -58,6 +59,7 @@ export function createApp(): express.Express {
   app.use("/api/progress", progressRouter);
   app.use("/api/teams", teamsRouter);
   app.use("/api/ai", aiLimiter, aiRouter);
+  app.use("/api/chat", chatRouter);
   app.use("/api/meta", metaRouter);
 
   app.use(notFoundHandler);

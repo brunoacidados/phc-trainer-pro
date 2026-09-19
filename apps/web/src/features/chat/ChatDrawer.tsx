@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { X, Send, Volume2, Square } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Send, Square, Trash2, Volume2, X } from "lucide-react";
 import { useUi } from "../../stores/ui.ts";
-import { useProgress } from "../../stores/progress.ts";
 import { useAi } from "../../hooks/useAi.ts";
 import { useTts } from "../../hooks/useTts.ts";
 import { useMascot } from "../../stores/mascot.ts";
@@ -10,6 +9,7 @@ import { Button } from "../../components/ui/button.tsx";
 import { Textarea } from "../../components/ui/input.tsx";
 import { Badge } from "../../components/ui/badge.tsx";
 import { toast } from "../../components/ui/toast.tsx";
+import { apiFetch } from "../../lib/api.ts";
 
 interface Msg {
   role: "user" | "assistant";
@@ -28,17 +28,41 @@ const QUICK = [
   "Diferença entre grupos e perfis de acesso?",
 ];
 
-/** Chat global com o Professor (drawer lateral) — contexto da missão atual injetado no servidor */
+/** Chat global com o Professor — histórico persistente + streaming token-a-token */
 export function ChatDrawer() {
   const { chatOpen, closeChat, lastLab } = useUi();
-  const state = useProgress((s) => s.state);
   const ai = useAi();
   const tts = useTts();
   const setMood = useMascot((s) => s.setMood);
   const [msgs, setMsgs] = useState<Msg[]>([GREETING]);
   const [input, setInput] = useState("");
   const [speaking, setSpeaking] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+  const streamingRef = useRef(false);
+
+  // carrega o histórico persistido ao abrir (1ª vez por sessão)
+  useEffect(() => {
+    if (!chatOpen || loaded) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const r = await apiFetch<{ messages: { role: "user" | "assistant"; content: string }[] }>(
+          "/api/chat",
+        );
+        if (cancelled) return;
+        if (r.messages?.length)
+          setMsgs([GREETING, ...r.messages.map((m) => ({ role: m.role, txt: m.content }))]);
+      } catch {
+        /* sem histórico ainda */
+      } finally {
+        if (!cancelled) setLoaded(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [chatOpen, loaded]);
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
@@ -53,35 +77,53 @@ export function ChatDrawer() {
     return () => window.removeEventListener("keydown", onKey);
   }, [chatOpen, closeChat]);
 
-  if (!chatOpen) return null;
-
-  async function send(text?: string) {
-    const q = (text ?? input).trim();
-    if (!q || ai.loading) return;
-    setInput("");
-    setMsgs((m) => [...m, { role: "user", txt: q }]);
-    setMood("think");
-    try {
-      const r = await ai.chat({
-        kind: "chat",
-        labId: lastLab ?? undefined,
-        maxTokens: 600,
-        messages: [{ role: "user", content: q }],
-      });
-      setMsgs((m) => [...m, { role: "assistant", txt: r.text }]);
-      setMood("talk");
-      if (state?.settings.tts) {
-        setSpeaking(true);
-        await tts.speak(r.text);
-        setSpeaking(false);
+  const send = useCallback(
+    async (text?: string) => {
+      const q = (text ?? input).trim();
+      if (!q || streamingRef.current) return;
+      setInput("");
+      setMsgs((m) => [...m, { role: "user", txt: q }, { role: "assistant", txt: "" }]);
+      streamingRef.current = true;
+      setMood("think");
+      try {
+        await ai.chatStream(
+          {
+            kind: "chat",
+            labId: lastLab ?? undefined,
+            maxTokens: 600,
+            messages: [{ role: "user", content: q }],
+          },
+          (tok) => {
+            // acrescenta o token à última mensagem (assistant, em streaming)
+            setMsgs((m) => {
+              const copy = [...m];
+              const last = copy[copy.length - 1];
+              if (last && last.role === "assistant")
+                copy[copy.length - 1] = { ...last, txt: last.txt + tok };
+              return copy;
+            });
+          },
+        );
+        setMood("idle");
+      } catch (e) {
+        setMood("idle");
+        const msg = (e as Error).message;
+        setMsgs((m) => {
+          const copy = [...m];
+          if (copy[copy.length - 1]?.role === "assistant" && !copy[copy.length - 1].txt) copy.pop();
+          return [...copy, { role: "assistant", txt: `⚠ ${msg}` }];
+        });
+        toast.error(msg);
+      } finally {
+        streamingRef.current = false;
       }
-      setMood("idle");
-    } catch (e) {
-      setMood("idle");
-      toast.error((e as Error).message);
-      setMsgs((m) => [...m, { role: "assistant", txt: `⚠ ${(e as Error).message}` }]);
-    }
-  }
+    },
+    [ai, input, lastLab, setMood],
+  );
+
+  const lastText = msgs[msgs.length - 1]?.txt || "";
+
+  if (!chatOpen) return null;
 
   return (
     <>
@@ -104,9 +146,23 @@ export function ChatDrawer() {
               </div>
             </div>
           </div>
-          <Button variant="ghost" size="icon" onClick={closeChat} aria-label="Fechar chat">
-            <X className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Limpar histórico"
+              onClick={async () => {
+                await apiFetch("/api/chat", { method: "DELETE" }).catch(() => undefined);
+                setMsgs([GREETING]);
+                toast.info("Histórico limpo.");
+              }}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={closeChat} aria-label="Fechar chat">
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         <div className="drawerBody" ref={listRef}>
@@ -115,15 +171,14 @@ export function ChatDrawer() {
               <div key={i} className={`chatMsg ${m.role === "user" ? "user" : ""}`}>
                 {m.role === "assistant" && (
                   <div className="chatAv">
-                    <EinsteinSVG mood={ai.loading ? "think" : "idle"} />
+                    <EinsteinSVG mood={streamingRef.current ? "talk" : "idle"} />
                   </div>
                 )}
-                <div className="chatTxt">{m.txt}</div>
+                <div className="chatTxt">
+                  {m.txt || (i === msgs.length - 1 && streamingRef.current ? "…" : "")}
+                </div>
               </div>
             ))}
-            {ai.loading && (
-              <div className="text-xs text-muted-foreground">O professor está a pensar… ⚛️</div>
-            )}
           </div>
           {msgs.length <= 1 && (
             <div className="mt-4 flex flex-wrap gap-1.5">
@@ -158,7 +213,7 @@ export function ChatDrawer() {
               <Button
                 size="icon"
                 onClick={() => void send()}
-                disabled={ai.loading || !input.trim()}
+                disabled={streamingRef.current || !input.trim()}
                 aria-label="Enviar"
               >
                 <Send className="h-4 w-4" />
@@ -175,11 +230,15 @@ export function ChatDrawer() {
                 >
                   <Square className="h-3 w-3" />
                 </Button>
-              ) : msgs.length > 1 ? (
+              ) : lastText ? (
                 <Button
                   size="icon"
                   variant="ghost"
-                  onClick={() => void tts.speak(msgs[msgs.length - 1].txt)}
+                  onClick={async () => {
+                    setSpeaking(true);
+                    await tts.speak(lastText);
+                    setSpeaking(false);
+                  }}
                   aria-label="Ouvir última"
                 >
                   <Volume2 className="h-4 w-4" />

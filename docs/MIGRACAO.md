@@ -60,8 +60,12 @@
    offline) e **banner de migração embutido no legado** (adormecido; ativa-se editando `migrate.json`
    na raiz — `enabled:true` + URL da v6; sw.js bumped para v15).
 
-5. **Corte final (depende do dono do projeto):** checklist completa em **`FAZER-DEPOIS.md`**
-   (deploy → piloto → ativar banner → desligar Pages / mover raiz para `legacy/`).
+5. **Iteração 5 (FEITA):** Command Palette (Ctrl+K) · página Progresso (heatmap+gráficos+
+   conquistas+provas) · IA streaming (SSE) · chat persistente · **RAG semântico** (embeddings +
+   busca vetorial, seed 1 comando, fallback gracioso).
+
+6. **Corte final (depende do dono do projeto):** checklist completa em **`FAZER-DEPOIS.md`**
+   (deploy ✅ → [seed RAG opcional] → piloto → ativar banner → desligar Pages / mover raiz para `legacy/`).
 
 ## Como voltar a extrair conteúdo do legado
 

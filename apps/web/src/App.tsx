@@ -4,6 +4,7 @@ import { AppLayout, RequireAuth } from "./components/layout/AppLayout.tsx";
 import { LoginPage, RegisterPage } from "./pages/AuthPages.tsx";
 import { JourneyPage } from "./pages/JourneyPage.tsx";
 import { MissionsPage } from "./pages/MissionsPage.tsx";
+import { ProgressPage } from "./pages/ProgressPage.tsx";
 import { MissionDetailPage } from "./pages/MissionDetailPage.tsx";
 import { useSession } from "./stores/session.ts";
 import { JoinPage } from "./features/team/JoinPage.tsx";
@@ -87,6 +88,7 @@ export default function App() {
           <Route path="missoes/:id" element={<MissionDetailPage />} />
           <Route path="aprender" element={page(<LearnPage />)} />
           <Route path="praticar" element={page(<PracticePage />)} />
+          <Route path="progresso" element={page(<ProgressPage />)} />
           <Route path="equipa" element={page(<TeamPage />)} />
           <Route path="definicoes" element={page(<SettingsPage />)} />
           <Route path="*" element={<NotFound />} />

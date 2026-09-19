@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { type AiChatInput } from "@phc/shared";
 import { ACHIEVEMENTS } from "@phc/content";
 import { aiCacheGet, aiCacheKeyFor, aiCacheSet } from "../lib/aiCache.ts";
-import { apiFetch } from "../lib/api.ts";
+import { apiFetch, apiStream } from "../lib/api.ts";
 import { toast } from "../components/ui/toast.tsx";
 import { useMascot } from "../stores/mascot.ts";
 
@@ -45,6 +45,43 @@ export function useAi() {
     }
   }, []);
 
+  /**
+   * Chat com streaming (SSE): chama onToken por pedaço de texto.
+   * Devolve o texto completo + fornecedor. Usa o mesmo routing do servidor.
+   */
+  const chatStream = useCallback(
+    async (req: AiChatInput, onToken: (t: string) => void): Promise<ChatResponse> => {
+      setLoading(true);
+      setError(null);
+      useMascot.getState().setMood("think");
+      let full = "";
+      let provider = "";
+      try {
+        await apiStream("/api/ai/chat-stream", req, (event, data) => {
+          const d = data as { t?: string; provider?: string; message?: string };
+          if (event === "token" && d.t) {
+            if (!full) useMascot.getState().setMood("talk");
+            full += d.t;
+            onToken(d.t);
+          } else if (event === "done") {
+            provider = d.provider || "";
+          } else if (event === "error") {
+            throw new Error(d.message || "erro no stream");
+          }
+        });
+        return { text: full, provider, cached: false };
+      } catch (e) {
+        const msg = (e as Error).message || "Falha na chamada de IA";
+        setError(msg);
+        throw e;
+      } finally {
+        setLoading(false);
+        useMascot.getState().setMood("idle");
+      }
+    },
+    [],
+  );
+
   /** explicação simples de um texto (botão 🧠), com cache local */
   const explain = useCallback(
     async (text: string, ctxTitle: string, labId?: string): Promise<string> => {
@@ -71,5 +108,5 @@ export function useAi() {
     [chat],
   );
 
-  return { chat, explain, loading, error };
+  return { chat, chatStream, explain, loading, error };
 }

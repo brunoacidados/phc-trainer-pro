@@ -67,6 +67,14 @@ CORS a bloquear a NVIDIA (daí o worker/proxy), rate limits visíveis. Na v6:
   país/gama + plano + contexto da missão) — o cliente não consegue "esquecer" a persona.
 - Cache de explicações no cliente (localStorage) por hash — o mesmo parágrafo não gasta 2×.
 
+### 4b. RAG semântico (P4) — busca vetorial sem depender de tier pago
+
+O conteúdo é embeddado uma vez (`pnpm --filter @phc/api rag:seed`, Gemini `text-embedding-004` ou
+OpenAI `text-embedding-3-small`) para a coleção `chunks` (~4.200). Em runtime a API embedda a
+pergunta e faz **cosseno em memória** (top-k) — rápido para milhares de vetores e **funciona em
+qualquer Mongo, incluindo Atlas M0 free** (não exige Vector Search index; o upgrade é transparente).
+Sem chunks ou sem chave de embeddings, cai automaticamente no mini-RAG por palavras-chave (`encContext`).
+
 ### 5. SRS e conquistas autoritativos no servidor
 
 `registerLabRep`, `rateCard`, `submitQuiz`, `applyAchievements` correm na API (código partilhado
@@ -107,8 +115,11 @@ POST   /api/progress/reps|steps|proofs|mastered|evid|cards/rate|quiz|company|con
 GET    /api/teams/mine            POST /api/teams | /api/teams/join | /api/teams/leave
 GET    /api/teams/:id/dashboard   (formador)   POST /api/teams/:id/rotate-invite
 GET/PUT /api/teams/:id/ai-settings (formador — chaves cifradas)
-POST   /api/ai/chat   (router multi-fornecedor; persona+contexto injetados)
+POST   /api/ai/chat   (router multi-fornecedor; persona+contexto+RAG injetados)
+POST   /api/ai/chat-stream (igual, em SSE: eventos token/done/error; fallback só antes do 1º token)
 POST   /api/ai/tts    (gemini/elevenlabs/groq → base64; cliente faz cache IDB)
+GET    /api/chat · DELETE /api/chat   (histórico persistente do Professor, coleção chathistories)
+GET    /api/ai/rag    (estado da base semântica: chunks por origem)
 GET    /api/ai/providers       (estado: configurado? origem? em pausa?)
 POST   /api/ai/test            (testa chaves: {} = todos, {id} = um; devolve ok/latência/erro por fornecedor)
 POST   /api/meta/import-legacy    GET /api/meta/content-stats   POST /api/meta/reset

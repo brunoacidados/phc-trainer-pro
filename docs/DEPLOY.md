@@ -110,6 +110,28 @@ curl -X POST https://<api>.onrender.com/api/ai/test \
 > 1 chamada pequena por chave. Não altera os cooldowns do router, pode repetir à vontade.
 > A **voz (TTS)** testa-se em ⚙️ Definições → 🔊 "Testar voz" (usa a chave Gemini/ElevenLabs).
 
+## 5c. Ativar o RAG semântico (opcional, recomendado — 1 comando)
+
+O tutor de IA já funciona sem isto (usa mini-RAG por palavras-chave). Para a **busca semântica**
+(embeddings da Enciclopédia + esquema + missões), corra o seed **uma vez** a partir da sua máquina,
+apontando para o **mesmo Atlas** da API:
+
+```bash
+# na raiz do repo
+MONGODB_URI="mongodb+srv://.../phc-trainer" \
+GEMINI_API_KEY="a-sua-chave-gemini" \
+pnpm --filter @phc/api rag:seed
+```
+
+- Gera ~4.200 chunks e guarda-os na coleção `chunks` do Atlas (a API lê-os em runtime).
+- Precisa de uma chave **Gemini** (a mesma do TTS serve) — usa o modelo `text-embedding-004`.
+  Alternativa: `OPENROUTER_API_KEY` (usa `text-embedding-3-small`).
+- Idempotente: pode repetir. Em runtime, a API embedda a pergunta com a chave Gemini **da equipa**
+  (👥 Equipa → Fornecedores de IA) — portanto configure essa chave para o RAG funcionar online.
+- Ver estado: `GET /api/ai/rag` (autenticado) → `{chunks, sources}`. Sem chunks, cai no fallback por palavras-chave.
+
+> Validar a construção sem gastar embeddings: `DRY_RUN=1 pnpm --filter @phc/api rag:seed`.
+
 ## 6. Smoke test pós-deploy
 
 ```bash

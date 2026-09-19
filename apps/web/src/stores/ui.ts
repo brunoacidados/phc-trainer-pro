@@ -2,18 +2,22 @@ import { create } from "zustand";
 
 interface UiState {
   chatOpen: boolean;
+  paletteOpen: boolean;
   /** última missão visitada — contexto do chat do Professor */
   lastLab: string | null;
   openChat: () => void;
   closeChat: () => void;
+  setPalette: (v: boolean) => void;
   setLastLab: (id: string | null) => void;
 }
 
 export const useUi = create<UiState>()((set) => ({
   chatOpen: false,
+  paletteOpen: false,
   lastLab: null,
   openChat: () => set({ chatOpen: true }),
   closeChat: () => set({ chatOpen: false }),
+  setPalette: (v) => set({ paletteOpen: v }),
   setLastLab: (id) => set({ lastLab: id }),
 }));
 

@@ -10,6 +10,8 @@ import { ChatDrawer } from "../../features/chat/ChatDrawer.tsx";
 import { FocusModal } from "../../features/focus/FocusModal.tsx";
 import { LessonDrawer } from "../../features/lesson/LessonDrawer.tsx";
 import { OnboardModal, useOnboard } from "../../features/onboard/OnboardModal.tsx";
+import { CommandPalette } from "../../features/search/CommandPalette.tsx";
+import { useUi } from "../../stores/ui.ts";
 import { initNetworkListeners, useSync } from "../../stores/sync.ts";
 
 /** bootstrap de sessão + guarda de rotas autenticadas */
@@ -62,6 +64,18 @@ export function AppLayout() {
   useEffect(() => {
     refreshSync();
   }, [refreshSync]);
+  const paletteOpen = useUi((s) => s.paletteOpen);
+  const setPalette = useUi((s) => s.setPalette);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setPalette(!useUi.getState().paletteOpen);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [setPalette]);
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <AppHeader />
@@ -75,6 +89,7 @@ export function AppLayout() {
       <LessonDrawer />
       <OnboardModal />
       <OnboardGate />
+      <CommandPalette open={paletteOpen} onClose={() => setPalette(false)} />
       <Toaster />
     </div>
   );

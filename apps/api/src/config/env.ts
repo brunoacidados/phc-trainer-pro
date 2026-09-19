@@ -90,7 +90,8 @@ export const globalAiKeys: Record<string, string> = Object.fromEntries(
 
 /** modelo OpenRouter (aceita alias) */
 export const openRouterModel =
-  firstEnv(["AI_MODEL_OPENROUTER", "OPENROUTER_MODEL", "OPENROUTER_DEFAULT_MODEL"]) ?? env.AI_MODEL_OPENROUTER;
+  firstEnv(["AI_MODEL_OPENROUTER", "OPENROUTER_MODEL", "OPENROUTER_DEFAULT_MODEL"]) ??
+  env.AI_MODEL_OPENROUTER;
 
 // diagnóstico no arranque: que chaves de IA (de ambiente) o servidor viu — só os ids, nunca os valores
 console.log(

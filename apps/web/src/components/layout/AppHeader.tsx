@@ -1,9 +1,21 @@
 import { useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Brain, GraduationCap, Library, LogOut, Map, Settings, Target, Users } from "lucide-react";
+import {
+  BarChart3,
+  Brain,
+  GraduationCap,
+  Library,
+  LogOut,
+  Map,
+  Search,
+  Settings,
+  Target,
+  Users,
+} from "lucide-react";
 import { BELTS } from "@phc/content";
 import { currentBelt, xpTotal } from "@phc/shared";
 import { useSession } from "../../stores/session.ts";
+import { useUi } from "../../stores/ui.ts";
 import { useProgress } from "../../stores/progress.ts";
 import { Badge } from "../ui/badge.tsx";
 import { Button } from "../ui/button.tsx";
@@ -15,6 +27,7 @@ const NAV = [
   { to: "/missoes", label: "Missões", icon: Map },
   { to: "/aprender", label: "Aprender", icon: Library },
   { to: "/praticar", label: "Praticar", icon: Brain },
+  { to: "/progresso", label: "Progresso", icon: BarChart3 },
   { to: "/equipa", label: "Equipa", icon: Users },
   { to: "/definicoes", label: "Definições", icon: Settings },
 ];
@@ -74,6 +87,18 @@ export function AppHeader() {
         </Link>
 
         <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => useUi.getState().setPalette(true)}
+            title="Pesquisar (Ctrl/⌘+K)"
+          >
+            <Search className="h-4 w-4" />
+            <span className="ml-1.5 hidden sm:inline text-muted-foreground">Pesquisar</span>
+            <kbd className="ml-1.5 hidden rounded border border-border px-1 text-[10px] text-muted-foreground md:inline">
+              ⌘K
+            </kbd>
+          </Button>
           <SyncIndicator />
           {state && (
             <>

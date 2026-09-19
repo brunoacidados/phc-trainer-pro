@@ -110,4 +110,64 @@ export async function apiFetch<T>(path: string, opts: ApiOptions = {}): Promise<
   return (await r.json()) as T;
 }
 
+/**
+ * Chamada SSE (streaming). POST com body JSON; lê o stream e chama onEvent
+ * por evento. Faz refresh de token em 401 (1 tentativa). Devolve o Response final.
+ */
+export async function apiStream(
+  path: string,
+  body: unknown,
+  onEvent: (event: string, data: unknown) => void,
+): Promise<void> {
+  const doFetch = async (): Promise<Response> => {
+    const headers = new Headers({
+      "Content-Type": "application/json",
+      Accept: "text/event-stream",
+    });
+    if (accessToken) headers.set("Authorization", `Bearer ${accessToken}`);
+    return fetch(`${BASE}${path}`, {
+      method: "POST",
+      headers,
+      credentials: "include",
+      body: JSON.stringify(body),
+    });
+  };
+  let r = await doFetch();
+  if (r.status === 401 && (await refreshSession())) r = await doFetch();
+  if (!r.ok || !r.body) {
+    let msg = `HTTP ${r.status}`;
+    try {
+      const j = (await r.json()) as { error?: string };
+      msg = j.error || msg;
+    } catch {
+      /* corpo não-JSON */
+    }
+    throw new ApiHTTPError(r.status, msg);
+  }
+  const reader = r.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = "";
+  let event = "message";
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    let nl: number;
+    while ((nl = buf.indexOf("\n")) >= 0) {
+      const line = buf.slice(0, nl).replace(/\r$/, "");
+      buf = buf.slice(nl + 1);
+      if (line.startsWith("event:")) event = line.slice(6).trim();
+      else if (line.startsWith("data:")) {
+        const raw = line.slice(5).trim();
+        try {
+          onEvent(event, JSON.parse(raw));
+        } catch {
+          /* linha parcial */
+        }
+        event = "message";
+      }
+    }
+  }
+}
+
 export { applySession, BASE };

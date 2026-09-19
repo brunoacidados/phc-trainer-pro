@@ -217,6 +217,182 @@ export function providersStatus(keys: Record<string, string>, scope: string) {
   });
 }
 
+/* ---------- streaming (SSE) ---------- */
+
+function modelFor(def: AiProviderDef, code: boolean): string | null {
+  let model = def.model;
+  if (def.id === "openrouter") model = openRouterModel;
+  if (code && def.codeModel) model = def.codeModel;
+  return model;
+}
+
+/** constrói o pedido HTTP (url/headers/body) para um fornecedor — partilhado por call/stream */
+function buildRequest(
+  def: AiProviderDef,
+  key: string,
+  messages: RouterInput["messages"],
+  maxTokens: number,
+  code: boolean,
+  stream: boolean,
+): { url: string; init: RequestInit } {
+  const model = modelFor(def, code);
+  if (!model) throw Object.assign(new Error(`${def.nome}: sem modelo`), { status: 0 });
+  if (def.type === "gemini") {
+    const sys: string[] = [];
+    const turns: { role: "user" | "model"; parts: { text: string }[] }[] = [];
+    for (const m of messages) {
+      if (m.role === "system") sys.push(m.content);
+      else
+        turns.push({
+          role: m.role === "assistant" ? "model" : "user",
+          parts: [{ text: String(m.content) }],
+        });
+    }
+    const body: Record<string, unknown> = {
+      contents: turns,
+      generationConfig: { maxOutputTokens: Math.max(1024, maxTokens * 2), temperature: 0.7 },
+    };
+    if (sys.length) body.systemInstruction = { parts: [{ text: sys.join("\n") }] };
+    const url = stream
+      ? `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${encodeURIComponent(key)}`
+      : `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    if (!stream) headers["x-goog-api-key"] = key;
+    return { url, init: { method: "POST", headers, body: JSON.stringify(body) } };
+  }
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${key}`,
+    "Content-Type": "application/json",
+  };
+  if (def.id === "openrouter") {
+    headers["HTTP-Referer"] = "https://github.com/brunoacidados/phc-trainer-pro";
+    headers["X-Title"] = "PHC Trainer Pro";
+  }
+  const mt = def.id === "groq" ? Math.max(2048, maxTokens * 2) : maxTokens;
+  const payload: Record<string, unknown> = { model, messages, max_tokens: mt, temperature: 0.7 };
+  if (stream) payload.stream = true;
+  return { url: def.url!, init: { method: "POST", headers, body: JSON.stringify(payload) } };
+}
+
+/** extrai o delta de texto de um evento SSE conforme o formato do fornecedor */
+function parseDelta(def: AiProviderDef, dataLine: string): string {
+  if (dataLine === "[DONE]") return "";
+  let j: Record<string, unknown>;
+  try {
+    j = JSON.parse(dataLine);
+  } catch {
+    return "";
+  }
+  if (def.type === "gemini") {
+    const parts = (j.candidates as { content?: { parts?: { text?: string }[] } }[] | undefined)?.[0]
+      ?.content?.parts;
+    return parts ? parts.map((p) => p.text || "").join("") : "";
+  }
+  const delta = (
+    j.choices as { delta?: { content?: string }; message?: { content?: string } }[] | undefined
+  )?.[0];
+  return delta?.delta?.content ?? delta?.message?.content ?? "";
+}
+
+/**
+ * Faz stream de UM fornecedor, chamando onToken por delta. Devolve o texto completo.
+ * Lança erro (com .status) se a ligação falhar.
+ */
+async function streamProvider(
+  def: AiProviderDef,
+  key: string,
+  messages: RouterInput["messages"],
+  maxTokens: number,
+  code: boolean,
+  onToken: (t: string) => void,
+): Promise<string> {
+  const { url, init } = buildRequest(def, key, messages, maxTokens, code, true);
+  const r = await fetch(url, init);
+  if (!r.ok || !r.body) {
+    let t = "";
+    try {
+      t = (await r.text()).slice(0, 150);
+    } catch {
+      /* ignore */
+    }
+    throw Object.assign(new Error(`${def.nome} HTTP ${r.status} ${t}`), { status: r.status });
+  }
+  const reader = r.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = "";
+  let full = "";
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    let nl: number;
+    while ((nl = buf.indexOf("\n")) >= 0) {
+      const line = buf.slice(0, nl).trim();
+      buf = buf.slice(nl + 1);
+      if (!line.startsWith("data:")) continue;
+      const chunk = parseDelta(def, line.slice(5).trim());
+      if (chunk) {
+        full += chunk;
+        onToken(chunk);
+      }
+    }
+  }
+  if (!full.trim()) throw Object.assign(new Error(`${def.nome}: stream vazio`), { status: 0 });
+  return full;
+}
+
+export interface StreamInput extends RouterInput {
+  onToken: (t: string) => void;
+}
+
+/**
+ * Router com streaming: tenta fornecedores por ordem; se um falhar ANTES de
+ * emitir qualquer token, avança para o seguinte. Depois de começar a emitir,
+ * compromete-se com esse fornecedor (não há fallback a meio do stream).
+ */
+export async function routeChatStream(input: StreamInput): Promise<RouterResult> {
+  const order = orderFor(input);
+  const tried: string[] = [];
+  let lastErr: Error | null = null;
+  const maxTokens = input.maxTokens ?? 900;
+  for (const id of order) {
+    const def = AI_PROVIDERS.find((p) => p.id === id);
+    if (!def) continue;
+    const key = (input.keys[id] || "").trim();
+    if (!key) {
+      tried.push(`${id}(sem chave)`);
+      continue;
+    }
+    if (!isHealthy(input.scope, id)) {
+      tried.push(`${id}(em pausa)`);
+      continue;
+    }
+    let emitted = false;
+    try {
+      const text = await streamProvider(def, key, input.messages, maxTokens, !!input.code, (t) => {
+        emitted = true;
+        input.onToken(t);
+      });
+      markOk(input.scope, id);
+      return { text, provider: id };
+    } catch (e) {
+      const st = (e as { status?: number }).status || 0;
+      // se já emitiu tokens, não vale a pena tentar outro (o cliente já recebeu parte)
+      if (emitted) {
+        markFail(input.scope, id, st || 599);
+        throw e as Error;
+      }
+      markFail(input.scope, id, st || 599);
+      lastErr = e as Error;
+      tried.push(`${id}(${st || "rede"})`);
+    }
+  }
+  throw new ApiError(
+    502,
+    `Todos os fornecedores de IA falharam [${tried.join(", ") || "nenhum configurado"}]. Último erro: ${lastErr?.message ?? "?"}`,
+  );
+}
+
 /* ---------- teste de fornecedores (diagnóstico, sem efeitos em cooldowns) ---------- */
 
 export interface ProviderTestResult {

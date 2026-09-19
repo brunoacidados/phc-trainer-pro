@@ -1,6 +1,6 @@
 {
   "name": "@phc/api",
-  "version": "6.0.0-alpha.6",
+  "version": "6.0.0-alpha.7",
   "private": true,
   "type": "module",
   "description": "API multiutilizador do PHC Trainer Pro — Express 5 + Mongoose + JWT + router de IA no servidor.",
@@ -9,7 +9,8 @@
     "start": "tsx src/index.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "mongo:dev": "node scripts/dev-mongo.mjs"
+    "mongo:dev": "node scripts/dev-mongo.mjs",
+    "rag:seed": "tsx scripts/seed-rag.ts"
   },
   "dependencies": {
     "@phc/content": "workspace:*",
