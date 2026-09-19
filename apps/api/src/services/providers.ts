@@ -114,11 +114,20 @@ export function envKeysMap(): Record<string, string> {
   return out;
 }
 
-/** ordem por omissão: majors rápidos → customs → bynara SEMPRE último */
+/**
+ * Ordem por omissão, calibrada com testes reais (set/2026):
+ *  1. os que respondem rápido e têm saldo: groq, openrouter
+ *  2. gemini (lento mas fiável; também é a voz)
+ *  3. mistral (code forte mas rate-limit free → backoff trata)
+ *  4. customs de env (deepseek/explabs/zcode/…) — falhas dão cooldown 3h e são saltados
+ *  5. nvidia/cerebras (frequentemente 402/vazio) por último entre majors
+ *  6. Bynara SEMPRE último (fallback de último recurso)
+ */
 export function defaultOrder(): string[] {
-  const majors = ["groq", "gemini", "nvidia", "mistral", "cerebras", "openrouter"];
+  const fast = ["groq", "openrouter", "gemini", "mistral"];
+  const late = ["nvidia", "cerebras"];
   const customs = getRegistry().filter((p) => p.custom).map((p) => p.id);
-  return [...majors, ...customs, BYNARA_ID];
+  return [...fast, ...customs, ...late, BYNARA_ID];
 }
 
 /* ---------- descoberta de modelos (GET <base>/models) ---------- */

@@ -5,8 +5,7 @@
  *   não martela fornecedores limitados/quebrados (protege limites e respostas).
  * - Streaming SSE com fallback apenas ANTES do 1º token.
  */
-import { type AiProviderDef } from "@phc/content";
-import { globalAiKeys, openRouterModel } from "../config/env.ts";
+import { globalAiKeys } from "../config/env.ts";
 import { ApiError } from "../lib/errors.ts";
 import {
   BYNARA_FALLBACK_KEY,
@@ -19,7 +18,7 @@ import {
 } from "./providers.ts";
 
 /** preferência para geração de código (modelos fortes a código primeiro) */
-const CODE_PREF = ["nvidia", "mistral"];
+const CODE_PREF = ["mistral", "nvidia", "openrouter"];
 
 interface Cooldown {
   until: number;
