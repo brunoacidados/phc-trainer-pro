@@ -1,0 +1,1349 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guia do Técnico Expert — Gestão Cegid PHC Evolution</title>
+<meta name="description" content="Guia completo do técnico expert do módulo Gestão do Cegid PHC Evolution: 15 capítulos, offline, imprimível e pesquisável.">
+<style>
+:root{--bg:#f7f8fb;--fg:#1a2233;--mut:#5b6780;--card:#fff;--line:#e3e7ef;--ac:#d98324;--ac2:#b06a10;--code:#0d1117;--side:#fff}
+[data-theme=dark]{--bg:#0d1220;--fg:#e8ecf6;--mut:#93a0bd;--card:#161e31;--line:#2a3754;--ac:#f5a623;--ac2:#ffd97a;--code:#0d1117;--side:#101728}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 "Segoe UI",system-ui,-apple-system,Arial,sans-serif}
+.wrap{display:grid;grid-template-columns:280px minmax(0,1fr);gap:0;max-width:1280px;margin:0 auto}
+aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--side);border-right:1px solid var(--line);padding:18px 14px}
+.brand{font-weight:800;color:var(--ac);font-size:17px;letter-spacing:.3px;margin:0 0 2px}
+.sub{color:var(--mut);font-size:12px;margin:0 0 14px}
+.tools{display:flex;gap:6px;margin-bottom:12px}
+.tools input{flex:1;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font-size:13px}
+.tools button{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);cursor:pointer;font-size:13px}
+.toc{display:block;padding:6px 10px;border-radius:8px;color:var(--mut);text-decoration:none;font-size:13px;margin-bottom:2px}
+.toc:hover{background:var(--bg);color:var(--fg)}
+.toc.active{background:var(--ac);color:#171103;font-weight:600}
+.toc.top{font-weight:700;color:var(--fg)}
+main{padding:26px 30px 80px;min-width:0}
+article{max-width:860px}
+h1{font-size:26px;color:var(--ac2);margin:0 0 8px}
+h2{font-size:21px;color:var(--ac2);margin:34px 0 10px;padding-top:14px;border-top:2px solid var(--line)}
+h3{font-size:17px;margin:22px 0 8px}
+h4{font-size:15px;margin:16px 0 6px}
+p,li{margin:0 0 8px}
+ul,ol{padding-left:22px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--card);color:var(--ac2)}
+code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:.86em;font-family:ui-monospace,Consolas,monospace}
+pre{background:var(--code);color:#d6e0ee;border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow:auto;font-size:13px}
+pre code{background:none;border:none;color:inherit;padding:0}
+blockquote{border-left:4px solid var(--ac);background:var(--card);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;color:var(--mut)}
+a{color:#1f6fd0}
+[data-theme=dark] a{color:#7ec8ff}
+mark{background:var(--ac);color:#171103;border-radius:3px;padding:0 2px}
+.topbar{display:none}
+@media(max-width:900px){
+  .wrap{grid-template-columns:1fr}
+  aside{position:static;height:auto;border-right:none;border-bottom:1px solid var(--line)}
+  .tocList{display:none}
+  .tocList.open{display:block}
+  main{padding:18px 16px 70px}
+  .topbar{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+}
+@media print{
+  aside,.tools,.topbar{display:none!important}
+  .wrap{display:block}
+  body{background:#fff;color:#000}
+  a{color:#000;text-decoration:none}
+  pre{white-space:pre-wrap}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<aside>
+  <p class="brand"> Guia do Técnico Expert</p>
+  <p class="sub">Gestão Cegid PHC Evolution · 15 capítulos</p>
+  <div class="tools">
+    <input id="q" type="search" placeholder="Filtrar índice…" aria-label="Filtrar índice">
+    <button id="theme" title="Alternar tema">🌙</button>
+    <button id="print" title="Imprimir / PDF">🖨</button>
+  </div>
+  <div class="topbar"><button id="menu" style="flex:1">☰ Índice</button></div>
+  <nav class="tocList" id="toc">
+<a class="toc top" href="#cap-0" data-t="índice">Índice</a>
+<a class="toc" href="#cap-1" data-t="1. o ecossistema cegid phc e o produto">1. O ecossistema Cegid PHC e o produto</a>
+<a class="toc" href="#cap-2" data-t="2. arquitetura técnica da plataforma">2. Arquitetura técnica da plataforma</a>
+<a class="toc" href="#cap-3" data-t="3. instalação, infraestrutura e administração">3. Instalação, infraestrutura e administração</a>
+<a class="toc" href="#cap-4" data-t="4. módulo gestão — mapa funcional completo">4. Módulo Gestão — mapa funcional completo</a>
+<a class="toc" href="#cap-5" data-t="5. configuração do módulo gestão (o dia-a-dia do técnico)">5. Configuração do módulo Gestão (o dia-a-dia do técnico)</a>
+<a class="toc" href="#cap-6" data-t="6. fiscalidade e obrigações legais">6. Fiscalidade e obrigações legais</a>
+<a class="toc" href="#cap-7" data-t="7. desenvolvimento e personalização (framework phc)">7. Desenvolvimento e personalização (Framework PHC)</a>
+<a class="toc" href="#cap-8" data-t="8. base de dados: estrutura e boas práticas">8. Base de dados: estrutura e boas práticas</a>
+<a class="toc" href="#cap-9" data-t="9. integrações e ecossistema">9. Integrações e ecossistema</a>
+<a class="toc" href="#cap-10" data-t="10. operação, suporte, diagnóstico e performance">10. Operação, suporte, diagnóstico e performance</a>
+<a class="toc" href="#cap-11" data-t="11. formação, certificação e recursos oficiais">11. Formação, certificação e recursos oficiais</a>
+<a class="toc" href="#cap-12" data-t="12. plano de estudos até ao nível expert">12. Plano de estudos até ao nível expert</a>
+<a class="toc" href="#cap-13" data-t="13. checklists de autoavaliação">13. Checklists de autoavaliação</a>
+<a class="toc" href="#cap-14" data-t="14. glossário phc">14. Glossário PHC</a>
+<a class="toc" href="#cap-15" data-t="15. fontes e links de referência">15. Fontes e links de referência</a>
+  </nav>
+</aside>
+<main>
+<article class="guia">
+<h1>Guia Completo do Técnico Expert — Módulo Gestão do Cegid PHC Evolution (Desktop)</h1>
+<blockquote>
+<p><strong>Objetivo:</strong> ser o documento de referência para dominar a 100% o módulo <strong>Gestão</strong> do <strong>Cegid PHC Evolution / PHC CS Desktop</strong> — funcionalmente, na configuração, na fiscalidade e no desenvolvimento de soluções personalizadas.</p>
+<p><strong>Data da pesquisa:</strong> setembro de 2026. Versão de referência documentada: <strong>202601</strong> (a PHC passou de numeração "v18…v30" para numeração por ano/edição, ex.: 202501, 202504, 202601).</p>
+<p><strong>Nota importante:</strong> parte da documentação profunda da PHC (Comunidade PHC, manuais internos, dicionário de dados completo, ferramentas de parceiro) exige credenciais de <strong>Cliente/Parceiro + ID Técnico</strong>. Este guia mapeia tudo o que existe, indica onde está e como se acede, e cobre em detalhe o que é público. Onde um detalhe fino depende da versão/gama/país, está assinalado para validação no Help Center ou na aplicação.</p>
+</blockquote>
+<hr />
+<h2 id="cap-0">Índice</h2>
+<ol>
+<li><a href="#cap-1">O ecossistema Cegid PHC e o produto</a></li>
+<li><a href="#cap-2">Arquitetura técnica da plataforma</a></li>
+<li><a href="#cap-3">Instalação, infraestrutura e administração</a></li>
+<li><a href="#cap-4">Módulo Gestão — mapa funcional completo</a></li>
+<li><a href="#cap-5">Configuração do módulo Gestão (o dia-a-dia do técnico)</a></li>
+<li><a href="#cap-6">Fiscalidade e obrigações legais (Portugal e outras geografias)</a></li>
+<li><a href="#cap-7">Desenvolvimento e personalização (Framework PHC)</a></li>
+<li><a href="#cap-8">Base de dados: estrutura e boas práticas</a></li>
+<li><a href="#cap-9">Integrações e ecossistema</a></li>
+<li><a href="#cap-10">Operação, suporte, diagnóstico e performance</a></li>
+<li><a href="#cap-11">Formação, certificação e recursos oficiais</a></li>
+<li><a href="#cap-12">Plano de estudos até ao nível expert</a></li>
+<li><a href="#cap-13">Checklists de autoavaliação</a></li>
+<li><a href="#cap-14">Glossário PHC</a></li>
+<li><a href="#cap-15">Fontes e links de referência</a></li>
+</ol>
+<hr />
+<h2 id="cap-1">1. O ecossistema Cegid PHC e o produto</h2>
+<h3>1.1 História e contexto atual</h3>
+<ul>
+<li>A <strong>PHC Software</strong> (PHC Business Software) foi fundada em <strong>Portugal em 1989</strong> e tornou-se num dos ERPs de referência do mid-market português, com forte presença nos PALOP (Angola, Moçambique, Cabo Verde), Espanha e Peru.</li>
+<li>Em <strong>janeiro de 2025</strong>, a <strong>Cegid</strong> (grupo francês, dono também da Primavera BSS) adquiriu a PHC. Todos os produtos passam a chamar-se <strong>"Cegid PHC"</strong>.</li>
+<li>O produto desktop histórico chamava-se <strong>PHC CS</strong> (Client/Server). O <strong>Cegid PHC Evolution</strong> é o <strong>sucessor direto do PHC CS</strong>: mesma plataforma, mesma base de dados, mesma framework — com modelo de <strong>subscrição</strong>, acesso <strong>web incluído</strong>, IA (<strong>Cegid Pulse</strong>), gestão documental cloud (<strong>Cegid Docs</strong>) e <strong>open banking</strong>.</li>
+<li>O licenciamento <strong>perpétuo do PHC CS foi descontinuado</strong>: clientes novos subscrevem o Evolution; clientes com PHC CS perpétuo têm de planear migração (que é, na prática, uma evolução da mesma instalação).</li>
+</ul>
+<h3>1.2 A família de produtos Cegid PHC</h3>
+<table>
+<thead>
+<tr>
+<th>Produto</th>
+<th>O que é</th>
+<th>Público</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cegid PHC Evolution</strong></td>
+<td>ERP desktop + web (sucessor do PHC CS). Objeto deste guia.</td>
+<td>PME e mid-market</td>
+</tr>
+<tr>
+<td><strong>Cegid PHC GO</strong></td>
+<td>Gestão 100% cloud nativa (SaaS), planos Corporate/Advanced/Enterprise</td>
+<td>Micro e pequenas empresas</td>
+</tr>
+<tr>
+<td><strong>Cegid Pulse</strong></td>
+<td>Ecossistema de agentes de IA integrado no ERP (assistente "Cris", assistentes de negócio, Smart Tools)</td>
+<td>Transversal (Evolution a partir do plano Plus)</td>
+</tr>
+<tr>
+<td><strong>Cegid Docs</strong></td>
+<td>Gestão documental e arquivo digital legal na cloud, integrado no ERP</td>
+<td>Transversal</td>
+</tr>
+<tr>
+<td><strong>EyePeak (Cegid Primavera EyePeak)</strong></td>
+<td>Plataforma de logística/WMS/e-commerce que sincroniza com o ERP PHC</td>
+<td>Logística, retalho, B2B</td>
+</tr>
+<tr>
+<td><strong>PHC CS Web</strong></td>
+<td>Plataforma web do CS/Evolution (aplicações Gestão Web, Front Web, POS Web, RH Web…)</td>
+<td>Acesso remoto/browser</td>
+</tr>
+</tbody>
+</table>
+<h3>1.3 Cegid PHC Evolution: planos e gamas</h3>
+<p>O Evolution combina <strong>duas dimensões</strong> que o técnico tem de distinguir bem:</p>
+<p><strong>a) Planos de subscrição (modelo comercial atual):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Plano</th>
+<th>Utilizadores incluídos</th>
+<th>Base de dados</th>
+<th>Acesso Web</th>
+<th>Cegid Pulse (IA)</th>
+<th>Capacidade de personalização</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard</td>
+<td>1</td>
+<td>10 GB</td>
+<td>–</td>
+<td>–</td>
+<td>Baixa</td>
+</tr>
+<tr>
+<td>Plus</td>
+<td>2</td>
+<td>10 GB</td>
+<td>✓</td>
+<td>✓</td>
+<td>Baixa</td>
+</tr>
+<tr>
+<td>Advanced</td>
+<td>3</td>
+<td>Ilimitada</td>
+<td>✓</td>
+<td>✓</td>
+<td>Média</td>
+</tr>
+<tr>
+<td>Premium</td>
+<td>3</td>
+<td>Ilimitada</td>
+<td>✓</td>
+<td>✓</td>
+<td>Média</td>
+</tr>
+<tr>
+<td>Ultimate</td>
+<td>5</td>
+<td>Ilimitada</td>
+<td>✓</td>
+<td>✓</td>
+<td>Alta</td>
+</tr>
+</tbody>
+</table>
+<p><strong>b) Gamas funcionais (herança PHC CS, ainda visível na documentação e em funcionalidades):</strong></p>
+<ul>
+<li><strong>Corporate</strong> — micro e pequenas empresas. Funcionalidade essencial, sem ferramentas de personalização/análise avançadas.</li>
+<li><strong>Advanced</strong> — PME. Acrescenta a capacidade de <strong>personalizar o software</strong> (campos/regras/filtros/eventos do utilizador, análises avançadas, snapshots, workflow operacional, etc.).</li>
+<li><strong>Enterprise</strong> — topo de gama. Acrescenta, entre outros, <strong>Sistema de Aprovação de Dossiers</strong>, páginas/objetos de utilizador com eventos Xbase completos, log de atividade (v30+), e componentes "Executive" da framework.</li>
+</ul>
+<blockquote>
+<p>Consequência prática: <strong>o que consegue configurar/desenvolver depende do plano + gama do cliente</strong>. Muitas ferramentas da Framework PHC só aparecem com parâmetros ativos e gama Advanced/Enterprise. Verifique sempre isto primeiro num projeto.</p>
+</blockquote>
+<h3>1.4 Módulos do ERP e onde o Gestão se insere</h3>
+<p>O <strong>PHC Gestão</strong> é o módulo nuclear (comercial + financeiro operacional). O ecossistema de módulos que com ele interage:</p>
+<ul>
+<li><strong>Gestão</strong> (clientes, fornecedores, stocks, faturação, compras, tesouraria) — <em>este guia</em></li>
+<li><strong>Contabilidade</strong> (+ PHC XL para grandes volumes/centros analíticos)</li>
+<li><strong>Imobilizado</strong></li>
+<li><strong>Pessoal / Recursos Humanos</strong> (vencimentos)</li>
+<li><strong>POS / Retalho</strong> (POS Desktop, POS Front, POS Web, touch)</li>
+<li><strong>Suporte</strong> (assistência técnica, contratos, instalações/equipamentos, PATs)</li>
+<li><strong>Manufactor</strong> (produção: ordens de fabrico, operações, centros de trabalho)</li>
+<li><strong>Obras</strong> e <strong>Ocupação</strong> (setoriais)</li>
+<li><strong>Frota</strong> (viaturas), <strong>Equipamentos</strong> (números de série), <strong>Ecovalor</strong> (taxas ecológicas)</li>
+<li><strong>SMS</strong>, <strong>Documentos Eletrónicos</strong> (faturação eletrónica/EDI), <strong>Dashboard</strong>, <strong>Notify</strong> (alertas/notificações)</li>
+<li><strong>PHC CS Web</strong> (Gestão Web, Front Web — extranet de clientes/fornecedores)</li>
+<li><strong>Cegid Pulse</strong> (IA) e <strong>Cegid Docs</strong> (documental)</li>
+</ul>
+<p>O módulo Gestão é frequentemente designado na documentação por <strong>"PHC CS Gestão desktop"</strong> e tem um manual próprio no Help Center, complementado pelo manual do módulo <strong>Stocks</strong>.</p>
+<h3>1.5 Versionamento e o acordo PHC On</h3>
+<ul>
+<li>Histórico de versões: … v18, v19, v22, v25, v26, <strong>v27</strong> (QR Code + ATCUD, 2020/21), <strong>v28</strong> (2021), <strong>v29</strong> (2022), <strong>v30</strong> (2023; log de atividade Enterprise) e, depois, numeração anual: <strong>202401 → 202501 → 202504 → 202601</strong>…</li>
+<li>O <strong>PHC On</strong> é o acordo anual de atualização: dá direito a <strong>todas as versões e alterações legislativas durante um ano</strong>, acesso ao portal <code>on.phc.pt</code> com <strong>formação online, autoformação (filmes temáticos), truques e dicas, novidades exclusivas, motor de procura e o Calendário PHC</strong> (alertas de obrigações fiscais/laborais, sincronizado por webservice).</li>
+<li>Como técnico: <strong>manter o cliente atualizado é requisito de conformidade fiscal</strong> (a AT exige versões atuais — houve comunicações oficiais do tipo "apenas a versão X cumpre os requisitos da AT"). As novidades de cada versão são publicadas na página de Novidades do Help Center e em PDFs "Listagem de Novidades" (os parceiros publicam-nos, ex.: Arentia, Winsig, NSoft).</li>
+</ul>
+<h3>1.6 Geografias / executáveis</h3>
+<p>A plataforma tem executáveis e comportamentos específicos por país: <strong>PT (Portugal), ES (Espanha — SII, TicketBAI, províncias, documentos eletrónicos), PE (Peru — retenções), US (English)</strong>, além de PT/AO/MZ/CV para as obrigações lusófonas. Muitas configurações fiscais (retenções, comunicação à AT) só fazem sentido no executável PT. Confirme sempre qual o executável e país da instalação.</p>
+<hr />
+<h2 id="cap-2">2. Arquitetura técnica da plataforma</h2>
+<h3>2.1 Modelo geral</h3>
+<ul>
+<li><strong>Arquitetura client/server</strong>: cliente desktop rico (histórico em <strong>Visual FoxPro</strong>, com linguagem de personalização <strong>Xbase</strong>) + <strong>Microsoft SQL Server</strong> como base de dados.</li>
+<li>O acesso à BD faz-se por <strong>ODBC</strong> — a instalação cria/configura automaticamente o DSN (o "exe único" instala a aplicação, faz o <em>attach</em> da base de dados e cria o ODBC).</li>
+<li>A mesma base de dados serve o <strong>desktop</strong> e o <strong>PHC CS Web</strong> (plataforma web ASP.NET, personalizável em <strong>C#</strong>), que partilha tabelas e framework.</li>
+<li><strong>Cada empresa = uma base de dados</strong> (instalações multiempresa usam várias BDs; há ferramentas de consolidação/arquivo).</li>
+<li>A aplicação é tolerante a quebras de ligação ao SQL Server (existe monitor de ligação por instância de SQL).</li>
+</ul>
+<h3>2.2 Componentes e conceitos de plataforma</h3>
+<table>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Executável único</strong></td>
+<td>Instalador que coloca aplicação + faz attach da BD + cria ODBC</td>
+</tr>
+<tr>
+<td><strong>Supervisor</strong></td>
+<td>Menu de administração: Framework PHC, tratamento da base de dados (dicionário de dados, desfragmentação), EyePeak Sincronização, monitores</td>
+</tr>
+<tr>
+<td><strong>Menu Sistema</strong></td>
+<td>Parâmetros (gerais e por módulo), configuração da aplicação</td>
+</tr>
+<tr>
+<td><strong>Ecrãs em memória</strong></td>
+<td>Parâmetro de performance: ecrãs principais mantêm-se em memória ao fechar (reabertura instantânea)</td>
+</tr>
+<tr>
+<td><strong>Processamento assíncrono</strong></td>
+<td>Parâmetro "Usa processamento assíncrono" — gravação de documentos em background (o documento fica com flag de "não processado" até concluir)</td>
+</tr>
+<tr>
+<td><strong>File Storage</strong></td>
+<td>(202501+) Armazenamento de anexos em diretoria física, na BD ou em ambos; documentos fiscalmente relevantes ficam sempre na BD</td>
+</tr>
+<tr>
+<td><strong>Base de dados de Arquivo</strong></td>
+<td>Passagem de dados históricos para BD de arquivo (performance)</td>
+</tr>
+<tr>
+<td><strong>Cegid Account</strong></td>
+<td>(202601+) Autenticação híbrida com contas Microsoft/Google, 2FA, ativação por utilizador</td>
+</tr>
+<tr>
+<td><strong>Barra de status estendida / Painel central / Navegador</strong></td>
+<td>Componentes de UI configuráveis por parâmetros (gamas superiores)</td>
+</tr>
+<tr>
+<td><strong>Análise Interna</strong></td>
+<td>Registo de erros de execução de código do utilizador (eventos Xbase) — ferramenta de diagnóstico essencial</td>
+</tr>
+<tr>
+<td><strong>Log de Código</strong></td>
+<td>(Web) informação de execução do código de utilizador (eventos, regras)</td>
+</tr>
+<tr>
+<td><strong>Log de atividade</strong></td>
+<td>(v30+, Enterprise) auditoria de consultas/alterações/apagamentos por utilizador</td>
+</tr>
+</tbody>
+</table>
+<h3>2.3 Requisitos de infraestrutura (referência)</h3>
+<ul>
+<li><strong>Servidor:</strong> Windows Server 2012 ou superior (validar sempre o Manual de Instalação da versão em causa — disponível na Comunidade PHC/Help Center).</li>
+<li><strong>Base de dados:</strong> Microsoft SQL Server 2012 ou superior (os termos de licenciamento indicam SQL Server 2008R2+ como mínimo histórico; na gama Corporate é típico usar <strong>SQL Server Express</strong>).</li>
+<li><strong>Clientes:</strong> Windows 10/11 (ou Windows Server para postos em Terminal Server/RemoteApp — suportado e comum).</li>
+<li><strong>Rede:</strong> o desktop liga por ODBC/SQL (porta 1433); o PHC CS Web requer IIS/servidor web + ligação à mesma BD.</li>
+<li><strong>Hardware na HCL</strong> (Hardware Compatibility List) para impressoras de documentos, TPA, terminais portáteis/PDA, etc.</li>
+<li><strong>Licenciamento:</strong> por <strong>utilizador nomeado/concorrente</strong> conforme plano; subscrição anual no Evolution. A validação é feita por ficheiro de licenças associado ao nº de cliente.</li>
+</ul>
+<h3>2.4 Segurança e RGPD (nativo da plataforma)</h3>
+<ul>
+<li><strong>Utilizadores e Grupos de utilizadores</strong> (ou <strong>Perfis</strong> — há um parâmetro "Definição de tipos de acessos": por Grupos ou por Perfis).</li>
+<li>Acessos por ecrã/operação (consultar, introduzir, alterar, apagar, reimprimir, totalizar, anexar…), <strong>acessos a parâmetros por utilizador</strong>, e controlo de programas executáveis a que cada grupo acede.</li>
+<li><strong>RGPD:</strong> aviso legal configurável, registo do tratamento de dados, <strong>processamento de dados pessoais (direito ao esquecimento/anonimização)</strong>, histórico de utilizadores.</li>
+<li><strong>Histórico/Tracking de ações</strong> e <strong>log de atividade</strong> (Enterprise) para auditoria.</li>
+</ul>
+<hr />
+<h2 id="cap-3">3. Instalação, infraestrutura e administração</h2>
+<blockquote>
+<p>Este capítulo segue de perto o programa oficial da <strong>Certificação PHC CS Desktop</strong> — é exatamente isto que a PHC considera o núcleo técnico da função.</p>
+</blockquote>
+<h3>3.1 Instalação passo-a-passo (visão de certificação)</h3>
+<ol>
+<li><strong>Preparar o servidor</strong>: Windows Server suportado, verificar HCL, antivírus/firewall (exceções para SQL e para a pasta da aplicação).</li>
+<li><strong>Instalar o SQL Server</strong> (ou SQL Express na gama Corporate): instância, modo de autenticação misto, protocolos TCP/IP ativos, collation recomendada pela PHC.</li>
+<li><strong>Instalar o PHC</strong> com o executável único: o instalador trata da BD (criação/attach), do ODBC e dos atalhos.</li>
+<li><strong>Criar/registar a empresa</strong> (base de dados) e aplicar a <strong>licença</strong> (nº de cliente + plano/gama + módulos).</li>
+<li><strong>Criar utilizadores e logins</strong> (SQL + aplicação), configurar grupos/perfis e acessos.</li>
+<li><strong>Configurar parâmetros</strong> gerais e do módulo (ver capítulo 5).</li>
+<li><strong>Backups</strong>: plano de backups do SQL (full + logs), testar restauro; usar também as rotinas de "Backup de Base de Dados" da aplicação.</li>
+<li><strong>Atualizações</strong>: procedimento de upgrade de versão (sempre com backup prévio, em horário sem utilizadores; validar personalizações após upgrade).</li>
+<li><strong>Postos de trabalho</strong>: instalar o cliente, apontar ao ODBC/servidor; em Terminal Server validar perfis Windows.</li>
+</ol>
+<h3>3.2 Manutenção da base de dados</h3>
+<ul>
+<li><strong>Detach/Attach</strong> de bases de dados (migrações, clones de teste).</li>
+<li><strong>Desfragmentar as Tabelas Principais</strong> (utilitário documentado no Help Center) + manutenção de índices do SQL (rebuild/reorganize, estatísticas).</li>
+<li><strong>Base de dados de arquivo</strong> para históricos pesados.</li>
+<li><strong>Índices de utilizador</strong> (Framework PHC) — incluindo <em>INCLUDED COLUMNS</em> — para acelerar consultas personalizadas sem tocar no core.</li>
+<li><strong>Monitor de ligação</strong> ao SQL por instância (diagnóstico de quebras de rede).</li>
+<li><strong>Explorador de dados</strong> e <strong>Simulador de SQL</strong> (permite executar consultas à BD a partir da aplicação, com variáveis como <code>#stamp#</code>).</li>
+</ul>
+<h3>3.3 Rotina de saúde de uma instalação (checklist do técnico)</h3>
+<ul>
+<li>[ ] Versão do software e do PHC On atualizadas (conformidade AT)</li>
+<li>[ ] Backups automáticos + teste de restauro documentado</li>
+<li>[ ] Utilizadores nomeados, acessos mínimos necessários, passwords/2FA</li>
+<li>[ ] Parâmetros de faturação/séries revistos antes de cada viragem de ano (códigos de validação AT, ATCUD)</li>
+<li>[ ] Manutenção de índices/desfragmentação agendada</li>
+<li>[ ] Espaço em disco da BD vs. plano contratado (10 GB nos planos Standard/Plus)</li>
+<li>[ ] Personalizações documentadas (código Xbase/C#, regras, campos de utilizador) para sobreviverem a upgrades</li>
+<li>[ ] Ligações externas testadas: webservice AT, e-mail SMTP, EyePeak, Cegid Docs, open banking</li>
+</ul>
+<hr />
+<h2 id="cap-4">4. Módulo Gestão — mapa funcional completo</h2>
+<h3>4.1 Ficheiros (dados mestres)</h3>
+<p><strong>Clientes (tabela CL + CL2 "Outros Dados")</strong>
+- Nº de contribuinte com país associado; serviço <strong>Ignios</strong> (Advanced+) preenche automaticamente nome/morada a partir do NIF.
+- <strong>Sede (0) e filiais/estabelecimentos (1–999)</strong> — noção de estabelecimento vs. sede.
+- Campos: abreviatura, morada, localidade, código postal (preenchimento automático configurável), país, província (ES), telefone/fax/e-mail/WWW/telemóvel (com envio de SMS via módulo SMS), contribuinte do representante, <strong>idioma</strong> (descrições de artigos em documentos), <strong>zona</strong> (campo de tabela do utilizador), tipo de cliente, classificação de vendas, segmento, refª interna, centro analítico (XL), condições de pagamento, forma de pagamento, descontos, tabela de preços, vendedor, limites de crédito…
+- <strong>Inativos</strong>: deixam de aparecer em opções/documentos novos, mas mantêm-se em análises e permitem faturar dossiers antigos.
+- Regras de integridade de documentos certificados: com documentos certificados emitidos, há campos que ficam bloqueados a alterações (ex.: não alterar NIF de cliente com documentos certificados; regras nome/morada/NIF).
+- Parâmetro "Quando altera dados do cliente, não atualiza tabelas relacionadas" controla a propagação de alterações a C/C, Documentos e Recibos.
+- <strong>Moradas de Carga e Descarga</strong> (tabela própria) alimentam os campos "Local de carga/descarga" dos documentos de transporte (ShipFrom/ShipTo no SAF-T).</p>
+<p><strong>Fornecedores (FI)</strong> — estrutura análoga à de clientes; conta corrente de fornecedores, adiantamentos, aprovação de pagamentos, compras com/sem IVA, autofaturação.</p>
+<p><strong>Stocks e Serviços (artigos)</strong> — manual próprio do módulo <strong>PHC CS Stocks desktop</strong>:
+- Ficheiro de referências com designação (multi-idioma), família, marca, unidade e <strong>unidade alternativa com factor de conversão</strong> (e inversão do factor), código de barras/EAN, imagem.
+- <strong>Referências alternativas</strong> (mesmo artigo com várias refs de cliente/fornecedor), designação do artigo por cliente/fornecedor (impressão no idioma definido).
+- <strong>Compostos (Kits)</strong> — produtos compostos por componentes.
+- <strong>Grelha de cores e tamanhos</strong> (vestuário/calçado).
+- <strong>Lotes</strong> (rastreabilidade, validades) e <strong>números de série</strong> (com o módulo Equipamentos).
+- Preços: preço de venda por tabela (com validades), preço de custo, <strong>PCMP — Preço de Custo Médio Ponderado</strong> (método de custeio usado no cálculo do valor de stock), margens, contribuição.
+- Stocks: stock atual por armazém, reservado para cliente, encomendado a fornecedor, quantidade esperada, stock cativo e pré-cativo, stock mínimo/máximo, ponto de encomenda, ruturas.
+- <strong>Ecovalor</strong> (módulo adicional) para taxas ecológicas.</p>
+<h3>4.2 Vendas e faturação</h3>
+<ul>
+<li><strong>Documentos de Faturação (tabela FT)</strong> configuráveis por <strong>série</strong>: tipos de documento <strong>1, 2, 3</strong> (Fatura, Fatura Simplificada, Fatura-Recibo, Nota de Débito, Nota de Crédito — mapeados para SAF-T como FT/FS/FR/ND/NC), <strong>tipo 4 = documento de transporte (Guia de Remessa)</strong> e <strong>tipo 5 = Outro (Proforma)</strong>.</li>
+<li>Cada série define: o que movimenta (<strong>conta corrente, stocks, tesouraria</strong>), numeração, tipo para SAF-T, motivo de isenção nas linhas, validação de locais de carga/descarga, envio de SMS ao motorista com o código da AT, comunicação por webservice vs. ficheiro, etc.</li>
+<li>Emissão, alteração, anulação (<strong>documento anulado + motivo de anulação obrigatório</strong>), reimpressão controlada por acessos, consulta e totais por múltiplos critérios.</li>
+<li><strong>Atualização automática</strong> ao emitir: stocks (baixa de artigos), conta corrente (saldos, idades), ficha do cliente (faturação acumulada).</li>
+<li><strong>Emissão automática de faturação</strong>: faturar em massa por cópia de outros documentos ou de <strong>dossiers internos</strong> (guias, encomendas, propostas, folhas de obra) com ecrã de preparação/seleção.</li>
+<li><strong>Vendas a dinheiro</strong>, faturas-recibo, <strong>recibos de adiantamento</strong> e sua regularização (gera NC automática com motivo de retificação "Retificação de Fatura de Adiantamento").</li>
+<li><strong>Retenção de IRS na fonte</strong> em documentos (taxa + valor de retenção; visível no mailing de C/C).</li>
+<li>Campos fiscais/operacionais do documento: classificação de vendas, local de carga/descarga, idioma, data/hora de carga, <strong>data efetiva de entrega</strong> (obrigatória por lei; comunicada no SAF-T), matrícula da viatura (Frota ou tabela de <strong>Viaturas de Expedição</strong>), motorista, linha final (texto livre), segmento, expedição, refª interna, centro analítico, operação triangular UE, código EAN (Documentos Eletrónicos), Cód. Ident. AT (documentos de transporte), <strong>ATCUD + QR Code</strong> em layouts.</li>
+<li><strong>Multibanco</strong>: disponibilização de referências multibanco para cobrança.</li>
+<li><strong>e-TaxFree</strong> (vendas a turistas), <strong>Pagamentos via Unicre/PayPal</strong> (com PHC CS Web), <strong>faturação eletrónica</strong> (Documentos Eletrónicos, CIUS-PT, SaphetyDoc por webservice).</li>
+</ul>
+<h3>4.3 Dossiers Internos (DI — tabela BO)</h3>
+<p>Conceito central do PHC: <strong>documentos parametrizáveis pelo utilizador para uso interno</strong>, que alimentam o circuito comercial:
+- <strong>Orçamentos/Propostas</strong>, <strong>Encomendas de Cliente</strong>, <strong>Encomendas a Fornecedor</strong>, <strong>Folhas de Obra</strong>, <strong>Consignações</strong>, e dossiers à medida (o utilizador cria tipos de DI).
+- <strong>Circuito (conversões)</strong>: Orçamento → Encomenda → Guia → Fatura; Encomenda a Fornecedor → "Comprar a Encomenda a Fornecedor" (gera compra); "Faturar a Encomenda de Cliente"; cópias entre DI, Faturação e Compras com opções de cópia configuráveis.
+- <strong>Dossiers especiais</strong> (conteúdo da certificação Advanced): <strong>Dossier de Stock Inicial</strong>, <strong>Dossier de Transferência de Armazém</strong>, <strong>Dossier de Preços (Cliente/Fornecedor)</strong>, <strong>Dossier de Avenças</strong> (faturação recorrente), <strong>Dossier de Composição e de Produção</strong>.
+- <strong>Sistema de Aprovação de Dossiers</strong> (gama Enterprise) e <strong>Workflow Operacional</strong> (Advanced+) para circuitos de aprovação.
+- Análises de DI (mapas de acompanhamento, conversão, pendentes).</p>
+<h3>4.4 Compras</h3>
+<ul>
+<li>Documentos de compras (faturas de fornecedor, guias de entrada, notas de débito/crédito de compra), com gestão de IVA, retenções e custos acessórios.</li>
+<li><strong>Comprar a partir de Encomenda a Fornecedor</strong>; receção por guia e faturação posterior.</li>
+<li><strong>Gestão de aprovação para pagamentos</strong> a fornecedores; <strong>adiantamentos a fornecedores</strong>.</li>
+<li><strong>Faturas de fornecedor eletrónicas</strong>: com Cegid Docs, as faturas CIUS-PT são anexadas em PDF e <strong>pré-lançadas</strong> automaticamente.</li>
+<li><strong>Espanha</strong>: envio de documentos de Compras para o <strong>SII</strong> (funções internas na framework/alertas).</li>
+</ul>
+<h3>4.5 Stocks e armazéns</h3>
+<ul>
+<li><strong>Armazéns</strong> múltiplos; <strong>Códigos de Movimentos de Stocks</strong> (tipos de movimento configuráveis).</li>
+<li>Movimentos automáticos por documentos (faturação/compras/guias) e manuais (regularizações, transferências entre armazéns via dossier).</li>
+<li><strong>Inventário físico (contagens)</strong>: contagens por armazém/família, lançamento automático de <strong>acertos (quebras/sobras)</strong> no ficheiro de movimentos; <strong>comunicação do inventário à AT</strong> (ficheiro SAF-T/CSV/XML conforme faturação do ano anterior — artigo oficial "Comunicação de inventário à AT: onde, quando e como quiser").</li>
+<li>Análises de stock: produtos com maior lucro, <strong>rankings de vendas</strong>, contributo nos custos, acima do stock máximo, a encomendar, em rutura, entradas/saídas mensais com comparação anual, valor de stock.</li>
+<li><strong>Lotes</strong> e <strong>números de série</strong>; <strong>stock cativo/pré-cativo</strong>; ligação a <strong>terminais portáteis (PDA)</strong> para contagens/movimentos.</li>
+</ul>
+<h3>4.6 Conta corrente, cobranças e pagamentos</h3>
+<ul>
+<li><strong>Códigos de Conta Corrente</strong> (tabela de tipos de movimento de C/C), movimentos por documento, saldos e <strong>saldos por idades</strong> (aging).</li>
+<li><strong>Recibos de clientes (RE)</strong> — normais ou de adiantamento; <strong>Pagamentos a fornecedores</strong>; <strong>liquidação/regularização</strong> de documentos por recibos/pagamentos (total ou parcial).</li>
+<li><strong>Controlo de cobranças</strong>: monitor de controlo de dívidas de clientes, <strong>mailing de C/C</strong> (avisos por documento), gestão de <strong>cheques em carteira</strong>, <strong>letras/títulos</strong>.</li>
+<li><strong>Recibos incobráveis</strong> (tratamento fiscal).</li>
+<li><strong>Cobranças via banco</strong>: ficheiros <strong>SEPA</strong> (débitos diretos), transferências em lote (ficheiro SEPA de pagamentos), <strong>WebBanking</strong> (histórico: Millennium BCP) e <strong>open banking</strong> no Evolution (reconciliação e previsões aceleradas).</li>
+<li><strong>Referências Multibanco</strong> para receber mais rápido.</li>
+</ul>
+<h3>4.7 Tesouraria e bancos</h3>
+<ul>
+<li><strong>Contas de Tesouraria</strong> (caixas e bancos), <strong>Códigos de Tesouraria</strong> (tipos de movimento), movimentos constantes de tesouraria.</li>
+<li><strong>Extratos bancários</strong> e reconciliação; <strong>transferências bancárias</strong>; <strong>gestão de títulos de tesouraria</strong> (letras, cheques).</li>
+<li><strong>Tesouraria real, previsional e orçamental</strong> — previsões com base em documentos pendentes/vencimentos; orçamentos de tesouraria.</li>
+<li>No Evolution: <strong>open banking</strong> nativo para importar movimentos e acelerar reconciliações.</li>
+</ul>
+<h3>4.8 Política comercial</h3>
+<ul>
+<li><strong>Tabelas de preços</strong> múltiplas <strong>com validades</strong> (saber sempre o preço atual); preços por cliente/fornecedor (dossier de preços).</li>
+<li><strong>Tipos de desconto</strong> e descontos automáticos (por tipo de cliente, tipo de artigo, quantidade, valor — configuração disponível em web desde 202501); descontos em cascata (Desc.1, Desc.2…).</li>
+<li><strong>Promoções e campanhas</strong> (com datas de validade; na gama Advanced/Enterprise há opções extra de promoção no módulo Gestão desktop), <strong>rappel</strong> de clientes e fornecedores (descontos de fim de período por volumes).</li>
+<li><strong>Comissões</strong>: por vendedor, por tipo de cliente, por famílias de produtos, etc.; mapas de comissões.</li>
+<li><strong>Vendedores</strong> e zonas; classificação de clientes para análises de vendas.</li>
+</ul>
+<h3>4.9 Análises, mapas e dashboards</h3>
+<ul>
+<li><strong>Mapas definidos</strong> (relatórios standard configuráveis) e <strong>impressão definida pelo utilizador</strong> (Advanced+): layouts personalizáveis de documentos e listagens; <strong>templates</strong> de documentos.</li>
+<li><strong>Análises de utilizador</strong> (consultas SQL apresentadas em grelha, com filtros de utilizador) e, na gama Advanced, <strong>Análises Multidimensionais</strong> criadas a partir de análises de utilizador (cubos OLAP-like para drill-down).</li>
+<li><strong>Snapshots</strong> ( Advanced+): "fotografias" de dados com instruções T-SQL e variáveis (ex.: <code>#stamp#</code>), agrupáveis com cores; úteis para monitores e painéis.</li>
+<li><strong>Painéis de informação / Painel central / Dashboards</strong>: visão 360º num só ecrã (ex.: template de Dashboard para o módulo Gestão, se adquirir o <strong>PHC Dashboard</strong>); monitores (ex.: controlo de dívidas).</li>
+<li><strong>Rankings</strong> e análises de faturação por segmento/zona/vendedor/família.</li>
+<li><strong>Cegid Pulse</strong> (IA, plano Plus+): perguntas em linguagem natural sobre vendas/tesouraria/stocks, <strong>assistentes de negócio</strong> (o primeiro é o comercial) e <strong>Smart Tools</strong> que os parceiros podem configurar e monetizar.</li>
+<li>Exportação de listagens para <strong>Excel/PDF</strong>, cópia de dados a partir de grelhas, "Alterações de seguida em Excel", <strong>Importar Excel para linhas</strong> de documentos.</li>
+</ul>
+<h3>4.10 Integração Gestão → Contabilidade</h3>
+<p>(Tópico obrigatório da certificação; o técnico de Gestão tem de o dominar.)
+- <strong>Documentos pré-definidos</strong> (na Contabilidade e na Gestão): regras de contabilização automática por tipo de documento.
+- <strong>Integrações da Gestão na Contabilidade</strong>: configuração de contas (clientes, fornecedores, IVA, contrapartidas), integração de faturação, compras, recibos e pagamentos (com informação do documento original no descritivo — Advanced+).
+- <strong>Apuramento do IVA</strong> a partir dos documentos; <strong>Declaração Periódica de IVA</strong>; <strong>CEVMC</strong> (custo das mercadorias vendidas e consumidas); apuramento de resultados.
+- <strong>Mapas de Gestão</strong> (importação/emissão) e <strong>PHC XL</strong> (centros analíticos, grandes volumes).
+- <strong>Taxonomia</strong> (tabela de taxonomia SNC para mapping contabilístico).</p>
+<hr />
+<h2 id="cap-5">5. Configuração do módulo Gestão (o dia-a-dia do técnico)</h2>
+<h3>5.1 Onde se configura o quê</h3>
+<table>
+<thead>
+<tr>
+<th>O quê</th>
+<th>Onde</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Parâmetros gerais e por módulo</td>
+<td>Menu <strong>Sistema → Parâmetros</strong> (gerais, faturação, stocks, tesouraria…). Acesso protegido e configurável <strong>por utilizador</strong></td>
+</tr>
+<tr>
+<td>Séries e tipos de documento</td>
+<td><strong>Configuração de Documentos de Faturação</strong> (séries: tipo 1–5, mapping SAF-T, numeração, o que movimenta, opções AT)</td>
+</tr>
+<tr>
+<td>Dossiers internos</td>
+<td>Configuração de tipos de DI (nome, séries, o que movimenta, conversões permitidas)</td>
+</tr>
+<tr>
+<td>Tabelas base</td>
+<td>IVA/taxas, motivos de isenção (M01–M99), condições de pagamento, formas de pagamento, bancos/contas de tesouraria, códigos de C/C, códigos de tesouraria, códigos de movimentos de stock, zonas, países, moedas/câmbios, idiomas, viaturas de expedição, moradas de carga/descarga</td>
+</tr>
+<tr>
+<td>Ficheiros</td>
+<td>Clientes, fornecedores, artigos (com famílias/marcas), vendedores, tabelas de preços, descontos, armazéns, lotes</td>
+</tr>
+<tr>
+<td>Framework (personalização)</td>
+<td>Menu <strong>Supervisor → Framework PHC</strong>: campos de utilizador, regras, valores por defeito, teclas de utilizador, funções de utilizador, instruções internas, alertas de utilizador, índices de utilizador, tabelas de utilizador, ecrãs personalizados, páginas/objetos (Enterprise), consultas, snapshots, monitores, filtros</td>
+</tr>
+<tr>
+<td>Base de dados</td>
+<td><strong>Supervisor → Tratamento da base de dados</strong>: Dicionário de Dados, desfragmentação, arquivo</td>
+</tr>
+<tr>
+<td>Impressão</td>
+<td>Editor de mapas/templates, "Impressão Definida pelo Utilizador" (Advanced+), definições de assinatura</td>
+</tr>
+</tbody>
+</table>
+<h3>5.2 Parâmetros essenciais que tem de conhecer a frio</h3>
+<p>Exemplos de parâmetros da plataforma/módulo que aparecem em quase todos os projetos (a lista exata varia por versão/gama — validar no ecrã de Parâmetros e no manual "Parâmetros"):</p>
+<p><strong>Gerais/plataforma:</strong>
+- Definição de tipos de acessos (por <strong>Grupos</strong> ou por <strong>Perfis</strong>)
+- Usa ecrãs em memória (performance)
+- Mostrar último registo ao arrancar ecrã (desligar em BDs grandes = ecrãs mais rápidos)
+- Utiliza campos do utilizador? / ecrãs do utilizador? / funções do utilizador? / filtros de utilizador? / páginas do utilizador? / navegador? / painel central? — <strong>ativam as ferramentas da Framework</strong> (algumas só gama Executive/Enterprise)
+- Utiliza multi-língua? (idiomas de descrições)
+- Usa processamento assíncrono (gravação de documentos)
+- Primeiro dia da semana / nº da semana
+- Diretório por defeito para imagens; logótipo (na BD ou caminho); imagem de fundo
+- Intervalo de refrescamento de alertas
+- Barra de status estendida; painéis no menu; teclas do utilizador em rodapé</p>
+<p><strong>Faturação (Parâmetros de Faturação):</strong>
+- Percentagem de retenção de IRS
+- Método de envio de faturas emitidas (<strong>Webservice</strong> vs. ficheiro) → influencia motivos de isenção disponíveis (só M01–M99 aceites pelo webservice)
+- Método de envio de <strong>documentos de transporte</strong> (webservice AT vs. <strong>SAF-T (PT) resumido</strong>)
+- Preenche e valida Local de Carga/Descarga
+- Utiliza data efetiva de entrega nas linhas
+- Utiliza motivo de isenção nas linhas
+- Comportamento de alterações de dados de cliente em tabelas relacionadas
+- Envio de SMS (módulo SMS) e SMS ao motorista com código da AT</p>
+<p><strong>Stocks/Compras/Tesouraria:</strong> parâmetros de custeio (PCMP), stocks negativos, lotes/séries, armazém por defeito, códigos de movimento; aprovação de pagamentos; contas e bancos por defeito; referências multibanco; SEPA.</p>
+<h3>5.3 Configuração de uma série de documentos (receita)</h3>
+<ol>
+<li>Criar a <strong>série</strong> (código, descrição, tipo de documento 1–5, documento SAF-T correspondente: FT/FS/FR/NC/ND/GT…).</li>
+<li>Definir <strong>o que movimenta</strong>: stocks? conta corrente? tesouraria?</li>
+<li><strong>Numeração</strong>: sequência por série/ano; regras de nº de documento.</li>
+<li>Opções fiscais: motivo de isenção (cabeçalho ou linhas), validação de transporte (locais, data/hora), ATCUD.</li>
+<li><strong>Comunicação à AT</strong>: para documentos de transporte — método (webservice ou SAF-T resumido); opção de SMS ao motorista com o código da AT.</li>
+<li><strong>Layout de impressão</strong>: template com QR Code + ATCUD (obrigatório em documentos fiscalmente relevantes).</li>
+<li><strong>Acessos</strong>: quem pode emitir/alterar/anular/reimprimir.</li>
+<li>Para vendas a dinheiro/consumidor final: regras de cliente genérico e NIF.</li>
+</ol>
+<h3>5.4 Viragem de ano / obrigações periódicas de configuração</h3>
+<ul>
+<li><strong>Comunicar séries à AT</strong> antes de as usar (ATCUD): a AT devolve o <strong>código de validação da série</strong>, que se associa na configuração — sem ele, <strong>a impressão de documentos é bloqueada</strong> (regra em vigor desde 2021).</li>
+<li>Carregar tabelas fiscais novas (retenções IRS com data de vigência — 202601 permite coexistência de tabelas antigas/novas).</li>
+<li>Rever motivos de isenção de IVA (atualização manual ou automática — 202501+).</li>
+<li>Inventário: contagem e <strong>comunicação à AT até 31 de janeiro</strong> (quando aplicável).</li>
+<li>Verificar calendário de obrigações no <strong>Calendário PHC</strong> (PHC On).</li>
+</ul>
+<hr />
+<h2 id="cap-6">6. Fiscalidade e obrigações legais</h2>
+<blockquote>
+<p>Um expert em Gestão PHC é, na prática, um especialista em conformidade fiscal portuguesa aplicada ao ERP. A PHC publica artigos oficiais para cada obrigação — todos citados nas fontes.</p>
+</blockquote>
+<h3>6.1 Certificação do software e assinatura</h3>
+<ul>
+<li>O software é <strong>certificado pela AT (ex-DGCI)</strong> — nº de certificado impresso nos documentos.</li>
+<li><strong>Assinatura digital qualificada/hash</strong> dos documentos obrigatória (artigo oficial: "Assinatura digital qualificada nas faturas é obrigatória a partir de 1 de janeiro") — cadeia de hashes que garante a integridade; documentos certificados bloqueiam alterações a dados fiscais de clientes.</li>
+<li>Regras de <strong>faturação</strong>: obrigação de emissão, prazos, documentos retificativos (NC com <strong>motivo de retificação</strong> obrigatório), anulação com motivo.</li>
+</ul>
+<h3>6.2 SAF-T (PT)</h3>
+<ul>
+<li><strong>SAF-T de faturação (auditoria)</strong>: exportação mensal para a AT (e-fatura) e para o contabilista; inclui campos de controlo como a indicação de documento exportado para o SAF-T de auditoria, e o mapeamento de tipos de documento (FT, FS, FR, NC, ND, GT, GA, GC…).</li>
+<li><strong>SAF-T (PT) resumido para documentos de transporte</strong>: alternativa ao webservice para comunicar guias; exporta <code>ShipFrom</code>/<code>ShipTo</code> (locais de carga/descarga) na tabela <code>MovementOfGoods</code>.</li>
+<li><strong>Comunicação de documentos de transporte à AT</strong>: por <strong>webservice</strong> (tempo real, antes do início do transporte; devolve o <strong>Cód. Ident. AT</strong> que pode seguir por SMS ao motorista) ou por <strong>SAF-T resumido</strong>.</li>
+<li><strong>Comunicação de inventário</strong> via SAF-T/CSV/XML.</li>
+<li>Boas práticas: validar o SAF-T no validador da AT/Portal das Finanças após cada mudança de configuração; testar com documentos isentos (motivos M01–M99), NC/ND, autofaturação.</li>
+</ul>
+<h3>6.3 ATCUD e QR Code</h3>
+<ul>
+<li>Desde 2021 (v27+): <strong>todas as faturas e documentos fiscalmente relevantes</strong> incluem <strong>QR Code</strong> e <strong>ATCUD</strong> (código único do documento: código de validação da série + número sequencial).</li>
+<li>Passos: comunicar séries à AT → receber código de validação → associá-lo na série no PHC → garantir <strong>layouts preparados</strong> com QR e ATCUD → o software <strong>impede a impressão</strong> de documentos de séries não validadas.</li>
+</ul>
+<h3>6.4 e-Fatura e faturação eletrónica</h3>
+<ul>
+<li><strong>Método de envio de faturas emitidas</strong>: webservice à AT em tempo real (parâmetro) ou via SAF-T mensal pelo contabilista.</li>
+<li><strong>Faturação eletrónica</strong>: módulo <strong>Documentos Eletrónicos</strong> (código EAN da empresa, EDI), integração <strong>SaphetyDoc via webservice</strong> (artigo oficial no Help Center: "Comunicação de Documentos com SaphetyDoc via Webservice no PHC CS Desktop"), e <strong>CIUS-PT</strong> para faturação à Administração Pública; com <strong>Cegid Docs</strong>, PDFs de faturas de fornecedor CIUS-PT são <strong>anexados e pré-lançados</strong> automaticamente (202601).</li>
+<li><strong>e-TaxFree</strong> (turistas) e vendas intra-comunitárias (<strong>operações triangulares</strong>, Intrastat).</li>
+</ul>
+<h3>6.5 Impostos e retenções</h3>
+<ul>
+<li><strong>IVA</strong>: taxas, motivos de isenção (tabela M01–M99 sincronizada com webservice), IVA de caixa (se aplicável), apuramento via Contabilidade, <strong>Declaração Periódica de IVA</strong>.</li>
+<li><strong>Retenções na fonte</strong>: IRS (faturas com taxa/valor de retenção), IRC, <strong>Imposto do Selo</strong> — o Calendário PHC documenta o tratamento no software.</li>
+<li><strong>Modelo 22 / IRC</strong> (202601 atualizou apuramento de IRC 2025), <strong>Modelo 30</strong> (rendimentos pagos a não residentes — guia passo-a-passo oficial), <strong>DMR</strong> (não emitir valores negativos — 202601).</li>
+<li><strong>Espanha</strong>: <strong>SII</strong> (Suministro Inmediato de Información AEAT) e <strong>TicketBAI</strong> — parâmetro geral com 4 opções (202601); funções internas "Enviar documentos de Compras/Vendas para o SII".</li>
+<li><strong>Peru</strong>: cálculo de retenção nas vendas (taxa de retenção no documento).</li>
+</ul>
+<h3>6.6 Novas obrigações 2026 (versão 202601)</h3>
+<ul>
+<li><strong>SDR — Sistema de Depósito e Recolha</strong>: desde <strong>10 de abril de 2026</strong>, depósito de <strong>0,10 €/unidade</strong> em embalagens de bebidas de uso único (até 3 L). Configuração única dos "itens SDR" no software; o depósito é aplicado automaticamente em cada venda. Retorno de embalagens/vales gerido maioritariamente por RVM (máquinas) — integração ERP↔RVM para estabelecimentos ≥400 m² <strong>não é standard</strong> (oportunidade de desenvolvimento!).</li>
+<li><strong>Segurança Social com 2FA</strong> obrigatório para empresas desde <strong>12 de maio de 2026</strong> (afeta comunicações do módulo Pessoal, mas o técnico deve conhecer).</li>
+</ul>
+<h3>6.7 RGPD</h3>
+<ul>
+<li>Aviso legal configurável e registo do tratamento de dados; direito ao esquecimento (anonimização/processamento de dados pessoais); histórico de utilizadores; log de atividade (Enterprise). Artigos oficiais: "RGPD: Como o PHC CS o ajuda a cumprir a legislação".</li>
+</ul>
+<hr />
+<h2 id="cap-7">7. Desenvolvimento e personalização (Framework PHC)</h2>
+<blockquote>
+<p>Aqui está o coração do "técnico que desenvolve soluções". A plataforma tem <strong>duas frameworks</strong>: desktop (<strong>Xbase</strong>) e web (<strong>C#</strong>), mais a camada <strong>SQL Server</strong> (T-SQL) e a plataforma de integração <strong>EyePeak</strong>.</p>
+</blockquote>
+<h3>7.1 Princípios</h3>
+<ul>
+<li><strong>Tudo o que é personalização fica gravado na base de dados</strong> (código, regras, campos, ecrãs) — sobrevive a reinstalações do executável, mas <strong>tem de ser validado a cada upgrade de versão</strong>.</li>
+<li>As ferramentas da framework ativam-se por <strong>parâmetros</strong> (ex.: "Utiliza campos do utilizador?") e aparecem no menu <strong>Supervisor → Framework PHC</strong>.</li>
+<li>A disponibilidade depende da <strong>gama/plano</strong> (Corporate tem pouco; Advanced abre a personalização; Enterprise abre páginas/objetos/eventos completos e aprovações).</li>
+</ul>
+<h3>7.2 Ferramentas da Framework desktop (inventário completo)</h3>
+<table>
+<thead>
+<tr>
+<th>Ferramenta</th>
+<th>Para que serve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Campos de Utilizador</strong></td>
+<td>Adicionar colunas a tabelas do software (com tipos, validações) sem alterar o core</td>
+</tr>
+<tr>
+<td><strong>Tabelas de Utilizador</strong></td>
+<td>Criar tabelas novas da aplicação (ex.: a "Zona" do cliente é um campo de tabela do utilizador)</td>
+</tr>
+<tr>
+<td><strong>Índices de Utilizador</strong></td>
+<td>Criar índices SQL sobre tabelas do software (incl. INCLUDED COLUMNS) para performance</td>
+</tr>
+<tr>
+<td><strong>Valores por Defeito</strong></td>
+<td>Preenchimento automático de qualquer campo de qualquer tabela (com expressão)</td>
+</tr>
+<tr>
+<td><strong>Regras de Utilizador</strong> (+ Assistente)</td>
+<td>Validações de negócio: obrigar campos, impedir gravação sem stock, validar NIF… com editor e assistente de construção</td>
+</tr>
+<tr>
+<td><strong>Teclas de Utilizador</strong></td>
+<td>Atalhos de teclado personalizados (com descrição em rodapé)</td>
+</tr>
+<tr>
+<td><strong>Funções de Utilizador</strong></td>
+<td>Funções Xbase reutilizáveis criadas pelo utilizador</td>
+</tr>
+<tr>
+<td><strong>Instruções Internas</strong></td>
+<td>Instruções/procedimentos escritos pelo utilizador associados a cada ecrã principal (documentação in-app e automação)</td>
+</tr>
+<tr>
+<td><strong>Eventos de Utilizador</strong></td>
+<td>Código Xbase associado a eventos de objetos/ecrãs (ver 7.3)</td>
+</tr>
+<tr>
+<td><strong>Páginas de Utilizador / Objetos de Ecrã</strong></td>
+<td>Acrescentar páginas (separadores) e objetos (campos, textos, botões, grelhas, campos de ligação, campos em árvore…) aos ecrãs standard</td>
+</tr>
+<tr>
+<td><strong>Ecrãs Personalizados (IDU)</strong></td>
+<td>Criar ecrãs novos de raiz (desenhador de ecrãs; em POS touch com drag-and-drop), com ligações entre IDUs, parâmetros de ecrã e botão personalizável</td>
+</tr>
+<tr>
+<td><strong>Opções de Ecrã / Menus</strong></td>
+<td>Acrescentar botões às toolbars e criar menus para opções novas; Configurações de Menus</td>
+</tr>
+<tr>
+<td><strong>Consultas / Análises de Utilizador</strong></td>
+<td>Consultas SQL do utilizador apresentadas como ecrãs de análise; base das Análises Multidimensionais</td>
+</tr>
+<tr>
+<td><strong>Snapshots</strong></td>
+<td>Consultas T-SQL "fotografadas" com variáveis (ex.: <code>#stamp#</code>), agrupáveis e coloridas</td>
+</tr>
+<tr>
+<td><strong>Monitores / Itens de Monitor</strong></td>
+<td>Apresentações de dados sequenciais (colunas configuráveis) para operational dashboards</td>
+</tr>
+<tr>
+<td><strong>Alertas de Utilizador / Notificações</strong></td>
+<td>Alertas automáticos (funções internas como <code>CriaAvs(stamp, userAv, …)</code>; novas funções internas 202601: "Enviar documentos de Compras/Vendas para o SII"); aviso interno, PHC Notify, e-mail</td>
+</tr>
+<tr>
+<td><strong>Filtros de Utilizador</strong></td>
+<td>Filtros próprios para as tabelas/grelhas</td>
+</tr>
+<tr>
+<td><strong>Templates (Básicos / de Tabela) / Definição de Assinaturas</strong></td>
+<td>Modelos rápidos de UI e assinaturas digitais em ecrãs (intervenções, faturas, dossiers)</td>
+</tr>
+<tr>
+<td><strong>Multi-língua</strong></td>
+<td>Traduções de descrições (artigos, etc.)</td>
+</tr>
+<tr>
+<td><strong>Importação/Exportação</strong></td>
+<td>Importar Excel para linhas, exportar listagens xlsx/pdf, importação de câmbios via ODBC</td>
+</tr>
+<tr>
+<td><strong>Dicionário de Dados</strong></td>
+<td>Consulta da estrutura de <strong>qualquer tabela</strong> (campos, descrições, tipos, tamanhos) e <strong>relações entre tabelas</strong> (desde a versão 2008) — acessível por Supervisor → Tratamento da base de dados, ou pelo menu de opções de qualquer ecrã (posiciona-se na tabela do ecrã). <strong>A ferramenta nº 1 do programador PHC.</strong></td>
+</tr>
+<tr>
+<td><strong>Simulador de SQL / Explorador de Dados</strong></td>
+<td>Executar consultas à BD dentro da aplicação; explorar dados</td>
+</tr>
+<tr>
+<td><strong>Análise Interna</strong></td>
+<td>Onde ficam gravados os <strong>erros de execução dos eventos/código do utilizador</strong> (linha do erro; expressões não têm nº de linha) — primeiro sítio a ver quando "o evento não faz nada"</td>
+</tr>
+</tbody>
+</table>
+<h3>7.3 Eventos e o objeto <code>ObjRecebido</code> (Xbase desktop)</h3>
+<p>Os eventos são expressões/programas em <strong>Xbase</strong> (sintaxe tipo Visual FoxPro) associados a objetos (Enterprise; alguns eventos de utilizador disponíveis desde Advanced). Lista oficial de eventos:</p>
+<ul>
+<li><strong>Init</strong>, <strong>Ativar</strong>, <strong>Desativar</strong>, <strong>Refrescar</strong></li>
+<li><strong>Clique</strong>, <strong>Duplo Clique</strong>, <strong>Clique Direito</strong></li>
+<li><strong>Ao Entrar</strong>, <strong>Ao Sair</strong>, <strong>Após Atualizar</strong>, <strong>Após não Atualizado</strong></li>
+<li><strong>Antes mudar Linha/Coluna</strong>, <strong>Depois mudar Linha/Coluna</strong></li>
+<li><strong>MouseEnter</strong>, <strong>MouseLeave</strong>, <strong>MouseMove</strong>, <strong>MouseWheel</strong></li>
+<li><strong>Tecla Pressionada</strong></li>
+</ul>
+<p>Em cada evento programado existe o objeto <strong><code>ObjRecebido</code></strong>, com:</p>
+<ul>
+<li><strong><code>ObjRecebido.Janela</code></strong> — apontador para o ecrã (ex.: <code>ObjRecebido.Janela.Caption = "Exemplo"</code>; alterações não persistem — usar no evento Init para aplicar sempre).</li>
+<li><strong><code>ObjRecebido.Objecto</code></strong> — apontador para o próprio objeto (propriedades <code>Value</code>, <code>Parent</code>; em objetos compostos como o <strong>Campo de Ligação</strong>: <code>.Lista1</code>, <code>.Nossocampo1</code>, <code>.Procura</code>).</li>
+<li><strong><code>ObjRecebido.Objecto.MeusDados</code></strong> — repositório chave/valor do utilizador para passar dados entre eventos: <code>AddParametro</code>, <code>GuardaParametro</code>, <code>ExisteParametro</code>, <code>GetNomeParametro</code>, <code>GetIndexParametro</code>, <code>TotalParametros</code> (leitura do valor: <code>MeusDados.CorFundoAntiga</code>).</li>
+<li><strong><code>Return .F.</code></strong> — cancela o comportamento de raiz do objeto para esse evento (ex.: impedir digitação, esconder calendário em campos de data). Sem <code>Return</code> em expressões simples (o valor é retornado automaticamente).</li>
+<li>Debug: erros de eventos gravados na <strong>Análise Interna</strong>.</li>
+</ul>
+<p><strong>Exemplo (guardar/repôr cor de fundo entre eventos):</strong></p>
+<pre><code class="language-xbase">* Evento Init (programa)
+ObjRecebido.Objecto.MeusDados.GuardaParametro(&quot;CorFundoAntiga&quot;, ObjRecebido.Objecto.BackColor)
+ObjRecebido.Objecto.BackColor = RGB(0,255,255)
+</code></pre>
+<p><strong>Funções internas úteis (exemplos documentados):</strong> <code>U_NAVEGA</code> (navegar para registos/ecrãs; o 2º parâmetro interage com "mostrar último registo"), <code>CriaAvs</code> (criar avisos/avisos internos a utilizadores — parâmetros incluem <code>stamp</code> do ecrã e <code>userAv</code>), funções de envio SII (202601), <code>PromptFunction()</code> (202601 — nova função da framework para invocar IA/Cegid Pulse a partir de código; base dos <strong>Smart Tools</strong> que os parceiros podem configurar/monetizar).</p>
+<h3>7.4 Framework PHC CS Web (C#)</h3>
+<p>No lado web (incluído no Evolution), a framework oferece (lista oficial do manual "Framework PHC CS Web"):</p>
+<ul>
+<li><strong>Editor de Código</strong> (C#) para eventos e regras</li>
+<li><strong>Eventos</strong> (ex.: enviar e-mail com o material quando alguém introduz uma encomenda)</li>
+<li><strong>Regras</strong> (validações de negócio: obrigar campos, impedir gravação sem stock…)</li>
+<li><strong>Ecrãs de Utilizador</strong> (novos ecrãs à medida), <strong>Objetos de Ecrã</strong> (acrescentar campos a páginas existentes), <strong>Objetos Internos</strong> (campos novos em objetos existentes), <strong>Objetos da Framework</strong> (lista de todos os objetos do ecrã)</li>
+<li><strong>Opções de Ecrã</strong> (botões novos em toolbars), <strong>Menus</strong></li>
+<li><strong>Scripts</strong> (programa executado por URL — endpoints próprios!)</li>
+<li><strong>Monitores</strong> e <strong>Itens de Monitor</strong>, <strong>Templates Básicos</strong>, <strong>Templates de Tabela</strong>, <strong>Definição de Assinaturas</strong></li>
+<li><strong>Valores por Defeito</strong>, <strong>Filtros do Utilizador</strong>, <strong>RSS do Utilizador</strong></li>
+<li><strong>Parâmetros</strong> (configuração das aplicações autorizadas)</li>
+<li><strong>Log de Código</strong> (diagnóstico da execução do código de utilizador)</li>
+<li><strong>Dicionário de dados</strong> (web)</li>
+</ul>
+<p>Relatórios web usam <strong>DevExpress</strong> ("Relatórios DevExpress no PHC CS Web", cobrindo Gestão: Clientes, Faturação, Recibos de Adiantamento…).</p>
+<h3>7.5 Camada SQL Server (T-SQL)</h3>
+<ul>
+<li>Consultas diretas para análises/snapshots/relatórios externos (com <code>WITH (NOLOCK)</code> para leituras, e atenção a <code>ref</code>/<code>stamp</code>).</li>
+<li><strong>Índices de utilizador</strong> via framework (evitar criar índices "à mão" sem documentar).</li>
+<li>Views/procedures: possíveis, mas <strong>a PHC atualiza o esquema entre versões</strong> — nunca alterar tabelas/colunas do core; usar campos/tabelas de utilizador.</li>
+<li><strong>Desfragmentação</strong> e manutenção (capítulo 3).</li>
+</ul>
+<h3>7.6 Receitas práticas (padrões que vai usar sempre)</h3>
+<ol>
+<li><strong>Validar NIF português ao gravar cliente</strong> → Regra de utilizador no ecrã Clientes (com assistente ou código Xbase), mensagem via aviso.</li>
+<li><strong>Impedir faturação sem stock</strong> → Regra de utilizador no documento (gama Advanced+) ou evento Após Atualizar nas linhas.</li>
+<li><strong>Campo extra "Nº de contrato" na fatura</strong> → Campo de utilizador na tabela FT + arrastar para página de utilizador no ecrã + valor por defeito.</li>
+<li><strong>Alerta de crédito excedido</strong> → Alerta de utilizador/<code>CriaAvs</code> no evento de gravação do documento + PHC Notify por e-mail.</li>
+<li><strong>Análise de vendas por zona</strong> → Análise de utilizador (SQL com join FT×CL×CL2) + filtro de utilizador; na gama Advanced, promover a <strong>Análise Multidimensional</strong>.</li>
+<li><strong>Endpoint para loja online ler stock</strong> → PHC CS Web: <strong>Script</strong> por URL + (ou) sincronização <strong>EyePeak</strong>.</li>
+<li><strong>Assistente de IA para comerciais</strong> → Cegid Pulse: configurar assistente de negócio / Smart Tool com <code>PromptFunction()</code> (202601).</li>
+</ol>
+<h3>7.7 Boas práticas de desenvolvimento PHC</h3>
+<ul>
+<li>Trabalhar sempre sobre <strong>clone da BD</strong> (detach/copy/attach) antes de personalizar em produção.</li>
+<li><strong>Documentar cada personalização</strong> (onde, código, motivo, versão) — os upgrades anuais obrigam a revalidar.</li>
+<li>Usar <strong>Dicionário de Dados</strong> para descobrir tabelas/relações em vez de adivinhar nomes.</li>
+<li>Respeitar <code>stamp</code>/concorrência otimista nas atualizações por SQL; preferir a API de gravação da aplicação quando possível.</li>
+<li>Verificar a <strong>Análise Interna</strong> (desktop) / <strong>Log de Código</strong> (web) após cada alteração.</li>
+<li>Não tocar em objetos certificados/fiscais sem validar SAF-T depois.</li>
+<li>Manter convenção de nomes nas entidades de utilizador (prefixo do parceiro/projeto).</li>
+</ul>
+<hr />
+<h2 id="cap-8">8. Base de dados: estrutura e boas práticas</h2>
+<h3>8.1 Convenções confirmadas</h3>
+<ul>
+<li><strong>SQL Server</strong> exclusivo (termos de licenciamento: 2008R2+; instalação típica: 2012+; Express no Corporate).</li>
+<li><strong>Nomes de tabelas curtos (2 letras)</strong> + variantes numeradas para extensões:</li>
+<li><code>CL</code> = Clientes; <code>CL2</code> = Clientes – Outros Dados (ex.: país da morada)</li>
+<li><code>FT</code> = Documentos de Faturação (ex.: <code>ft.ndoc</code> = tipo de documento)</li>
+<li><code>BO</code> = Dossiers Internos</li>
+<li><code>RE</code> = Recibos</li>
+<li><code>TABOP</code> = Ordens de Fabrico (Manufactor)</li>
+<li>(as restantes — fornecedores, artigos/stocks, movimentos, C/C, tesouraria, pagamentos, compras — descobrem-se com o <strong>Dicionário de Dados</strong>, que mostra campos, descrições, tipos e relações de qualquer tabela, ex.: pesquisar "clientes" ou ".CL")</li>
+<li>Campos estruturais recorrentes: <strong><code>ref</code></strong> (identificador do registo), <strong><code>stamp</code></strong> (versão/concorrência do registo — usado em snapshots com <code>#stamp#</code> e em navegação), <code>ndoc</code>/séries em documentos.</li>
+<li>Leituras pesadas com <code>WITH (NOLOCK)</code> (prática comum nas análises/snapshots documentados pela PHC).</li>
+</ul>
+<h3>8.2 O Dicionário de Dados é o seu melhor amigo</h3>
+<p>Disponível <strong>em todas as gamas</strong>: Supervisor → Tratamento da base de dados → Dicionário de dados (ou menu de opções de qualquer ecrã, ficando posicionado na tabela do ecrã). Mostra: campos, descrições, tipos, tamanhos e, desde a versão 2008, as <strong>expressões de relação entre tabelas</strong> (duplo clique numa ligação salta para a tabela relacionada). Use-o para mapear qualquer processo antes de escrever SQL.</p>
+<h3>8.3 Dados por empresa e ciclo de vida</h3>
+<ul>
+<li>1 empresa = 1 BD; multiempresa = multiplas BDs no mesmo servidor.</li>
+<li><strong>Arquivo</strong>: passagem de dados antigos para BD de arquivo (performance + redução do tamanho contratado nos planos 10 GB).</li>
+<li><strong>File Storage</strong>: anexos fora da BD (diretoria física) exceto fiscalmente relevantes.</li>
+</ul>
+<hr />
+<h2 id="cap-9">9. Integrações e ecossistema</h2>
+<table>
+<thead>
+<tr>
+<th>Integração</th>
+<th>O que faz</th>
+<th>Como se configura</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>EyePeak</strong></td>
+<td>Plataforma logística/WMS/e-commerce (Cegid Primavera). Fluxos documentais ERP↔EyePeak (ex.: encomendas de fornecedor → guias; séries de faturação sincronizadas)</td>
+<td>Monitor <strong>EyePeak Sincronização</strong> no menu Supervisor (desktop) / ecrã Eye Peak Sincronização (web)</td>
+</tr>
+<tr>
+<td><strong>PHC CS Web / Front Web</strong></td>
+<td>Aplicações web sobre a mesma BD: Gestão Web (faturação, adiantamentos, recibos…), Front Web (extranet para clientes/fornecedores consultarem documentos/dossiers)</td>
+<td>Package PHC CS Web; servidor IIS; utilizadores do desktop têm acesso</td>
+</tr>
+<tr>
+<td><strong>SaphetyDoc / Documentos Eletrónicos</strong></td>
+<td>Faturação eletrónica (EDI, CIUS-PT) por webservice; código EAN da empresa</td>
+<td>Módulo Documentos Eletrónicos + artigo oficial de configuração</td>
+</tr>
+<tr>
+<td><strong>Cegid Docs</strong></td>
+<td>Arquivo digital legal na cloud; faturas CIUS-PT anexadas em PDF e pré-lançadas; pesquisa na WebApp (Evolution)</td>
+<td>Configuração "Arquivo Digital Legal com Cegid Docs" (artigo oficial + FAQs)</td>
+</tr>
+<tr>
+<td><strong>Open Banking</strong></td>
+<td>Importação de movimentos bancários, reconciliação e previsão de tesouraria (Evolution)</td>
+<td>Ativação no plano Evolution; configuração de contas</td>
+</tr>
+<tr>
+<td><strong>SEPA / bancos</strong></td>
+<td>Ficheiros de débitos diretos e pagamentos; transferências de vencimentos; WebBanking</td>
+<td>Ecrãs de tesouraria/bancos + artigos oficiais</td>
+</tr>
+<tr>
+<td><strong>Multibanco / Unicre / PayPal</strong></td>
+<td>Referências MB, pagamentos online (web)</td>
+<td>Módulos/parâmetros próprios</td>
+</tr>
+<tr>
+<td><strong>SMS / e-mail (SMTP)</strong></td>
+<td>Envio de documentos e avisos (código AT ao motorista, documentos por e-mail com idioma do cliente)</td>
+<td>Módulo SMS; parâmetros de envio de e-mail diretos por SMTP</td>
+</tr>
+<tr>
+<td><strong>TPA / POS / PDA</strong></td>
+<td>Terminais de pagamento, postos de retalho, terminais portáteis de stock</td>
+<td>Ligações/configuração POS e Stocks</td>
+</tr>
+<tr>
+<td><strong>Excel / ODBC</strong></td>
+<td>Importação (câmbios via ODBC, Excel para linhas), exportação (xlsx/pdf)</td>
+<td>Nativo</td>
+</tr>
+<tr>
+<td><strong>Comunidade XML/B2B</strong></td>
+<td>Troca de documentos cliente-fornecedor em XML (eProcurement) — histórico da plataforma</td>
+<td>Documentação da Comunidade</td>
+</tr>
+<tr>
+<td><strong>Cegid Pulse (IA)</strong></td>
+<td>Assistentes de negócio (comercial), Smart Tools configuráveis pelos parceiros, <code>PromptFunction()</code></td>
+<td>Módulo Cegid Pulse + Cegid Account por utilizador (3 passos: acesso ao módulo, ativar Cegid Account na ficha, login)</td>
+</tr>
+<tr>
+<td><strong>Segurança Social Direta / AT</strong></td>
+<td>Comunicações oficiais (webservice AT, SSD com 2FA desde 05/2026)</td>
+<td>Parâmetros + credenciais</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cap-10">10. Operação, suporte, diagnóstico e performance</h2>
+<h3>10.1 Diagnóstico (por onde começar quando algo falha)</h3>
+<ol>
+<li><strong>Análise Interna</strong> — erros de eventos/código Xbase do utilizador.</li>
+<li><strong>Log de Código</strong> (web) e <strong>Log de atividade</strong> (Enterprise v30+: quem consultou/alterou/apagou).</li>
+<li><strong>Histórico de utilizadores</strong> e tracking de ações.</li>
+<li><strong>Simulador de SQL / Explorador de dados</strong> — validar dados diretamente.</li>
+<li>Monitor de ligação ao SQL (quebras de rede), estado do ODBC.</li>
+<li>Documentos "não processados" → verificar <strong>processamento assíncrono</strong>.</li>
+<li>Impressões bloqueadas → séries sem <strong>código de validação AT</strong> (ATCUD).</li>
+<li>SAF-T inválido → motivos de isenção fora de M01–M99 com webservice ativo; tipos de documento mal mapeados na série.</li>
+</ol>
+<h3>10.2 Performance</h3>
+<ul>
+<li>Ecrãs em memória; desligar "mostrar último registo ao arrancar";</li>
+<li>Índices de utilizador (INCLUDED COLUMNS) para as consultas mais usadas;</li>
+<li>Desfragmentação das tabelas principais + manutenção SQL;</li>
+<li>BD de arquivo para históricos; File Storage para anexos;</li>
+<li>NOLOCK em leituras analíticas; snapshots bem desenhados;</li>
+<li>Monitorizar espaço da BD (limites de plano).</li>
+</ul>
+<h3>10.3 Upgrades e migrações</h3>
+<ul>
+<li>Upgrade de versão: backup → ambiente de teste (clone) → upgrade → validar personalizações (campos, regras, eventos, análises, templates de impressão, integrações) → agendar produção.</li>
+<li>Migração <strong>PHC CS perpétuo → Cegid PHC Evolution</strong>: diagnóstico, plano (escolher plano/módulos), migração técnica (dados, configurações, integrações), suporte pós-arranque — é o processo standard dos parceiros; desenvolvimentos/addons existentes mantêm-se.</li>
+</ul>
+<hr />
+<h2 id="cap-11">11. Formação, certificação e recursos oficiais</h2>
+<h3>11.1 O que existe oficialmente</h3>
+<table>
+<thead>
+<tr>
+<th>Recurso</th>
+<th>O que é</th>
+<th>Acesso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Help Center (helpcenter.phccs.net / phc.pt/portal)</strong></td>
+<td>Manuais completos (Gestão, Stocks, Faturação, Framework, Web…), artigos "como fazer", Novidades por versão</td>
+<td><strong>Público</strong></td>
+</tr>
+<tr>
+<td><strong>Manuais dentro da aplicação</strong></td>
+<td>Botão "Ajuda" em cada ecrã — manuais atualizados com novas funcionalidades</td>
+<td>Instalado</td>
+</tr>
+<tr>
+<td><strong>Comunidade PHC (community.phcsoftware.com)</strong></td>
+<td>Área técnica e comercial: notícias, ficheiros, downloads, documentação de parceiro</td>
+<td>Login <strong>Nº Cliente + ID Técnico + password</strong></td>
+</tr>
+<tr>
+<td><strong>PHC On (on.phc.pt)</strong></td>
+<td>Formação online, autoformação em vídeo, truques e dicas, novidades, Calendário PHC de obrigações legais</td>
+<td>Acordo PHC On</td>
+</tr>
+<tr>
+<td><strong>Cegid Academy — PEP (Cegid PHC Evolution Program)</strong></td>
+<td>Programa intensivo prático de <strong>140 h</strong>, online pós-laboral (edição com início a 17 de setembro; 1.650 € + IVA, pagamento faseado): configurar/administrar software e ambientes técnicos, BD e SQL (performance e segurança), processos e módulos do ERP (gestão, tesouraria, contabilidade, vencimentos). Certificação oficial Cegid PHC; os primeiros certificados podem integrar projetos do ecossistema</td>
+<td>Inscrição via phcsoftware.com/pt/formacao-pep</td>
+</tr>
+<tr>
+<td><strong>Certificações PHC (histórico/atuais)</strong></td>
+<td>Certificação PHC CS Desktop Corporate/Advanced/Enterprise + por módulos; "bolsa de técnicos certificados"; pré-requisito para níveis de parceiro</td>
+<td>Via parceiro/Cegid</td>
+</tr>
+<tr>
+<td><strong>Microcredenciação IPT</strong></td>
+<td>Curso académico "Software Cegid PHC CS Advanced" (Instituto Politécnico de Tomar)</td>
+<td>portal2.ipt.pt</td>
+</tr>
+<tr>
+<td><strong>PHC Hi, Tech</strong></td>
+<td>Formação de 3 meses (híbrida) para entrada na carreira (ex.: Angola)</td>
+<td>phcsoftware.com/ao</td>
+</tr>
+<tr>
+<td><strong>Eventos de programadores</strong></td>
+<td>"Coding PHC" (evento anual de developers das frameworks) e histórico DevSummit</td>
+<td>Comunidade/site</td>
+</tr>
+<tr>
+<td><strong>YouTube (@SoftwarePHC) e blog</strong></td>
+<td>Vídeos de produto, webinars, artigos</td>
+<td>Público</td>
+</tr>
+<tr>
+<td><strong>Listagens de Novidades (PDF)</strong></td>
+<td>Por versão (v18…v30, 202501, 202601…) — os parceiros publicam (Arentia, Winsig, NSoft…)</td>
+<td>Público</td>
+</tr>
+<tr>
+<td><strong>Programa de Parceiros</strong></td>
+<td>Venda/implementação exclusivamente via parceiros certificados (com especializações setoriais); acesso a demos, NFR, formação contínua</td>
+<td>phcsoftware.com/pt/parceiros</td>
+</tr>
+</tbody>
+</table>
+<h3>11.2 O programa oficial da Certificação PHC CS Desktop Advanced (o currículo do expert)</h3>
+<p>Resumo fiel do conteúdo programático oficial — use-o como índice de estudo:</p>
+<ol>
+<li><strong>Plataforma client/server</strong>: características da BD e performance; limites de GB; instalação (SQL Express; requisitos mínimos; HCL); passos de instalação; utilizadores/logins SQL; detach/attach; segurança; backups e recuperação.</li>
+<li><strong>Instalação do PHC Desktop</strong>: exe único; instalação + attach + ODBC automático; utilizadores e grupos; acessos; toolbars; barra de status estendida; barra de janelas; ecrãs em memória; ecrãs personalizados; campos obrigatórios; análise multidimensional; BD de arquivo; <strong>regras, campos de utilizador, valores por defeito e teclas de utilizador</strong>; painel de ecrã; Enciclopédia PHC.</li>
+<li><strong>Navegação</strong>: organização de ecrãs e menus; lógica de funcionamento; mapas definidos e filtros.</li>
+<li><strong>Gestão — ficheiros</strong>: Clientes/Fornecedores (sede/estabelecimentos, tipos de desconto, condições de pagamento); Stocks e Serviços (referências alternativas, compostos, inventário físico, <strong>PCMP</strong>, promoções, tabelas de preços com validade).</li>
+<li><strong>Gestão — circuito documental</strong>: DI ↔ Faturas/Compras (encomendas de cliente/a fornecedor, comprar a encomenda, faturar a encomenda, cópias); tabela de códigos de C/C; códigos de tesouraria; códigos de movimentos de stock; configuração de documentos de faturação.</li>
+<li><strong>Tesouraria</strong>: contas, extratos, movimentos, títulos.</li>
+<li><strong>Painel de bordo</strong>: monitor de dívidas, saldo de C/C por idades, rankings, análises de DI.</li>
+<li><strong>RGPD</strong>: aviso legal, esquecimento, registo de tratamento.</li>
+<li><strong>Dossiers especiais</strong>: stock inicial, transferência de armazém, preços, avenças, composição/produção.</li>
+<li><strong>PHC CS Web</strong>: conceito, aplicações, Front Web e Gestão Web.</li>
+<li><strong>Configuração de documentos</strong> (conceitos, campos obrigatórios, grupos, acessos a reimprimir/totalizar/anexar, gráficos, "imprimir quando").</li>
+<li><strong>Contabilidade</strong>: conceitos, parâmetros, abertura de ano, contas, diários, <strong>documentos pré-definidos (incl. na Gestão)</strong>, movimentos, centros analíticos, apuramento IVA, declaração periódica, CEVMC, resultados, <strong>integrações Gestão→Contabilidade (configuração + operação)</strong>, mapas de gestão, BD pronta, PHC XL, taxonomia.</li>
+<li><strong>Imobilizado</strong> e <strong>Pessoal</strong> (visão geral operacional completa).</li>
+<li><strong>POS</strong> e <strong>Suporte</strong> (circuitos completos).</li>
+<li><strong>Técnico</strong>: instalação do software e do SQL Server; manutenção manual de BDs; <strong>PHC ON</strong>; <strong>Framework PHC (3 partes)</strong>; área técnica e comercial da <strong>Comunidade PHC</strong>.</li>
+<li><strong>Implementing SQL</strong> (labs) e preparação de demonstrações.</li>
+</ol>
+<hr />
+<h2 id="cap-12">12. Plano de estudos até ao nível expert</h2>
+<h3>Fase 0 — Preparação (semana 1)</h3>
+<ul>
+<li>[ ] Perceber o ecossistema (capítulo 1): Evolution vs. GO vs. CS; planos vs. gamas; módulos.</li>
+<li>[ ] Ler as <strong>Novidades da versão atual</strong> (202601) e das 2–3 anteriores no Help Center.</li>
+<li>[ ] Criar contas/marcadores: Help Center, phcsoftware.com, YouTube @SoftwarePHC, blog, Comunidade PHC (se tiver credenciais de parceiro/cliente).</li>
+</ul>
+<h3>Fase 1 — Infraestrutura (semanas 2–3)</h3>
+<ul>
+<li>[ ] Montar laboratório: VM Windows Server + SQL Server Express + instalação de demonstração do PHC (pedir a um parceiro ou usar licença NFR/eval da Cegid).</li>
+<li>[ ] Instalar, criar empresa de demo, fazer detach/attach, backup/restore, criar utilizadores/grupos/acessos.</li>
+<li>[ ] Atualizar o software; explorar o Supervisor e o Dicionário de Dados.</li>
+</ul>
+<h3>Fase 2 — Domínio funcional do Gestão (semanas 4–7)</h3>
+<ul>
+<li>[ ] Ficheiros: criar 20 clientes (com filiais, idiomas, zonas), 10 fornecedores, 50 artigos (famílias, unidades alternativas, compostos/kits, lotes), armazéns, tabelas de preços, descontos, condições/formas de pagamento, IVA.</li>
+<li>[ ] Vendas: configurar 5 séries (Fatura FT, Fatura Simplificada FS, Fatura-Recibo FR, Nota de Crédito NC, Guia tipo 4) e emitir o circuito completo: Orçamento → Encomenda → Guia (com comunicação de transporte simulada) → Fatura → Recibo → liquidação. Testar adiantamentos, retenção IRS, isenções (M08…), vendas a dinheiro, emissão automática.</li>
+<li>[ ] Compras: encomenda a fornecedor → receção → fatura de compra → pagamento com aprovação; adiantamentos.</li>
+<li>[ ] Stocks: movimentos, transferência entre armazéns (dossier), contagem/inventário com acertos, análise de ruturas/máx-mín, PCMP e valor de stock.</li>
+<li>[ ] Tesouraria: contas, extrato, reconciliação, transferências, títulos, previsões; SEPA e referências MB (teórico).</li>
+<li>[ ] C/C: aging, mailing, monitor de dívidas, incobráveis.</li>
+<li>[ ] Análises: mapas definidos, análises de utilizador (SQL), snapshot, ranking de vendas.</li>
+</ul>
+<h3>Fase 3 — Fiscalidade (semanas 8–9)</h3>
+<ul>
+<li>[ ] Exportar e validar <strong>SAF-T (PT)</strong> no validador da AT; inspecionar o XML (tipos de documento, motivos de isenção, MovementOfGoods).</li>
+<li>[ ] Simular o fluxo <strong>ATCUD/QR</strong>: comunicação de séries, código de validação, layouts, bloqueio de impressão.</li>
+<li>[ ] Configurar comunicação de documentos de transporte (webservice vs. SAF-T resumido) e SMS ao motorista.</li>
+<li>[ ] Rever artigos oficiais: e-fatura, faturação eletrónica/SaphetyDoc/CIUS-PT, inventário à AT, e-TaxFree, retenções, SDR 2026, RGPD.</li>
+<li>[ ] Integração com Contabilidade: documentos pré-definidos, contas de integração, apuramento de IVA (lançar um mês completo).</li>
+</ul>
+<h3>Fase 4 — Desenvolvimento (semanas 10–14)</h3>
+<ul>
+<li>[ ] Estudar <strong>Xbase/VFP</strong> (sintaxe: comandos, cursores, funções) e <strong>T-SQL</strong>.</li>
+<li>[ ] Framework desktop, por ordem: valores por defeito → campos de utilizador → regras (assistente e código) → teclas → funções de utilizador → alertas → instruções internas.</li>
+<li>[ ] Eventos: implementar os padrões do §7.6 (1–4) num clone; depurar com a Análise Interna; usar <code>ObjRecebido</code> completo (Janela, Objecto, MeusDados, Return .F.).</li>
+<li>[ ] Páginas/objetos de utilizador e <strong>IDUs</strong>: construir um ecrã novo (ex.: "Crédito do Cliente" com dados de C/C + botões de ação) e ligá-lo a um menu.</li>
+<li>[ ] Análises multidimensionais + snapshots com <code>#stamp#</code>; monitores.</li>
+<li>[ ] Índices de utilizador para otimizar as suas consultas; medir antes/depois.</li>
+<li>[ ] Framework <strong>Web (C#)</strong>: editor de código, eventos, regras, <strong>scripts por URL</strong> (criar um endpoint de teste), monitores, templates.</li>
+<li>[ ] <strong>EyePeak</strong>: configurar o monitor de sincronização; desenhar um fluxo encomenda→guia.</li>
+<li>[ ] <strong>Cegid Pulse</strong>: ativar (3 passos), explorar o assistente comercial, desenhar uma Smart Tool com <code>PromptFunction()</code>.</li>
+</ul>
+<h3>Fase 5 — Nível consultor/expert (semanas 15+)</h3>
+<ul>
+<li>[ ] Fazer o <strong>PEP (Cegid Academy)</strong> ou a certificação PHC equivalente; entrar na bolsa de técnicos certificados.</li>
+<li>[ ] Implementar um ciclo completo num cliente real (ou demo avançada): diagnóstico → desenho → configuração → migração de dados (importação Excel/ODBC) → formação → arranque → pós-arranque.</li>
+<li>[ ] Dominar upgrades: fazer upgrade de versão ao laboratório validando todas as personalizações.</li>
+<li>[ ] Especializar-se num vertical (retalho/POS, distribuição/logística com EyePeak, serviços/suporte, manufatura) — é onde os parceiros monetizam.</li>
+<li>[ ] Acompanhar cada nova versão (202602…) e o Calendário PHC de obrigações.</li>
+</ul>
+<h3>Hábitos do expert</h3>
+<ul>
+<li>Ler o <strong>manual in-app</strong> de cada ecrã antes de responder a um ticket (a PHC documenta campo a campo).</li>
+<li>Usar o <strong>Dicionário de Dados</strong> para tudo o que envolva SQL.</li>
+<li>Testar sempre em <strong>clone</strong> antes de produção.</li>
+<li>Documentar personalizações num registo vivo (o upgrade anual agradece).</li>
+<li>Participar na <strong>Comunidade PHC</strong> e nos eventos <strong>Coding PHC</strong>.</li>
+</ul>
+<hr />
+<h2 id="cap-13">13. Checklists de autoavaliação</h2>
+<p><strong>Funcional (Gestão)</strong> — sabe fazer sem consultar?
+- [ ] Criar/configurar séries e tipos de documento e explicar o mapping SAF-T
+- [ ] Circuito completo venda (orçamento→fatura→recibo→liquidação) e compra
+- [ ] Inventário físico com acertos e valorização PCMP
+- [ ] Aging, mailing e monitor de cobranças
+- [ ] Tesouraria real/previsional/orçamental e reconciliação
+- [ ] Integração Gestão→Contabilidade (documentos pré-definidos, IVA)</p>
+<p><strong>Configuração</strong>
+- [ ] Parâmetros gerais e de faturação (os ~20 mais usados)
+- [ ] Utilizadores/grupos/perfis e acessos por operação
+- [ ] Layouts de impressão com QR/ATCUD
+- [ ] RGPD (aviso legal, esquecimento)</p>
+<p><strong>Fiscal</strong>
+- [ ] SAF-T faturação + transporte (webservice e resumido)
+- [ ] ATCUD: comunicação de séries e código de validação
+- [ ] Motivos de isenção M01–M99 e impacto do webservice
+- [ ] Retenções IRS/Imposto Selo; inventário à AT; SDR 2026</p>
+<p><strong>Desenvolvimento</strong>
+- [ ] Escrever um evento Xbase com ObjRecebido e Return .F.
+- [ ] Criar campo/tabela/índice/regra de utilizador
+- [ ] Construir um IDU e ligá-lo a um menu
+- [ ] Análise de utilizador + snapshot + análise multidimensional
+- [ ] Script web C# por URL; monitores
+- [ ] Sincronização EyePeak; PromptFunction/Cegid Pulse</p>
+<p><strong>Operação</strong>
+- [ ] Instalar do zero (SQL + PHC + ODBC + licenças)
+- [ ] Backup/restore, detach/attach, BD de arquivo
+- [ ] Diagnosticar com Análise Interna / Log de Código / log de atividade
+- [ ] Upgrade de versão com validação de personalizações
+- [ ] Plano de performance (índices, desfragmentação, parâmetros)</p>
+<hr />
+<h2 id="cap-14">14. Glossário PHC</h2>
+<table>
+<thead>
+<tr>
+<th>Termo</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cegid PHC Evolution</strong></td>
+<td>ERP desktop+web sucessor do PHC CS (subscrição)</td>
+</tr>
+<tr>
+<td><strong>PHC CS</strong></td>
+<td>Nome histórico da plataforma (Client/Server)</td>
+</tr>
+<tr>
+<td><strong>Gamas</strong></td>
+<td>Corporate / Advanced / Enterprise (níveis funcionais)</td>
+</tr>
+<tr>
+<td><strong>Planos</strong></td>
+<td>Standard / Plus / Advanced / Premium / Ultimate (subscrição Evolution)</td>
+</tr>
+<tr>
+<td><strong>DI / Dossier Interno</strong></td>
+<td>Documento interno parametrizável (orçamentos, encomendas, folhas de obra…) — tabela BO</td>
+</tr>
+<tr>
+<td><strong>FT</strong></td>
+<td>Documentos de Faturação (tabela)</td>
+</tr>
+<tr>
+<td><strong>CL / CL2</strong></td>
+<td>Clientes / Clientes-Outros Dados (tabelas)</td>
+</tr>
+<tr>
+<td><strong>RE</strong></td>
+<td>Recibos (tabela)</td>
+</tr>
+<tr>
+<td><strong>ref / stamp</strong></td>
+<td>Identificador do registo / campo de versão-concorrência</td>
+</tr>
+<tr>
+<td><strong>Xbase</strong></td>
+<td>Linguagem de personalização desktop (sintaxe VFP)</td>
+</tr>
+<tr>
+<td><strong>ObjRecebido</strong></td>
+<td>Objeto disponível nos eventos (Janela, Objecto, MeusDados)</td>
+</tr>
+<tr>
+<td><strong>IDU / Ecrãs Personalizados</strong></td>
+<td>Ecrãs desenhados pelo utilizador</td>
+</tr>
+<tr>
+<td><strong>Framework PHC</strong></td>
+<td>Conjunto de ferramentas de personalização (desktop e web)</td>
+</tr>
+<tr>
+<td><strong>Supervisor</strong></td>
+<td>Menu de administração (framework, tratamento da BD, monitores)</td>
+</tr>
+<tr>
+<td><strong>PHC On</strong></td>
+<td>Acordo anual de atualizações + portal de formação/Calendário PHC</td>
+</tr>
+<tr>
+<td><strong>Comunidade PHC</strong></td>
+<td>Portal de parceiros/clientes (login Nº Cliente + ID Técnico)</td>
+</tr>
+<tr>
+<td><strong>Help Center</strong></td>
+<td>Manuais e artigos públicos (helpcenter.phccs.net)</td>
+</tr>
+<tr>
+<td><strong>Dicionário de Dados</strong></td>
+<td>Consulta da estrutura/relações de todas as tabelas</td>
+</tr>
+<tr>
+<td><strong>Análise Interna</strong></td>
+<td>Log de erros do código de utilizador (desktop)</td>
+</tr>
+<tr>
+<td><strong>SAF-T (PT)</strong></td>
+<td>Ficheiro de auditoria fiscal normalizado (faturação, transporte, inventário)</td>
+</tr>
+<tr>
+<td><strong>ATCUD</strong></td>
+<td>Código único do documento (validação de série + sequencial)</td>
+</tr>
+<tr>
+<td><strong>e-Fatura</strong></td>
+<td>Comunicação de faturas à AT (webservice ou SAF-T)</td>
+</tr>
+<tr>
+<td><strong>CIUS-PT</strong></td>
+<td>Especificação portuguesa de faturação eletrónica (setor público)</td>
+</tr>
+<tr>
+<td><strong>SII / TicketBAI</strong></td>
+<td>Regimes fiscais de Espanha</td>
+</tr>
+<tr>
+<td><strong>SDR</strong></td>
+<td>Sistema de Depósito e Recolha de embalagens (2026)</td>
+</tr>
+<tr>
+<td><strong>PCMP</strong></td>
+<td>Preço de Custo Médio Ponderado (custeio de stock)</td>
+</tr>
+<tr>
+<td><strong>C/C</strong></td>
+<td>Conta corrente</td>
+</tr>
+<tr>
+<td><strong>CEVMC</strong></td>
+<td>Custo das Existências Vendidas e das Mercadorias Consumidas</td>
+</tr>
+<tr>
+<td><strong>XL</strong></td>
+<td>Componente para grandes volumes/centros analíticos (PHC XL)</td>
+</tr>
+<tr>
+<td><strong>EyePeak</strong></td>
+<td>Plataforma de logística/e-commerce que sincroniza com o PHC</td>
+</tr>
+<tr>
+<td><strong>Cegid Pulse</strong></td>
+<td>Ecossistema de IA no ERP (assistente Cris, Smart Tools, PromptFunction)</td>
+</tr>
+<tr>
+<td><strong>Cegid Docs</strong></td>
+<td>Gestão documental/arquivo digital legal na cloud</td>
+</tr>
+<tr>
+<td><strong>PEP</strong></td>
+<td>Cegid PHC Evolution Program (formação/certificação de 140 h da Cegid Academy)</td>
+</tr>
+<tr>
+<td><strong>Snapshots</strong></td>
+<td>Consultas T-SQL guardadas com variáveis (ex.: #stamp#)</td>
+</tr>
+<tr>
+<td><strong>Monitores</strong></td>
+<td>Apresentações sequenciais de dados operacionais</td>
+</tr>
+<tr>
+<td><strong>Front Web</strong></td>
+<td>Extranet web para clientes/fornecedores</td>
+</tr>
+<tr>
+<td><strong>Avenças</strong></td>
+<td>Dossier de faturação recorrente</td>
+</tr>
+<tr>
+<td><strong>Rappel</strong></td>
+<td>Desconto de volume retroativo (cliente/fornecedor)</td>
+</tr>
+<tr>
+<td><strong>Ignios</strong></td>
+<td>Serviço de preenchimento automático de dados de empresa por NIF</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cap-15">15. Fontes e links de referência</h2>
+<p><strong>Oficiais (públicos)</strong>
+- Site Cegid PHC: https://phcsoftware.com/pt — produtos: <code>/pt/cegid-phc-cs</code>, <code>/pt/cegid-phc-evolution</code>, módulo Gestão: <code>/pt/modulos/phc-cs/phc-cs-modulo-phc-cs-gestao</code>
+- <strong>Help Center Cegid PHC CS/Evolution</strong>: https://helpcenter.phccs.net e http://phc.pt/portal (manuais SUG, artigos iDirecto, Novidades)
+  - Novidades da versão (índice): https://www.phc.pt/portal/programs/ewpview.aspx?codigo=pncs&amp;geo=pt&amp;lang=pt-pt
+  - Manual "Eventos" (Xbase/ObjRecebido): http://phc.pt/portal/sug/ptxview.aspx?ptxid=20345536
+  - Manual "Constituição da Tabela de Clientes": https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20344844
+  - Manual "Documentos de Faturação": https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20346102
+  - "Framework PHC CS Web": https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20368282
+  - "O que é o PHC ON": https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20346837
+  - "Dicionário de Dados" (iDirecto): https://www.phc.pt/portal/programs/ewpview.aspx?codigo=IDIR070905
+  - "Faturas com código QR e ATCUD": https://www.phc.pt/portal/programs/ewpview.aspx?codigo=IDIR201007
+  - "Comunicação de Documentos de Transporte à AT via SAF-T": https://www.phcsoftware.com/pt/artigo/a-comunicacao-de-documentos-de-transporte-a-at-via-saf-t-esta-mais-simples
+  - "Como configurar dossiers internos": https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=bg91527ededbdgeb32c597
+  - "Como sincronizar o ERP Cegid PHC Desktop com o EyePeak": https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=!!!5fg%3Ae89ee1bc8gdc96357d
+  - "Desenhar Ecrãs Personalizados": https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20370447
+  - "PHC CS 202501: novidades" (File Storage, Cris/GenAI, descontos web): https://phcsoftware.com/pt/artigo/phcs-cs-novidades-transformar-gestao-2025
+- <strong>Comunidade PHC</strong> (login técnico): https://community.phcsoftware.com
+- <strong>Formação PEP / Cegid Academy</strong>: https://phcsoftware.com/pt/formacao-pep e https://pt.primaverabss.com/pt/pagina/academy-pep/
+- Programa oficial "Certificação PHC CS Desktop Advanced" (PDF): http://www.phc.pt/enews/Conte%C3%BAdo%20Program%C3%A1tico%20Certifica%C3%A7%C3%A3o%20PHC%20CS%20Desktop%20Advanced.pdf
+- Termos de licenciamento (SQL Server 2008R2+): https://phcsoftware.com/pt/phc-cs/termos-e-condicoes-de-licenciamento-utlizacao-phc-cs
+- Parceiros: https://phcsoftware.com/pt/parceiros | Diretoria de parceiros certificados: https://www.phc.pt/portal/programs/ewpview.aspx?codigo=dirpcsx1239
+- Microcredenciação IPT "Software Cegid PHC CS Advanced": https://portal2.ipt.pt/pt/cursos/microcredenciacao/Mc_-_SCPHCCSA/</p>
+<p><strong>Parceiros (PDFs públicos úteis)</strong>
+- Brochura PHC Gestão CS (âmbito funcional): https://web.trimatriz.com/SITE_12/UserFiles/Downloads/PHCGestao.pdf
+- Diferenças entre gamas Corporate vs Advanced (v28): https://www.absinformatica.pt/uploads/cms/20210204173610_Diferencas_entre_Corporate_e_Advanced_PT.pdf
+- Novidades PHC CS v18/v19/v27 (Arentia/phc.pt): https://www.arentia.pt/api/backoffice/library/get?r=/&amp;d=PDFs&amp;f=Listagem_de_Novidades_v18&amp;e=.pdf | http://www.phc.pt/enews/Listagem_de_Novidades_v19.pdf | http://www.phc.pt/enews/Listagem_Novidades_27.pdf
+- Descritivo PHC CS Web: https://microvesa.pt/wp-content/uploads/2020/06/Descritivo_PHC_CS_Web-completo.pdf
+- Manual de Instalação PHC CS Desktop (Scribd): https://pt.scribd.com/document/485370769/Manual-de-Instalacao-PHC-CS-Desktop
+- Análise GO vs Evolution (Sisgarbe, 08/2026): https://sisgarbe.pt/como-escolher-entre-cegid-phc-go-cegid-phc-evolution/
+- Totalsoft — Cegid PHC Evolution (planos/migração): https://totalsoft.pt/landing-page-totalsoft/cegid-phc-evolution.html</p>
+<hr />
+<p><em>Guia compilado em 2026-09-15 a partir de fontes oficiais Cegid PHC e documentação pública de parceiros. Os detalhes finos (listas exatas de parâmetros/campos por versão e gama) devem ser confirmados no Help Center da versão instalada e nos manuais in-app, que são a fonte primária e estão sempre atualizados.</em></p>
+</article>
+</main>
+</div>
+<script>
+(function(){
+  var root=document.documentElement;
+  var saved=(function(){try{return localStorage.getItem('guiaTheme')}catch(e){return null}})();
+  if(saved)root.setAttribute('data-theme',saved);
+  else if(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)root.setAttribute('data-theme','dark');
+  var tb=document.getElementById('theme');
+  function syncTb(){tb.textContent=root.getAttribute('data-theme')==='dark'?'☀️':'🌙'}
+  syncTb();
+  tb.onclick=function(){var d=root.getAttribute('data-theme')==='dark'?'':'dark';if(d)root.setAttribute('data-theme',d);else root.removeAttribute('data-theme');try{localStorage.setItem('guiaTheme',d)}catch(e){} syncTb();};
+  document.getElementById('print').onclick=function(){window.print()};
+  var menu=document.getElementById('menu'),list=document.getElementById('toc');
+  if(menu)menu.onclick=function(){list.classList.toggle('open')};
+  // filtrar índice
+  var q=document.getElementById('q');
+  q.addEventListener('input',function(){
+    var v=q.value.toLowerCase();
+    list.querySelectorAll('.toc').forEach(function(a){a.style.display=a.getAttribute('data-t').indexOf(v)>=0?'':'none'});
+    if(v)list.classList.add('open');
+  });
+  // scrollspy
+  var links=[].slice.call(list.querySelectorAll('.toc'));
+  var byId={};links.forEach(function(a){byId[a.getAttribute('href').slice(1)]=a});
+  var heads=[].slice.call(document.querySelectorAll('article [id^=cap-]'));
+  function onScroll(){
+    var y=window.scrollY+120,cur=heads[0];
+    for(var i=0;i<heads.length;i++){if(heads[i].offsetTop<=y)cur=heads[i]}
+    links.forEach(function(a){a.classList.remove('active')});
+    if(cur&&byId[cur.id])byId[cur.id].classList.add('active');
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  list.addEventListener('click',function(){if(window.innerWidth<=900)list.classList.remove('open')});
+})();
+</script>
+</body>
+</html>

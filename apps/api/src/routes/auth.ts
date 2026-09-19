@@ -213,7 +213,7 @@ import type { Types } from "mongoose";
 import { env } from "../config/env.ts";
 import { PasswordResetToken } from "../models/PasswordResetToken.ts";
 import { sendEmail } from "../services/email.ts";
-import { verifyEmailHtml, resetEmailHtml, welcomeEmailHtml } from "../services/emailTemplates.ts";
+import { verifyEmailHtml, resetEmailHtml } from "../services/emailTemplates.ts";
 import { forgotPasswordSchema, resetPasswordSchema } from "@phc/shared";
 
 function newToken(): { plain: string; hash: string } {

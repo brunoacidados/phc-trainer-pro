@@ -404,22 +404,41 @@ function EnciclopediaTab({ initialQuery }: { initialQuery: string }) {
 /* ============ Guia ============ */
 function GuiaTab() {
   return (
-    <div className="grid gap-4 lg:grid-cols-[220px_1fr]">
-      <nav className="h-fit space-y-1 rounded-lg border border-border bg-card p-3 lg:sticky lg:top-32">
-        {GUIDE.toc.map(([anchor, title]) => (
-          <a
-            key={anchor}
-            href={`#${anchor}`}
-            className="block rounded px-2 py-1 text-xs text-muted-foreground hover:bg-secondary hover:text-foreground"
-          >
-            {title}
-          </a>
-        ))}
-      </nav>
-      <div
-        className="prose-phc max-w-none text-sm leading-relaxed"
-        dangerouslySetInnerHTML={{ __html: GUIDE.html }}
-      />
+    <div className="space-y-3">
+      <div className="flex flex-wrap gap-2">
+        <a
+          href="/guia-tecnico-expert.html"
+          target="_blank"
+          rel="noreferrer"
+          className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+        >
+          📖 Abrir como página autónoma (HTML)
+        </a>
+        <a
+          href="/guia-tecnico-expert.html"
+          download
+          className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+        >
+          ⬇ Baixar página HTML (offline)
+        </a>
+      </div>
+      <div className="grid gap-4 lg:grid-cols-[220px_1fr]">
+        <nav className="h-fit space-y-1 rounded-lg border border-border bg-card p-3 lg:sticky lg:top-32">
+          {GUIDE.toc.map(([anchor, title]) => (
+            <a
+              key={anchor}
+              href={`#${anchor}`}
+              className="block rounded px-2 py-1 text-xs text-muted-foreground hover:bg-secondary hover:text-foreground"
+            >
+              {title}
+            </a>
+          ))}
+        </nav>
+        <div
+          className="prose-phc max-w-none text-sm leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: GUIDE.html }}
+        />
+      </div>
     </div>
   );
 }
@@ -750,9 +769,17 @@ function RecursosTab() {
   const { canInstall, promptInstall, installed } = usePwaInstall();
   const itens = [
     {
+      ico: "📖",
+      t: "Guia do Técnico Expert (página HTML)",
+      d: "O guia completo de 15 capítulos como página web autónoma — lê-se em qualquer navegador, offline, com índice, pesquisa e impressão. Não precisa de leitor de Markdown.",
+      href: "/guia-tecnico-expert.html",
+      btn: "📖 Abrir página",
+      external: true,
+    },
+    {
       ico: "📄",
-      t: "Guia do Técnico Expert (Markdown)",
-      d: "O guia completo de 15 capítulos em .md para ler offline / no seu editor.",
+      t: "Guia (Markdown, p/ editores)",
+      d: "A mesma obra em .md, para quem quer editar/copiar no editor.",
       href: "/guia-expert-phc-gestao-evolution.md",
       btn: "⬇ Baixar .md",
     },
