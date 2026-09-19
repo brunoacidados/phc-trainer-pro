@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { User } from "../models/User.ts";
-import { Team } from "../models/Team.ts";
 import { getOrCreateProgress } from "../models/Progress.ts";
 import { Assignment } from "../models/Assignment.ts";
 import { requireUser } from "../middleware/auth.ts";

@@ -5,7 +5,6 @@ import { Progress } from "../models/Progress.ts";
 import { RefreshToken } from "../models/RefreshToken.ts";
 import { requireUser, requireAdmin } from "../middleware/auth.ts";
 import { forbidden, notFound } from "../lib/errors.ts";
-import { summarizeProgress } from "@phc/shared";
 
 export const adminRouter = Router();
 adminRouter.use(requireUser, requireAdmin);

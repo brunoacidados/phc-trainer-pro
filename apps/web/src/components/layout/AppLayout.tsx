@@ -64,7 +64,6 @@ function OnboardGate() {
 
 function EmailVerifyBanner() {
   const user = useSession((s) => s.user);
-  const refreshMe = useSession((s) => s.refreshMe);
   if (!user || user.emailVerified) return null;
   return (
     <Alert variant="warning" className="mb-4 flex flex-wrap items-center justify-between gap-2">
