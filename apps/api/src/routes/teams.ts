@@ -9,6 +9,7 @@ import {
 import { conflict, forbidden, notFound } from "../lib/errors.ts";
 import { User } from "../models/User.ts";
 import { Team, generateInviteCode, type TeamDoc } from "../models/Team.ts";
+import { RefreshToken } from "../models/RefreshToken.ts";
 import { Progress, getOrCreateProgress } from "../models/Progress.ts";
 import { decryptSecret, encryptSecret } from "../lib/crypto.ts";
 import { globalAiKeys } from "../config/env.ts";
@@ -224,4 +225,77 @@ teamsRouter.put("/:id/ai-settings", validate(teamAiSettingsSchema), async (req, 
   if (order) team.aiOrder = order;
   await team.save();
   res.json({ ok: true, providers: providersStatus(resolveTeamKeys(team), `team:${team._id}`) });
+});
+
+/* ================= gestão de membros (dono/formador) ================= */
+import { toPublicUser, type UserDoc } from "../models/User.ts";
+
+async function loadTeamForOwner(req: import("express").Request) {
+  const team = await Team.findById(req.params.id);
+  if (!team) throw notFound("Equipa não encontrada.");
+  if (String(team.ownerId) !== String(req.auth!.sub) && req.auth!.role !== "admin") {
+    throw forbidden("Apenas o dono da equipa (ou admin).");
+  }
+  return team;
+}
+
+/** GET /api/teams/:id/members — membros c/ resumo de progresso */
+teamsRouter.get("/:id/members", requireUser, async (req, res) => {
+  const team = await loadTeamForOwner(req);
+  const users = await User.find({ teamId: team._id }).sort({ name: 1 });
+  const docs = await Progress.find({ userId: { $in: users.map((u) => u._id) } });
+  const byUser = new Map(docs.map((d) => [String(d.userId), d]));
+  res.json({
+    members: users.map((u) => ({
+      user: toPublicUser(u as UserDoc),
+      summary: byUser.has(String(u._id))
+        ? summarizeProgress(byUser.get(String(u._id))!.state, u.lastActiveAt?.toISOString() ?? null)
+        : null,
+    })),
+  });
+});
+
+/** POST /api/teams/:id/members/:userId/remove — tira da equipa */
+teamsRouter.post("/:id/members/:userId/remove", requireUser, async (req, res) => {
+  const team = await loadTeamForOwner(req);
+  const u = await User.findById(req.params.userId);
+  if (!u || String(u.teamId) !== String(team._id)) throw notFound("Membro não pertence à equipa.");
+  if (String(u._id) === String(team.ownerId)) throw forbidden("Não pode remover o dono.");
+  u.teamId = null;
+  if (u.role === "trainer") u.role = "student";
+  await u.save();
+  res.json({ ok: true });
+});
+
+/** POST /api/teams/:id/members/:userId/promote — trainer↔student */
+teamsRouter.post("/:id/members/:userId/promote", requireUser, async (req, res) => {
+  const team = await loadTeamForOwner(req);
+  const u = await User.findById(req.params.userId);
+  if (!u || String(u.teamId) !== String(team._id)) throw notFound("Membro não pertence à equipa.");
+  if (String(u._id) === String(team.ownerId)) throw forbidden("O dono já é formador.");
+  u.role = u.role === "trainer" ? "student" : "trainer";
+  await u.save();
+  res.json({ ok: true, role: u.role });
+});
+
+/** POST /api/teams/:id/members/:userId/group — define turma/grupo */
+teamsRouter.post("/:id/members/:userId/group", requireUser, async (req, res) => {
+  const team = await loadTeamForOwner(req);
+  const u = await User.findById(req.params.userId);
+  if (!u || String(u.teamId) !== String(team._id)) throw notFound("Membro não pertence à equipa.");
+  u.group = String((req.body as { group?: string }).group || "");
+  await u.save();
+  res.json({ ok: true, group: u.group });
+});
+
+/** POST /api/teams/:id/members/:userId/deactivate — desativa membro (dono) */
+teamsRouter.post("/:id/members/:userId/deactivate", requireUser, async (req, res) => {
+  const team = await loadTeamForOwner(req);
+  const u = await User.findById(req.params.userId);
+  if (!u || String(u.teamId) !== String(team._id)) throw notFound("Membro não pertence à equipa.");
+  if (String(u._id) === String(team.ownerId)) throw forbidden("Não pode desativar o dono.");
+  u.deactivated = true;
+  await u.save();
+  await RefreshToken.updateMany({ userId: u._id, revokedAt: null }, { revokedAt: new Date() });
+  res.json({ ok: true });
 });

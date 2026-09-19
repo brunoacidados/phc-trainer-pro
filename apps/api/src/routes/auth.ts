@@ -8,7 +8,7 @@ import {
   updateProfileSchema,
   type AuthResponse,
 } from "@phc/shared";
-import { conflict, unauthorized } from "../lib/errors.ts";
+import { conflict, forbidden, unauthorized } from "../lib/errors.ts";
 import { User, toPublicUser, type UserDoc } from "../models/User.ts";
 import { Team } from "../models/Team.ts";
 import { RefreshToken } from "../models/RefreshToken.ts";
@@ -63,12 +63,28 @@ authRouter.post("/register", validate(registerSchema), async (req, res) => {
   const { name, email, password } = req.body as z.infer<typeof registerSchema>;
   const exists = await User.findOne({ email: email.toLowerCase() });
   if (exists) throw conflict("Já existe uma conta com este e-mail.");
+  const isAdmin = !!env.ADMIN_EMAIL && email.toLowerCase() === env.ADMIN_EMAIL.toLowerCase();
   const user = await User.create({
     name,
     email: email.toLowerCase(),
     passwordHash: await hashPassword(password),
+    role: isAdmin ? "admin" : "student",
+    emailVerifiedAt: isAdmin ? new Date() : null,
   });
   await getOrCreateProgress(user._id);
+  if (!isAdmin) {
+    try {
+      const vt = await createAuthToken(user._id, "verify", 60 * 24);
+      const link = `${env.APP_URL}/verificar?token=${vt}`;
+      await sendEmail(
+        user.email,
+        "Confirme o seu email — PHC Trainer Pro",
+        `<p>Bem-vindo(a), ${user.name}!</p><p>Confirme o seu email para ativar todas as funcionalidades.</p><p>${buttonHtml(link, "Confirmar email")}</p>`,
+      );
+    } catch {
+      /* sem provider de email — continua na mesma */
+    }
+  }
   const session = await issueSession(user, res, String(req.headers["user-agent"] || ""));
   res.status(201).json(session);
 });
@@ -78,6 +94,10 @@ authRouter.post("/login", validate(loginSchema), async (req, res) => {
   const user = await User.findOne({ email: email.toLowerCase() });
   if (!user || !(await verifyPassword(password, user.passwordHash))) {
     throw unauthorized("E-mail ou palavra-passe incorretos.");
+  }
+  if (user.deactivated) throw forbidden("Conta desativada. Contacte o formador/administrador.");
+  if (env.REQUIRE_EMAIL_VERIFICATION && !user.emailVerifiedAt) {
+    throw forbidden("Confirme o seu email antes de entrar (veja a caixa de entrada).");
   }
   user.lastActiveAt = new Date();
   await user.save();
@@ -184,3 +204,100 @@ authRouter.post(
     });
   },
 );
+
+/* ================= P1: recuperação de password + verificação de email ================= */
+import { randomBytes } from "node:crypto";
+import { sha256 } from "../lib/crypto.ts";
+import type { Types } from "mongoose";
+import { env } from "../config/env.ts";
+import { PasswordResetToken } from "../models/PasswordResetToken.ts";
+import { sendEmail, buttonHtml } from "../services/email.ts";
+import {
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from "@phc/shared";
+
+function newToken(): { plain: string; hash: string } {
+  const plain = randomBytes(32).toString("base64url");
+  return { plain, hash: sha256(plain) };
+}
+
+async function createAuthToken(userId: Types.ObjectId | string, kind: "reset" | "verify", ttlMin = 60) {
+  const { plain, hash } = newToken();
+  await PasswordResetToken.create({
+    userId,
+    kind,
+    tokenHash: hash,
+    expiresAt: new Date(Date.now() + ttlMin * 60_000),
+  });
+  return plain;
+}
+
+/** POST /api/auth/forgot-password — envia email c/ link de reset (200 sempre, anti-enumeração) */
+authRouter.post("/forgot-password", validate(forgotPasswordSchema), async (req, res) => {
+  const { email } = req.body as { email: string };
+  const user = await User.findOne({ email: email.toLowerCase() });
+  if (!user || user.deactivated) {
+    res.json({ ok: true, message: "Se existir uma conta com esse email, enviámos um link de recuperação." });
+    return;
+  }
+  const token = await createAuthToken(user._id, "reset", 60);
+  const link = `${env.APP_URL}/resetar?token=${token}`;
+  const r = await sendEmail(
+    user.email,
+    "Recuperar password — PHC Trainer Pro",
+    `<p>Olá ${user.name},</p><p>Pediu para repor a sua password.</p><p>${buttonHtml(link, "Repor password")}</p><p>O link expira em 60 minutos. Se não foi você, ignore.</p>`,
+  );
+  res.json({
+    ok: true,
+    message: "Se existir uma conta com esse email, enviámos um link de recuperação.",
+    ...(r.devToken ? { devToken: r.devToken } : {}),
+  });
+});
+
+/** POST /api/auth/reset-password — valida token e define nova password */
+authRouter.post("/reset-password", validate(resetPasswordSchema), async (req, res) => {
+  const { token, newPassword } = req.body as { token: string; newPassword: string };
+  const doc = await PasswordResetToken.findOne({ tokenHash: sha256(token), kind: "reset" });
+  if (!doc || doc.usedAt || doc.expiresAt < new Date()) throw unauthorized("Link inválido ou expirado. Peça um novo.");
+  const user = await User.findById(doc.userId);
+  if (!user) throw unauthorized("Utilizador não encontrado.");
+  user.passwordHash = await hashPassword(newPassword);
+  await user.save();
+  doc.usedAt = new Date();
+  await doc.save();
+  // segurança: revoga todas as sessões ativas
+  await RefreshToken.updateMany({ userId: user._id, revokedAt: null }, { revokedAt: new Date() });
+  res.json({ ok: true, message: "Password reposta. Entre com a nova password." });
+});
+
+/** GET /api/auth/verify/:token — confirma o email */
+authRouter.get("/verify/:token", async (req, res) => {
+  const doc = await PasswordResetToken.findOne({ tokenHash: sha256(req.params.token), kind: "verify" });
+  if (!doc || doc.usedAt || doc.expiresAt < new Date()) throw unauthorized("Link de verificação inválido ou expirado.");
+  const user = await User.findById(doc.userId);
+  if (!user) throw unauthorized("Utilizador não encontrado.");
+  user.emailVerifiedAt = new Date();
+  await user.save();
+  doc.usedAt = new Date();
+  await doc.save();
+  res.json({ ok: true, message: "Email verificado com sucesso!" });
+});
+
+/** POST /api/auth/resend-verification — reenvia email de verificação (autenticado) */
+authRouter.post("/resend-verification", requireUser, async (req, res) => {
+  const user = await User.findById(req.auth!.sub);
+  if (!user) throw unauthorized();
+  if (user.emailVerifiedAt) {
+    res.json({ ok: true, message: "Este email já está verificado." });
+    return;
+  }
+  const token = await createAuthToken(user._id, "verify", 60 * 24);
+  const link = `${env.APP_URL}/verificar?token=${token}`;
+  const r = await sendEmail(
+    user.email,
+    "Confirme o seu email — PHC Trainer Pro",
+    `<p>Olá ${user.name},</p><p>Confirme o seu email para ativar todas as funcionalidades.</p><p>${buttonHtml(link, "Confirmar email")}</p>`,
+  );
+  res.json({ ok: true, message: "Email de verificação enviado.", ...(r.devToken ? { devToken: r.devToken } : {}) });
+});

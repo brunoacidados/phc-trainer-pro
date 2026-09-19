@@ -11,6 +11,7 @@ import {
   Settings,
   Target,
   Users,
+  ShieldAlert,
 } from "lucide-react";
 import { BELTS } from "@phc/content";
 import { currentBelt, xpTotal } from "@phc/shared";
@@ -58,6 +59,7 @@ function SyncIndicator() {
 
 export function AppHeader() {
   const { user, logout } = useSession();
+  const nav = user?.role === "admin" ? [...NAV, { to: "/admin", label: "Admin", icon: ShieldAlert }] : NAV;
   const state = useProgress((s) => s.state);
   const navigate = useNavigate();
 
@@ -137,7 +139,7 @@ export function AppHeader() {
       </div>
 
       <nav className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 pb-2">
-        {NAV.map((n) => (
+        {nav.map((n) => (
           <NavLink
             key={n.to}
             to={n.to}

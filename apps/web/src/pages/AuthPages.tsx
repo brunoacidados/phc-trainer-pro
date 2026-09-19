@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { apiFetch } from "../lib/api.ts";
+import { Dialog } from "../components/ui/dialog.tsx";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -51,6 +53,10 @@ function Shell({
 
 export function LoginPage() {
   const login = useSession((s) => s.login);
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotMsg, setForgotMsg] = useState<string | null>(null);
+  const [forgotBusy, setForgotBusy] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [serverError, setServerError] = useState<string | null>(null);
@@ -104,12 +110,37 @@ export function LoginPage() {
         <Button type="submit" className="w-full" loading={isSubmitting}>
           Entrar
         </Button>
-        <p className="text-center text-sm text-muted-foreground">
-          Ainda sem conta?{" "}
-          <Link className="text-info hover:underline" to="/register">
-            Criar conta
-          </Link>
-        </p>
+        <div className="flex items-center justify-between text-sm">
+          <button className="cursor-pointer text-info hover:underline" onClick={() => { setForgotOpen(true); setForgotMsg(null); }}>
+            Esqueci-me da password
+          </button>
+          <Link className="text-info hover:underline" to="/register">Criar conta</Link>
+        </div>
+        <Dialog open={forgotOpen} onClose={() => setForgotOpen(false)} title="🔑 Recuperar password">
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">Indique o seu email; enviaremos um link de recuperação.</p>
+            {forgotMsg && <Alert variant="success">{forgotMsg}</Alert>}
+            <Input type="email" placeholder="o-seu@email" value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} />
+            <Button
+              className="w-full"
+              loading={forgotBusy}
+              disabled={!forgotEmail}
+              onClick={async () => {
+                setForgotBusy(true);
+                try {
+                  const r = await apiFetch<{ message: string }>("/api/auth/forgot-password", { method: "POST", body: { email: forgotEmail }, noRetry: true });
+                  setForgotMsg(r.message);
+                } catch (e) {
+                  setForgotMsg((e as Error).message);
+                } finally {
+                  setForgotBusy(false);
+                }
+              }}
+            >
+              Enviar link
+            </Button>
+          </div>
+        </Dialog>
       </form>
     </Shell>
   );

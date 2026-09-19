@@ -3,6 +3,10 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSession } from "../../stores/session.ts";
 import { useProgress } from "../../stores/progress.ts";
 import { AppFooter, AppHeader } from "./AppHeader.tsx";
+import { Alert } from "../ui/alert.tsx";
+import { Button } from "../ui/button.tsx";
+import { apiFetch } from "../../lib/api.ts";
+import { toast } from "../ui/toast.tsx";
 import { Spinner } from "../ui/misc.tsx";
 import { Toaster } from "../ui/toast.tsx";
 import { Mascot } from "../mascot/Mascot.tsx";
@@ -58,6 +62,31 @@ function OnboardGate() {
   return null;
 }
 
+function EmailVerifyBanner() {
+  const user = useSession((s) => s.user);
+  const refreshMe = useSession((s) => s.refreshMe);
+  if (!user || user.emailVerified) return null;
+  return (
+    <Alert variant="warning" className="mb-4 flex flex-wrap items-center justify-between gap-2">
+      <span>✉️ Confirme o seu email ({user.email}) para ativar todas as funcionalidades.</span>
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={async () => {
+          try {
+            const r = await apiFetch<{ message: string }>("/api/auth/resend-verification", { method: "POST" });
+            toast.success(r.message);
+          } catch (e) {
+            toast.error((e as Error).message);
+          }
+        }}
+      >
+        Reenviar email
+      </Button>
+    </Alert>
+  );
+}
+
 export function AppLayout() {
   useEffect(() => initNetworkListeners(), []);
   const refreshSync = useSync((s) => s.refresh);
@@ -80,6 +109,7 @@ export function AppLayout() {
     <div className="flex min-h-screen flex-col bg-background">
       <AppHeader />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">
+        <EmailVerifyBanner />
         <Outlet />
       </main>
       <AppFooter />

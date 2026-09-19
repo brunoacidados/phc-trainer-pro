@@ -6,7 +6,7 @@ import { sha256 } from "./crypto.ts";
 
 export interface AccessClaims {
   sub: string;
-  role: "student" | "trainer";
+  role: "student" | "trainer" | "admin";
   teamId: string | null;
 }
 

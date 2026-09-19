@@ -44,6 +44,12 @@ export async function requireUser(req: Request, _res: Response, next: NextFuncti
   next();
 }
 
+/** só admin global */
+export function requireAdmin(req: Request, _res: Response, next: NextFunction): void {
+  if (req.auth?.role !== "admin") throw forbidden("Apenas administradores.");
+  next();
+}
+
 /** só formador (dono de equipa) */
 export function requireTrainer(req: Request, _res: Response, next: NextFunction): void {
   if (req.auth?.role !== "trainer") throw forbidden("Apenas formadores podem executar esta ação.");
