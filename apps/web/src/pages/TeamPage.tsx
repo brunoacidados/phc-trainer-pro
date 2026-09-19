@@ -137,6 +137,16 @@ function NoTeam({ onDone }: { onDone: () => Promise<void> }) {
   );
 }
 
+function friendlyProviderError(r: { httpStatus?: number; error?: string }): string {
+  const st = r.httpStatus;
+  if (st === 402) return "Sem saldo/crédito nesta conta — carregue saldo ou remova a chave.";
+  if (st === 401) return "Chave inválida p/ este endpoint — confirme a base (AI_BASE_*) ou a chave.";
+  if (st === 403) return "Acesso negado/verificação pendente no fornecedor (ex.: confirmação telegram).";
+  if (st === 429) return "Limite de pedidos atingido — o router faz backoff automático; tente mais tarde.";
+  if (!st) return "Sem rede ou resposta vazia do fornecedor.";
+  return r.error || `HTTP ${st}`;
+}
+
 function TeamView({
   teamId,
   isOwner,
@@ -371,12 +381,8 @@ function TeamView({
                           {testResults[p.id].model ? ` · ${testResults[p.id].model}` : ""}
                         </span>
                       ) : (
-                        <span className="text-destructive">
-                          ✘{" "}
-                          {testResults[p.id].httpStatus
-                            ? `HTTP ${testResults[p.id].httpStatus} · `
-                            : ""}
-                          {testResults[p.id].error}
+                        <span className="text-destructive" title={testResults[p.id].error}>
+                          ✘ {friendlyProviderError(testResults[p.id])}
                         </span>
                       )}
                     </div>

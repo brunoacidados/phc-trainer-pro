@@ -133,3 +133,20 @@ describe("testOneProvider", () => {
     expect(r.httpStatus).toBe(401);
   });
 });
+
+describe("ordem e fallback", () => {
+  it("bynara é sempre o último da ordem", async () => {
+    const { defaultOrder } = await import("../src/services/providers.ts");
+    const o = defaultOrder();
+    expect(o[o.length - 1]).toBe("bynara");
+  });
+  it("code prefere mistral/nvidia/openrouter no início", async () => {
+    const { routeChat } = await import("../src/services/aiRouter.ts");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({ ok: true, status: 200, json: async () => ({ choices: [{ message: { content: "code" } }] }), text: async () => "" }) as unknown as globalThis.Response),
+    );
+    const r = await routeChat({ scope: "t", keys: { mistral: "m", groq: "g" }, messages: [{ role: "user", content: "sql" }], code: true });
+    expect(["mistral", "nvidia", "openrouter"]).toContain(r.provider);
+  });
+});

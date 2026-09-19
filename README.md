@@ -86,7 +86,8 @@ Abra http://localhost:5173 → **Criar conta** → **Equipa** → _crie a equipa
 ✅ **Fase 3 concluída** (deploy blueprint/Docker/Vercel · E2E no CI · convite por link · Sentry · hardening)
 ✅ **Fase 4 concluída** (PWA/offline na v6 · fila de sync · banner de migração no legado via `migrate.json` · corte preparado)
 ✅ **Fase 5 concluída** (Command Palette · página Progresso c/ heatmap+gráficos+conquistas+provas · IA streaming · chat persistente · **RAG semântico**)
-**Resta (só o dono do projeto):** deploy já feito ✅ · **seed de RAG (opcional, 1 comando)** · piloto · corte — checklist em **`FAZER-DEPOIS.md`**.
+✅ **v6.3.0 — Robustez+Formador+UX**: recuperação de password (Resend) · verificação de email · admin global · gestão de membros · leaderboard+CSV · drill-down · atribuições c/ prazo · notificações · tema claro/escuro · PWA install · avisos de provider · a11y
+**Resta (só o dono do projeto):** seed de RAG (opcional, 1 comando) · arrumar chaves 402/401/403 · piloto · corte — checklist em **`FAZER-DEPOIS.md`**.
 
 ### 📄 Licença
 

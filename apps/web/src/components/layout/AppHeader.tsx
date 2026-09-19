@@ -23,6 +23,9 @@ import { Button } from "../ui/button.tsx";
 import { cn } from "../../lib/utils.ts";
 import { useSync } from "../../stores/sync.ts";
 import { NotificationBell } from "./NotificationBell.tsx";
+import { useTheme } from "../../stores/theme.ts";
+import { usePwaInstall } from "../../hooks/usePwaInstall.ts";
+import { Download, Moon, Sun } from "lucide-react";
 
 const NAV = [
   { to: "/", label: "Jornada", icon: Target, end: true },
@@ -60,6 +63,9 @@ function SyncIndicator() {
 
 export function AppHeader() {
   const { user, logout } = useSession();
+  const theme = useTheme((s) => s.theme);
+  const toggleTheme = useTheme((s) => s.toggle);
+  const { canInstall, promptInstall } = usePwaInstall();
   const nav = user?.role === "admin" ? [...NAV, { to: "/admin", label: "Admin", icon: ShieldAlert }] : NAV;
   const state = useProgress((s) => s.state);
   const navigate = useNavigate();
@@ -101,6 +107,14 @@ export function AppHeader() {
             <kbd className="ml-1.5 hidden rounded border border-border px-1 text-[10px] text-muted-foreground md:inline">
               ⌘K
             </kbd>
+          </Button>
+          {canInstall && (
+            <Button variant="outline" size="sm" title="Instalar aplicação" onClick={() => void promptInstall()}>
+              <Download className="h-4 w-4" />
+            </Button>
+          )}
+          <Button variant="ghost" size="icon" title={theme === "dark" ? "Tema claro" : "Tema escuro"} onClick={toggleTheme}>
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </Button>
           <NotificationBell />
           <SyncIndicator />

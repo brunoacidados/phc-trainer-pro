@@ -107,8 +107,9 @@ export function AppLayout() {
   }, [setPalette]);
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      <a href="#main" className="skip-link">Saltar para o conteúdo</a>
       <AppHeader />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">
+      <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">
         <EmailVerifyBanner />
         <Outlet />
       </main>

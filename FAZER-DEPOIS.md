@@ -7,6 +7,11 @@
 
 ---
 
+## ✅ Já implementado (v6.1–6.3)
+- Recuperação de password + verificação de email + admin + gestão de membros
+- Leaderboard/CSV, drill-down, atribuições c/ prazo, notificações, grupos
+- Tema claro/escuro, PWA install, avisos de provider, a11y
+
 ## 🔴 1. URGENTE (2 min) — Rodar o token do GitHub
 
 Você colou um token (`ghp_…`) no chat com a IA. Tokens em chats devem ser considerados comprometidos.

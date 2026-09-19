@@ -2,7 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 /* Tema escuro PHC Trainer Pro — paleta herdada do app legado (#0d1220 / #f5a623) */
-@theme inline {
+@theme {
   --color-background: #0d1220;
   --color-foreground: #e8ecf6;
   --color-card: #161e31;
@@ -395,4 +395,63 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
   gap: 10px;
+}
+
+/* ---------- Tema claro (override runtime das vars) ---------- */
+[data-theme="light"] {
+  --color-background: #f6f7fb;
+  --color-foreground: #1a2233;
+  --color-card: #ffffff;
+  --color-card-foreground: #1a2233;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1a2233;
+  --color-primary: #d98324;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #e8ebf3;
+  --color-secondary-foreground: #2a3245;
+  --color-muted: #eceff5;
+  --color-muted-foreground: #5b6780;
+  --color-accent: #b06a10;
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #c0392b;
+  --color-info: #1f6fd0;
+  --color-border: #d5dae6;
+  --color-input: #d5dae6;
+  --color-ring: #d98324;
+}
+[data-theme="light"] body,
+[data-theme="light"] {
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+[data-theme="light"] .chatTxt { background: #eef1f7; border-color: #d5dae6; color: #1a2233; }
+[data-theme="light"] .chatMsg.user .chatTxt { background: #fbeedd; border-color: #e0c9a8; }
+[data-theme="light"] .origCard, [data-theme="light"] .focusCard { background: #f2f4fa; border-color: #d5dae6; }
+[data-theme="light"] .origText { color: #44506a; }
+[data-theme="light"] .expText { color: #1a2233; }
+[data-theme="light"] .mascotBubble { background: #ffffff; color: #1a2233; }
+[data-theme="light"] .prose-phc { --tw-prose-body: #33405a; --tw-prose-headings: #b06a10; --tw-prose-links: #1f6fd0; --tw-prose-code: #177245; --tw-prose-pre-bg: #eef1f7; --tw-prose-pre-code: #177245; --tw-prose-th-borders: #d5dae6; --tw-prose-td-borders: #d5dae6; }
+[data-theme="light"] .prose-phc th { background: #e8ebf3; color: #b06a10; }
+[data-theme="light"] .prose-phc pre, [data-theme="light"] .prose-phc code { background: #eef1f7; border-color: #d5dae6; }
+
+/* ---------- A11y: foco visível + skip-link ---------- */
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 2000;
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  padding: 8px 14px;
+  border-radius: 0 0 8px 0;
+  font-weight: 600;
+}
+.skip-link:focus { left: 0; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }

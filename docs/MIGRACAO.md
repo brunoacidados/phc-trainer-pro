@@ -64,7 +64,11 @@
    conquistas+provas) · IA streaming (SSE) · chat persistente · **RAG semântico** (embeddings +
    busca vetorial, seed 1 comando, fallback gracioso).
 
-6. **Corte final (depende do dono do projeto):** checklist completa em **`FAZER-DEPOIS.md`**
+7. **v6.3.0 (FEITA):** P1 robustez (recuperação password Resend, verificação email, admin, gestão membros) +
+   P2 formador (leaderboard/CSV, drill-down, atribuições c/ prazo, notificações, grupos) + P3 UX
+   (avisos de provider, tema claro/escuro, PWA install, a11y, +testes router).
+
+8. **Corte final (depende do dono do projeto):** checklist completa em **`FAZER-DEPOIS.md`**
    (deploy ✅ → [seed RAG opcional] → piloto → ativar banner → desligar Pages / mover raiz para `legacy/`).
 
 ## Como voltar a extrair conteúdo do legado
