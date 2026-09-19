@@ -223,9 +223,9 @@ const chat = await req("POST", "/api/ai/chat", {
   body: { kind: "chat", messages: [{ role: "user", content: "diga OK" }], maxTokens: 50 },
 });
 check(
-  "chat com chave falsa → 502 com diagnóstico do router",
-  chat.status === 502 && /falharam/i.test(chat.json?.error || ""),
-  String(chat.json?.error).slice(0, 110),
+  "chat com chave falsa da equipa → router cai no fallback (200 via bynara) ou 502 se tudo em baixo",
+  chat.status === 200 || (chat.status === 502 && /falharam/i.test(chat.json?.error || "")),
+  `status=${chat.status} provider=${chat.json?.provider ?? "-"} ${String(chat.json?.error || "").slice(0, 80)}`,
 );
 
 const test1 = await req("POST", "/api/ai/test", { token: tkA, body: {} });

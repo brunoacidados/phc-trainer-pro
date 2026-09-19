@@ -1,6 +1,6 @@
 {
   "name": "phc-trainer-pro",
-  "version": "6.0.0-alpha.7",
+  "version": "6.0.0-alpha.8",
   "private": true,
   "description": "PHC Trainer Pro — plataforma multiutilizador de formação prática em Cegid PHC Evolution (monorepo pnpm)",
   "type": "module",

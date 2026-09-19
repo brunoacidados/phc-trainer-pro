@@ -13,7 +13,7 @@ import { chatRouter } from "./routes/chat.ts";
 import { metaRouter } from "./routes/meta.ts";
 import { errorHandler, notFoundHandler } from "./middleware/error.ts";
 
-export const APP_VERSION = "6.0.0-alpha.7";
+export const APP_VERSION = "6.0.0-alpha.8";
 
 export function createApp(): express.Express {
   const app = express();

@@ -24,9 +24,9 @@ import {
   providersStatus,
   testAllProviders,
   testOneProvider,
-  DEFAULT_ORDER,
 } from "../services/aiRouter.ts";
 import { resolveTeamKeys } from "./teams.ts";
+import { defaultOrder, envKeysMap, getRegistry, probeProvider } from "../services/providers.ts";
 import { semanticSearch, ragContextBlock, ragStats } from "../services/rag.ts";
 import { elevenlabsTts, geminiTts, groqTts } from "../services/tts.ts";
 import { globalAiKeys } from "../config/env.ts";
@@ -36,10 +36,11 @@ aiRouter.use(requireUser);
 
 async function resolveKeysAndOrder(teamId: string | null, userId: string) {
   const team = teamId ? await Team.findById(teamId) : null;
-  const keys = resolveTeamKeys(team);
+  // env genérico (custom+bynara) < env majors (globalAiKeys) < team (cifradas)
+  const keys = { ...envKeysMap(), ...globalAiKeys, ...resolveTeamKeys(team) };
   return {
     keys,
-    order: team?.aiOrder?.length ? team.aiOrder : DEFAULT_ORDER,
+    order: team?.aiOrder?.length ? team.aiOrder : defaultOrder(),
     scope: team ? `team:${team._id}` : `user:${userId}`,
   };
 }
@@ -243,6 +244,26 @@ aiRouter.post("/test", validate(aiTestSchema), async (req, res) => {
   const ok = results.filter((r) => r.ok).length;
   const withKey = results.filter((r) => r.status !== "sem-chave").length;
   res.json({ ok, tested: results.length, withKey, results });
+});
+
+/**
+ * GET /api/ai/discover — diagnóstico rigoroso: para cada provider, testa a base
+ * (GET /models) e lista modelos disponíveis. Ajuda a garantir que cada chave está
+ * a ser usada no endpoint certo (e a corrigir via AI_BASE_ / AI_MODEL_ sem redeploy).
+ */
+aiRouter.get("/discover", async (req, res) => {
+  const { keys } = await resolveKeysAndOrder(req.auth!.teamId, req.auth!.sub);
+  const out = [];
+  for (const p of getRegistry()) {
+    const key = keys[p.id] || "";
+    if (!key) {
+      out.push({ id: p.id, base: p.base ?? null, hasKey: false, hasModels: false, models: [] });
+      continue;
+    }
+    const d = await probeProvider(p, key);
+    out.push({ id: p.id, base: d.base, hasKey: true, hasModels: d.hasModels, models: d.models });
+  }
+  res.json({ providers: out });
 });
 
 /** GET /api/ai/rag — estado da base de conhecimento semântica (chunks por origem) */

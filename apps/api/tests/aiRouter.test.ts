@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { DEFAULT_ORDER, __test, routeChat } from "../src/services/aiRouter.ts";
+import { __test, routeChat } from "../src/services/aiRouter.ts";
+import { defaultOrder } from "../src/services/providers.ts";
 
 const KEYS = {
   groq: "gsk_teste",
@@ -58,7 +59,12 @@ describe("routeChat", () => {
     expect(__test.isHealthy("team:t2", "groq")).toBe(false);
   });
 
-  it("sem chaves → 502 com diagnóstico", async () => {
+  it("sem chaves (e fallback a falhar) → 502 com diagnóstico", async () => {
+    // força TODOS os endpoints (incl. o fallback Bynara) a falhar p/ isolar o caso "sem chaves"
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({ ok: false, status: 502, json: async () => ({}), text: async () => "bad gateway" }) as unknown as globalThis.Response),
+    );
     await expect(routeChat({ scope: "team:t3", keys: {}, messages: msgs })).rejects.toMatchObject({
       status: 502,
     });
@@ -74,8 +80,8 @@ describe("routeChat", () => {
   });
 
   it("ordem por omissão começa nos rápidos", () => {
-    expect(DEFAULT_ORDER[0]).toBe("groq");
-    expect(DEFAULT_ORDER).toContain("nvidia");
+    expect(defaultOrder()[0]).toBe("groq");
+    expect(defaultOrder()).toContain("nvidia");
   });
 });
 

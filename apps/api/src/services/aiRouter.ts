@@ -1,252 +1,100 @@
 /**
- * Auto-router de IA no servidor (porta do router v5.x do legado).
- * Vantagem sobre o navegador: sem problemas de CORS (NVIDIA funciona direta)
- * e chaves guardadas no servidor (equipa) — nunca expostas ao cliente.
+ * Auto-router de IA no servidor (multi-fornecedor, com fallback).
+ * - Providers: 6 "majors" + genéricos auto-detetados por env + Bynara (último).
+ * - Backoff exponencial em 429 e circuit-breaker por falhas consecutivas:
+ *   não martela fornecedores limitados/quebrados (protege limites e respostas).
+ * - Streaming SSE com fallback apenas ANTES do 1º token.
  */
-import { AI_PROVIDERS, type AiProviderDef } from "@phc/content";
+import { type AiProviderDef } from "@phc/content";
 import { globalAiKeys, openRouterModel } from "../config/env.ts";
 import { ApiError } from "../lib/errors.ts";
+import {
+  BYNARA_FALLBACK_KEY,
+  BYNARA_ID,
+  defaultOrder,
+  getProvider,
+  getRegistry,
+  resolveModel,
+  type Provider,
+} from "./providers.ts";
 
-/** ordem por omissão: rápidos primeiro; NVIDIA já funciona direta no servidor */
-export const DEFAULT_ORDER = ["groq", "gemini", "nvidia", "mistral", "cerebras", "openrouter"];
-/** preferência para geração de código (v5.3: GLM prioritário) */
+/** preferência para geração de código (modelos fortes a código primeiro) */
 const CODE_PREF = ["nvidia", "mistral"];
 
 interface Cooldown {
   until: number;
   st: number;
 }
-
-/** cooldowns por âmbito (equipa/utilizador) + fornecedor */
 const cooldowns = new Map<string, Cooldown>();
+const failStreak = new Map<string, number>();
 
-function cdKey(scope: string, id: string): string {
+function cdKey(scope: string, id: string) {
   return `${scope}:${id}`;
 }
-
 function isHealthy(scope: string, id: string): boolean {
   const c = cooldowns.get(cdKey(scope, id));
   return !(c && c.until > Date.now());
 }
-
+const CAP_MS = 60 * 60_000;
 function markFail(scope: string, id: string, status: number): void {
-  const cd =
-    status === 402 || status === 401 || status === 403
-      ? 3 * 3600_000
-      : status === 429
-        ? 3 * 60_000
-        : 90_000;
-  cooldowns.set(cdKey(scope, id), { until: Date.now() + cd, st: status });
+  const k = cdKey(scope, id);
+  const streak = (failStreak.get(id) ?? 0) + 1;
+  failStreak.set(id, streak);
+  let cd: number;
+  if (status === 401 || status === 402 || status === 403) cd = 3 * 3600_000;
+  else if (status === 429) cd = Math.min(CAP_MS, 3 * 60_000 * 2 ** (streak - 1)); // backoff exponencial
+  else cd = Math.min(10 * 60_000, 90_000 * streak);
+  if (streak >= 4) cd = Math.max(cd, 30 * 60_000); // circuit-breaker
+  cooldowns.set(k, { until: Date.now() + cd, st: status });
 }
-
 function markOk(scope: string, id: string): void {
   cooldowns.delete(cdKey(scope, id));
+  failStreak.delete(id);
 }
 
 export interface RouterInput {
-  /** âmbito para cooldowns (ex.: team:<id> ou user:<id>) */
   scope: string;
-  /** chaves resolvidas (equipa → env), por fornecedor */
   keys: Record<string, string>;
   order?: string[];
   messages: { role: string; content: string }[];
   maxTokens?: number;
   code?: boolean;
 }
-
 export interface RouterResult {
   text: string;
   provider: string;
 }
 
 function orderFor(input: RouterInput): string[] {
-  const base = input.order?.length ? [...input.order] : [...DEFAULT_ORDER];
+  const registryIds = new Set(getRegistry().map((p) => p.id));
+  let base = input.order?.length ? input.order.filter((x) => registryIds.has(x)) : defaultOrder();
   if (input.code) {
     const head = CODE_PREF.filter((x) => base.includes(x));
-    const tail = base.filter((x) => !head.includes(x));
-    return [...head, ...tail];
+    base = [...head, ...base.filter((x) => !head.includes(x))];
   }
+  // Bynara SEMPRE último (fallback de último recurso)
+  base = [...base.filter((x) => x !== BYNARA_ID), BYNARA_ID];
   return base;
 }
 
-async function callProvider(
-  def: AiProviderDef,
-  key: string,
-  messages: RouterInput["messages"],
-  maxTokens: number,
-  code: boolean,
-): Promise<string> {
-  let model = def.model;
-  if (def.id === "openrouter") model = openRouterModel;
-  if (code && def.codeModel) model = def.codeModel;
-  if (!model) throw Object.assign(new Error(`${def.nome}: sem modelo`), { status: 0 });
-
-  let r: globalThis.Response;
-  if (def.type === "gemini") {
-    const sys: string[] = [];
-    const turns: { role: "user" | "model"; parts: { text: string }[] }[] = [];
-    for (const m of messages) {
-      if (m.role === "system") sys.push(m.content);
-      else
-        turns.push({
-          role: m.role === "assistant" ? "model" : "user",
-          parts: [{ text: String(m.content) }],
-        });
-    }
-    const body: Record<string, unknown> = {
-      contents: turns,
-      generationConfig: { maxOutputTokens: Math.max(1024, maxTokens * 2), temperature: 0.7 },
-    };
-    if (sys.length) body.systemInstruction = { parts: [{ text: sys.join("\n") }] };
-    r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-      {
-        method: "POST",
-        headers: { "x-goog-api-key": key, "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      },
-    );
-  } else {
-    const headers: Record<string, string> = {
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-    };
-    if (def.id === "openrouter") {
-      headers["HTTP-Referer"] = "https://github.com/brunoacidados/phc-trainer-pro";
-      headers["X-Title"] = "PHC Trainer Pro";
-    }
-    const mt = def.id === "groq" ? Math.max(2048, maxTokens * 2) : maxTokens;
-    r = await fetch(def.url!, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ model, messages, max_tokens: mt, temperature: 0.7 }),
-    });
-  }
-
-  if (!r.ok) {
-    let t = "";
-    try {
-      t = (await r.text()).slice(0, 150);
-    } catch {
-      /* ignora */
-    }
-    throw Object.assign(new Error(`${def.nome} HTTP ${r.status} ${t}`), { status: r.status });
-  }
-
-  const j = (await r.json()) as Record<string, unknown>;
-  if (def.type === "gemini") {
-    const c = (j.candidates as { content?: { parts?: { text?: string }[] } }[] | undefined)?.[0];
-    const parts = c?.content?.parts;
-    if (!parts?.length) throw Object.assign(new Error(`${def.nome}: sem texto`), { status: 0 });
-    return parts
-      .map((p) => p.text || "")
-      .join("")
-      .trim();
-  }
-  const ch = (j.choices as { message?: { content?: string } }[] | undefined)?.[0]?.message?.content;
-  if (!ch) throw Object.assign(new Error(`${def.nome}: resposta vazia`), { status: 0 });
-  return String(ch).trim();
+function keyFor(input: RouterInput, id: string): string {
+  return (input.keys[id] || globalAiKeys[id] || "").trim();
 }
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-export async function routeChat(input: RouterInput): Promise<RouterResult> {
-  const order = orderFor(input);
-  const tried: string[] = [];
-  let lastErr: Error | null = null;
-  const maxTokens = input.maxTokens ?? 900;
-
-  for (const id of order) {
-    const def = AI_PROVIDERS.find((p) => p.id === id);
-    if (!def) continue;
-    const key = (input.keys[id] || "").trim();
-    if (!key) {
-      tried.push(`${id}(sem chave)`);
-      continue;
-    }
-    if (!isHealthy(input.scope, id)) {
-      tried.push(`${id}(em pausa)`);
-      continue;
-    }
-    try {
-      const text = await callProvider(def, key, input.messages, maxTokens, !!input.code);
-      if (!text) throw Object.assign(new Error("vazio"), { status: 0 });
-      markOk(input.scope, id);
-      return { text, provider: id };
-    } catch (e) {
-      let st = (e as { status?: number }).status || 0;
-      let err = e as Error;
-      if (st === 429) {
-        await sleep(1600);
-        try {
-          const text = await callProvider(def, key, input.messages, maxTokens, !!input.code);
-          markOk(input.scope, id);
-          return { text, provider: id };
-        } catch (e2) {
-          st = (e2 as { status?: number }).status || 0;
-          err = e2 as Error;
-        }
-      }
-      markFail(input.scope, id, st || 599);
-      lastErr = err;
-      tried.push(`${id}(${st || "rede"})`);
-    }
-  }
-
-  throw new ApiError(
-    502,
-    `Todos os fornecedores de IA falharam [${tried.join(", ") || "nenhum configurado"}]. ` +
-      "Configure as chaves da equipa em Definições → IA. Último erro: " +
-      (lastErr?.message ?? "?"),
-  );
-}
-
-/** estado dos fornecedores para a UI (configurado? em pausa? origem da chave) */
-export function providersStatus(keys: Record<string, string>, scope: string) {
-  return AI_PROVIDERS.map((p) => {
-    const key = keys[p.id] || "";
-    const fromEnv = !key && !!globalAiKeys[p.id];
-    return {
-      id: p.id,
-      nome: p.nome,
-      configured: !!key || fromEnv,
-      source: key ? "team" : fromEnv ? "env" : "",
-      paused: !isHealthy(scope, p.id),
-      hint: key ? "****" + key.slice(-4) : fromEnv ? "(global)" : undefined,
-    };
-  });
-}
-
-/* ---------- streaming (SSE) ---------- */
-
-function modelFor(def: AiProviderDef, code: boolean): string | null {
-  let model = def.model;
-  if (def.id === "openrouter") model = openRouterModel;
-  if (code && def.codeModel) model = def.codeModel;
-  return model;
-}
-
-/** constrói o pedido HTTP (url/headers/body) para um fornecedor — partilhado por call/stream */
 function buildRequest(
-  def: AiProviderDef,
+  def: Provider,
   key: string,
   messages: RouterInput["messages"],
   maxTokens: number,
-  code: boolean,
   stream: boolean,
+  model: string,
 ): { url: string; init: RequestInit } {
-  const model = modelFor(def, code);
-  if (!model) throw Object.assign(new Error(`${def.nome}: sem modelo`), { status: 0 });
   if (def.type === "gemini") {
     const sys: string[] = [];
     const turns: { role: "user" | "model"; parts: { text: string }[] }[] = [];
     for (const m of messages) {
       if (m.role === "system") sys.push(m.content);
-      else
-        turns.push({
-          role: m.role === "assistant" ? "model" : "user",
-          parts: [{ text: String(m.content) }],
-        });
+      else turns.push({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: String(m.content) }] });
     }
     const body: Record<string, unknown> = {
       contents: turns,
@@ -260,10 +108,7 @@ function buildRequest(
     if (!stream) headers["x-goog-api-key"] = key;
     return { url, init: { method: "POST", headers, body: JSON.stringify(body) } };
   }
-  const headers: Record<string, string> = {
-    Authorization: `Bearer ${key}`,
-    "Content-Type": "application/json",
-  };
+  const headers: Record<string, string> = { Authorization: `Bearer ${key}`, "Content-Type": "application/json" };
   if (def.id === "openrouter") {
     headers["HTTP-Referer"] = "https://github.com/brunoacidados/phc-trainer-pro";
     headers["X-Title"] = "PHC Trainer Pro";
@@ -274,8 +119,7 @@ function buildRequest(
   return { url: def.url!, init: { method: "POST", headers, body: JSON.stringify(payload) } };
 }
 
-/** extrai o delta de texto de um evento SSE conforme o formato do fornecedor */
-function parseDelta(def: AiProviderDef, dataLine: string): string {
+function parseDelta(def: Provider, dataLine: string): string {
   if (dataLine === "[DONE]") return "";
   let j: Record<string, unknown>;
   try {
@@ -284,29 +128,53 @@ function parseDelta(def: AiProviderDef, dataLine: string): string {
     return "";
   }
   if (def.type === "gemini") {
-    const parts = (j.candidates as { content?: { parts?: { text?: string }[] } }[] | undefined)?.[0]
-      ?.content?.parts;
+    const parts = (j.candidates as { content?: { parts?: { text?: string }[] } }[] | undefined)?.[0]?.content?.parts;
     return parts ? parts.map((p) => p.text || "").join("") : "";
   }
-  const delta = (
-    j.choices as { delta?: { content?: string }; message?: { content?: string } }[] | undefined
-  )?.[0];
-  return delta?.delta?.content ?? delta?.message?.content ?? "";
+  const d = (j.choices as { delta?: { content?: string }; message?: { content?: string } }[] | undefined)?.[0];
+  return d?.delta?.content ?? d?.message?.content ?? "";
 }
 
-/**
- * Faz stream de UM fornecedor, chamando onToken por delta. Devolve o texto completo.
- * Lança erro (com .status) se a ligação falhar.
- */
+async function callProvider(
+  def: Provider,
+  key: string,
+  messages: RouterInput["messages"],
+  maxTokens: number,
+  code: boolean,
+): Promise<string> {
+  const model = (await resolveModel(def, key, code)) || "";
+  const { url, init } = buildRequest(def, key, messages, maxTokens, false, model);
+  const r = await fetch(url, init);
+  if (!r.ok) {
+    let t = "";
+    try {
+      t = (await r.text()).slice(0, 150);
+    } catch {
+      /* ignore */
+    }
+    throw Object.assign(new Error(`${def.nome} HTTP ${r.status} ${t}`), { status: r.status });
+  }
+  const j = (await r.json()) as Record<string, unknown>;
+  if (def.type === "gemini") {
+    const parts = (j.candidates as { content?: { parts?: { text?: string }[] } }[] | undefined)?.[0]?.content?.parts;
+    if (!parts?.length) throw Object.assign(new Error(`${def.nome}: sem texto`), { status: 0 });
+    return parts.map((p) => p.text || "").join("").trim();
+  }
+  const ch = (j.choices as { message?: { content?: string } }[] | undefined)?.[0]?.message?.content;
+  if (!ch) throw Object.assign(new Error(`${def.nome}: resposta vazia`), { status: 0 });
+  return String(ch).trim();
+}
+
 async function streamProvider(
-  def: AiProviderDef,
+  def: Provider,
   key: string,
   messages: RouterInput["messages"],
   maxTokens: number,
   code: boolean,
   onToken: (t: string) => void,
 ): Promise<string> {
-  const { url, init } = buildRequest(def, key, messages, maxTokens, code, true);
+  const model = (await resolveModel(def, key, code)) || "";
+  const { url, init } = buildRequest(def, key, messages, maxTokens, true, model);
   const r = await fetch(url, init);
   if (!r.ok || !r.body) {
     let t = "";
@@ -341,24 +209,68 @@ async function streamProvider(
   return full;
 }
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+export async function routeChat(input: RouterInput): Promise<RouterResult> {
+  const order = orderFor(input);
+  const tried: string[] = [];
+  let lastErr: Error | null = null;
+  const maxTokens = input.maxTokens ?? 900;
+  for (const id of order) {
+    const def = getProvider(id);
+    if (!def) continue;
+    const key = keyFor(input, id);
+    if (!key) {
+      tried.push(`${id}(sem chave)`);
+      continue;
+    }
+    if (!isHealthy(input.scope, id)) {
+      tried.push(`${id}(em pausa)`);
+      continue;
+    }
+    try {
+      const text = await callProvider(def, key, input.messages, maxTokens, !!input.code);
+      if (!text) throw Object.assign(new Error("vazio"), { status: 0 });
+      markOk(input.scope, id);
+      return { text, provider: id };
+    } catch (e) {
+      let st = (e as { status?: number }).status || 0;
+      let err = e as Error;
+      if (st === 429) {
+        await sleep(1600);
+        try {
+          const text = await callProvider(def, key, input.messages, maxTokens, !!input.code);
+          markOk(input.scope, id);
+          return { text, provider: id };
+        } catch (e2) {
+          st = (e2 as { status?: number }).status || 0;
+          err = e2 as Error;
+        }
+      }
+      markFail(input.scope, id, st || 599);
+      lastErr = err;
+      tried.push(`${id}(${st || "rede"})`);
+    }
+  }
+  throw new ApiError(
+    502,
+    `Todos os fornecedores de IA falharam [${tried.join(", ") || "nenhum configurado"}]. Último erro: ${lastErr?.message ?? "?"}`,
+  );
+}
+
 export interface StreamInput extends RouterInput {
   onToken: (t: string) => void;
 }
 
-/**
- * Router com streaming: tenta fornecedores por ordem; se um falhar ANTES de
- * emitir qualquer token, avança para o seguinte. Depois de começar a emitir,
- * compromete-se com esse fornecedor (não há fallback a meio do stream).
- */
 export async function routeChatStream(input: StreamInput): Promise<RouterResult> {
   const order = orderFor(input);
   const tried: string[] = [];
   let lastErr: Error | null = null;
   const maxTokens = input.maxTokens ?? 900;
   for (const id of order) {
-    const def = AI_PROVIDERS.find((p) => p.id === id);
+    const def = getProvider(id);
     if (!def) continue;
-    const key = (input.keys[id] || "").trim();
+    const key = keyFor(input, id);
     if (!key) {
       tried.push(`${id}(sem chave)`);
       continue;
@@ -377,7 +289,6 @@ export async function routeChatStream(input: StreamInput): Promise<RouterResult>
       return { text, provider: id };
     } catch (e) {
       const st = (e as { status?: number }).status || 0;
-      // se já emitiu tokens, não vale a pena tentar outro (o cliente já recebeu parte)
       if (emitted) {
         markFail(input.scope, id, st || 599);
         throw e as Error;
@@ -393,13 +304,11 @@ export async function routeChatStream(input: StreamInput): Promise<RouterResult>
   );
 }
 
-/* ---------- teste de fornecedores (diagnóstico, sem efeitos em cooldowns) ---------- */
-
+/* ---------- teste / diagnóstico ---------- */
 export interface ProviderTestResult {
   id: string;
   nome: string;
   ok: boolean;
-  /** "ok" | "sem-chave" | "erro" */
   status: "ok" | "sem-chave" | "erro";
   ms?: number;
   httpStatus?: number;
@@ -409,17 +318,12 @@ export interface ProviderTestResult {
 
 const TEST_PROMPT = [{ role: "user", content: "Responda apenas com a palavra: OK" }];
 
-/** testa UM fornecedor com um pedido mínimo; devolve ok/latência/erro. Não altera cooldowns. */
-export async function testOneProvider(
-  id: string,
-  keys: Record<string, string>,
-): Promise<ProviderTestResult> {
-  const def = AI_PROVIDERS.find((p) => p.id === id);
+export async function testOneProvider(id: string, keys: Record<string, string>): Promise<ProviderTestResult> {
+  const def = getProvider(id);
   if (!def) return { id, nome: id, ok: false, status: "erro", error: "fornecedor desconhecido" };
-  const key = (keys[id] || globalAiKeys[id] || "").trim();
-  if (!key)
-    return { id, nome: def.nome, ok: false, status: "sem-chave", error: "sem chave configurada" };
-  const model = def.id === "openrouter" ? openRouterModel : (def.model ?? undefined);
+  const key = (keys[id] || globalAiKeys[id] || (id === BYNARA_ID ? BYNARA_FALLBACK_KEY : "")).trim();
+  if (!key) return { id, nome: def.nome, ok: false, status: "sem-chave", error: "sem chave configurada" };
+  const model = (await resolveModel(def, key, false)) || undefined;
   const t0 = Date.now();
   try {
     const text = await callProvider(def, key, TEST_PROMPT, 60, false);
@@ -438,14 +342,26 @@ export async function testOneProvider(
   }
 }
 
-/** testa todos os fornecedores (sequencial, para não disparar rate limits) */
-export async function testAllProviders(
-  keys: Record<string, string>,
-): Promise<ProviderTestResult[]> {
+export async function testAllProviders(keys: Record<string, string>): Promise<ProviderTestResult[]> {
   const out: ProviderTestResult[] = [];
-  for (const p of AI_PROVIDERS) out.push(await testOneProvider(p.id, keys));
+  for (const p of getRegistry()) out.push(await testOneProvider(p.id, keys));
   return out;
 }
 
+export function providersStatus(keys: Record<string, string>, scope: string) {
+  return getRegistry().map((p) => {
+    const key = keys[p.id] || globalAiKeys[p.id] || (p.id === BYNARA_ID ? "(fallback)" : "");
+    const configured = !!key || key === "(fallback)";
+    return {
+      id: p.id,
+      nome: p.nome,
+      configured,
+      source: keys[p.id] ? "team" : globalAiKeys[p.id] ? "env" : p.id === BYNARA_ID ? "fallback" : "",
+      paused: !isHealthy(scope, p.id),
+      hint: keys[p.id] ? "****" + String(keys[p.id]).slice(-4) : globalAiKeys[p.id] ? "(global)" : p.id === BYNARA_ID ? "(rodízio)" : undefined,
+    };
+  });
+}
+
 /** visível apenas para testes unitários */
-export const __test = { cooldowns, markFail, markOk, isHealthy };
+export const __test = { cooldowns, markFail, markOk, isHealthy, failStreak };
