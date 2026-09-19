@@ -59,12 +59,19 @@ export const corsOrigins = env.CORS_ORIGIN.split(",")
  * (Lê diretamente de process.env para aceitar todos os alias sem os declarar no schema.)
  */
 const KEY_ALIASES: Record<string, string[]> = {
-  groq: ["AI_KEY_GROQ", "GROQ_API_KEY"],
-  gemini: ["AI_KEY_GEMINI", "GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_GENAI_API_KEY"],
-  mistral: ["AI_KEY_MISTRAL", "MISTRAL_API_KEY"],
-  cerebras: ["AI_KEY_CEREBRAS", "CEREBRAS_API_KEY"],
-  nvidia: ["AI_KEY_NVIDIA", "NVIDIA_API_KEY"],
-  openrouter: ["AI_KEY_OPENROUTER", "OPENROUTER_API_KEY"],
+  groq: ["AI_KEY_GROQ", "GROQ_API_KEY", "GROQ_KEY"],
+  gemini: [
+    "AI_KEY_GEMINI",
+    "GEMINI_API_KEY",
+    "GOOGLE_API_KEY",
+    "GOOGLE_GENAI_API_KEY",
+    "GOOGLE_GEN_AI_API_KEY",
+    "GEMINI_KEY",
+  ],
+  mistral: ["AI_KEY_MISTRAL", "MISTRAL_API_KEY", "MISTRAL_KEY"],
+  cerebras: ["AI_KEY_CEREBRAS", "CEREBRAS_API_KEY", "CEREBRAS_KEY"],
+  nvidia: ["AI_KEY_NVIDIA", "NVIDIA_API_KEY", "NVIDIA_KEY", "NVIDIA_NIM_API_KEY"],
+  openrouter: ["AI_KEY_OPENROUTER", "OPENROUTER_API_KEY", "OPENROUTER_KEY"],
 };
 
 function firstEnv(names: string[]): string | undefined {

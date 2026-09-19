@@ -128,7 +128,16 @@ aiRouter.post("/test", validate(aiTestSchema), async (req, res) => {
   res.json({ ok, tested: results.length, withKey, results });
 });
 
-/** GET /api/ai/status — resumo rápido (chaves globais ativas no servidor) */
+/**
+ * GET /api/ai/status — diagnóstico.
+ * Devolve: chaves globais ativas (ids) + nomes (NUNCA valores) das variáveis de
+ * ambiente presentes no servidor que parecem chaves de IA — para diagnosticar
+ * nomes errados no Render/Vercel.
+ */
 aiRouter.get("/status", (_req, res) => {
-  res.json({ globalKeys: Object.keys(globalAiKeys) });
+  const AI_ENV_PATTERN = /(GROQ|GEMINI|GOOGLE|MISTRAL|CEREBRAS|NVIDIA|OPENROUTER|OPENAI|ANTHROPIC|ELEVENLABS)/i;
+  const aiEnvNames = Object.keys(process.env)
+    .filter((k) => AI_ENV_PATTERN.test(k) && /KEY|TOKEN|SECRET/i.test(k))
+    .sort();
+  res.json({ globalKeys: Object.keys(globalAiKeys), aiEnvNames });
 });

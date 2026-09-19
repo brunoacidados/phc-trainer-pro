@@ -1,6 +1,6 @@
 {
   "name": "@phc/api",
-  "version": "6.0.0-alpha.5",
+  "version": "6.0.0-alpha.6",
   "private": true,
   "type": "module",
   "description": "API multiutilizador do PHC Trainer Pro — Express 5 + Mongoose + JWT + router de IA no servidor.",
