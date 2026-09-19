@@ -2,6 +2,7 @@ import * as Sentry from "@sentry/node";
 import { createApp, APP_VERSION } from "./app.ts";
 import { connectDb, disconnectDb } from "./db.ts";
 import { env } from "./config/env.ts";
+import { emailConfigWarning } from "./services/email.ts";
 
 async function main(): Promise<void> {
   if (env.SENTRY_DSN) {
@@ -10,6 +11,8 @@ async function main(): Promise<void> {
   }
 
   await connectDb();
+  const ew = emailConfigWarning();
+  if (ew) console.warn(`[email] AVISO: ${ew}`);
 
   const app = createApp();
   const server = app.listen(env.PORT, () => {

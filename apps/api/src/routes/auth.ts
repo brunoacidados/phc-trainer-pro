@@ -73,17 +73,18 @@ authRouter.post("/register", validate(registerSchema), async (req, res) => {
   });
   await getOrCreateProgress(user._id);
   if (!isAdmin) {
-    try {
-      const vt = await createAuthToken(user._id, "verify", 60 * 24);
-      const link = `${env.APP_URL}/verificar?token=${vt}`;
-      await sendEmail(
-        user.email,
-        "Confirme o seu email — PHC Trainer Pro",
-        `<p>Bem-vindo(a), ${user.name}!</p><p>Confirme o seu email para ativar todas as funcionalidades.</p><p>${buttonHtml(link, "Confirmar email")}</p>`,
+    const vt = await createAuthToken(user._id, "verify", 60 * 24);
+    const link = `${env.APP_URL}/verificar?token=${vt}`;
+    const vr = await sendEmail(
+      user.email,
+      "Confirme o seu email — PHC Trainer Pro",
+      `<p>Bem-vindo(a), ${user.name}!</p><p>Confirme o seu email para ativar todas as funcionalidades.</p><p>${buttonHtml(link, "Confirmar email")}</p><p>Ou abra: ${link}</p>`,
+      vt,
+    );
+    if (!vr.sent)
+      console.warn(
+        `[auth] registo: email de verificação NÃO enviado p/ ${user.email}: ${vr.error}`,
       );
-    } catch {
-      /* sem provider de email — continua na mesma */
-    }
   }
   const session = await issueSession(user, res, String(req.headers["user-agent"] || ""));
   res.status(201).json(session);
@@ -212,17 +213,18 @@ import type { Types } from "mongoose";
 import { env } from "../config/env.ts";
 import { PasswordResetToken } from "../models/PasswordResetToken.ts";
 import { sendEmail, buttonHtml } from "../services/email.ts";
-import {
-  forgotPasswordSchema,
-  resetPasswordSchema,
-} from "@phc/shared";
+import { forgotPasswordSchema, resetPasswordSchema } from "@phc/shared";
 
 function newToken(): { plain: string; hash: string } {
   const plain = randomBytes(32).toString("base64url");
   return { plain, hash: sha256(plain) };
 }
 
-async function createAuthToken(userId: Types.ObjectId | string, kind: "reset" | "verify", ttlMin = 60) {
+async function createAuthToken(
+  userId: Types.ObjectId | string,
+  kind: "reset" | "verify",
+  ttlMin = 60,
+) {
   const { plain, hash } = newToken();
   await PasswordResetToken.create({
     userId,
@@ -238,7 +240,10 @@ authRouter.post("/forgot-password", validate(forgotPasswordSchema), async (req, 
   const { email } = req.body as { email: string };
   const user = await User.findOne({ email: email.toLowerCase() });
   if (!user || user.deactivated) {
-    res.json({ ok: true, message: "Se existir uma conta com esse email, enviámos um link de recuperação." });
+    res.json({
+      ok: true,
+      message: "Se existir uma conta com esse email, enviámos um link de recuperação.",
+    });
     return;
   }
   const token = await createAuthToken(user._id, "reset", 60);
@@ -246,12 +251,16 @@ authRouter.post("/forgot-password", validate(forgotPasswordSchema), async (req, 
   const r = await sendEmail(
     user.email,
     "Recuperar password — PHC Trainer Pro",
-    `<p>Olá ${user.name},</p><p>Pediu para repor a sua password.</p><p>${buttonHtml(link, "Repor password")}</p><p>O link expira em 60 minutos. Se não foi você, ignore.</p>`,
+    `<p>Olá ${user.name},</p><p>Pediu para repor a sua password.</p><p>${buttonHtml(link, "Repor password")}</p><p>Ou abra: ${link}</p><p>O link expira em 60 minutos. Se não foi você, ignore.</p>`,
+    token,
   );
+  if (!r.sent)
+    console.warn(`[auth] forgot-password: email NÃO enviado p/ ${user.email}: ${r.error}`);
   res.json({
     ok: true,
     message: "Se existir uma conta com esse email, enviámos um link de recuperação.",
-    ...(r.devToken ? { devToken: r.devToken } : {}),
+    emailSent: r.sent,
+    ...(r.devToken && !isProd ? { devToken: r.devToken, devLink: link } : {}),
   });
 });
 
@@ -259,7 +268,8 @@ authRouter.post("/forgot-password", validate(forgotPasswordSchema), async (req, 
 authRouter.post("/reset-password", validate(resetPasswordSchema), async (req, res) => {
   const { token, newPassword } = req.body as { token: string; newPassword: string };
   const doc = await PasswordResetToken.findOne({ tokenHash: sha256(token), kind: "reset" });
-  if (!doc || doc.usedAt || doc.expiresAt < new Date()) throw unauthorized("Link inválido ou expirado. Peça um novo.");
+  if (!doc || doc.usedAt || doc.expiresAt < new Date())
+    throw unauthorized("Link inválido ou expirado. Peça um novo.");
   const user = await User.findById(doc.userId);
   if (!user) throw unauthorized("Utilizador não encontrado.");
   user.passwordHash = await hashPassword(newPassword);
@@ -273,8 +283,12 @@ authRouter.post("/reset-password", validate(resetPasswordSchema), async (req, re
 
 /** GET /api/auth/verify/:token — confirma o email */
 authRouter.get("/verify/:token", async (req, res) => {
-  const doc = await PasswordResetToken.findOne({ tokenHash: sha256(req.params.token), kind: "verify" });
-  if (!doc || doc.usedAt || doc.expiresAt < new Date()) throw unauthorized("Link de verificação inválido ou expirado.");
+  const doc = await PasswordResetToken.findOne({
+    tokenHash: sha256(req.params.token),
+    kind: "verify",
+  });
+  if (!doc || doc.usedAt || doc.expiresAt < new Date())
+    throw unauthorized("Link de verificação inválido ou expirado.");
   const user = await User.findById(doc.userId);
   if (!user) throw unauthorized("Utilizador não encontrado.");
   user.emailVerifiedAt = new Date();
@@ -297,7 +311,15 @@ authRouter.post("/resend-verification", requireUser, async (req, res) => {
   const r = await sendEmail(
     user.email,
     "Confirme o seu email — PHC Trainer Pro",
-    `<p>Olá ${user.name},</p><p>Confirme o seu email para ativar todas as funcionalidades.</p><p>${buttonHtml(link, "Confirmar email")}</p>`,
+    `<p>Olá ${user.name},</p><p>Confirme o seu email para ativar todas as funcionalidades.</p><p>${buttonHtml(link, "Confirmar email")}</p><p>Ou abra: ${link}</p>`,
+    token,
   );
-  res.json({ ok: true, message: "Email de verificação enviado.", ...(r.devToken ? { devToken: r.devToken } : {}) });
+  res.json({
+    ok: true,
+    message: r.sent
+      ? "Email de verificação enviado."
+      : `Não conseguimos enviar o email (${r.error}). Contacte o formador ou use o link manual.`,
+    emailSent: r.sent,
+    ...(r.devToken && !isProd ? { devToken: r.devToken, devLink: link } : {}),
+  });
 });

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Brain, ChevronLeft, ChevronRight, Copy, Search, Volume2 } from "lucide-react";
+import { Brain, ChevronLeft, ChevronRight, Search, Volume2 } from "lucide-react";
 import { CIRCUITS, ENCYCLOPEDIA, GLOSSARY, GUIDE, PROMPTS, SQL_PROMPTS } from "@phc/content";
 import {
   applyCompanyText,
@@ -444,6 +444,7 @@ function GeradorTab() {
   const [prov, setProv] = useState("");
   const [round, setRound] = useState(0);
   const [thread, setThread] = useState<ThreadMsg[]>([]);
+  const [showAdv, setShowAdv] = useState(false);
 
   const tables = useMemo(() => {
     const t = detectTables(`${desc} ${ecra}`);
@@ -453,11 +454,20 @@ function GeradorTab() {
   const script = useMemo(() => buildDiscovery(tables.length ? tables : undefined), [tables]);
 
   const conf = meta?.conf ?? null;
-  const showDisc = !!out && (meta?.estado === "precisa_descoberta" || (conf !== null && conf < 99));
+  const needsDisc =
+    !!out && (meta?.estado === "precisa_descoberta" || (conf !== null && conf < 99));
+  const step = !out ? 1 : needsDisc ? 2 : 3;
+
+  const EXAMPLES = [
+    "Quero ver os últimos 10 registos da faturação (ft) e as tabelas ligadas",
+    "Evento ao gravar um cliente que valida o NIF e avisa se faltar",
+    "Consulta SQL: vendas por cliente no último mês com total e IVA",
+    "Regra que impede desconto > 20% sem autorização",
+  ];
 
   async function generate() {
     if (!desc.trim()) {
-      toast.info("Descreva o problema/requisito.");
+      toast.info("Descreva primeiro, em linguagem simples, o que quer fazer.");
       return;
     }
     const usr =
@@ -482,7 +492,7 @@ function GeradorTab() {
 
   async function sendResults() {
     if (!results.trim()) {
-      toast.info("Cole primeiro os resultados do script de descoberta.");
+      toast.info("Cole primeiro os resultados do script.");
       return;
     }
     const msgs: ThreadMsg[] = [
@@ -490,9 +500,8 @@ function GeradorTab() {
       {
         role: "user",
         content:
-          `RESULTADOS DO SCRIPT DE DESCOBERTA (esquema REAL da BD — AUTORIDADE MÁXIMA, prevalece sobre a KB):\n${results.slice(0, 12000)}\n\n` +
-          "Reavalia a fila de pendentes. Se atingiste confiança >=99%, entrega a solução FINAL completa no formato definido. " +
-          "Se ainda faltar algo, indica exatamente que queries adicionais devo correr. Termina com o bloco ===META=== atualizado.",
+          `RESULTADOS DO SCRIPT DE DESCOBERTA (esquema REAL da BD — AUTORIDADE MÁXIMA):\n${results.slice(0, 12000)}\n\n` +
+          "Reavalia a fila de pendentes. Se confiança >=99%, entrega a solução FINAL completa. Senão, diz exatamente que queries faltam. Termina com ===META=== atualizado.",
       },
     ];
     try {
@@ -503,10 +512,9 @@ function GeradorTab() {
       setMeta(parseMeta(r.text));
       setProv(r.provider);
       setRound((n) => n + 1);
-      // acumular no esquema do utilizador
       await store().syncFull({
         dbSchema:
-          `${(state?.dbSchema ?? "").trim()}\n\n## descoberta ${new Date().toISOString().slice(0, 10)} — tabelas: ${tables.join(", ") || "-"}\n${results.slice(0, 4000)}`
+          `${(state?.dbSchema ?? "").trim()}\n\n## descoberta ${new Date().toISOString().slice(0, 10)}\n${results.slice(0, 4000)}`
             .trim()
             .slice(-24000),
       });
@@ -518,40 +526,78 @@ function GeradorTab() {
 
   return (
     <div className="space-y-4">
+      {/* indicador de passos */}
+      <div className="flex items-center gap-2 text-xs">
+        {["1 · Descrever", "2 · Verificar BD (se preciso)", "3 · Código final"].map((s2, i) => (
+          <span
+            key={s2}
+            className={cn(
+              "rounded-full px-3 py-1 font-medium",
+              step === i + 1
+                ? "bg-primary text-primary-foreground"
+                : step > i + 1
+                  ? "bg-success/20 text-success"
+                  : "bg-secondary text-muted-foreground",
+            )}
+          >
+            {s2}
+          </span>
+        ))}
+      </div>
+
+      {/* PASSO 1 */}
       <Card>
         <CardHeader>
-          <CardTitle>🧰 Gerador de código PHC — descoberta guiada + confiança real</CardTitle>
+          <CardTitle>🧰 O que quer fazer?</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            Escreva como se estivesse a pedir a um colega. Não precisa de saber nomes de tabelas — a
+            app descobre-as.
+          </p>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-xs text-muted-foreground">
-            (1) descreva o pedido → (2) a IA declara o que falta e a app gera um script de
-            descoberta sob medida → (3) corra no Simulador de SQL/SSMS e cole os resultados → (4)
-            código final só com ≥99% de confiança contra o esquema REAL. Código com prioridade para
-            modelos de código (glm-5.3/codestral) — routing no servidor.
-          </p>
-          <div>
-            <label className="text-xs text-muted-foreground">Tipo de artefato:</label>
-            <Select value={tipo} onChange={(e) => setTipo(e.target.value)}>
-              {PROMPTS.genTipos.map((t) => (
-                <option key={t}>{t}</option>
-              ))}
-            </Select>
+          <div className="flex flex-wrap gap-1.5">
+            {EXAMPLES.map((ex) => (
+              <button
+                key={ex}
+                className="cursor-pointer rounded-full border border-dashed border-border px-3 py-1 text-xs text-muted-foreground hover:border-primary hover:text-foreground"
+                onClick={() => setDesc(ex)}
+              >
+                {ex.slice(0, 44)}…
+              </button>
+            ))}
           </div>
-          <div>
-            <label className="text-xs text-muted-foreground">
-              Ecrã/tabela alvo (ex.: Clientes, ft):
-            </label>
-            <Input value={ecra} onChange={(e) => setEcra(e.target.value)} placeholder="opcional" />
-          </div>
-          <div>
-            <label className="text-xs text-muted-foreground">Descreva o problema/requisito:</label>
-            <Textarea
-              rows={4}
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
-              placeholder="Ex.: quero ver os últimos 10 registos na ft e as suas tabelas relacionadas — não sei quais são nem os campos de ligação"
-            />
-          </div>
+          <Textarea
+            rows={4}
+            placeholder="Ex.: quero um relatório das vendas por cliente no último mês…"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+          />
+          <button
+            className="text-xs text-info hover:underline"
+            onClick={() => setShowAdv((v) => !v)}
+          >
+            {showAdv ? "− menos opções" : "+ opções avançadas (tipo de artefato, ecrã/tabela)"}
+          </button>
+          {showAdv && (
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div>
+                <label className="text-xs text-muted-foreground">Tipo de artefato</label>
+                <Select value={tipo} onChange={(e) => setTipo(e.target.value)}>
+                  {PROMPTS.genTipos.map((t) => (
+                    <option key={t}>{t}</option>
+                  ))}
+                </Select>
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground">Ecrã/tabela alvo (opcional)</label>
+                <Input
+                  value={ecra}
+                  onChange={(e) => setEcra(e.target.value)}
+                  placeholder="ex.: Clientes, ft…"
+                />
+              </div>
+            </div>
+          )}
           {tables.length > 0 && (
             <p className="text-xs text-muted-foreground">
               Tabelas detetadas:{" "}
@@ -562,115 +608,82 @@ function GeradorTab() {
               ))}
             </p>
           )}
-          <div className="flex flex-wrap gap-2">
-            <Button onClick={() => void generate()} loading={ai.loading}>
-              ⚡ Gerar (descoberta guiada)
-            </Button>
-            {out && (
-              <Button
-                variant="outline"
-                onClick={() => {
-                  navigator.clipboard.writeText(stripMeta(out));
-                  toast.success("Resposta copiada.");
-                }}
-              >
-                <Copy className="h-4 w-4" /> Copiar resposta
-              </Button>
-            )}
-            {out && (
-              <span className="self-center text-xs text-muted-foreground">
-                ronda {round} · via {prov}
-              </span>
-            )}
-          </div>
+          <Button loading={ai.loading} onClick={() => void generate()}>
+            ⚡ Gerar
+          </Button>
         </CardContent>
       </Card>
 
-      {out && (
-        <Card className="border-info/40">
+      {/* PASSO 2 (só se precisar de descobrir a BD) */}
+      {needsDisc && (
+        <Card className="border-warning/50">
           <CardHeader>
-            <CardTitle className="text-info">✅ Resposta da IA (ronda {round})</CardTitle>
+            <CardTitle className="text-warning">🔎 Passo 2: ver a sua base de dados</CardTitle>
+            <p className="text-xs text-muted-foreground">
+              Para não inventar nomes, a IA precisa de ver o esquema REAL. É rápido: copie o script,
+              corra no PHC (Supervisor → Simulador de SQL) ou no SSMS, e cole aqui o resultado.
+            </p>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="flex items-center gap-4">
-              <CircleProgress value={conf ?? 0} label={conf === null ? "?" : `${conf}%`} />
-              <div className="space-y-1">
-                {meta?.estado && (
-                  <Badge variant={meta.estado === "pronto" ? "success" : "warning"}>
-                    {meta.estado === "pronto" ? "✔ estado: pronto" : "🔎 precisa de descoberta"}
-                  </Badge>
-                )}
+            {conf !== null && (
+              <div className="flex items-center gap-3">
+                <CircleProgress value={conf} size={64} label={`${conf}%`} />
                 <p className="text-xs text-muted-foreground">
-                  Confiança REAL declarada pelo modelo (desconta cada campo/relação não confirmada).
+                  Confiança atual. Abaixo de 99% a IA ainda não entrega código final.
                 </p>
               </div>
-            </div>
+            )}
             {!!meta?.pend?.length && (
               <div>
-                <b className="text-sm">📋 Fila pendente de validação ({meta.pend.length}):</b>
-                <ul className="list-disc pl-5 text-sm text-muted-foreground">
-                  {meta.pend.map((p, i) => (
-                    <li key={i}>{p}</li>
+                <b className="text-xs">Falta confirmar:</b>
+                <ul className="mt-1 list-disc pl-5 text-xs text-muted-foreground">
+                  {meta.pend.map((x, i) => (
+                    <li key={i}>{x}</li>
                   ))}
                 </ul>
               </div>
             )}
-            <GenOutput text={stripMeta(out)} />
-          </CardContent>
-        </Card>
-      )}
-
-      {(showDisc || !out) && (
-        <Card>
-          <CardHeader>
-            <CardTitle>
-              🔎 Script de descoberta (sob medida: {tables.join(", ") || "ft, cl"})
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-xs text-muted-foreground">
-              Corra no <b>Supervisor → Simulador de SQL</b> (ou SSMS) e cole os resultados abaixo.
-              Inclui: tabela interna <b>dic</b>, colunas, campos <b>u_*</b>, FKs, 1 linha de amostra
-              por tabela, stored procedures, views e jobs.
-            </p>
-            <pre className="max-h-64 overflow-auto rounded-md border border-border bg-[#0e1526] p-3 text-xs text-success">
+            <pre className="max-h-48 overflow-auto rounded-md border border-border bg-[#0d1117] p-3 text-[12px] text-success">
               {script}
             </pre>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => {
-                navigator.clipboard.writeText(script);
-                toast.success("Script copiado!");
-              }}
-            >
-              <Copy className="h-3 w-3" /> Copiar script
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  navigator.clipboard.writeText(script);
+                  toast.success("Script copiado!");
+                }}
+              >
+                Copiar script
+              </Button>
+            </div>
             <Textarea
-              rows={6}
+              rows={5}
+              placeholder="Cole aqui o resultado que o PHC/SSMS devolveu…"
               value={results}
               onChange={(e) => setResults(e.target.value)}
-              placeholder="Cole aqui os resultados do script (pode colar tudo, tal como saiu)…"
             />
-            <div className="flex flex-wrap gap-2">
-              <Button disabled={!out} loading={ai.loading} onClick={() => void sendResults()}>
-                🔁 Enviar resultados e continuar
+            <div className="flex gap-2">
+              <Button
+                loading={ai.loading}
+                disabled={!results.trim()}
+                onClick={() => void sendResults()}
+              >
+                🔁 Enviar e continuar
               </Button>
               <Button
                 variant="outline"
                 onClick={async () => {
-                  if (!results.trim()) {
-                    toast.info("Nada para guardar.");
-                    return;
-                  }
+                  if (!results.trim()) return toast.info("Nada para guardar.");
                   await store().syncFull({
                     dbSchema:
-                      `${(state?.dbSchema ?? "").trim()}\n\n## esquema guardado ${new Date().toISOString().slice(0, 10)}\n${results.slice(0, 6000)}`
+                      `${(state?.dbSchema ?? "").trim()}\n\n## esquema ${new Date().toISOString().slice(0, 10)}\n${results.slice(0, 6000)}`
                         .trim()
                         .slice(-24000),
                   });
                   setResults("");
-                  toast.success("Guardado em '📐 O meu esquema'.");
+                  toast.success("Guardado em 'O meu esquema' — próximos pedidos já partem daqui.");
                 }}
               >
                 💾 Guardar no meu esquema
@@ -680,30 +693,22 @@ function GeradorTab() {
         </Card>
       )}
 
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            📐 O meu esquema (guardado na sua conta, injetado em todos os pedidos)
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <Textarea
-            rows={5}
-            value={state?.dbSchema ?? ""}
-            onChange={(e) => void store().syncFull({ dbSchema: e.target.value.slice(0, 24000) })}
-            placeholder="Resultados de descoberta colados aparecem aqui; também pode colar/editar manualmente…"
-          />
-          {state?.dbSchema ? (
-            <Badge variant="success">
-              ✔ {state.dbSchema.length} caracteres — AUTORIDADE MÁXIMA nos prompts
-            </Badge>
-          ) : (
-            <Badge variant="muted">
-              sem esquema colado — a IA usa a KB documentada e marca pressupostos
-            </Badge>
-          )}
-        </CardContent>
-      </Card>
+      {/* PASSO 3: resultado */}
+      {out && (
+        <Card className="border-success/40">
+          <CardHeader className="flex-row flex-wrap items-center justify-between gap-2 space-y-0">
+            <CardTitle className="text-success">
+              ✅ Resultado (ronda {round} · {prov})
+            </CardTitle>
+            {conf !== null && (
+              <Badge variant={conf >= 99 ? "success" : "warning"}>{conf}% confiança</Badge>
+            )}
+          </CardHeader>
+          <CardContent>
+            <GenOutput text={stripMeta(out)} />
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
@@ -740,7 +745,6 @@ function GenOutput({ text }: { text: string }) {
   );
 }
 
-
 /* ============ Recursos / Downloads (acesso fácil aos ficheiros) ============ */
 function RecursosTab() {
   const { canInstall, promptInstall, installed } = usePwaInstall();
@@ -770,9 +774,9 @@ function RecursosTab() {
   return (
     <div className="space-y-4">
       <Alert variant="info">
-        <b>Tudo à distância de 1 clique.</b> Estes ficheiros são servidos pela própria app (funcionam
-        offline depois da 1ª visita). O estudo de cartas já é <b>nativo</b> em 🧠 Praticar — não precisa
-        do Anki externo.
+        <b>Tudo à distância de 1 clique.</b> Estes ficheiros são servidos pela própria app
+        (funcionam offline depois da 1ª visita). O estudo de cartas já é <b>nativo</b> em 🧠
+        Praticar — não precisa do Anki externo.
       </Alert>
       <div className="grid gap-3 md:grid-cols-2">
         {itens.map((it) => (
@@ -782,7 +786,11 @@ function RecursosTab() {
               <div className="min-w-0 flex-1">
                 <b className="text-sm">{it.t}</b>
                 <p className="mt-0.5 text-xs text-muted-foreground">{it.d}</p>
-                <a href={it.href} download className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-2")}>
+                <a
+                  href={it.href}
+                  download
+                  className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-2")}
+                >
                   {it.btn}
                 </a>
               </div>
@@ -795,10 +803,17 @@ function RecursosTab() {
             <div className="min-w-0 flex-1">
               <b className="text-sm">Instalar a app (PWA)</b>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                {installed ? "Já instalada neste dispositivo. ✅" : "Adicione ao ecrã inicial / instale no computador para uso offline."}
+                {installed
+                  ? "Já instalada neste dispositivo. ✅"
+                  : "Adicione ao ecrã inicial / instale no computador para uso offline."}
               </p>
               {canInstall && !installed && (
-                <Button size="sm" variant="outline" className="mt-2" onClick={() => void promptInstall()}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="mt-2"
+                  onClick={() => void promptInstall()}
+                >
                   ⬇ Instalar app
                 </Button>
               )}

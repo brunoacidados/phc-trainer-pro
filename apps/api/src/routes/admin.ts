@@ -71,8 +71,65 @@ adminRouter.get("/analytics", async (_req, res) => {
   const since = new Date(now - 14 * 86400_000);
   const signups = await User.aggregate([
     { $match: { createdAt: { $gte: since } } },
-    { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, n: { $sum: 1 } } },
+    {
+      $group: {
+        _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+        n: { $sum: 1 },
+      },
+    },
     { $sort: { _id: 1 } },
   ]);
   res.json({ total, active7, active1, teams, verified, signups });
+});
+
+/* ================= recuperação/verificação via admin (fallback sem email) ================= */
+import { randomBytes } from "node:crypto";
+import { PasswordResetToken } from "../models/PasswordResetToken.ts";
+import { sha256 } from "../lib/crypto.ts";
+import { env } from "../config/env.ts";
+import { emailConfigWarning } from "../services/email.ts";
+import { hashPassword } from "../lib/password.ts";
+
+/** POST /api/admin/users/:id/verify — marca email como verificado */
+adminRouter.post("/users/:id/verify", async (req, res) => {
+  const u = await loadUser(req.params.id);
+  u.emailVerifiedAt = new Date();
+  await u.save();
+  res.json({ ok: true, user: toPublicUser(u) });
+});
+
+/** POST /api/admin/users/:id/reset-link — gera link de reset p/ o admin partilhar manualmente */
+adminRouter.post("/users/:id/reset-link", async (req, res) => {
+  const u = await loadUser(req.params.id);
+  const plain = randomBytes(32).toString("base64url");
+  await PasswordResetToken.create({
+    userId: u._id,
+    kind: "reset",
+    tokenHash: sha256(plain),
+    expiresAt: new Date(Date.now() + 60 * 60_000),
+  });
+  res.json({ ok: true, link: `${env.APP_URL}/resetar?token=${plain}`, expiresMin: 60 });
+});
+
+/** POST /api/admin/users/:id/temp-password — define password temporária e devolve-a */
+adminRouter.post("/users/:id/temp-password", async (req, res) => {
+  const u = await loadUser(req.params.id);
+  const temp = "Phc-" + randomBytes(6).toString("base64url");
+  u.passwordHash = await hashPassword(temp);
+  u.deactivated = false;
+  await u.save();
+  await RefreshToken.updateMany({ userId: u._id, revokedAt: null }, { revokedAt: new Date() });
+  res.json({ ok: true, tempPassword: temp });
+});
+
+/** GET /api/admin/email-status — diagnóstico de porque os emails podem não sair */
+adminRouter.get("/email-status", (_req, res) => {
+  res.json({
+    warning: emailConfigWarning(),
+    resendConfigured: !!env.RESEND_API_KEY,
+    appUrl: env.APP_URL,
+    emailFrom: env.EMAIL_FROM,
+    appUrlIsLocal: /localhost|127\.0\.0\.1/.test(env.APP_URL),
+    fromIsResendDefault: /onboarding@resend\.dev/.test(env.EMAIL_FROM),
+  });
 });

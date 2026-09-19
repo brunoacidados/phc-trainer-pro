@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { apiFetch } from "../lib/api.ts";
 import { Dialog } from "../components/ui/dialog.tsx";
+import { buttonVariants } from "../components/ui/button.tsx";
+import { cn } from "../lib/utils.ts";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -56,6 +58,7 @@ export function LoginPage() {
   const [forgotOpen, setForgotOpen] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
   const [forgotMsg, setForgotMsg] = useState<string | null>(null);
+  const [forgotLink, setForgotLink] = useState<string | null>(null);
   const [forgotBusy, setForgotBusy] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -111,16 +114,43 @@ export function LoginPage() {
           Entrar
         </Button>
         <div className="flex items-center justify-between text-sm">
-          <button className="cursor-pointer text-info hover:underline" onClick={() => { setForgotOpen(true); setForgotMsg(null); }}>
+          <button
+            className="cursor-pointer text-info hover:underline"
+            onClick={() => {
+              setForgotOpen(true);
+              setForgotMsg(null);
+            }}
+          >
             Esqueci-me da password
           </button>
-          <Link className="text-info hover:underline" to="/register">Criar conta</Link>
+          <Link className="text-info hover:underline" to="/register">
+            Criar conta
+          </Link>
         </div>
-        <Dialog open={forgotOpen} onClose={() => setForgotOpen(false)} title="🔑 Recuperar password">
+        <Dialog
+          open={forgotOpen}
+          onClose={() => setForgotOpen(false)}
+          title="🔑 Recuperar password"
+        >
           <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">Indique o seu email; enviaremos um link de recuperação.</p>
-            {forgotMsg && <Alert variant="success">{forgotMsg}</Alert>}
-            <Input type="email" placeholder="o-seu@email" value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} />
+            <p className="text-sm text-muted-foreground">
+              Indique o seu email; enviaremos um link de recuperação.
+            </p>
+            {forgotMsg && <Alert variant={forgotLink ? "warning" : "success"}>{forgotMsg}</Alert>}
+            {forgotLink && (
+              <a
+                href={forgotLink}
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full")}
+              >
+                Abrir link de reset diretamente (dev)
+              </a>
+            )}
+            <Input
+              type="email"
+              placeholder="o-seu@email"
+              value={forgotEmail}
+              onChange={(e) => setForgotEmail(e.target.value)}
+            />
             <Button
               className="w-full"
               loading={forgotBusy}
@@ -128,8 +158,21 @@ export function LoginPage() {
               onClick={async () => {
                 setForgotBusy(true);
                 try {
-                  const r = await apiFetch<{ message: string }>("/api/auth/forgot-password", { method: "POST", body: { email: forgotEmail }, noRetry: true });
-                  setForgotMsg(r.message);
+                  const r = await apiFetch<{
+                    message: string;
+                    emailSent?: boolean;
+                    devLink?: string;
+                  }>("/api/auth/forgot-password", {
+                    method: "POST",
+                    body: { email: forgotEmail },
+                    noRetry: true,
+                  });
+                  setForgotMsg(
+                    r.emailSent === false
+                      ? "Não conseguimos enviar o email agora. Contacte o formador/admin (ele pode gerar um link em Admin) ou tente mais tarde."
+                      : r.message,
+                  );
+                  setForgotLink(r.devLink ?? null);
                 } catch (e) {
                   setForgotMsg((e as Error).message);
                 } finally {
