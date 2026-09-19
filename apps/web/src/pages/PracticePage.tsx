@@ -10,6 +10,8 @@ import { Badge } from "../components/ui/badge.tsx";
 import { Button } from "../components/ui/button.tsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs.tsx";
 import { Spinner } from "../components/ui/misc.tsx";
+import { Alert } from "../components/ui/alert.tsx";
+import { Input } from "../components/ui/input.tsx";
 import { cn } from "../lib/utils.ts";
 
 export function PracticePage() {
@@ -157,6 +159,11 @@ function CardsTab() {
 
   return (
     <div className="space-y-4">
+      <Alert variant="info">
+        <b>🃏 Repetição espaçada NATIVA (estilo Anki)</b> — já incluída na app, com o seu progresso
+        guardado na conta. <b>Não precisa de baixar nem importar nada para o Anki.</b> Estude aqui;
+        o Anki externo é só opcional (export CSV em Recursos).
+      </Alert>
       <div className="grid gap-4 sm:grid-cols-3">
         <Card>
           <CardContent className="py-4 text-center">
@@ -186,11 +193,85 @@ function CardsTab() {
           🔀 Sessão mista
         </Button>
       </div>
+      <DeckBrowser />
       <p className="text-xs text-muted-foreground">
         Repetição espaçada: errei → +1 dia · quase → +2 dias · sabia → escada 1→2→4→7→14→30→60.
-        Também exportável para Anki (assets/flashcards-phc.csv).
       </p>
     </div>
+  );
+}
+
+/* ============ Browser de baralhos (estilo Anki: procurar/filtrar/ver estado) ============ */
+function DeckBrowser() {
+  const state = useProgress((s) => s.state);
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const [lvl, setLvl] = useState("");
+  const [status, setStatus] = useState("");
+  if (!state) return null;
+  const today = new Date().toISOString().slice(0, 10);
+
+  const statusOf = (i: number): string => {
+    const c = state.cards[String(i)];
+    if (!c) return "nova";
+    if (c.c >= CARD_TARGET) return "dominada";
+    if (c.due && c.due <= today) return "vencida";
+    return "aprendendo";
+  };
+
+  const rows = CARDS.map((c, i) => ({ c, i }))
+    .filter(({ c, i }) => {
+      if (lvl !== "" && c.lv !== Number(lvl)) return false;
+      if (status && statusOf(i) !== status) return false;
+      if (q && !(c.t.toLowerCase().includes(q) || c.b.toLowerCase().includes(q))) return false;
+      return true;
+    })
+    .slice(0, 100);
+
+  const levels = Array.from(new Set(CARDS.map((c) => c.lv))).sort((a, b) => a - b);
+
+  return (
+    <Card>
+      <CardHeader className="flex-row items-center justify-between space-y-0">
+        <CardTitle>🗂 Browser de baralhos ({CARDS.length} cartas)</CardTitle>
+        <Button size="sm" variant="outline" onClick={() => setOpen((o) => !o)}>
+          {open ? "Fechar" : "Abrir"}
+        </Button>
+      </CardHeader>
+      {open && (
+        <CardContent className="space-y-3">
+          <div className="flex flex-wrap gap-2">
+            <Input className="min-w-40 flex-1" placeholder="Procurar carta…" value={q} onChange={(e) => setQ(e.target.value.toLowerCase())} />
+            <select className="rounded-md border border-input bg-background/60 px-2 py-1.5 text-sm" value={lvl} onChange={(e) => setLvl(e.target.value)}>
+              <option value="">Todos os níveis</option>
+              {levels.map((l) => <option key={l} value={l}>Nível {l}</option>)}
+            </select>
+            <select className="rounded-md border border-input bg-background/60 px-2 py-1.5 text-sm" value={status} onChange={(e) => setStatus(e.target.value)}>
+              <option value="">Todos os estados</option>
+              <option value="nova">Nova</option>
+              <option value="aprendendo">Aprendendo</option>
+              <option value="vencida">Vencida</option>
+              <option value="dominada">Dominada</option>
+            </select>
+          </div>
+          <div className="max-h-96 space-y-1 overflow-y-auto">
+            {rows.map(({ c, i }) => (
+              <details key={i} className="rounded-md border border-border">
+                <summary className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm">
+                  <Badge variant={statusOf(i) === "dominada" ? "success" : statusOf(i) === "vencida" ? "warning" : statusOf(i) === "nova" ? "muted" : "info"}>
+                    {statusOf(i)}
+                  </Badge>
+                  <span className="min-w-0 flex-1 truncate">{c.t}</span>
+                  <span className="text-xs text-muted-foreground">N{c.lv}</span>
+                </summary>
+                <div className="border-t border-border px-3 py-2 text-sm text-success">{c.b}</div>
+              </details>
+            ))}
+            {rows.length === 0 && <p className="p-4 text-center text-sm text-muted-foreground">Nenhuma carta com esses filtros.</p>}
+          </div>
+        </CardContent>
+      )}
+    </Card>
   );
 }
 

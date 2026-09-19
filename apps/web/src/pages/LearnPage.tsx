@@ -22,9 +22,12 @@ import { Button } from "../components/ui/button.tsx";
 import { Input, Select, Textarea } from "../components/ui/input.tsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs.tsx";
 import { EmptyState } from "../components/ui/misc.tsx";
+import { Alert } from "../components/ui/alert.tsx";
 import { CircleProgress } from "../components/ui/progress.tsx";
 import { cn } from "../lib/utils.ts";
 import { ProtocolTab } from "../features/learn/ProtocolTab.tsx";
+import { usePwaInstall } from "../hooks/usePwaInstall.ts";
+import { buttonVariants } from "../components/ui/button.tsx";
 
 export function LearnPage() {
   const [params, setParams] = useSearchParams();
@@ -40,6 +43,7 @@ export function LearnPage() {
           <TabsTrigger value="guia">📚 Guia completo</TabsTrigger>
           <TabsTrigger value="gerador">🧰 Gerador de código</TabsTrigger>
           <TabsTrigger value="protocolo">📜 Protocolo</TabsTrigger>
+          <TabsTrigger value="recursos">📥 Recursos</TabsTrigger>
         </TabsList>
         <TabsContent value="circuitos">
           <CircuitosTab />
@@ -58,6 +62,9 @@ export function LearnPage() {
         </TabsContent>
         <TabsContent value="protocolo">
           <ProtocolTab />
+        </TabsContent>
+        <TabsContent value="recursos">
+          <RecursosTab />
         </TabsContent>
       </Tabs>
     </div>
@@ -729,6 +736,76 @@ function GenOutput({ text }: { text: string }) {
           </p>
         ),
       )}
+    </div>
+  );
+}
+
+
+/* ============ Recursos / Downloads (acesso fácil aos ficheiros) ============ */
+function RecursosTab() {
+  const { canInstall, promptInstall, installed } = usePwaInstall();
+  const itens = [
+    {
+      ico: "📄",
+      t: "Guia do Técnico Expert (Markdown)",
+      d: "O guia completo de 15 capítulos em .md para ler offline / no seu editor.",
+      href: "/guia-expert-phc-gestao-evolution.md",
+      btn: "⬇ Baixar .md",
+    },
+    {
+      ico: "🃏",
+      t: "Flashcards PHC (CSV p/ Anki)",
+      d: "As 139 cartas em CSV (separador ;). Só precisa disto se quiser o Anki EXTERNO — na app já é nativo.",
+      href: "/flashcards-phc.csv",
+      btn: "⬇ Baixar .csv",
+    },
+    {
+      ico: "🎧",
+      t: "Boas-vindas do Professor (áudio)",
+      d: "Mensagem de boas-vindas em pt-BR.",
+      href: "/audio/bemvindo.mp3",
+      btn: "⬇ Baixar .mp3",
+    },
+  ];
+  return (
+    <div className="space-y-4">
+      <Alert variant="info">
+        <b>Tudo à distância de 1 clique.</b> Estes ficheiros são servidos pela própria app (funcionam
+        offline depois da 1ª visita). O estudo de cartas já é <b>nativo</b> em 🧠 Praticar — não precisa
+        do Anki externo.
+      </Alert>
+      <div className="grid gap-3 md:grid-cols-2">
+        {itens.map((it) => (
+          <Card key={it.t}>
+            <CardContent className="flex items-start gap-3 p-4">
+              <span className="text-2xl">{it.ico}</span>
+              <div className="min-w-0 flex-1">
+                <b className="text-sm">{it.t}</b>
+                <p className="mt-0.5 text-xs text-muted-foreground">{it.d}</p>
+                <a href={it.href} download className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-2")}>
+                  {it.btn}
+                </a>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+        <Card>
+          <CardContent className="flex items-start gap-3 p-4">
+            <span className="text-2xl">📱</span>
+            <div className="min-w-0 flex-1">
+              <b className="text-sm">Instalar a app (PWA)</b>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                {installed ? "Já instalada neste dispositivo. ✅" : "Adicione ao ecrã inicial / instale no computador para uso offline."}
+              </p>
+              {canInstall && !installed && (
+                <Button size="sm" variant="outline" className="mt-2" onClick={() => void promptInstall()}>
+                  ⬇ Instalar app
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
