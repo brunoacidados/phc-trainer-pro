@@ -22,6 +22,7 @@ import { Badge } from "../ui/badge.tsx";
 import { Button } from "../ui/button.tsx";
 import { cn } from "../../lib/utils.ts";
 import { useSync } from "../../stores/sync.ts";
+import { NotificationBell } from "./NotificationBell.tsx";
 
 const NAV = [
   { to: "/", label: "Jornada", icon: Target, end: true },
@@ -101,6 +102,7 @@ export function AppHeader() {
               ⌘K
             </kbd>
           </Button>
+          <NotificationBell />
           <SyncIndicator />
           {state && (
             <>

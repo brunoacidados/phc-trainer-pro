@@ -11,6 +11,7 @@ import { teamsRouter } from "./routes/teams.ts";
 import { aiRouter } from "./routes/ai.ts";
 import { chatRouter } from "./routes/chat.ts";
 import { adminRouter } from "./routes/admin.ts";
+import { notificationsRouter } from "./routes/notifications.ts";
 import { metaRouter } from "./routes/meta.ts";
 import { errorHandler, notFoundHandler } from "./middleware/error.ts";
 
@@ -62,6 +63,7 @@ export function createApp(): express.Express {
   app.use("/api/ai", aiLimiter, aiRouter);
   app.use("/api/chat", chatRouter);
   app.use("/api/admin", adminRouter);
+  app.use("/api/notifications", notificationsRouter);
   app.use("/api/meta", metaRouter);
 
   app.use(notFoundHandler);

@@ -6,7 +6,7 @@ import {
   teamAiSettingsSchema,
   type MemberSummary,
 } from "@phc/shared";
-import { conflict, forbidden, notFound } from "../lib/errors.ts";
+import { badRequest, conflict, forbidden, notFound } from "../lib/errors.ts";
 import { User } from "../models/User.ts";
 import { Team, generateInviteCode, type TeamDoc } from "../models/Team.ts";
 import { RefreshToken } from "../models/RefreshToken.ts";
@@ -298,4 +298,73 @@ teamsRouter.post("/:id/members/:userId/deactivate", requireUser, async (req, res
   await u.save();
   await RefreshToken.updateMany({ userId: u._id, revokedAt: null }, { revokedAt: new Date() });
   res.json({ ok: true });
+});
+
+/* ================= atribuições (missões + prazos) ================= */
+import { Assignment, type AssignmentDoc } from "../models/Assignment.ts";
+import { todayISO } from "@phc/shared";
+
+/** POST /api/teams/:id/assignments — formador atribui missões c/ prazo */
+teamsRouter.post("/:id/assignments", requireUser, async (req, res) => {
+  const team = await loadTeamForOwner(req);
+  const b = req.body as { title?: string; labIds?: string[]; dueDate?: string; memberIds?: string[] };
+  if (!b.title?.trim() || !b.labIds?.length || !b.dueDate) throw badRequest("Título, missões e prazo são obrigatórios.");
+  const a = await Assignment.create({
+    teamId: team._id,
+    title: b.title.trim(),
+    labIds: b.labIds,
+    dueDate: b.dueDate,
+    memberIds: (b.memberIds || []).map((m) => m),
+    createdBy: req.auth!.sub,
+  });
+  res.status(201).json({ id: String(a._id), title: a.title, labIds: a.labIds, dueDate: a.dueDate, memberIds: a.memberIds.map(String) });
+});
+
+/** GET /api/teams/:id/assignments — membro vê as suas; formador vê todas c/ conclusão */
+teamsRouter.get("/:id/assignments", requireUser, async (req, res) => {
+  const team = await Team.findById(req.params.id);
+  if (!team) throw notFound();
+  const me = await User.findById(req.auth!.sub);
+  const isOwner = String(team.ownerId) === String(req.auth!.sub) || me?.role === "trainer" || me?.role === "admin";
+  const all = await Assignment.find({ teamId: team._id }).sort({ dueDate: -1 });
+  const mine = all.filter((a) => a.memberIds.length === 0 || a.memberIds.some((m) => String(m) === String(req.auth!.sub)));
+  if (!isOwner) {
+    res.json({ assignments: mine.map(serializeAssignment) });
+    return;
+  }
+  // p/ formador: estado de conclusão por membro
+  const users = await User.find({ teamId: team._id });
+  const docs = await Progress.find({ userId: { $in: users.map((u) => u._id) } });
+  const progBy = new Map(docs.map((d) => [String(d.userId), d.state]));
+  res.json({
+    assignments: all.map((a) => {
+      const targets = a.memberIds.length ? users.filter((u) => a.memberIds.some((m) => String(m) === String(u._id))) : users.filter((u) => String(u._id) !== String(team.ownerId));
+      const progress = targets.map((u) => {
+        const st = progBy.get(String(u._id));
+        const done = a.labIds.filter((lid) => (st?.labs?.[lid]?.c ?? 0) > 0 || st?.labs?.[lid]?.mem).length;
+        return { userId: String(u._id), name: u.name, done, total: a.labIds.length, overdue: a.dueDate < todayISO() && done < a.labIds.length };
+      });
+      return { ...serializeAssignment(a), completion: progress };
+    }),
+  });
+});
+
+/** DELETE /api/teams/:id/assignments/:aid */
+teamsRouter.delete("/:id/assignments/:aid", requireUser, async (req, res) => {
+  await loadTeamForOwner(req);
+  await Assignment.deleteOne({ _id: req.params.aid, teamId: req.params.id });
+  res.json({ ok: true });
+});
+
+function serializeAssignment(a: AssignmentDoc) {
+  return { id: String(a._id), title: a.title, labIds: a.labIds, dueDate: a.dueDate, memberIds: a.memberIds.map(String), createdBy: String(a.createdBy) };
+}
+
+/** GET /api/teams/:id/members/:userId/progress — drill-down (formador) */
+teamsRouter.get("/:id/members/:userId/progress", requireUser, async (req, res) => {
+  const team = await loadTeamForOwner(req);
+  const u = await User.findById(req.params.userId);
+  if (!u || String(u.teamId) !== String(team._id)) throw notFound("Membro não pertence à equipa.");
+  const doc = await Progress.findOne({ userId: u._id });
+  res.json({ user: toPublicUser(u as UserDoc), state: doc?.state ?? null });
 });

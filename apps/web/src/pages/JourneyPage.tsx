@@ -17,6 +17,8 @@ import {
 } from "@phc/shared";
 import { useProgress } from "../stores/progress.ts";
 import { useSession } from "../stores/session.ts";
+import { useQuery } from "@tanstack/react-query";
+import { apiFetch } from "../lib/api.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card.tsx";
 import { Badge } from "../components/ui/badge.tsx";
 import { Button, buttonVariants } from "../components/ui/button.tsx";
@@ -164,6 +166,8 @@ export function JourneyPage() {
         </Card>
       )}
 
+      <MyAssignments />
+
       {/* curso personalizado */}
       <CourseCard />
 
@@ -203,6 +207,42 @@ export function JourneyPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+interface MyAssignment { id: string; title: string; labIds: string[]; dueDate: string }
+function MyAssignments() {
+  const team = useSession((s) => s.team);
+  const state = useProgress((s) => s.state);
+  const q = useQuery({
+    queryKey: ["my-assignments", team?.id],
+    queryFn: () => apiFetch<{ assignments: MyAssignment[] }>(`/api/teams/${team?.id}/assignments`),
+    enabled: !!team?.id,
+  });
+  const items = (q.data?.assignments ?? []).filter((a) => {
+    const done = a.labIds.filter((l) => (state?.labs[l]?.c ?? 0) > 0 || state?.labs[l]?.mem).length;
+    return done < a.labIds.length;
+  });
+  if (!team || items.length === 0) return null;
+  const today = new Date().toISOString().slice(0, 10);
+  return (
+    <Card>
+      <CardHeader><CardTitle className="text-accent">📌 As suas atribuições</CardTitle></CardHeader>
+      <CardContent className="space-y-2">
+        {items.map((a) => {
+          const done = a.labIds.filter((l) => (state?.labs[l]?.c ?? 0) > 0 || state?.labs[l]?.mem).length;
+          return (
+            <div key={a.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border p-2">
+              <div>
+                <b className="text-sm">{a.title}</b>
+                <div className="text-xs text-muted-foreground">{a.labIds.join(", ")} · {done}/{a.labIds.length}</div>
+              </div>
+              <Badge variant={a.dueDate < today ? "destructive" : "warning"}>prazo {a.dueDate}</Badge>
+            </div>
+          );
+        })}
+      </CardContent>
+    </Card>
   );
 }
 

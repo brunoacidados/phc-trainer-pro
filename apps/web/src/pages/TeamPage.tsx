@@ -16,6 +16,7 @@ import { Badge } from "../components/ui/badge.tsx";
 import { Button } from "../components/ui/button.tsx";
 import { Input, Label } from "../components/ui/input.tsx";
 import { Alert } from "../components/ui/alert.tsx";
+import { Dialog } from "../components/ui/dialog.tsx";
 import { ProgressBar } from "../components/ui/progress.tsx";
 import { Table, TBody, TD, TH, THead, TR } from "../components/ui/table.tsx";
 import { Spinner } from "../components/ui/misc.tsx";
@@ -319,6 +320,8 @@ function TeamView({
         </Card>
       )}
 
+      {team && <P2Extras teamId={team.id} isOwner={isOwner} />}
+
       {/* chaves de IA da equipa */}
       <Card>
         <CardHeader className="flex-row flex-wrap items-center justify-between gap-2 space-y-0">
@@ -432,3 +435,181 @@ function cnRow(me: boolean): string {
 }
 
 export const AI_KEY_NAMES = aiKeyNames;
+
+/* ================= P2: leaderboard + CSV + atribuições + drill-down ================= */
+interface MemberRow {
+  user: { id: string; name: string; email: string; role: string; group: string; deactivated: boolean };
+  summary: {
+    xp: number; mastered: number; reps: number; pct: number; streak: number; quizzesPassed: number;
+    cardsMastered: number; evidences: number; achievements: number; belt: number; lastActive: string | null;
+  } | null;
+}
+
+function useMembers(teamId: string, enabled: boolean) {
+  return useQuery({
+    queryKey: ["team-members", teamId],
+    queryFn: () => apiFetch<{ members: MemberRow[] }>(`/api/teams/${teamId}/members`),
+    enabled,
+    refetchInterval: 60_000,
+  });
+}
+
+function exportMembersCsv(members: MemberRow[]) {
+  const rows = [["Nome", "Email", "Papel", "Grupo", "XP", "Missões🧠", "Reps", "Testes", "Cartas", "Provas", "Streak", "Última atividade"]];
+  for (const m of members) {
+    const s = m.summary;
+    rows.push([m.user.name, m.user.email, m.user.role, m.user.group || "-", String(s?.xp ?? 0), String(s?.mastered ?? 0), String(s?.reps ?? 0), String(s?.quizzesPassed ?? 0), String(s?.cardsMastered ?? 0), String(s?.evidences ?? 0), String(s?.streak ?? 0), s?.lastActive ? new Date(s.lastActive).toISOString().slice(0, 10) : "-"]);
+  }
+  const blob = new Blob([rows.map((r) => r.join(";")).join("\n")], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `equipa-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+interface AssignmentVM { id: string; title: string; labIds: string[]; dueDate: string; completion?: { userId: string; name: string; done: number; total: number; overdue: boolean }[] }
+
+function AssignmentsCard({ teamId, isOwner }: { teamId: string; isOwner: boolean }) {
+  const qc = useQueryClient();
+  const q = useQuery({ queryKey: ["assignments", teamId], queryFn: () => apiFetch<{ assignments: AssignmentVM[] }>(`/api/teams/${teamId}/assignments`), refetchInterval: 60_000 });
+  const [title, setTitle] = useState("");
+  const [labs, setLabs] = useState("");
+  const [due, setDue] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function create() {
+    setBusy(true);
+    try {
+      await apiFetch(`/api/teams/${teamId}/assignments`, { method: "POST", body: { title, labIds: labs.split(/[\s,]+/).filter(Boolean), dueDate: due, memberIds: [] } });
+      setTitle(""); setLabs(""); setDue("");
+      qc.invalidateQueries({ queryKey: ["assignments", teamId] });
+      toast.success("Atribuição criada.");
+    } catch (e) { toast.error((e as Error).message); }
+    finally { setBusy(false); }
+  }
+
+  return (
+    <Card>
+      <CardHeader><CardTitle>📌 Atribuições (missões + prazos)</CardTitle></CardHeader>
+      <CardContent className="space-y-3">
+        {isOwner && (
+          <div className="grid gap-2 sm:grid-cols-[1fr_auto_auto_auto]">
+            <Input placeholder="Título (ex.: Sprint faturação)" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Input placeholder="Missões: L06 L07…" className="w-40" value={labs} onChange={(e) => setLabs(e.target.value)} />
+            <Input type="date" className="w-40" value={due} onChange={(e) => setDue(e.target.value)} />
+            <Button loading={busy} disabled={!title || !labs || !due} onClick={() => void create()}>Criar</Button>
+          </div>
+        )}
+        {(q.data?.assignments ?? []).length === 0 && <p className="text-sm text-muted-foreground">Sem atribuições.</p>}
+        {(q.data?.assignments ?? []).map((a) => (
+          <div key={a.id} className="rounded-md border border-border p-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <b className="text-sm">{a.title}</b>
+              <Badge variant={a.dueDate < new Date().toISOString().slice(0, 10) ? "destructive" : "info"}>prazo {a.dueDate}</Badge>
+              {isOwner && (
+                <Button size="sm" variant="ghost" onClick={async () => { await apiFetch(`/api/teams/${teamId}/assignments/${a.id}`, { method: "DELETE" }); qc.invalidateQueries({ queryKey: ["assignments", teamId] }); }}>✕</Button>
+              )}
+            </div>
+            <div className="mt-1 text-xs text-muted-foreground">Missões: {a.labIds.join(", ")}</div>
+            {isOwner && a.completion && (
+              <div className="mt-2 flex flex-wrap gap-1">
+                {a.completion.map((c) => (
+                  <Badge key={c.userId} variant={c.done >= c.total ? "success" : c.overdue ? "destructive" : "muted"}>
+                    {c.name} {c.done}/{c.total}
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  );
+}
+
+function DrillModal({ teamId, memberId, onClose }: { teamId: string; memberId: string | null; onClose: () => void }) {
+  const q = useQuery({
+    queryKey: ["member-progress", teamId, memberId],
+    queryFn: () => apiFetch<{ user: { name: string }; state: import("@phc/shared").ProgressState | null }>(`/api/teams/${teamId}/members/${memberId}/progress`),
+    enabled: !!memberId,
+  });
+  const s = q.data?.state;
+  return (
+    <Dialog open={!!memberId} onClose={onClose} wide title={`🔎 ${q.data?.user?.name ?? ""}`}>
+      {!s ? (
+        <p className="text-sm text-muted-foreground">Sem dados de progresso.</p>
+      ) : (
+        <div className="space-y-3 text-sm">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <Badge variant="muted">XP {0}</Badge>
+          </div>
+          <div>
+            <b>Missões dominadas:</b>{" "}
+            {Object.entries(s.labs).filter(([, v]) => v.mem).map(([k]) => <Badge key={k} variant="success" className="mr-1">{k}</Badge>)}
+          </div>
+          <div>
+            <b>Em curso:</b>{" "}
+            {Object.entries(s.labs).filter(([, v]) => !v.mem && v.c > 0).map(([k, v]) => <Badge key={k} variant="info" className="mr-1">{k} ({v.c}×)</Badge>)}
+          </div>
+          <div><b>Repetições totais:</b> {Object.values(s.labs).reduce((n, v) => n + v.c, 0)} · <b>Provas:</b> {s.evid.length} · <b>Conquistas:</b> {Object.keys(s.achs).length}</div>
+          {s.evid.length > 0 && (
+            <div>
+              <b>Últimas provas:</b>
+              <ul className="mt-1 space-y-1 text-xs text-muted-foreground">
+                {s.evid.slice(0, 8).map((e, i) => <li key={i}>📸 {e.lab} · {e.kind} · {e.txt}</li>)}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+    </Dialog>
+  );
+}
+
+function P2Extras({ teamId, isOwner }: { teamId: string; isOwner: boolean }) {
+  const members = useMembers(teamId, isOwner);
+  const [drill, setDrill] = useState<string | null>(null);
+  return (
+    <>
+      {isOwner && members.data && <LeaderboardMembers members={members.data.members} onDrill={setDrill} />}
+      <AssignmentsCard teamId={teamId} isOwner={isOwner} />
+      <DrillModal teamId={teamId} memberId={drill} onClose={() => setDrill(null)} />
+    </>
+  );
+}
+
+function LeaderboardMembers({ members, onDrill }: { members: MemberRow[]; onDrill: (id: string) => void }) {
+  const [group, setGroup] = useState("");
+  const groups = Array.from(new Set(members.map((m) => m.user.group).filter(Boolean)));
+  const filtered = group ? members.filter((m) => m.user.group === group) : members;
+  const ranked = [...filtered].sort((a, b) => (b.summary?.xp ?? 0) - (a.summary?.xp ?? 0));
+  return (
+    <Card>
+      <CardHeader className="flex-row flex-wrap items-center justify-between gap-2 space-y-0">
+        <CardTitle>🏆 Leaderboard (clique p/ detalhe)</CardTitle>
+        <div className="flex items-center gap-2">
+          {groups.length > 0 && (
+            <select className="rounded-md border border-input bg-background/60 px-2 py-1 text-xs" value={group} onChange={(e) => setGroup(e.target.value)}>
+              <option value="">Todos os grupos</option>
+              {groups.map((g) => <option key={g} value={g}>{g}</option>)}
+            </select>
+          )}
+          <Button size="sm" variant="outline" onClick={() => exportMembersCsv(filtered)}>⬇ CSV</Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <ol className="space-y-1">
+          {ranked.map((m, i) => (
+            <li key={m.user.id} data-member={m.user.id} className="flex cursor-pointer items-center gap-3 rounded-md px-2 py-1.5 hover:bg-secondary/40" onClick={() => onDrill(m.user.id)}>
+              <span className="w-6 text-center font-bold">{i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : i + 1}</span>
+              <span className="min-w-0 flex-1 truncate text-sm font-medium">{m.user.name}{m.user.group && <span className="ml-1 text-xs text-muted-foreground">· {m.user.group}</span>}</span>
+              <Badge variant="muted">{m.summary?.mastered ?? 0}🧠</Badge>
+              <span className="w-16 text-right text-sm font-semibold text-primary">{m.summary?.xp ?? 0} XP</span>
+            </li>
+          ))}
+        </ol>
+      </CardContent>
+    </Card>
+  );
+}
