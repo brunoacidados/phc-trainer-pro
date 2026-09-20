@@ -9,6 +9,7 @@ const RT_KEY = "phc.refreshToken";
 let accessToken: string | null = null;
 let refreshPromise: Promise<boolean> | null = null;
 
+export function getAccessToken(): string | null { return accessToken; }
 export function setAccessToken(t: string | null): void {
   accessToken = t;
 }

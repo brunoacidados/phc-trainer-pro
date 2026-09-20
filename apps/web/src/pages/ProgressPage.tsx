@@ -77,7 +77,7 @@ function Overview() {
     { label: "Missões 🧠", value: `${labsMastered(state)}/${LABS.length}`, icon: "🧠" },
     { label: "Repetições", value: totalReps(state), icon: "🔁" },
     { label: "Cartas dominadas", value: `${cardsMastered(state)}/139`, icon: "🃏" },
-    { label: "Testes ≥80%", value: `${quizzesPassed(state)}/13`, icon: "📝" },
+    { label: "Testes ≥80%", value: `${quizzesPassed(state)}/${QUIZZES.length}`, icon: "📝" },
     { label: "Provas", value: state.evid.length, icon: "📸" },
     { label: "Conquistas", value: Object.keys(state.achs).length, icon: "🏅" },
   ];

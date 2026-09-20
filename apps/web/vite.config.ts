@@ -35,6 +35,8 @@ export default defineConfig({
       workbox: {
         // offline-first para o shell; API nunca é servida de cache (dados por utilizador)
         globPatterns: ["**/*.{js,css,html,svg,png,jpg,mp3,woff2,md,csv}"],
+        globIgnores: ["**/og.png"],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         navigateFallback: "/index.html",
         // não tentar fazer fallback de pedidos /api para o index.html
         navigateFallbackDenylist: [/^\/api\//],

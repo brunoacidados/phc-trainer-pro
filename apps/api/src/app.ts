@@ -13,6 +13,7 @@ import { aiRouter } from "./routes/ai.ts";
 import { chatRouter } from "./routes/chat.ts";
 import { adminRouter } from "./routes/admin.ts";
 import { notificationsRouter } from "./routes/notifications.ts";
+import { realtimeRouter } from "./routes/realtime.ts";
 import { metaRouter } from "./routes/meta.ts";
 import { errorHandler, notFoundHandler } from "./middleware/error.ts";
 
@@ -79,6 +80,7 @@ export function createApp(): express.Express {
   const adminLimiter = rateLimit({ windowMs: 60_000, limit: 60, standardHeaders: "draft-7", legacyHeaders: false });
   app.use("/api/admin", adminLimiter, adminRouter);
   app.use("/api/notifications", notificationsRouter);
+  app.use("/api", realtimeRouter);
   app.use("/api/meta", metaRouter);
 
   app.use(notFoundHandler);

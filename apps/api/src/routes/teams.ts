@@ -10,6 +10,7 @@ import { badRequest, conflict, forbidden, notFound } from "../lib/errors.ts";
 import { User } from "../models/User.ts";
 import { Team, generateInviteCode, type TeamDoc } from "../models/Team.ts";
 import { RefreshToken } from "../models/RefreshToken.ts";
+import { publish } from "../services/realtime.ts";
 import { Progress, getOrCreateProgress } from "../models/Progress.ts";
 import { decryptSecret, encryptSecret } from "../lib/crypto.ts";
 import { globalAiKeys } from "../config/env.ts";
@@ -317,6 +318,7 @@ teamsRouter.post("/:id/assignments", requireUser, async (req, res) => {
     memberIds: (b.memberIds || []).map((m) => m),
     createdBy: req.auth!.sub,
   });
+  publish(String(team._id), "assignment", { id: String(a._id) });
   res.status(201).json({ id: String(a._id), title: a.title, labIds: a.labIds, dueDate: a.dueDate, memberIds: a.memberIds.map(String) });
 });
 

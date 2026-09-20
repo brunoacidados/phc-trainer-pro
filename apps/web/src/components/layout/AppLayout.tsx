@@ -18,6 +18,7 @@ import { OnboardModal, useOnboard } from "../../features/onboard/OnboardModal.ts
 import { CommandPalette } from "../../features/search/CommandPalette.tsx";
 import { useUi } from "../../stores/ui.ts";
 import { initNetworkListeners, useSync } from "../../stores/sync.ts";
+import { useRealtime } from "../../hooks/useRealtime.ts";
 
 /** bootstrap de sessão + guarda de rotas autenticadas */
 export function RequireAuth({ children }: { children?: React.ReactNode }) {
@@ -90,6 +91,7 @@ function EmailVerifyBanner() {
 }
 
 export function AppLayout() {
+  useRealtime();
   useEffect(() => initNetworkListeners(), []);
   const refreshSync = useSync((s) => s.refresh);
   useEffect(() => {

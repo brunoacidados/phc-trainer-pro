@@ -26,6 +26,7 @@ import { getOrCreateProgress } from "../models/Progress.ts";
 import { User } from "../models/User.ts";
 import { notFound } from "../lib/errors.ts";
 import { requireUser, validate } from "../middleware/auth.ts";
+import { publish } from "../services/realtime.ts";
 
 export const progressRouter = Router();
 progressRouter.use(requireUser);
@@ -52,6 +53,8 @@ async function save(doc: Awaited<ReturnType<typeof getOrCreateProgress>>, userId
     },
     { lastActiveAt: new Date() },
   );
+  const _teamId = (doc as unknown as { teamId?: string | null }).teamId;
+  if (_teamId) publish(_teamId, "progress", { userId: String(userId) });
   return doc.state;
 }
 

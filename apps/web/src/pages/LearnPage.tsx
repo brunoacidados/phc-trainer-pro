@@ -304,6 +304,7 @@ const ENC_SECTIONS = [
 ] as const;
 
 function EnciclopediaTab({ initialQuery }: { initialQuery: string }) {
+  const [visible, setVisible] = useState(80);
   const [q, setQ] = useState(initialQuery);
   const [section, setSection] = useState<string>("funcoes");
   const [open, setOpen] = useState<string | null>(null);
@@ -348,8 +349,8 @@ function EnciclopediaTab({ initialQuery }: { initialQuery: string }) {
           {results.length} resultados para “{q}”
         </p>
       )}
-      <div className="max-h-[60vh] space-y-1 overflow-y-auto pr-1">
-        {rows.slice(0, 300).map(({ n, d, tag }, i) => {
+      <div className="max-h-[60vh] space-y-1 overflow-y-auto pr-1" onScroll={(e)=>{const el=e.currentTarget; if(el.scrollTop+el.clientHeight>=el.scrollHeight-60) setVisible(v=>v+80);}}>
+        {rows.slice(0, visible).map(({ n, d, tag }, i) => {
           const key = `${q}-${section}-${i}`;
           return (
             <div key={key} className="rounded-md border border-border bg-card px-3 py-2">

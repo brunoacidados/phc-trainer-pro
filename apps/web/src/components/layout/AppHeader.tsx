@@ -26,16 +26,17 @@ import { NotificationBell } from "./NotificationBell.tsx";
 import { useTheme } from "../../stores/theme.ts";
 import { usePwaInstall } from "../../hooks/usePwaInstall.ts";
 import { Download, Moon, Sun } from "lucide-react";
+import { useI18n } from "../../i18n.tsx";
 
-const NAV = [
-  { to: "/", label: "Jornada", icon: Target, end: true },
-  { to: "/missoes", label: "Missões", icon: Map },
-  { to: "/aprender", label: "Aprender", icon: Library },
-  { to: "/praticar", label: "Praticar", icon: Brain },
-  { to: "/progresso", label: "Progresso", icon: BarChart3 },
-  { to: "/cursos", label: "Cursos", icon: GraduationCap },
-  { to: "/equipa", label: "Equipa", icon: Users },
-  { to: "/definicoes", label: "Definições", icon: Settings },
+const NAV_KEYS = [
+  { to: "/", key: "nav.hoje", icon: Target, end: true },
+  { to: "/missoes", key: "nav.missoes", icon: Map },
+  { to: "/aprender", key: "nav.aprender", icon: Library },
+  { to: "/praticar", key: "nav.praticar", icon: Brain },
+  { to: "/progresso", key: "nav.progresso", icon: BarChart3 },
+  { to: "/cursos", key: "nav.cursos", icon: GraduationCap },
+  { to: "/equipa", key: "nav.equipa", icon: Users },
+  { to: "/definicoes", key: "nav.definicoes", icon: Settings },
 ];
 
 function SyncIndicator() {
@@ -64,11 +65,12 @@ function SyncIndicator() {
 
 export function AppHeader() {
   const { user, logout } = useSession();
+  const { t } = useI18n();
   const theme = useTheme((s) => s.theme);
   const toggleTheme = useTheme((s) => s.toggle);
   const { canInstall, promptInstall } = usePwaInstall();
   const nav =
-    user?.role === "admin" ? [...NAV, { to: "/admin", label: "Admin", icon: ShieldAlert }] : NAV;
+    user?.role === "admin" ? [...NAV_KEYS, { to: "/admin", key: "nav.admin", icon: ShieldAlert }] : NAV_KEYS;
   const state = useProgress((s) => s.state);
   const navigate = useNavigate();
 
@@ -182,7 +184,7 @@ export function AppHeader() {
             }
           >
             <n.icon className="h-4 w-4" />
-            {n.label}
+            {t(n.key)}
           </NavLink>
         ))}
       </nav>

@@ -1,22 +1,24 @@
 import { NavLink } from "react-router-dom";
 import { BarChart3, Brain, Library, Map, Target, Users } from "lucide-react";
 import { cn } from "../../lib/utils.ts";
+import { useI18n } from "../../i18n.tsx";
 
-const ITEMS = [
-  { to: "/", label: "Hoje", icon: Target, end: true },
-  { to: "/missoes", label: "Missões", icon: Map },
-  { to: "/aprender", label: "Aprender", icon: Library },
-  { to: "/praticar", label: "Praticar", icon: Brain },
-  { to: "/progresso", label: "Progresso", icon: BarChart3 },
-  { to: "/equipa", label: "Equipa", icon: Users },
+const ITEM_KEYS = [
+  { to: "/", key: "nav.hoje", icon: Target, end: true },
+  { to: "/missoes", key: "nav.missoes", icon: Map },
+  { to: "/aprender", key: "nav.aprender", icon: Library },
+  { to: "/praticar", key: "nav.praticar", icon: Brain },
+  { to: "/progresso", key: "nav.progresso", icon: BarChart3 },
+  { to: "/equipa", key: "nav.equipa", icon: Users },
 ];
 
 /** Navegação inferior fixa — só em ecrãs pequenos (<md). */
 export function BottomNav() {
+  const { t } = useI18n();
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
       <div className="mx-auto flex max-w-md items-stretch justify-between">
-        {ITEMS.map((it) => (
+        {ITEM_KEYS.map((it) => (
           <NavLink
             key={it.to}
             to={it.to}
@@ -29,7 +31,7 @@ export function BottomNav() {
             }
           >
             <it.icon className="h-5 w-5" />
-            {it.label}
+            {t(it.key)}
           </NavLink>
         ))}
       </div>

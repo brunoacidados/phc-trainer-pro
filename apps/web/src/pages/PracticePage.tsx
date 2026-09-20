@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CARDS, QUIZZES } from "@phc/content";
 import { CARD_TARGET, dueCardsN, newCardsN } from "@phc/shared";
@@ -205,6 +205,8 @@ function CardsTab() {
 function DeckBrowser() {
   const state = useProgress((s) => s.state);
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(60);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
   const [q, setQ] = useState("");
   const [lvl, setLvl] = useState("");
   const [status, setStatus] = useState("");
@@ -226,7 +228,7 @@ function DeckBrowser() {
       if (q && !(c.t.toLowerCase().includes(q) || c.b.toLowerCase().includes(q))) return false;
       return true;
     })
-    .slice(0, 100);
+    ;
 
   const levels = Array.from(new Set(CARDS.map((c) => c.lv))).sort((a, b) => a - b);
 
@@ -254,8 +256,8 @@ function DeckBrowser() {
               <option value="dominada">Dominada</option>
             </select>
           </div>
-          <div className="max-h-96 space-y-1 overflow-y-auto">
-            {rows.map(({ c, i }) => (
+          <div className="max-h-96 space-y-1 overflow-y-auto" onScroll={(e)=>{const el=e.currentTarget; if(el.scrollTop+el.clientHeight>=el.scrollHeight-40) setVisible(v=>v+60);}}>
+            {rows.slice(0, visible).map(({ c, i }) => (
               <details key={i} className="rounded-md border border-border">
                 <summary className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm">
                   <Badge variant={statusOf(i) === "dominada" ? "success" : statusOf(i) === "vencida" ? "warning" : statusOf(i) === "nova" ? "muted" : "info"}>
@@ -268,6 +270,7 @@ function DeckBrowser() {
               </details>
             ))}
             {rows.length === 0 && <p className="p-4 text-center text-sm text-muted-foreground">Nenhuma carta com esses filtros.</p>}
+            {visible < rows.length && <div ref={sentinelRef} className="p-2 text-center text-xs text-muted-foreground">a carregar mais… ({rows.length - visible} restantes)</div>}
           </div>
         </CardContent>
       )}

@@ -6,6 +6,7 @@ import { useSession } from "../stores/session.ts";
 import { useProgress } from "../stores/progress.ts";
 import { useTts } from "../hooks/useTts.ts";
 import { useOnboard } from "../features/onboard/OnboardModal.tsx";
+import { useI18n } from "../i18n.tsx";
 import { toast } from "../components/ui/toast.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card.tsx";
 import { Badge } from "../components/ui/badge.tsx";
@@ -22,6 +23,7 @@ export function SettingsPage() {
   const { user, refreshMe, logout } = useSession();
   const tts = useTts();
   const openWizard = useOnboard((s) => s.openWizard);
+  const { lang, setLang } = useI18n();
 
   const [name, setName] = useState(user?.name ?? "");
   const [importOpen, setImportOpen] = useState(false);
@@ -43,6 +45,18 @@ export function SettingsPage() {
   return (
     <div className="space-y-5">
       <h1 className="text-2xl font-bold">⚙️ Definições</h1>
+      <Card>
+        <CardContent className="flex flex-wrap items-center justify-between gap-2 py-4">
+          <div>
+            <b className="text-sm">🌐 Idioma / Language</b>
+            <p className="text-xs text-muted-foreground">Interface (nav/labels). O conteúdo pedagógico mantém-se em PT.</p>
+          </div>
+          <select className="rounded-md border border-input bg-background/60 px-2 py-1.5 text-sm" value={lang} onChange={(e) => setLang(e.target.value as "pt" | "en")}>
+            <option value="pt">Português</option>
+            <option value="en">English</option>
+          </select>
+        </CardContent>
+      </Card>
 
       {/* perfil */}
       <Card>
