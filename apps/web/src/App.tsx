@@ -6,6 +6,7 @@ import { JourneyPage } from "./pages/JourneyPage.tsx";
 import { MissionsPage } from "./pages/MissionsPage.tsx";
 import { ProgressPage } from "./pages/ProgressPage.tsx";
 import { AdminPage } from "./pages/AdminPage.tsx";
+import { CursosPage } from "./pages/CursosPage.tsx";
 import { ResetPasswordPage, VerifyEmailPage } from "./pages/ResetVerifyPages.tsx";
 import { MissionDetailPage } from "./pages/MissionDetailPage.tsx";
 import { useSession } from "./stores/session.ts";
@@ -93,6 +94,7 @@ export default function App() {
           <Route path="aprender" element={page(<LearnPage />)} />
           <Route path="praticar" element={page(<PracticePage />)} />
           <Route path="progresso" element={page(<ProgressPage />)} />
+          <Route path="cursos" element={page(<CursosPage />)} />
           <Route path="admin" element={page(<AdminPage />)} />
           <Route path="equipa" element={page(<TeamPage />)} />
           <Route path="definicoes" element={page(<SettingsPage />)} />

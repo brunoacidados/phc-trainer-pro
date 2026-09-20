@@ -111,3 +111,4 @@ export const CONTENT_STATS = {
 } as const;
 
 export * from "./types.ts";
+export * from "./courses.ts";

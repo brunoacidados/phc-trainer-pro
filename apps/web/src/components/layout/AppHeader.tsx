@@ -33,6 +33,7 @@ const NAV = [
   { to: "/aprender", label: "Aprender", icon: Library },
   { to: "/praticar", label: "Praticar", icon: Brain },
   { to: "/progresso", label: "Progresso", icon: BarChart3 },
+  { to: "/cursos", label: "Cursos", icon: GraduationCap },
   { to: "/equipa", label: "Equipa", icon: Users },
   { to: "/definicoes", label: "Definições", icon: Settings },
 ];
