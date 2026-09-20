@@ -47,6 +47,21 @@ export function AdminPage() {
     queryFn: () => apiFetch<{ users: AdminUser[] }>("/api/admin/users"),
     enabled: user?.role === "admin",
   });
+  const audit = useQuery({
+    queryKey: ["admin-audit"],
+    queryFn: () =>
+      apiFetch<{
+        items: {
+          _id: string;
+          actorEmail: string;
+          action: string;
+          targetId: string;
+          createdAt: string;
+        }[];
+        total: number;
+      }>("/api/admin/audit?limit=20"),
+    enabled: user?.role === "admin",
+  });
   const emailSt = useQuery({
     queryKey: ["admin-email"],
     queryFn: () =>
@@ -346,6 +361,40 @@ export function AdminPage() {
           )}
         </CardContent>
       </Card>
+
+      {audit.data && audit.data.items.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>📜 Auditoria (ações de admin)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <THead>
+                <TR>
+                  <TH>Quando</TH>
+                  <TH>Admin</TH>
+                  <TH>Ação</TH>
+                  <TH>Alvo</TH>
+                </TR>
+              </THead>
+              <TBody>
+                {audit.data.items.map((a) => (
+                  <TR key={a._id}>
+                    <TD className="text-xs text-muted-foreground">
+                      {new Date(a.createdAt).toLocaleString("pt-PT")}
+                    </TD>
+                    <TD className="text-xs">{a.actorEmail}</TD>
+                    <TD>
+                      <Badge variant="warning">{a.action}</Badge>
+                    </TD>
+                    <TD className="text-xs text-muted-foreground">{a.targetId.slice(0, 8)}…</TD>
+                  </TR>
+                ))}
+              </TBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
 
       <Dialog open={!!recovery} onClose={() => setRecovery(null)} title="🔑 Recuperação">
         {recovery && (

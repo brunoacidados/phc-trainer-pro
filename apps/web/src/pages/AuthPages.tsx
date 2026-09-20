@@ -3,6 +3,8 @@ import { apiFetch } from "../lib/api.ts";
 import { Dialog } from "../components/ui/dialog.tsx";
 import { buttonVariants } from "../components/ui/button.tsx";
 import { cn } from "../lib/utils.ts";
+import { StrengthMeter, passwordStrength } from "../components/ui/PasswordStrength.tsx";
+
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -198,11 +200,13 @@ export function RegisterPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: { name: "", email: "", password: "" },
   });
+  const pwWatch = watch("password");
 
   return (
     <Shell
@@ -238,9 +242,18 @@ export function RegisterPage() {
             id="password2"
             type="password"
             autoComplete="new-password"
-            {...register("password")}
+            {...register("password", {
+              validate: (v) =>
+                passwordStrength(v).score >= 2 ||
+                "Password demasiado fraca — mistura maiúsculas, minúsculas, números e símbolos.",
+            })}
           />
-          {errors.password && <p className="text-xs text-destructive">Mínimo 8 caracteres.</p>}
+          <StrengthMeter pw={pwWatch} />
+          {errors.password && (
+            <p className="text-xs text-destructive">
+              {errors.password.message || "Mínimo 8 caracteres."}
+            </p>
+          )}
         </div>
         <Button type="submit" className="w-full" loading={isSubmitting}>
           Criar conta

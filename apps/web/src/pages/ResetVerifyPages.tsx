@@ -5,6 +5,7 @@ import { Button } from "../components/ui/button.tsx";
 import { Input, Label } from "../components/ui/input.tsx";
 import { Alert } from "../components/ui/alert.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card.tsx";
+import { StrengthMeter, passwordStrength } from "../components/ui/PasswordStrength.tsx";
 
 /** /resetar?token=... — define nova password após "esqueci-me" */
 export function ResetPasswordPage() {
@@ -58,6 +59,7 @@ export function ResetPasswordPage() {
               onChange={(e) => setPw(e.target.value)}
               autoComplete="new-password"
             />
+            <StrengthMeter pw={pw} />
           </div>
           <div>
             <Label htmlFor="np2">Confirmar nova password</Label>
@@ -71,7 +73,7 @@ export function ResetPasswordPage() {
           </div>
           <Button
             className="w-full"
-            disabled={!token || busy}
+            disabled={!token || busy || passwordStrength(pw).score < 2}
             loading={busy}
             onClick={() => void submit()}
           >

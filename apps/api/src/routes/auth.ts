@@ -213,7 +213,7 @@ import type { Types } from "mongoose";
 import { env } from "../config/env.ts";
 import { PasswordResetToken } from "../models/PasswordResetToken.ts";
 import { sendEmail } from "../services/email.ts";
-import { verifyEmailHtml, resetEmailHtml } from "../services/emailTemplates.ts";
+import { verifyEmailHtml, resetEmailHtml, welcomeEmailHtml } from "../services/emailTemplates.ts";
 import { forgotPasswordSchema, resetPasswordSchema } from "@phc/shared";
 
 function newToken(): { plain: string; hash: string } {
@@ -292,10 +292,18 @@ authRouter.get("/verify/:token", async (req, res) => {
     throw unauthorized("Link de verificação inválido ou expirado.");
   const user = await User.findById(doc.userId);
   if (!user) throw unauthorized("Utilizador não encontrado.");
+  const firstVerify = !user.emailVerifiedAt;
   user.emailVerifiedAt = new Date();
   await user.save();
   doc.usedAt = new Date();
   await doc.save();
+  if (firstVerify) {
+    await sendEmail(
+      user.email,
+      "Bem-vindo(a) ao PHC Trainer Pro 🎉",
+      welcomeEmailHtml(user.name, env.APP_URL),
+    ).catch(() => undefined);
+  }
   res.json({ ok: true, message: "Email verificado com sucesso!" });
 });
 

@@ -14,7 +14,10 @@ adminRouter.get("/users", async (req, res) => {
   const page = Math.max(1, Number(req.query.page) || 1);
   const limit = Math.min(200, Math.max(10, Number(req.query.limit) || 50));
   const total = await User.countDocuments();
-  const users = await User.find().sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+  const users = await User.find()
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit);
   const teams = await Team.find();
   const teamName = new Map(teams.map((t) => [String(t._id), t.name]));
   res.json({
@@ -43,12 +46,14 @@ adminRouter.post("/users/:id/deactivate", async (req, res) => {
   u.deactivated = true;
   await u.save();
   await RefreshToken.updateMany({ userId: u._id, revokedAt: null }, { revokedAt: new Date() });
+  await logAudit(req.auth!, "user.deactivate", String(u._id), { email: u.email });
   res.json({ ok: true, user: toPublicUser(u) });
 });
 adminRouter.post("/users/:id/activate", async (req, res) => {
   const u = await loadUser(req.params.id);
   u.deactivated = false;
   await u.save();
+  await logAudit(req.auth!, "user.activate", String(u._id), { email: u.email });
   res.json({ ok: true, user: toPublicUser(u) });
 });
 
@@ -59,6 +64,7 @@ adminRouter.delete("/users/:id", async (req, res) => {
   await Progress.deleteOne({ userId: u._id });
   await RefreshToken.deleteMany({ userId: u._id });
   await User.deleteOne({ _id: u._id });
+  await logAudit(req.auth!, "user.delete", String(u._id), { email: u.email });
   res.json({ ok: true });
 });
 
@@ -96,12 +102,14 @@ import { sha256 } from "../lib/crypto.ts";
 import { env } from "../config/env.ts";
 import { emailConfigWarning, emailProvider } from "../services/email.ts";
 import { hashPassword } from "../lib/password.ts";
+import { AuditLog, logAudit } from "../models/AuditLog.ts";
 
 /** POST /api/admin/users/:id/verify — marca email como verificado */
 adminRouter.post("/users/:id/verify", async (req, res) => {
   const u = await loadUser(req.params.id);
   u.emailVerifiedAt = new Date();
   await u.save();
+  await logAudit(req.auth!, "user.verify", String(u._id), { email: u.email });
   res.json({ ok: true, user: toPublicUser(u) });
 });
 
@@ -115,6 +123,7 @@ adminRouter.post("/users/:id/reset-link", async (req, res) => {
     tokenHash: sha256(plain),
     expiresAt: new Date(Date.now() + 60 * 60_000),
   });
+  await logAudit(req.auth!, "user.reset-link", String(u._id), { email: u.email });
   res.json({ ok: true, link: `${env.APP_URL}/resetar?token=${plain}`, expiresMin: 60 });
 });
 
@@ -126,7 +135,20 @@ adminRouter.post("/users/:id/temp-password", async (req, res) => {
   u.deactivated = false;
   await u.save();
   await RefreshToken.updateMany({ userId: u._id, revokedAt: null }, { revokedAt: new Date() });
+  await logAudit(req.auth!, "user.temp-password", String(u._id), { email: u.email });
   res.json({ ok: true, tempPassword: temp });
+});
+
+/** GET /api/admin/audit — histórico de ações de admin (paginado) */
+adminRouter.get("/audit", async (req, res) => {
+  const page = Math.max(1, Number(req.query.page) || 1);
+  const limit = Math.min(200, Math.max(10, Number(req.query.limit) || 50));
+  const total = await AuditLog.countDocuments();
+  const items = await AuditLog.find()
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit);
+  res.json({ page, limit, total, pages: Math.ceil(total / limit), items });
 });
 
 /** GET /api/admin/email-status — diagnóstico de porque os emails podem não sair */
