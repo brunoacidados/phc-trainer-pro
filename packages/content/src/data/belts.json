@@ -1,80 +1,86 @@
 [
-  {
-    "n": 0,
-    "name": "Fundamentos",
-    "cor": "#8d99ae",
-    "desc": "Infraestrutura — ambiente, SQL Server, instalação, administração"
-  },
-  {
-    "n": 1,
-    "name": "Ficheiros",
-    "cor": "#c0c0c0",
-    "desc": "Dados mestres — clientes, fornecedores, artigos, preços"
-  },
-  {
-    "n": 2,
-    "name": "Vendas",
-    "cor": "#e0a800",
-    "desc": "Ciclo de vendas — séries, faturação, dossiers internos, recibos"
-  },
-  {
-    "n": 3,
-    "name": "Compras & Stocks",
-    "cor": "#60a5fa",
-    "desc": "Compras e armazéns — aprovisionamento, inventário, custeio PCMP"
-  },
-  {
-    "n": 4,
-    "name": "Financeiro",
-    "cor": "#c084fc",
-    "desc": "Conta corrente e tesouraria — cobranças, bancos, previsões"
-  },
-  {
-    "n": 5,
-    "name": "Fiscal",
-    "cor": "#f5a623",
-    "desc": "Fiscal e contabilidade — SAF-T, ATCUD, retenções, integração"
-  },
-  {
-    "n": 6,
-    "name": "Análises",
-    "cor": "#13c2c2",
-    "desc": "Configuração avançada e análises — parâmetros, relatórios, OLAP"
-  },
-  {
-    "n": 7,
-    "name": "Desenvolvimento",
-    "cor": "#ff6b6b",
-    "desc": "Personalização — Xbase, regras, eventos, IDUs, web C#"
-  },
-  {
-    "n": 8,
-    "name": "Projetos",
-    "cor": "#b37feb",
-    "desc": "Integrações e projetos reais — EyePeak, Pulse, upgrade, implementação"
-  },
-  {
-    "n": 9,
-    "name": "Contabilidade",
-    "cor": "#95de64",
-    "desc": "Módulo Contabilidade — SNC, diários, IVA, fecho de ano, analítica, imobilizado"
-  },
-  {
-    "n": 10,
-    "name": "Recursos Humanos",
-    "cor": "#ffb37a",
-    "desc": "Módulo Pessoal — admissões, vencimentos, IRS/TSU, declarações, cessação"
-  },
-  {
-    "n": 11,
-    "name": "POS & Retalho",
-    "cor": "#ff85c0",
-    "desc": "Retalho — POS Front/Desktop, caixas, vales, promoções, grelhas, omnicanal"
-  },
-  {
-    "n": 12,
-    "name": "Suporte",
-    "cor": "#5cdbd3",
-    "desc": "Pós-venda — PATs, instalações, contratos, pontos, relatórios, KPIs"
-  }
+ {
+  "n": 0,
+  "name": "Fundamentos",
+  "cor": "#8d99ae",
+  "desc": "Infraestrutura — ambiente, SQL Server, instalação, administração"
+ },
+ {
+  "n": 1,
+  "name": "Ficheiros",
+  "cor": "#c0c0c0",
+  "desc": "Dados mestres — clientes, fornecedores, artigos, preços"
+ },
+ {
+  "n": 2,
+  "name": "Vendas",
+  "cor": "#e0a800",
+  "desc": "Ciclo de vendas — séries, faturação, dossiers internos, recibos"
+ },
+ {
+  "n": 3,
+  "name": "Compras & Stocks",
+  "cor": "#60a5fa",
+  "desc": "Compras e armazéns — aprovisionamento, inventário, custeio PCMP"
+ },
+ {
+  "n": 4,
+  "name": "Financeiro",
+  "cor": "#c084fc",
+  "desc": "Conta corrente e tesouraria — cobranças, bancos, previsões"
+ },
+ {
+  "n": 5,
+  "name": "Fiscal",
+  "cor": "#f5a623",
+  "desc": "Fiscal e contabilidade — SAF-T, ATCUD, retenções, integração"
+ },
+ {
+  "n": 6,
+  "name": "Análises",
+  "cor": "#13c2c2",
+  "desc": "Configuração avançada e análises — parâmetros, relatórios, OLAP"
+ },
+ {
+  "n": 7,
+  "name": "Desenvolvimento",
+  "cor": "#ff6b6b",
+  "desc": "Personalização — Xbase, regras, eventos, IDUs, web C#"
+ },
+ {
+  "n": 8,
+  "name": "Projetos",
+  "cor": "#b37feb",
+  "desc": "Integrações e projetos reais — EyePeak, Pulse, upgrade, implementação"
+ },
+ {
+  "n": 9,
+  "name": "Contabilidade",
+  "cor": "#95de64",
+  "desc": "Módulo Contabilidade — SNC, diários, IVA, fecho de ano, analítica, imobilizado"
+ },
+ {
+  "n": 10,
+  "name": "Recursos Humanos",
+  "cor": "#ffb37a",
+  "desc": "Módulo Pessoal — admissões, vencimentos, IRS/TSU, declarações, cessação"
+ },
+ {
+  "n": 11,
+  "name": "POS & Retalho",
+  "cor": "#ff85c0",
+  "desc": "Retalho — POS Front/Desktop, caixas, vales, promoções, grelhas, omnicanal"
+ },
+ {
+  "n": 12,
+  "name": "Suporte",
+  "cor": "#5cdbd3",
+  "desc": "Pós-venda — PATs, instalações, contratos, pontos, relatórios, KPIs"
+ },
+ {
+  "n": 13,
+  "name": "CRM & Marketing",
+  "cor": "#ff8fab",
+  "desc": "Relacionamento — oportunidades, funil, campanhas, ações e ligação ao Gestão"
+ }
 ]

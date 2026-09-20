@@ -74,7 +74,7 @@ Deploy: API Render · web Vercel · legado v5 ainda na raiz (GitHub Pages) com b
 - **Lote1 (B1,B2,B3,B4,B8,B10,B11,B12,B19):** ✅ aplicado (CSP, índice, compressão, limpeza, rate-limit admin, paginação, docker-compose, testes email, health latency).
 - **Lote2 (B5,B9,B13,B17):** ✅ aplicado (welcome-email, audit-log+UI, aria-labels, força de password).
 - **Lote3 (B6,B7):** ✅ aplicado (E2E UX extra, full-text no guia).
-- **Curso por módulos:** ✅ página 🎓 Cursos (catálogo ativo/parcial/planeado).
+- **Curso por módulos:** ✅ página 🎓 Cursos + **1º módulo planeado autorado: CRM & Marketing** (nível 13, L90–L97 + teoria + 12 cartas + teste).
 - **Diferidos (conscientes):** B14 real-time SSE, B15 i18n, B16 virtualização, B18 og.png (prompt pronto).
 
 ## ✅ Plano recomendado (próximas iterações)

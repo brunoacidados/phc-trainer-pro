@@ -3846,5 +3846,335 @@
     "a": "Fila e atrasos de SLA, tempo médio de resolução, primeira-visita-resolve (first-time-fix), utilização dos técnicos e receita por contrato vs custo."
    }
   ]
+ },
+ {
+  "id": "L90",
+  "t": "CRM: parâmetros, fases do funil e equipa comercial",
+  "lv": 13,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L89"
+  ],
+  "ref": "Módulo CRM · configuração",
+  "goal": "Deixar o CRM pronto a usar: definir as fases do funil de vendas, perfis/comercial e parâmetros base antes de registar oportunidades.",
+  "steps": [
+   "Abrir o módulo CRM e identificar os menus principais (Oportunidades, Campanhas, Ações, Análises)",
+   "Configurar as FASES do funil de vendas (ex.: Qualificação → Proposta → Negociação → Ganha/Perdida) com probabilidade por fase",
+   "Definir motivos de perda (preço, concorrência, timing…) para análise posterior",
+   "Criar/comercial atribuir vendedores e equipas com permissões de carteira",
+   "Configurar regras de atribuição automática de oportunidades (por zona/segmento, se disponível)",
+   "Validar que o funil aparece nas análises com as fases configuradas"
+  ],
+  "proofs": [
+   {
+    "d": "Print das fases do funil configuradas com probabilidades",
+    "k": "print"
+   },
+   {
+    "d": "Print da equipa comercial/comerciais criados",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Porque definir probabilidade por fase do funil?",
+    "a": "Para calcular pipeline ponderado (valor esperado) e previsões realistas, em vez de somar tudo a 100%."
+   },
+   {
+    "q": "Para que servem os motivos de perda?",
+    "a": "Para analisar porque se perde negócio (preço, concorrência…) e corrigir a abordagem comercial."
+   }
+  ]
+ },
+ {
+  "id": "L91",
+  "t": "Oportunidades: criar, qualificar e mover no funil",
+  "lv": 13,
+  "min": 50,
+  "meta": "25 min",
+  "pre": [
+   "L90"
+  ],
+  "ref": "CRM · Oportunidades",
+  "goal": "Dominar o ciclo de uma oportunidade: criação, qualificação, mudança de fase, valor/probabilidade e fecho (ganha/perdida).",
+  "steps": [
+   "Criar oportunidade ligada a um cliente (ou lead/prospeto) com origem (campanha, website, telefone)",
+   "Qualificar: preencher necessidade, valor estimado, fecho previsto e probabilidade",
+   "Anexar documentos/notas e registar a primeira interação",
+   "Mover a oportunidade de fase e observar o histórico de mudanças",
+   "Marcar como GANHA e verificar a ligação ao documento de venda; marcar outra como PERDIDA com motivo",
+   "Comparar o funil antes/depois nas análises"
+  ],
+  "proofs": [
+   {
+    "d": "Print da oportunidade em fase intermédia com valor e probabilidade",
+    "k": "print"
+   },
+   {
+    "d": "Print da oportunidade GANHA ligada ao documento de venda",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Diferença entre lead/prospeto e oportunidade?",
+    "a": "Lead é um contacto não qualificado; oportunidade é um negócio qualificado com valor e probabilidade, já no funil."
+   },
+   {
+    "q": "O que regista o histórico da oportunidade?",
+    "a": "Mudanças de fase, alterações de valor/probabilidade e interações — auditoria do ciclo de venda."
+   }
+  ]
+ },
+ {
+  "id": "L92",
+  "t": "Ações e tarefas de seguimento (agenda comercial)",
+  "lv": 13,
+  "min": 40,
+  "meta": "20 min",
+  "pre": [
+   "L91"
+  ],
+  "ref": "CRM · Ações/Agenda",
+  "goal": "Garantir que nenhuma oportunidade fica sem seguimento: criar ações/tarefas com prazo, responsável e lembrete, ligadas à oportunidade.",
+  "steps": [
+   "Criar uma ação de seguimento (chamada/visita/email) ligada a uma oportunidade aberta",
+   "Definir prazo, responsável e prioridade; ativar lembrete",
+   "Ver a agenda do comercial com as ações do dia/semana",
+   "Concluir uma ação e registar o resultado (notas/next-step)",
+   "Criar ação recursiva (ex.: follow-up semanal) e verificar recorrência",
+   "Confirmar que ações vencidas aparecem destacadas/pendentes"
+  ],
+  "proofs": [
+   {
+    "d": "Print da agenda do comercial com ações do dia",
+    "k": "print"
+   },
+   {
+    "d": "Print de uma ação concluída com resultado registado",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Porque ligar a ação à oportunidade?",
+    "a": "Para que o histórico do negócio inclua o seguimento e o funil reflita atividade real, não oportunidades abandonadas."
+   },
+   {
+    "q": "Para que serve a recorrência numa ação?",
+    "a": "Para follow-ups periódicos automáticos (ex.: semanal), evitando esquecimentos em ciclos longos."
+   }
+  ]
+ },
+ {
+  "id": "L93",
+  "t": "Campanhas de marketing: segmento, alvo e acompanhamento",
+  "lv": 13,
+  "min": 50,
+  "meta": "25 min",
+  "pre": [
+   "L91"
+  ],
+  "ref": "CRM · Campanhas",
+  "goal": "Criar uma campanha de marketing: definir objetivo, segmentar o público (clientes por critério), associar oportunidades e medir resultado.",
+  "steps": [
+   "Criar campanha com objetivo e período (ex.: campanha de primavera segmento hotelaria)",
+   "Segmentar o público-alvo por critério (zona, CAE, volume de compras, inatividade)",
+   "Associar contactos/clientes do segmento à campanha",
+   "Criar oportunidades em massa a partir do segmento (se disponível) ou manualmente",
+   "Registar envios/interações da campanha (email/call)",
+   "Analisar resultado: oportunidades geradas e ganhas pela campanha"
+  ],
+  "proofs": [
+   {
+    "d": "Print da campanha com segmento e nº de contactos associados",
+    "k": "print"
+   },
+   {
+    "d": "Print da análise de resultado da campanha (oportunidades geradas)",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Como o segmento é construído?",
+    "a": "Por filtros sobre clientes/contactos (zona, CAE, volume, inatividade) — o público-alvo da campanha."
+   },
+   {
+    "q": "Como medir se a campanha funcionou?",
+    "a": "Oportunidades geradas e ganhas atribuídas à campanha vs. custo/esforço da campanha."
+   }
+  ]
+ },
+ {
+  "id": "L94",
+  "t": "Da oportunidade à venda: proposta e conversão",
+  "lv": 13,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L91",
+   "L13"
+  ],
+  "ref": "CRM↔Gestão · conversão",
+  "goal": "Fechar o ciclo comercial: gerar proposta/orçamento a partir da oportunidade e convertê-la em documento de faturação no Gestão.",
+  "steps": [
+   "A partir de uma oportunidade em Negociação, gerar proposta/orçamento (DI) com os artigos/serviços",
+   "Enviar/imprimir a proposta e registar o envio na oportunidade",
+   "Aceite a proposta, converter a oportunidade em documento de venda (FT) no Gestão",
+   "Verificar que o documento herda cliente/valores da oportunidade",
+   "Marcar a oportunidade como GANHA com referência ao documento",
+   "Confirmar que o funil e a análise de vendas refletem a conversão"
+  ],
+  "proofs": [
+   {
+    "d": "Print da proposta gerada a partir da oportunidade",
+    "k": "print"
+   },
+   {
+    "d": "Print da FT convertida com a oportunidade ligada",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Porque converter e não criar a FT à parte?",
+    "a": "Para manter rastreabilidade comercial (funil, campanha, comercial) ligada à fatura e medir conversão real."
+   },
+   {
+    "q": "O que herda o documento da oportunidade?",
+    "a": "Cliente, artigos/valores, comercial e campanha — evitando redigitação e erro."
+   }
+  ]
+ },
+ {
+  "id": "L95",
+  "t": "Análise de funil e previsões (pipeline ponderado)",
+  "lv": 13,
+  "min": 40,
+  "meta": "20 min",
+  "pre": [
+   "L91",
+   "L42"
+  ],
+  "ref": "CRM · Análises",
+  "goal": "Ler o funil como gestor: pipeline por fase, pipeline ponderado por probabilidade, taxa de conversão e previsão de fecho.",
+  "steps": [
+   "Abrir a análise de funil/pipeline e ler valores por fase",
+   "Calcular pipeline ponderado (valor × probabilidade) e comparar com o total",
+   "Medir taxa de conversão por fase e global (ganhas/oportunidades)",
+   "Analisar motivos de perda (gráfico/lista) e identificar o principal",
+   "Filtrar o funil por comercial e por campanha e comparar desempenho",
+   "Exportar a análise de funil para partilha com a direção"
+  ],
+  "proofs": [
+   {
+    "d": "Print do funil com pipeline ponderado vs total",
+    "k": "print"
+   },
+   {
+    "d": "Print da análise de motivos de perda",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que é pipeline ponderado?",
+    "a": "Soma de (valor × probabilidade) por oportunidade — o valor 'esperado', mais realista que o total bruto."
+   },
+   {
+    "q": "Para que serve a conversão por fase?",
+    "a": "Para encontrar onde o funil 'verte' (ex.: muitas propostas, poucas negociações) e corrigir essa etapa."
+   }
+  ]
+ },
+ {
+  "id": "L96",
+  "t": "Integração CRM↔Gestão: histórico 360º do cliente",
+  "lv": 13,
+  "min": 40,
+  "meta": "20 min",
+  "pre": [
+   "L94",
+   "L06"
+  ],
+  "ref": "CRM↔Gestão · 360º",
+  "goal": "Ter a visão 360º do cliente: oportunidades, ações, campanhas, documentos e suporte num só lugar, ligando CRM e Gestão.",
+  "steps": [
+   "Abrir a ficha de um cliente e localizar o separador/área de CRM (oportunidades/ações)",
+   "Ver o histórico 360º: documentos de venda + oportunidades + ações + campanhas do cliente",
+   "Criar uma nova oportunidade diretamente a partir da ficha do cliente",
+   "Registar uma ação de seguimento a partir do histórico do cliente",
+   "Confirmar que uma campanha associada aparece no histórico do cliente",
+   "Validar que suporte/PATs (se módulo Suporte) também aparecem no 360º"
+  ],
+  "proofs": [
+   {
+    "d": "Print do histórico 360º de um cliente (docs + oportunidades + ações)",
+    "k": "print"
+   },
+   {
+    "d": "Print de oportunidade criada a partir da ficha do cliente",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Porque a visão 360º importa ao comercial?",
+    "a": "Porque reúne todo o relacionamento (vendas, oportunidades, ações, suporte) antes de uma chamada/visita — contexto completo."
+   },
+   {
+    "q": "O que liga o CRM ao Gestão?",
+    "a": "O cliente/contacto comum e os documentos (proposta→FT) — o CRM herda e referencia os dados do Gestão."
+   }
+  ]
+ },
+ {
+  "id": "L97",
+  "t": "Capstone CRM: ciclo completo lead→fatura com campanha",
+  "lv": 13,
+  "min": 70,
+  "meta": "35 min",
+  "pre": [
+   "L93",
+   "L94",
+   "L95"
+  ],
+  "ref": "CRM · capstone",
+  "goal": "Executar ponta-a-ponta: campanha→segmento→oportunidade→ações→proposta→FT→análise de funil, sem erros e com evidências.",
+  "steps": [
+   "Criar campanha e segmentar um público-alvo (≥3 clientes)",
+   "Gerar oportunidade a partir do segmento para 1 cliente",
+   "Criar ≥2 ações de seguimento e concluir uma com resultado",
+   "Gerar proposta a partir da oportunidade e converter em FT",
+   "Marcar oportunidade GANHA e confirmar ligação ao documento",
+   "Validar o funil: a oportunidade aparece na fase Ganha e na análise da campanha",
+   "Documentar o ciclo completo com prints em cada etapa"
+  ],
+  "proofs": [
+   {
+    "d": "Print da campanha com segmento",
+    "k": "print"
+   },
+   {
+    "d": "Print da oportunidade com ações",
+    "k": "print"
+   },
+   {
+    "d": "Print da FT convertida + funil com a Ganha",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que prova que o ciclo está bem fechado?",
+    "a": "A rastreabilidade: campanha→oportunidade→ações→proposta→FT todas ligadas, e o funil/análise a refletir a Ganha."
+   },
+   {
+    "q": "Onde detetar um ciclo mal fechado?",
+    "a": "Oportunidades ganhas sem documento ligado, ou FTs sem oportunidade/campanha — quebras de rastreabilidade."
+   }
+  ]
  }
 ]
