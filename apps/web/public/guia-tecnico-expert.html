@@ -68,6 +68,11 @@ mark{background:var(--ac);color:#171103;border-radius:3px;padding:0 2px}
     <button id="theme" title="Alternar tema">🌙</button>
     <button id="print" title="Imprimir / PDF">🖨</button>
   </div>
+  <div class="tools">
+    <input id="fs" type="search" placeholder="Pesquisar no texto… (Enter)" aria-label="Pesquisar no texto">
+    <button id="fsNext" title="Próxima ocorrência">↓</button>
+    <span id="fsCount" style="font-size:11px;color:var(--mut);align-self:center"></span>
+  </div>
   <div class="topbar"><button id="menu" style="flex:1">☰ Índice</button></div>
   <nav class="tocList" id="toc">
 <a class="toc top" href="#cap-0" data-t="índice">Índice</a>
@@ -1343,6 +1348,39 @@ ObjRecebido.Objecto.BackColor = RGB(0,255,255)
   }
   window.addEventListener('scroll',onScroll,{passive:true});onScroll();
   list.addEventListener('click',function(){if(window.innerWidth<=900)list.classList.remove('open')});
+  // pesquisa full-text c/ realce (sem regex p/ evitar escaping)
+  var art=document.querySelector('article');
+  var fs=document.getElementById('fs'),fsNext=document.getElementById('fsNext'),fsCount=document.getElementById('fsCount');
+  var marks=[],mi=-1;
+  function clearMarks(){for(var i=0;i<marks.length;i++){var m=marks[i],p=m.parentNode;if(p){p.replaceChild(document.createTextNode(m.textContent),m);p.normalize()}}marks=[];mi=-1;fsCount.textContent=''}
+  function markNode(node,q){
+    var t=node.textContent,low=t.toLowerCase(),ql=q.toLowerCase(),idx=low.indexOf(ql);
+    if(idx<0)return;
+    var frag=document.createDocumentFragment(),last=0;
+    while(idx>=0){
+      if(idx>last)frag.appendChild(document.createTextNode(t.slice(last,idx)));
+      var mk=document.createElement('mark');mk.textContent=t.slice(idx,idx+q.length);frag.appendChild(mk);marks.push(mk);
+      last=idx+q.length;idx=low.indexOf(ql,last);
+    }
+    if(last<t.length)frag.appendChild(document.createTextNode(t.slice(last)));
+    node.parentNode.replaceChild(frag,node);
+  }
+  function doSearch(){
+    clearMarks();
+    var q=fs.value.trim();if(q.length<2)return;
+    var nodes=[].slice.call(art.querySelectorAll('p,li,td,th,h1,h2,h3,h4,blockquote,code'));
+    for(var i=0;i<nodes.length;i++){
+      var el=nodes[i];
+      var texts=[].slice.call(el.childNodes).filter(function(n){return n.nodeType===3});
+      for(var j=0;j<texts.length;j++)markNode(texts[j],q);
+    }
+    fsCount.textContent=marks.length?marks.length+' resultado(s)':'0 resultados';
+    if(marks.length){mi=-1;goMark()}
+  }
+  function goMark(){if(!marks.length)return;for(var i=0;i<marks.length;i++)marks[i].style.outline='';mi=(mi+1)%marks.length;var m=marks[mi];m.style.outline='3px solid #1f6fd0';m.scrollIntoView({block:'center',behavior:'smooth'})}
+  fs.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();doSearch()}});
+  fs.addEventListener('input',function(){if(!fs.value.trim())clearMarks()});
+  fsNext.onclick=goMark;
 })();
 </script>
 </body>
