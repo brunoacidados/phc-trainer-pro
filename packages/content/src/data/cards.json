@@ -753,5 +753,65 @@
   "t": "O que prova um ciclo CRM bem fechado?",
   "b": "Rastreabilidade campanha→oportunidade→ações→proposta→FT e a Ganha refletida no funil/análise.",
   "lv": 13
+ },
+ {
+  "t": "O que é uma BOM/lista de materiais?",
+  "b": "Componentes e quantidades necessários para fabricar o artigo acabado (a 'receita' de produção).",
+  "lv": 14
+ },
+ {
+  "t": "O que acontece ao stock numa OF ao consumir/concluir?",
+  "b": "Consome componentes (baixa) e dá entrada do artigo acabado ao concluir.",
+  "lv": 14
+ },
+ {
+  "t": "O que o MRP calcula?",
+  "b": "Necessidades líquidas (procura−stock−encomendas em curso) e propõe compra/produção com prazos.",
+  "lv": 14
+ },
+ {
+  "t": "Diferença rastreabilidade direta vs inversa?",
+  "b": "Direta=lote→onde foi usado; inversa=acabado→componentes/lotes de origem.",
+  "lv": 14
+ },
+ {
+  "t": "O que o acerto de inventário faz?",
+  "b": "Entradas/saídas que alinham o stock físico com o sistema por armazém (e o valor/PCMP).",
+  "lv": 14
+ },
+ {
+  "t": "O que o Ignios preenche automaticamente?",
+  "b": "Fichas a partir de fontes externas: NIF→cliente, EAN→artigo, matrícula→veículo.",
+  "lv": 15
+ },
+ {
+  "t": "O que o EyePeak sincroniza?",
+  "b": "Artigos/stock/preços ERP→loja e encomendas loja→ERP (bidirecional).",
+  "lv": 15
+ },
+ {
+  "t": "O que é o matching no open banking?",
+  "b": "Ligar um movimento bancário à fatura que ele liquida (por valor/referência/cliente).",
+  "lv": 15
+ },
+ {
+  "t": "O PHC CS Web partilha a BD com o desktop?",
+  "b": "Sim — mesma BD; o web é outra camada de apresentação com as mesmas permissões.",
+  "lv": 16
+ },
+ {
+  "t": "O que é um IDU web?",
+  "b": "Ecrã/app web personalizado, desenhado no designer, ligado a dados e publicado para perfis.",
+  "lv": 16
+ },
+ {
+  "t": "Na cloud, quem gere updates/backups?",
+  "b": "O fornecedor (PHC ON/Evolution); o cliente gere utilizadores/dados/processos.",
+  "lv": 16
+ },
+ {
+  "t": "O que acontece a operações registadas offline?",
+  "b": "Ficam pendentes no dispositivo e sincronizam ao reconectar (com política de conflitos).",
+  "lv": 16
  }
 ]

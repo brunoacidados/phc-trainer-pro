@@ -2,7 +2,7 @@
  * Motor de repetição espaçada (SRS) e regras de progressão —
  * portado fielmente do app legado (rep/rateCard/beltUnlocked/levelOpen/missionUnlocked).
  */
-import { LABS, PROMPTS, QUIZZES, CARDS, labById } from "@phc/content";
+import { BELTS, LABS, PROMPTS, QUIZZES, CARDS, labById } from "@phc/content";
 import type { CardState, LabState, PlanState, ProgressState } from "./types.ts";
 import { addDays, todayISO } from "./date.ts";
 
@@ -168,7 +168,7 @@ export function beltUnlocked(s: ProgressState, lv: number): boolean {
 
 export function currentBelt(s: ProgressState): number {
   let b = 0;
-  for (let lv = 0; lv < 13; lv++) {
+  for (let lv = 0; lv < BELTS.length; lv++) {
     if (beltUnlocked(s, lv)) b = Math.min(lv + 1, 12);
     else break;
   }

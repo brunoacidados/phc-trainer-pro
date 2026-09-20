@@ -82,5 +82,23 @@
   "name": "CRM & Marketing",
   "cor": "#ff8fab",
   "desc": "Relacionamento — oportunidades, funil, campanhas, ações e ligação ao Gestão"
+ },
+ {
+  "n": 14,
+  "name": "Logística & Manufactor",
+  "cor": "#8bd450",
+  "desc": "Produção, MRP, ordens de fabrico, séries/rastreabilidade e armazéns"
+ },
+ {
+  "n": 15,
+  "name": "Ignios & Ecossistema Digital",
+  "cor": "#b28dff",
+  "desc": "Ignios, EyePeak, Cegid Docs, open banking e IA Cegid Pulse"
+ },
+ {
+  "n": 16,
+  "name": "PHC Web & Mobility",
+  "cor": "#4aa3ff",
+  "desc": "PHC CS Web, apps web/mobile, IDU web, dashboards e PHC ON/Evolution cloud"
  }
 ]

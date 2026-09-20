@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { BELTS, LABS, ACHIEVEMENTS } from "@phc/content";
+import { BELTS, LABS, ACHIEVEMENTS, QUIZZES } from "@phc/content";
 import {
   addDays,
   cardsMastered,

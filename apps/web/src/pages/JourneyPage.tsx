@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BELTS, labById } from "@phc/content";
+import { BELTS, LABS, labById } from "@phc/content";
 import {
   applyCompanyText,
   currentBelt,
@@ -186,7 +186,7 @@ export function JourneyPage() {
         <Stat
           icon={<Brain className="h-5 w-5 text-success" />}
           label="Missões 🧠"
-          value={`${labsMastered(state)}/90`}
+          value={`${labsMastered(state)}/${LABS.length}`}
         />
         <Stat
           icon={<Target className="h-5 w-5 text-accent" />}

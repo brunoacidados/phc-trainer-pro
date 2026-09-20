@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Copy, KeyRound, RefreshCw, Users } from "lucide-react";
-import { BELTS } from "@phc/content";
+import { BELTS, LABS, QUIZZES } from "@phc/content";
 import {
   aiKeyNames,
   type MemberSummary,
@@ -310,9 +310,9 @@ function TeamView({
                       <TD>
                         <ProgressBar value={m.pct} />
                       </TD>
-                      <TD>{m.mastered}/90</TD>
+                      <TD>{m.mastered}/{LABS.length}</TD>
                       <TD>{m.reps}</TD>
-                      <TD>{m.quizzesPassed}/13</TD>
+                      <TD>{m.quizzesPassed}/{QUIZZES.length}</TD>
                       <TD>{m.evidences}</TD>
                       <TD>{m.streak}d</TD>
                       <TD>{m.xp}</TD>

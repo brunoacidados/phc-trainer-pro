@@ -4176,5 +4176,655 @@
     "a": "Oportunidades ganhas sem documento ligado, ou FTs sem oportunidade/campanha — quebras de rastreabilidade."
    }
   ]
+ },
+ {
+  "id": "L98",
+  "t": "Manufactor: artigos de produção, fichas técnicas e listas de materiais",
+  "lv": 14,
+  "min": 50,
+  "meta": "25 min",
+  "pre": [
+   "L97"
+  ],
+  "ref": "Manufactor · dados base",
+  "goal": "Preparar os dados de produção: artigos de produção (semi-acabado/acabado), fichas técnicas e listas de materiais (BOM) com consumos.",
+  "steps": [
+   "Criar artigo de produção (acabado) e componentes (matéria-prima/semi-acabado)",
+   "Construir a ficha técnica/lista de materiais (BOM) do acabado com componentes e quantidades",
+   "Definir tempos de operação/rotas (se disponível) na ficha técnica",
+   "Validar custo estimado do acabado a partir dos consumos (PCMP/roll-up)",
+   "Criar variante/tamanho se aplicável e ligar à BOM",
+   "Confirmar que a BOM aparece na estrutura de produção do artigo"
+  ],
+  "proofs": [
+   {
+    "d": "Print da ficha técnica/BOM com componentes e quantidades",
+    "k": "print"
+   },
+   {
+    "d": "Print do custo estimado roll-up do acabado",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que é uma lista de materiais (BOM)?",
+    "a": "A receita de produção: componentes e quantidades necessários para fabricar o artigo acabado."
+   },
+   {
+    "q": "Para que servem tempos/rotas na ficha técnica?",
+    "a": "Para calcular custo de mão-de-obra e planear capacidade/ordens de fabrico."
+   }
+  ]
+ },
+ {
+  "id": "L99",
+  "t": "Ordens de fabrico (OF): criar, lançar e consumir",
+  "lv": 14,
+  "min": 55,
+  "meta": "25 min",
+  "pre": [
+   "L98"
+  ],
+  "ref": "Manufactor · OF",
+  "goal": "Executar produção: criar OF a partir de encomenda/stock, lançar, consumir componentes (baixa de stock) e dar entrada do acabado.",
+  "steps": [
+   "Criar OF para o artigo acabado (quantidade e prazo), ligada a encomenda de cliente se aplicável",
+   "Lançar a OF e verificar reserva de componentes",
+   "Registar consumo de componentes (baixa de stock automática/manual)",
+   "Dar entrada do artigo acabado (aumento de stock) ao concluir",
+   "Apontar tempos reais de mão-de-obra na OF",
+   "Fechar a OF e verificar custos reais vs estimados"
+  ],
+  "proofs": [
+   {
+    "d": "Print da OF lançada com componentes reservados",
+    "k": "print"
+   },
+   {
+    "d": "Print da entrada do acabado + consumo dos componentes",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que acontece ao stock ao consumir componentes?",
+    "a": "Baixa de stock dos componentes (saída) e, ao concluir, entrada do artigo acabado."
+   },
+   {
+    "q": "Porque apontar tempos reais na OF?",
+    "a": "Para custeio real (mão-de-obra) e análise de eficiência vs tempos padrão."
+   }
+  ]
+ },
+ {
+  "id": "L100",
+  "t": "MRP: planeamento de necessidades e propostas",
+  "lv": 14,
+  "min": 50,
+  "meta": "25 min",
+  "pre": [
+   "L99",
+   "L20"
+  ],
+  "ref": "Manufactor · MRP",
+  "goal": "Deixar o MRP calcular necessidades: propostas de compra (componentes) e de produção (acabados) a partir de procura (encomendas/previsão).",
+  "steps": [
+   "Configurar pontos de encomenda/stock mín/máx e prazos de aprovisionamento dos componentes",
+   "Registar procura (encomenda de cliente ou previsão) que gera necessidade",
+   "Correr o MRP e ler as propostas geradas (compra de componentes / produção de acabados)",
+   "Converter uma proposta de compra em encomenda a fornecedor",
+   "Converter uma proposta de produção em OF",
+   "Validar que o MRP considera stock existente e encomendas em curso"
+  ],
+  "proofs": [
+   {
+    "d": "Print das propostas MRP (compra+produção)",
+    "k": "print"
+   },
+   {
+    "d": "Print da encomenda/OF gerada a partir de proposta",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que o MRP calcula?",
+    "a": "Necessidades líquidas (procura − stock − encomendas em curso) e propõe compra/produção com prazos."
+   },
+   {
+    "q": "Porque o MRP olha para stock e encomendas em curso?",
+    "a": "Para não propor comprar/produzir o que já existe ou já está a caminho."
+   }
+  ]
+ },
+ {
+  "id": "L101",
+  "t": "Séries, lotes e rastreabilidade ponta-a-ponta",
+  "lv": 14,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L99"
+  ],
+  "ref": "Logística · séries/lotes",
+  "goal": "Rastrear de ponta a ponta: lote/série do componente → OF → lote do acabado → documento de venda → cliente (recall inverso e direto).",
+  "steps": [
+   "Ativar gestão de lotes/séries num componente e num acabado",
+   "Registar entrada de componente com lote e validade",
+   "Consumir o lote do componente numa OF e dar entrada do acabado com lote derivado",
+   "Vender o acabado registando o lote no documento (FT)",
+   "Fazer rastreabilidade direta (lote componente → onde foi usado) e inversa (lote acabado → componentes)",
+   "Simular recall: listar clientes que receberam um lote afetado"
+  ],
+  "proofs": [
+   {
+    "d": "Print da rastreabilidade direta do lote do componente",
+    "k": "print"
+   },
+   {
+    "d": "Print do recall (clientes com o lote afetado)",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Diferença entre rastreabilidade direta e inversa?",
+    "a": "Direta: lote→onde foi usado; inversa: produto acabado→componentes/lotes de origem."
+   },
+   {
+    "q": "Para que serve o recall por lote?",
+    "a": "Identificar rapidamente clientes/documentos afetados por um lote com problema."
+   }
+  ]
+ },
+ {
+  "id": "L102",
+  "t": "Armazéns avançados: multi-armazém, transferências e inventário",
+  "lv": 14,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L20"
+  ],
+  "ref": "Logística · armazéns",
+  "goal": "Gerir vários armazéns: transferências entre armazéns, stock por armazém e contagem de inventário com acerto.",
+  "steps": [
+   "Criar 2 armazéns e distribuir stock inicial entre eles",
+   "Fazer transferência de stock entre armazéns e validar movimento nos dois",
+   "Consultar stock por armazém e stock consolidado",
+   "Fazer contagem de inventário num armazém e registar diferenças",
+   "Gerar acerto de inventário (entrada/saída de acerto) e validar stock final",
+   "Validar que o inventário fica refletido no PCMP/valor de stock"
+  ],
+  "proofs": [
+   {
+    "d": "Print da transferência entre armazéns",
+    "k": "print"
+   },
+   {
+    "d": "Print do acerto de inventário com diferenças",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Porque contar inventário por armazém?",
+    "a": "Porque o stock é gerido por armazém; o acerto corrige diferenças reais vs sistema em cada armazém."
+   },
+   {
+    "q": "O que o acerto de inventário movimenta?",
+    "a": "Entradas/saídas de acerto que alinham o stock físico com o sistema (e o valor/PCMP)."
+   }
+  ]
+ },
+ {
+  "id": "L103",
+  "t": "Capstone Logística: encomenda→MRP→OF→lote→FT→recall",
+  "lv": 14,
+  "min": 70,
+  "meta": "35 min",
+  "pre": [
+   "L100",
+   "L101"
+  ],
+  "ref": "Logística · capstone",
+  "goal": "Ciclo logístico completo com rastreabilidade: encomenda→MRP→OF→lote→entrada→FT→recall, sem quebras de rastreabilidade.",
+  "steps": [
+   "Registar encomenda de cliente de um artigo acabado com lote",
+   "Correr MRP e converter propostas (compra componente + OF)",
+   "Consumir componente com lote na OF; entrada do acabado com lote",
+   "Faturar o acabado registando o lote (FT)",
+   "Fazer rastreabilidade inversa do lote vendido até ao lote do componente",
+   "Simular recall do lote e listar clientes afetados; documentar com prints"
+  ],
+  "proofs": [
+   {
+    "d": "Print MRP→OF com lotes",
+    "k": "print"
+   },
+   {
+    "d": "Print FT com lote + rastreabilidade inversa",
+    "k": "print"
+   },
+   {
+    "d": "Print do recall com clientes afetados",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que prova rastreabilidade sem quebras?",
+    "a": "Cada elo ligado: lote componente→OF→lote acabado→FT→cliente, e o recall a encontrar todos."
+   },
+   {
+    "q": "Onde uma quebra de rastreabilidade aparece?",
+    "a": "Lotes não registados na FT ou consumos sem lote — o recall devolve resultados incompletos."
+   }
+  ]
+ },
+ {
+  "id": "L104",
+  "t": "Ignios: preenchimento automático de fichas (NIF/matrícula)",
+  "lv": 15,
+  "min": 40,
+  "meta": "20 min",
+  "pre": [
+   "L06"
+  ],
+  "ref": "Ignios · auto-preenchimento",
+  "goal": "Usar o Ignios para preencher fichas automaticamente (cliente por NIF, artigo por EAN, matrícula) e reduzir erro de digitação.",
+  "steps": [
+   "Ativar/confirmar o Ignios nos parâmetros (serviço de preenchimento automático)",
+   "Criar cliente introduzindo só o NIF e deixar o Ignios preencher nome/morada/CAE",
+   "Criar/artigo preencher por EAN/código de barras via Ignios",
+   "Testar preenchimento por matrícula (veículo) se aplicável",
+   "Validar os campos preenchidos e corrigir o que for necessário",
+   "Comparar tempo/erro com vs sem Ignios"
+  ],
+  "proofs": [
+   {
+    "d": "Print de cliente preenchido por NIF via Ignios",
+    "k": "print"
+   },
+   {
+    "d": "Print de artigo preenchido por EAN",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que o Ignios faz?",
+    "a": "Preenche fichas automaticamente a partir de fontes externas (NIF, EAN, matrícula), reduzindo digitação/erro."
+   },
+   {
+    "q": "Quando o Ignios não preenche?",
+    "a": "Quando a fonte externa não tem o registo ou o serviço está inativo — preenche-se manualmente."
+   }
+  ]
+ },
+ {
+  "id": "L105",
+  "t": "EyePeak: sincronização e-commerce↔ERP",
+  "lv": 15,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L94"
+  ],
+  "ref": "EyePeak · e-commerce",
+  "goal": "Ligar a loja online ao ERP: sincronizar artigos/stock/preços e receber encomendas web como documentos no Gestão.",
+  "steps": [
+   "Configurar a ligação EyePeak (loja online ↔ ERP)",
+   "Mapear artigos/stock/preços ERP→loja e sincronizar",
+   "Registar uma encomenda na loja e verificar entrada no ERP como encomenda/venda",
+   "Sincronizar stock após venda web (baixa no ERP reflete na loja)",
+   "Validar estados de encomenda web→ERP (paga/expedida)",
+   "Confirmar reconciliação de encomendas web vs documentos ERP"
+  ],
+  "proofs": [
+   {
+    "d": "Print da sincronização artigos/stock ERP→loja",
+    "k": "print"
+   },
+   {
+    "d": "Print da encomenda web entrada no ERP",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que o EyePeak sincroniza?",
+    "a": "Artigos, stock, preços e encomendas entre a loja online e o ERP (bidirecional)."
+   },
+   {
+    "q": "Porque sincronizar stock após venda web?",
+    "a": "Para a loja não vender stock que o ERP já vendeu (rutura pública)."
+   }
+  ]
+ },
+ {
+  "id": "L106",
+  "t": "Cegid Docs / File Storage: anexos e arquivos ligados a registos",
+  "lv": 15,
+  "min": 40,
+  "meta": "20 min",
+  "pre": [
+   "L94"
+  ],
+  "ref": "Cegid Docs · anexos",
+  "goal": "Guardar documentação ligada aos registos (faturas, clientes, OF): anexar, versionar e recuperar ficheiros do File Storage/Cegid Docs.",
+  "steps": [
+   "Ativar File Storage/Cegid Docs nos parâmetros",
+   "Anexar ficheiro (PDF/imagem) a um documento de faturação e a um cliente",
+   "Versionar um anexo (nova versão do mesmo ficheiro) e recuperar versão anterior",
+   "Pesquisar/recuperar anexos por registo e por pesquisa global",
+   "Validar permissões de acesso aos anexos",
+   "Confirmar que os anexos aparecem no histórico/360º do registo"
+  ],
+  "proofs": [
+   {
+    "d": "Print de anexo ligado a uma FT + cliente",
+    "k": "print"
+   },
+   {
+    "d": "Print de versões de um anexo (atual+anterior)",
+    "k": "print"
+   }
+  ],
+  "proofs2": [],
+  "ask": [
+   {
+    "q": "Para que serve ligar anexos aos registos?",
+    "a": "Para ter a documentação (contratos, comprovativos) junto do registo, recuperável e versionada."
+   },
+   {
+    "q": "O que acrescenta a versão de anexos?",
+    "a": "Histórico de alterações do ficheiro, podendo recuperar versões anteriores."
+   }
+  ]
+ },
+ {
+  "id": "L107",
+  "t": "Open banking & pagamentos: reconciliação bancária automática",
+  "lv": 15,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L30"
+  ],
+  "ref": "Open banking · pagamentos",
+  "goal": "Automatizar tesouraria: extratos bancários via open banking, matching automático de pagamentos a faturas e reconciliação.",
+  "steps": [
+   "Configurar a ligação open banking (conta bancária ligada ao ERP)",
+   "Importar extrato bancário automaticamente",
+   "Fazer matching automático de movimentos a faturas em aberto (pagamentos recebidos)",
+   "Validar matches sugeridos e corrigir os duvidosos",
+   "Reconciliar a conta (saldo ERP vs banco) e fechar o período",
+   "Confirmar que as faturas ficam liquidadas após matching"
+  ],
+  "proofs": [
+   {
+    "d": "Print do extrato importado via open banking",
+    "k": "print"
+   },
+   {
+    "d": "Print do matching automático + faturas liquidadas",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que o open banking automatiza?",
+    "a": "A importação de extratos e o matching de pagamentos a faturas, reduzindo trabalho manual de tesouraria."
+   },
+   {
+    "q": "O que é o matching?",
+    "a": "Ligar um movimento bancário ao documento (fatura) que ele liquida, por valor/referência/cliente."
+   }
+  ]
+ },
+ {
+  "id": "L108",
+  "t": "Cegid Pulse (IA) & assistentes: resumos e sugestões no ERP",
+  "lv": 15,
+  "min": 40,
+  "meta": "20 min",
+  "pre": [
+   "L104"
+  ],
+  "ref": "Cegid Pulse · IA",
+  "goal": "Usar a IA embutida (Cegid Pulse/assistentes): resumos de registos, sugestões de next-best-action e respostas a perguntas sobre dados.",
+  "steps": [
+   "Ativar/aceder ao assistente de IA (Cegid Pulse) no ERP",
+   "Pedir resumo de um cliente (histórico, risco, próximas ações)",
+   "Pedir sugestão de next-best-action para uma oportunidade",
+   "Fazer uma pergunta sobre dados (ex.: top clientes do mês) e validar a resposta",
+   "Usar a IA para rascunhar um email/comercial a partir de um registo",
+   "Avaliar limites: o que a IA não deve decidir sem humano"
+  ],
+  "proofs": [
+   {
+    "d": "Print do resumo de cliente gerado por IA",
+    "k": "print"
+   },
+   {
+    "d": "Print de uma pergunta-a-dados respondida pela IA",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que a IA embutida acrescenta?",
+    "a": "Resumos, sugestões e respostas-a-dados dentro do ERP, acelerando análise e comunicação."
+   },
+   {
+    "q": "O que a IA não deve decidir sozinha?",
+    "a": "Decisões com impacto fiscal/financeiro ou de dados mestres sem validação humana."
+   }
+  ]
+ },
+ {
+  "id": "L109",
+  "t": "PHC CS Web: arquitetura, acesso e apps web base",
+  "lv": 16,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L02"
+  ],
+  "ref": "PHC CS Web · base",
+  "goal": "Entender e aceder ao PHC CS Web: arquitetura (servidor web + BD), autenticação, e navegação nas apps web base.",
+  "steps": [
+   "Aceder ao PHC CS Web (URL do servidor web) e autenticar",
+   "Identificar a arquitetura: servidor web, BD partilhada com o desktop, sessão",
+   "Navegar nas apps web base (vendas, clientes, consultas)",
+   "Comparar uma operação no web vs desktop (mesmo registo)",
+   "Verificar permissões/perfis aplicados no web (iguais ao desktop)",
+   "Confirmar acesso seguro (HTTPS) e sessão"
+  ],
+  "proofs": [
+   {
+    "d": "Print do login/acesso ao PHC CS Web",
+    "k": "print"
+   },
+   {
+    "d": "Print de uma operação web vs desktop do mesmo registo",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O PHC CS Web partilha a BD com o desktop?",
+    "a": "Sim — o web e o desktop acedem à mesma BD; o web é outra camada de apresentação."
+   },
+   {
+    "q": "As permissões no web são as mesmas do desktop?",
+    "a": "Sim — perfis/acessos são os do utilizador na BD, aplicados em ambas as camadas."
+   }
+  ]
+ },
+ {
+  "id": "L110",
+  "t": "IDU/Ecrãs web personalizados: desenhar e publicar",
+  "lv": 16,
+  "min": 50,
+  "meta": "25 min",
+  "pre": [
+   "L109",
+   "L46"
+  ],
+  "ref": "PHC CS Web · IDU web",
+  "goal": "Criar ecrãs web personalizados (IDU web): desenhar layout, ligar a dados (tabelas/consultas) e publicar para utilizadores.",
+  "steps": [
+   "Abrir o designer de ecrãs web (IDU web) e criar um ecrã novo",
+   "Ligar o ecrã a uma tabela/consulta (clientes/artigos) com campos e grelha",
+   "Adicionar ações (abrir ficha, novo, pesquisar) e validações simples",
+   "Publicar o ecrã e atribuir a um perfil/utilizador",
+   "Testar o ecrã publicado no browser como utilizador de teste",
+   "Ajustar layout/responsividade e republicar"
+  ],
+  "proofs": [
+   {
+    "d": "Print do ecrã web no designer com ligação a dados",
+    "k": "print"
+   },
+   {
+    "d": "Print do ecrã publicado a funcionar no browser",
+    "k": "print"
+   }
+  ],
+  "proofs2": [],
+  "ask": [
+   {
+    "q": "O que é um IDU web?",
+    "a": "Um ecrã/app web personalizado, desenhado no designer e ligado a dados do ERP, publicado para utilizadores."
+   },
+   {
+    "q": "Para que servem as ações num ecrã web?",
+    "a": "Operações (abrir/novo/pesquisar) que o utilizador pode executar no ecrã publicado."
+   }
+  ]
+ },
+ {
+  "id": "L111",
+  "t": "PHC ON / Evolution cloud: subscrição, tenants e administração",
+  "lv": 16,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L109"
+  ],
+  "ref": "PHC ON · cloud",
+  "goal": "Administrar o PHC na cloud (PHC ON/Evolution): modelo de subscrição, tenants, updates geridos e backups geridos.",
+  "steps": [
+   "Identificar o modelo de subscrição (PHC ON/Evolution) e o que está incluído (updates, backups)",
+   "Aceder ao tenant na cloud e verificar versão/estado",
+   "Verificar políticas de backup gerido e ponto de restauro",
+   "Verificar ciclo de updates geridos (janelas de manutenção)",
+   "Configurar utilizadores/acessos no tenant cloud",
+   "Comparar responsabilidades partilhadas (fornecedor vs cliente) na cloud"
+  ],
+  "proofs": [
+   {
+    "d": "Print do tenant cloud com versão/estado",
+    "k": "print"
+   },
+   {
+    "d": "Print das políticas de backup/updates geridos",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que muda na cloud vs on-premise?",
+    "a": "Updates, backups e infraestrutura geridos pelo fornecedor; o cliente gere utilizadores/dados."
+   },
+   {
+    "q": "O que é o modelo de responsabilidades partilhadas?",
+    "a": "O fornecedor garante plataforma/updates/backups; o cliente garante dados mestres/acessos/processos."
+   }
+  ]
+ },
+ {
+  "id": "L112",
+  "t": "Mobile & offline: apps móveis e trabalho sem ligação",
+  "lv": 16,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L109"
+  ],
+  "ref": "Mobility · offline",
+  "goal": "Trabalhar em mobilidade: apps móveis do PHC, sincronização e comportamento offline (vendas/visitas sem ligação).",
+  "steps": [
+   "Instalar/aceder à app móvel do PHC e autenticar",
+   "Registar uma operação (visita/encomenda) online e verificar sincronização",
+   "Simular offline: registar operação sem ligação e verificar pendência",
+   "Reconectar e validar sincronização das operações pendentes",
+   "Verificar conflitos de sincronização e resolução",
+   "Confirmar que anexos/fotos offline sincronizam"
+  ],
+  "proofs": [
+   {
+    "d": "Print de operação registada offline pendente",
+    "k": "print"
+   },
+   {
+    "d": "Print da sincronização após reconectar",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que acontece a operações offline?",
+    "a": "Ficam pendentes no dispositivo e sincronizam ao reconectar."
+   },
+   {
+    "q": "Como se resolvem conflitos de sincronização?",
+    "a": "Por política (último-a-escrever ou resolução manual) conforme o tipo de registo."
+   }
+  ]
+ },
+ {
+  "id": "L113",
+  "t": "Dashboards web (PHC Dashboard) & KPIs em tempo real",
+  "lv": 16,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L42",
+   "L109"
+  ],
+  "ref": "PHC Dashboard · KPIs",
+  "goal": "Construir dashboards web de gestão: KPIs de vendas/stock/tesouraria em painéis partilháveis com refresh.",
+  "steps": [
+   "Abrir o PHC Dashboard e criar um painel novo",
+   "Adicionar KPIs (vendas do mês, margem, stock abaixo de mín., saldo tesouraria)",
+   "Configurar gráficos (barras/linhas/tart) ligados a consultas/análises",
+   "Configurar refresh automático e partilha do painel com a direção",
+   "Adicionar filtro interativo (período/loja/comercial) ao painel",
+   "Validar que os KPIs refletem dados em tempo real"
+  ],
+  "proofs": [
+   {
+    "d": "Print do painel com KPIs e gráficos",
+    "k": "print"
+   },
+   {
+    "d": "Print do filtro interativo a alterar o painel",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que um dashboard web acrescenta vs análises?",
+    "a": "Painéis visuais partilháveis com refresh e filtros interativos, para gestão em tempo real."
+   },
+   {
+    "q": "Para que serve a partilha de painéis?",
+    "a": "Para a direção/acessores verem KPIs sem aceder ao ERP diretamente."
+   }
+  ]
  }
 ]

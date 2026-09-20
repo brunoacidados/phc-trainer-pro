@@ -1006,5 +1006,188 @@
     "why": "O 360º agrega todo o relacionamento do cliente num só histórico."
    }
   ]
+ },
+ {
+  "lv": 14,
+  "nome": "Logística & Manufactor",
+  "qs": [
+   {
+    "q": "A BOM serve para:",
+    "o": [
+     "Decorar o artigo",
+     "Listar componentes+quantidades do acabado",
+     "Faturar",
+     "Definir o cliente"
+    ],
+    "a": 1,
+    "why": "A BOM é a receita de produção: componentes e quantidades do acabado."
+   },
+   {
+    "q": "Ao concluir uma OF:",
+    "o": [
+     "Baixa o acabado",
+     "Dá entrada do acabado e baixa os consumos",
+     "Apaga a OF",
+     "Não mexe no stock"
+    ],
+    "a": 1,
+    "why": "Consome componentes (baixa) e entra o acabado."
+   },
+   {
+    "q": "Necessidade líquida =",
+    "o": [
+     "Procura+stock",
+     "Procura−stock−encomendas em curso",
+     "Só stock",
+     "Só encomendas"
+    ],
+    "a": 1,
+    "why": "MRP desconta o que já existe/está a caminho."
+   },
+   {
+    "q": "Recall por lote permite:",
+    "o": [
+     "Apagar lotes",
+     "Listar clientes/documentos afetados por um lote",
+     "Criar lotes",
+     "Mudar o preço"
+    ],
+    "a": 1,
+    "why": "Rastreabilidade direta do lote→clientes/documentos."
+   },
+   {
+    "q": "O acerto de inventário alinha:",
+    "o": [
+     "Preços",
+     "Stock físico vs sistema por armazém",
+     "Clientes",
+     "Fornecedores"
+    ],
+    "a": 1,
+    "why": "Corrige diferenças de contagem por armazém (e valor/PCMP)."
+   }
+  ]
+ },
+ {
+  "lv": 15,
+  "nome": "Ignios & Ecossistema Digital",
+  "qs": [
+   {
+    "q": "O Ignios reduz:",
+    "o": [
+     "Stock",
+     "Erro/digitação em dados mestres",
+     "IVA",
+     "Utilizadores"
+    ],
+    "a": 1,
+    "why": "Preenche fichas por fontes externas (NIF/EAN/matrícula)."
+   },
+   {
+    "q": "EyePeak sincroniza:",
+    "o": [
+     "Só preços",
+     "Artigos/stock/preços e encomendas loja↔ERP",
+     "Só clientes",
+     "Só anexos"
+    ],
+    "a": 1,
+    "why": "Sincronização bidirecional e-commerce↔ERP."
+   },
+   {
+    "q": "Matching liga:",
+    "o": [
+     "Clientes a fornecedores",
+     "Movimento bancário à fatura que liquida",
+     "OF a FT",
+     "Lotes a séries"
+    ],
+    "a": 1,
+    "why": "Reconcilia pagamentos bancários com faturas em aberto."
+   },
+   {
+    "q": "Cegid Docs acrescenta:",
+    "o": [
+     "Anexos versionados ligados a registos",
+     "Mais IVA",
+     "Novos utilizadores",
+     "Mais armazéns"
+    ],
+    "a": 0,
+    "why": "Documentação ligada ao registo, versionada e pesquisável."
+   },
+   {
+    "q": "A IA embutida NÃO deve decidir sozinha:",
+    "o": [
+     "Resumos de cliente",
+     "Dados mestres/fiscal sem humano",
+     "Next-best-action",
+     "Perguntas-a-dados"
+    ],
+    "a": 1,
+    "why": "Decisões fiscais/dados mestres exigem validação humana."
+   }
+  ]
+ },
+ {
+  "lv": 16,
+  "nome": "PHC Web & Mobility",
+  "qs": [
+   {
+    "q": "O PHC CS Web acede:",
+    "o": [
+     "A uma BD separada",
+     "À mesma BD do desktop (outra camada)",
+     "A um ficheiro",
+     "A nada"
+    ],
+    "a": 1,
+    "why": "O web é outra camada de apresentação sobre a mesma BD."
+   },
+   {
+    "q": "Um IDU web é:",
+    "o": [
+     "Um relatório",
+     "Um ecrã web personalizado ligado a dados",
+     "Um backup",
+     "Um utilizador"
+    ],
+    "a": 1,
+    "why": "Ecrã/app web personalizado desenhado e publicado."
+   },
+   {
+    "q": "Na cloud, updates/backups são geridos:",
+    "o": [
+     "Pelo cliente",
+     "Pelo fornecedor (PHC ON/Evolution)",
+     "Por ninguém",
+     "Pelo desktop"
+    ],
+    "a": 1,
+    "why": "Modelo de subscrição cloud com infraestrutura gerida."
+   },
+   {
+    "q": "Operações offline ficam:",
+    "o": [
+     "Perdidas",
+     "Pendentes e sincronizam ao reconectar",
+     "Impressas",
+     "Bloqueadas"
+    ],
+    "a": 1,
+    "why": "Offline-first: pendentes no dispositivo, sincronizam depois."
+   },
+   {
+    "q": "Um dashboard web dá:",
+    "o": [
+     "KPIs visuais partilháveis c/ refresh",
+     "Só tabelas",
+     "Só impressões",
+     "Só backups"
+    ],
+    "a": 0,
+    "why": "Painéis visuais partilháveis com refresh e filtros interativos."
+   }
+  ]
  }
 ]

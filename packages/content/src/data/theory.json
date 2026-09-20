@@ -2666,5 +2666,321 @@
    "Saltar a campanha (ciclo sem origem)",
    "Oportunidade ganha sem documento ligado (rastreabilidade quebrada)"
   ]
+ },
+ "L98": {
+  "c": "A produção começa nos dados: a ficha técnica/lista de materiais (BOM) é a 'receita' do artigo acabado. Sem BOM correta (componentes+quantidades+tempos), o MRP e as OF herdam erro.",
+  "s": [
+   [
+    "BOM/lista de materiais",
+    "Componentes e quantidades para fabricar o acabado."
+   ],
+   [
+    "Ficha técnica",
+    "BOM + tempos/rotas + parâmetros de produção do artigo."
+   ],
+   [
+    "Roll-up de custo",
+    "Custo do acabado calculado a partir dos consumos+tempos."
+   ]
+  ],
+  "e": [
+   "BOM sem tempos (custo de MO errado)",
+   "Componentes sem stock mín (MRP não propõe compra)"
+  ]
+ },
+ "L99": {
+  "c": "A ordem de fabrico (OF) é o documento de produção: reserva componentes, regista consumos (baixa de stock) e dá entrada do acabado. Tempos reais apontados alimentam o custeio real.",
+  "s": [
+   [
+    "OF",
+    "Documento que autoriza e regista a produção de uma quantidade num prazo."
+   ],
+   [
+    "Consumo",
+    "Baixa de stock dos componentes contra a OF."
+   ],
+   [
+    "Entrada do acabado",
+    "Aumento de stock do artigo fabricado ao concluir."
+   ]
+  ],
+  "e": [
+   "Concluir OF sem dar entrada do acabado (stock fantasma)",
+   "Não apontar tempos (custeio real impossível)"
+  ]
+ },
+ "L100": {
+  "c": "O MRP converte procura (encomendas/previsão) em necessidades líquidas (descontando stock e encomendas em curso) e propõe compra de componentes e produção de acabados com prazos. É o planeamento que evita ruturas e excessos.",
+  "s": [
+   [
+    "Necessidade líquida",
+    "Procura − stock − encomendas em curso."
+   ],
+   [
+    "Proposta de compra/produção",
+    "Sugestão do MRP convertível em encomenda/OF."
+   ],
+   [
+    "Prazo de aprovisionamento",
+    "Lead-time que o MRP usa para propor datas."
+   ]
+  ],
+  "e": [
+   "Correr MRP sem stock mín configurado (propostas erradas)",
+   "Ignorar encomendas em curso (comprar a mais)"
+  ]
+ },
+ "L101": {
+  "c": "Lotes/séries dão rastreabilidade: do componente (lote+validade) à OF, ao lote do acabado, à FT e ao cliente. Rastreabilidade direta e inversa permitem recall rápido e preciso.",
+  "s": [
+   [
+    "Lote/série",
+    "Identificador de rastreamento de um componente/acabado."
+   ],
+   [
+    "Rastreabilidade direta",
+    "Lote→onde foi usado (OF/FT/clientes)."
+   ],
+   [
+    "Recall",
+    "Listar clientes/documentos afetados por um lote."
+   ]
+  ],
+  "e": [
+   "Vender sem registar lote (recall impossível)",
+   "Consumir componente sem lote (rastreabilidade quebrada)"
+  ]
+ },
+ "L102": {
+  "c": "Multi-armazém exige gerir stock por localização: transferências movem stock entre armazéns; o inventário conta por armazém e o acerto alinha físico com sistema (e o valor/PCMP).",
+  "s": [
+   [
+    "Transferência",
+    "Movimento de stock entre armazéns (saída+entrada)."
+   ],
+   [
+    "Stock por armazém",
+    "Visão por localização + consolidada."
+   ],
+   [
+    "Acerto de inventário",
+    "Entradas/saídas que corrigem diferenças de contagem."
+   ]
+  ],
+  "e": [
+   "Contar inventário só consolidado (erro por armazém escondido)",
+   "Transferência sem validar stock de origem (stock negativo)"
+  ]
+ },
+ "L103": {
+  "c": "O capstone logístico prova a cadeia com rastreabilidade: encomenda→MRP→OF→lote→entrada→FT→recall. Cada elo ligado; qualquer quebra aparece no recall incompleto.",
+  "s": [
+   [
+    "Cadeia logística",
+    "Encomenda→MRP→OF→lote→FT com rastreabilidade."
+   ],
+   [
+    "Recall como teste",
+    "O recall completo prova rastreabilidade sem quebras."
+   ]
+  ],
+  "e": [
+   "Saltar o registo de lote na FT",
+   "MRP sem procura real (propostas sem origem)"
+  ]
+ },
+ "L104": {
+  "c": "O Ignios liga o ERP a fontes externas para preencher fichas automaticamente (NIF→cliente, EAN→artigo, matrícula→veículo), reduzindo digitação e erro de dados mestres.",
+  "s": [
+   [
+    "Auto-preenchimento",
+    "Preencher fichas a partir de fontes externas (NIF/EAN/matrícula)."
+   ],
+   [
+    "Validação humana",
+    "Corrigir/completar o que a fonte não tem."
+   ]
+  ],
+  "e": [
+   "Confiar cegamente no auto-preenchimento sem validar",
+   "Ignios inativo e fingir que preenche"
+  ]
+ },
+ "L105": {
+  "c": "O EyePeak sincroniza e-commerce↔ERP: artigos/stock/preços ERP→loja e encomendas loja→ERP. Sincronizar stock após venda web evita vender o que já não há.",
+  "s": [
+   [
+    "Sincronização bidirecional",
+    "Artigos/stock/preços e encomendas entre loja e ERP."
+   ],
+   [
+    "Stock pós-venda web",
+    "Baixa no ERP reflete na loja (sem rutura pública)."
+   ]
+  ],
+  "e": [
+   "Vender web sem sincronizar stock (rutura)",
+   "Encomendas web sem entrar no ERP (faturação perdida)"
+  ]
+ },
+ "L106": {
+  "c": "Cegid Docs/File Storage guarda documentação ligada aos registos (FT, clientes, OF), versionada e pesquisável — o contexto documental do processo.",
+  "s": [
+   [
+    "Anexo ligado a registo",
+    "Ficheiro (PDF/imagem) associado a um registo do ERP."
+   ],
+   [
+    "Versionamento",
+    "Histórico de versões do anexo, recuperável."
+   ]
+  ],
+  "e": [
+   "Anexos soltos sem ligação ao registo",
+   "Sem versionamento (perde-se o histórico do ficheiro)"
+  ]
+ },
+ "L107": {
+  "c": "Open banking liga o banco ao ERP: extratos automáticos e matching de pagamentos a faturas. A reconciliação fecha o ciclo de tesouraria com menos trabalho manual.",
+  "s": [
+   [
+    "Extrato automático",
+    "Importação de movimentos bancários via open banking."
+   ],
+   [
+    "Matching",
+    "Ligar movimento bancário à fatura que liquida."
+   ],
+   [
+    "Reconciliação",
+    "Saldo ERP vs banco alinhado no fecho."
+   ]
+  ],
+  "e": [
+   "Matching automático sem validar duvidosos",
+   "Não reconciliar (diferenças acumuladas)"
+  ]
+ },
+ "L108": {
+  "c": "A IA embutida (Cegid Pulse) dá resumos, next-best-action e respostas-a-dados dentro do ERP. Acelera análise/comunicação, mas decisões fiscais/dados mestres continuam humanas.",
+  "s": [
+   [
+    "Resumo de registo",
+    "Síntese de histórico/risco/próximas ações de um cliente."
+   ],
+   [
+    "Next-best-action",
+    "Sugestão de próxima ação comercial."
+   ],
+   [
+    "Pergunta-a-dados",
+    "Responder perguntas sobre dados (top clientes, etc.)."
+   ]
+  ],
+  "e": [
+   "Deixar a IA decidir dados mestres/fiscal sem humano",
+   "Confiar em resposta-a-dados sem validar a fonte"
+  ]
+ },
+ "L109": {
+  "c": "O PHC CS Web é outra camada de apresentação sobre a mesma BD do desktop: mesmas permissões, mesmos registos, acesso via browser (HTTPS). Entender a arquitetura evita tratar o web como sistema separado.",
+  "s": [
+   [
+    "Camada web",
+    "Apresentação via browser sobre a BD partilhada."
+   ],
+   [
+    "Permissões partilhadas",
+    "Perfis/acessos da BD aplicados no web e desktop."
+   ]
+  ],
+  "e": [
+   "Tratar o web como BD separada (duplicação)",
+   "Assumir permissões diferentes no web"
+  ]
+ },
+ "L110": {
+  "c": "IDU web são ecrãs/apps web personalizados: desenhados no designer, ligados a tabelas/consultas, com ações e validações, publicados para perfis. É a personalização do web.",
+  "s": [
+   [
+    "IDU web",
+    "Ecrã web personalizado ligado a dados do ERP."
+   ],
+   [
+    "Ações/validações",
+    "Operações e regras no ecrã publicado."
+   ],
+   [
+    "Publicação/perfis",
+    "Disponibilizar o ecrã a perfis/utilizadores."
+   ]
+  ],
+  "e": [
+   "Publicar sem testar permissões",
+   "Ecrã sem validações (dados inválidos)"
+  ]
+ },
+ "L111": {
+  "c": "Na cloud (PHC ON/Evolution) o fornecedor gere infraestrutura/updates/backups; o cliente gere utilizadores/dados/processos. O modelo de responsabilidades partilhadas define quem faz o quê.",
+  "s": [
+   [
+    "Subscrição",
+    "Modelo cloud com updates/backups geridos."
+   ],
+   [
+    "Tenant",
+    "Instância do cliente na cloud."
+   ],
+   [
+    "Responsabilidades partilhadas",
+    "Fornecedor=plataforma; cliente=dados/acessos."
+   ]
+  ],
+  "e": [
+   "Assumir que o fornecedor gere dados mestres (é o cliente)",
+   "Ignorar janelas de manutenção/updates"
+  ]
+ },
+ "L112": {
+  "c": "Mobilidade = apps móveis + offline: operações registadas sem ligação ficam pendentes e sincronizam ao reconectar, com política de conflitos. É o ERP no terreno.",
+  "s": [
+   [
+    "Offline-first",
+    "Registar sem ligação, sincronizar depois."
+   ],
+   [
+    "Pendências",
+    "Operações offline à espera de sincronização."
+   ],
+   [
+    "Conflitos",
+    "Resolução (último-a-escrever ou manual)."
+   ]
+  ],
+  "e": [
+   "Assumir que offline perde dados",
+   "Ignorar conflitos de sincronização"
+  ]
+ },
+ "L113": {
+  "c": "Dashboards web (PHC Dashboard) transformam análises em painéis visuais partilháveis com refresh e filtros interativos — a gestão a ler KPIs em tempo real sem abrir o ERP.",
+  "s": [
+   [
+    "KPI",
+    "Indicador visual (vendas, margem, stock, tesouraria)."
+   ],
+   [
+    "Refresh/partilha",
+    "Painel atualizado e partilhado com a direção."
+   ],
+   [
+    "Filtro interativo",
+    "Período/loja/comercial a alterar o painel."
+   ]
+  ],
+  "e": [
+   "Dashboard sem refresh (dados velhos)",
+   "KPIs sem ligação a consultas reais"
+  ]
  }
 }
