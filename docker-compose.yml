@@ -1,0 +1,30 @@
+# Dev local em 1 comando:  docker compose up
+# web corre no host via `pnpm dev` (ou descomenta o serviço web abaixo).
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports: ["27017:27017"]
+    volumes: ["mongodata:/data/db"]
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      MONGODB_URI: mongodb://mongo:27017/phc-trainer
+      APP_URL: http://localhost:5173
+      # JWT_ACCESS_SECRET / JWT_REFRESH_SECRET / ENCRYPTION_KEY: define aqui em prod
+    ports: ["4000:4000"]
+    depends_on: [mongo]
+  # web (opcional — podes usar `pnpm dev` no host):
+  # web:
+  #   image: node:22
+  #   working_dir: /app
+  #   volumes: [".:/app"]
+  #   command: sh -c "corepack enable && pnpm install && pnpm --filter @phc/web dev -- --host"
+  #   ports: ["5173:5173"]
+volumes:
+  mongodata:

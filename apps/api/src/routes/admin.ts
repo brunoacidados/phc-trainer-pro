@@ -10,11 +10,18 @@ export const adminRouter = Router();
 adminRouter.use(requireUser, requireAdmin);
 
 /** GET /api/admin/users — lista global de utilizadores */
-adminRouter.get("/users", async (_req, res) => {
-  const users = await User.find().sort({ createdAt: -1 }).limit(500);
+adminRouter.get("/users", async (req, res) => {
+  const page = Math.max(1, Number(req.query.page) || 1);
+  const limit = Math.min(200, Math.max(10, Number(req.query.limit) || 50));
+  const total = await User.countDocuments();
+  const users = await User.find().sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
   const teams = await Team.find();
   const teamName = new Map(teams.map((t) => [String(t._id), t.name]));
   res.json({
+    page,
+    limit,
+    total,
+    pages: Math.ceil(total / limit),
     users: users.map((u) => ({
       ...toPublicUser(u as UserDoc),
       teamName: u.teamId ? (teamName.get(String(u.teamId)) ?? null) : null,

@@ -1,4 +1,5 @@
 import express from "express";
+import compression from "compression";
 import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -22,6 +23,7 @@ export function createApp(): express.Express {
   app.set("trust proxy", 1);
   app.disable("x-powered-by");
 
+  app.use(compression());
   app.use(helmet({ contentSecurityPolicy: false }));
   app.use(
     cors({
@@ -53,8 +55,20 @@ export function createApp(): express.Express {
     legacyHeaders: false,
   });
 
-  app.get("/api/health", (_req, res) => {
-    res.json({ ok: true, service: "phc-trainer-api", version: APP_VERSION, mongo: dbReady() });
+  app.get("/api/health", async (_req, res) => {
+    let mongoMs: number | null = null;
+    if (dbReady()) {
+      const t0 = Date.now();
+      try {
+        const m = await import("mongoose");
+        const db = m.default.connection.db;
+        if (db) await db.admin().ping();
+        mongoMs = Date.now() - t0;
+      } catch {
+        mongoMs = null;
+      }
+    }
+    res.json({ ok: true, service: "phc-trainer-api", version: APP_VERSION, mongo: dbReady(), mongoMs });
   });
 
   app.use("/api/auth", authLimiter, authRouter);
@@ -62,7 +76,8 @@ export function createApp(): express.Express {
   app.use("/api/teams", teamsRouter);
   app.use("/api/ai", aiLimiter, aiRouter);
   app.use("/api/chat", chatRouter);
-  app.use("/api/admin", adminRouter);
+  const adminLimiter = rateLimit({ windowMs: 60_000, limit: 60, standardHeaders: "draft-7", legacyHeaders: false });
+  app.use("/api/admin", adminLimiter, adminRouter);
   app.use("/api/notifications", notificationsRouter);
   app.use("/api/meta", metaRouter);
 

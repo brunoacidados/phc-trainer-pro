@@ -53,13 +53,13 @@ metaRouter.post("/import-legacy", validate(legacyImportSchema), async (req, res)
   const base: ProgressState = doc.state ?? defaultProgress();
   const merged: ProgressState = { ...defaultProgress(), ...base };
 
-  const labs = coerceRecord(legacy.labs, labStateSchema);
+  const labs = coerceRecord(legacy.labs, labStateSchema) as Record<string, import("@phc/shared").LabState>;
   if (Object.keys(labs).length) merged.labs = { ...merged.labs, ...labs };
 
-  const cards = coerceRecord(legacy.cards, cardStateSchema);
+  const cards = coerceRecord(legacy.cards, cardStateSchema) as Record<string, import("@phc/shared").CardState>;
   if (Object.keys(cards).length) merged.cards = { ...merged.cards, ...cards };
 
-  const quiz = coerceRecord(legacy.quiz, quizStateSchema);
+  const quiz = coerceRecord(legacy.quiz, quizStateSchema) as Record<string, import("@phc/shared").QuizState>;
   if (Object.keys(quiz).length) merged.quiz = { ...merged.quiz, ...quiz };
 
   if (Array.isArray(legacy.evid)) {
