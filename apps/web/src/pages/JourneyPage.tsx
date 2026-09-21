@@ -29,6 +29,7 @@ import { ArrowRight, BookOpen, Brain, Flame, GraduationCap, Target } from "lucid
 import { openFocusFor } from "../features/focus/FocusModal.tsx";
 import { startLabLesson } from "../features/lesson/LessonDrawer.tsx";
 import { useOnboard } from "../features/onboard/OnboardModal.tsx";
+import { SectorTrackPanel } from "../features/sector/SectorTrackPanel.tsx";
 
 export function JourneyPage() {
   const state = useProgress((s) => s.state);
@@ -171,6 +172,9 @@ export function JourneyPage() {
       {/* curso personalizado */}
       <CourseCard />
 
+      {/* trilha vertical do setor — Portas & Automatismos (PORTALUSA) */}
+      <SectorTrackPanel />
+
       {/* números */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Stat
@@ -210,7 +214,12 @@ export function JourneyPage() {
   );
 }
 
-interface MyAssignment { id: string; title: string; labIds: string[]; dueDate: string }
+interface MyAssignment {
+  id: string;
+  title: string;
+  labIds: string[];
+  dueDate: string;
+}
 function MyAssignments() {
   const team = useSession((s) => s.team);
   const state = useProgress((s) => s.state);
@@ -227,17 +236,28 @@ function MyAssignments() {
   const today = new Date().toISOString().slice(0, 10);
   return (
     <Card>
-      <CardHeader><CardTitle className="text-accent">📌 As suas atribuições</CardTitle></CardHeader>
+      <CardHeader>
+        <CardTitle className="text-accent">📌 As suas atribuições</CardTitle>
+      </CardHeader>
       <CardContent className="space-y-2">
         {items.map((a) => {
-          const done = a.labIds.filter((l) => (state?.labs[l]?.c ?? 0) > 0 || state?.labs[l]?.mem).length;
+          const done = a.labIds.filter(
+            (l) => (state?.labs[l]?.c ?? 0) > 0 || state?.labs[l]?.mem,
+          ).length;
           return (
-            <div key={a.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border p-2">
+            <div
+              key={a.id}
+              className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border p-2"
+            >
               <div>
                 <b className="text-sm">{a.title}</b>
-                <div className="text-xs text-muted-foreground">{a.labIds.join(", ")} · {done}/{a.labIds.length}</div>
+                <div className="text-xs text-muted-foreground">
+                  {a.labIds.join(", ")} · {done}/{a.labIds.length}
+                </div>
               </div>
-              <Badge variant={a.dueDate < today ? "destructive" : "warning"}>prazo {a.dueDate}</Badge>
+              <Badge variant={a.dueDate < today ? "destructive" : "warning"}>
+                prazo {a.dueDate}
+              </Badge>
             </div>
           );
         })}

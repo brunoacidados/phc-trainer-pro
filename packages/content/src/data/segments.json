@@ -534,5 +534,78 @@
       "nota": "Transportes: guias e comunicação à AT são lei sagrada; Frota e custos por viatura fecham a conta.",
       "destaques": ["L18", "L35", "L13", "L34", "L33", "L20", "L31"]
     }
+  },
+  {
+    "id": "portas",
+    "ico": "🚪",
+    "nome": "Portas & Automatismos",
+    "desc": "Indústria+comércio de portas seccionais/de vidro, automatismos, grades, cais de carga e controlo de acessos; fabrico por medida, representação exclusiva, assistência técnica e exportação.",
+    "empresa": {
+      "nome": "PORTALUSA — Indústria e Comércio de Portas Automáticas, Lda.",
+      "curto": "PORTALUSA",
+      "prefixo": "PL",
+      "morada": "Zona Industrial de Aveiro, lote 12, 3800-000 Aveiro",
+      "cidade": "Aveiro",
+      "cae": "25120 — Fabricação de portas, janelas e elementos acessórios em metal",
+      "cliente": "Construções Horizonte do Atlântico, Lda.",
+      "clienteCurto": "Horizonte Atlântico",
+      "fornecedor": "FERLUSA — Ferragens e Sistemas para Caixilharia, S.A.",
+      "fornecedorCurto": "FERLUSA",
+      "armazem1": "FABRICO-AVEIRO",
+      "armazem2": "OBRA-EXPEDICAO",
+      "artigos": [
+        "Porta seccional industrial 4000×4000 — fabrico (1 950,00 €)",
+        "Porta seccional residencial 2500×2100 — fabrico (780,00 €)",
+        "Porta automática de vidro deslizante 2000×2200 — fabrico (1 450,00 €)",
+        "Automatismo deslizante 600 kg + central — revenda (320,00 €)",
+        "Grade de enrolar galvanizada — fabrico (95,00 €/m²)",
+        "Nivelador de doca hidráulico 6 t — revenda (2 300,00 €)",
+        "Kit controlo de acessos RFID + fechadura (260,00 €)",
+        "Parede móvel acústica — fabrico/instalação (210,00 €/m²)",
+        "Instalação / assistência técnica (38,00 €/h)",
+        "Contrato de manutenção anual — avença (240,00 €)"
+      ],
+      "necessidades": [
+        "Compostos/BOM: porta = painéis + molas + calhas + automatismo (fabrico)",
+        "Ordens de fabrico (Manufactor) para portas seccionais/de vidro por medida",
+        "Representação exclusiva: compras a fornecedores europeus + revenda de automatismos",
+        "Nº de série por automatismo instalado (garantia e rastreabilidade)",
+        "Assistência técnica: equipamentos instalados, PAT e contratos de manutenção",
+        "Obras/empreitadas: medições, adiantamentos, retenções e CIUS-PT (Estado)",
+        "Exportação (França/Espanha/PALOP): isenções de IVA, Intrastat e multimoeda",
+        "Agentes/revendedores (Açores e Madeira): comissões e tabelas de preço",
+        "I&D (estudo e pesquisa): projetos e benefícios fiscais (SIFIDE)",
+        "Construtores pagam tarde: aging, cobranças e tesouraria previsional"
+      ],
+      "nif": "509 742 318",
+      "nifCliente": "571 204 863",
+      "nifForn": "562 418 907"
+    },
+    "phcForte": [
+      "Gestão (compostos, séries)",
+      "Manufactor (ordens de fabrico)",
+      "Suporte (assistência técnica)",
+      "Exportação/Intrastat"
+    ],
+    "futuro": ["Manufactor", "Suporte", "Contabilidade", "Pessoal (técnicos)"],
+    "plano": {
+      "nota": "Portas & automatismos: fabrico por medida (BOM/OF), representação exclusiva, assistência técnica com séries/garantias, obras com medições/adiantamentos e exportação — o ciclo completo do PHC.",
+      "destaques": [
+        "L09",
+        "L10",
+        "L17",
+        "L18",
+        "L22",
+        "L28",
+        "L32",
+        "L84",
+        "L85",
+        "L91",
+        "L98",
+        "L99",
+        "L101",
+        "L53"
+      ]
+    }
   }
 ]

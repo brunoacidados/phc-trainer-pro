@@ -26,6 +26,7 @@ import { useUi } from "../stores/ui.ts";
 import { useAi, announceAchievements } from "../hooks/useAi.ts";
 import { openFocusFor } from "../features/focus/FocusModal.tsx";
 import { startLabLesson } from "../features/lesson/LessonDrawer.tsx";
+import { SectorCaseInline } from "../features/sector/SectorCaseInline.tsx";
 import { useTts } from "../hooks/useTts.ts";
 import { toast } from "../components/ui/toast.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card.tsx";
@@ -233,6 +234,8 @@ export function MissionDetailPage() {
           </div>
         </div>
       )}
+
+      <SectorCaseInline lab={lab} />
 
       {/* ações principais */}
       <div className="flex flex-wrap gap-2">

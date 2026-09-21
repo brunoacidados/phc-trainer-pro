@@ -1,0 +1,709 @@
+{
+  "id": "portas",
+  "nome": "Portas & Automatismos",
+  "setor": "Indústria e comércio de portas automáticas, automatismos, controlo de acessos e cais de carga",
+  "empresa": {
+    "nome": "PORTALUSA — Indústria e Comércio de Portas Automáticas, Lda.",
+    "curto": "PORTALUSA",
+    "sigla": "PL",
+    "fundada": 1986,
+    "forma": "Lda.",
+    "nif": "509 742 318",
+    "morada": "Zona Industrial de Aveiro, lote 12, 3800-000 Aveiro",
+    "cidade": "Aveiro",
+    "cae": "25120 — Fabricação de portas, janelas e elementos acessórios em metal",
+    "descricao": "Empresa industrial e comercial especializada em portas de garagem residenciais e industriais, portas automáticas de vidro, automatismos para portas e portões, controlo de acessos, grades de enrolar, produtos para cais de carga e paredes móveis acústicas. Fabrica portas automáticas de vidro, portas seccionais e grades de enrolar segundo padrões europeus e representa em exclusivo, para Portugal, vários fornecedores europeus e mundiais do sector.",
+    "atividades": [
+      "Fabrico próprio de portas seccionais (residenciais e industriais), portas automáticas de vidro e grades de enrolar",
+      "Representação exclusiva em Portugal de fornecedores europeus/mundiais de automatismos e cais de carga",
+      "Instalação e assistência técnica (direta ou via agentes revendedores)",
+      "Controlo de acessos e soluções especiais por medida (departamento de estudo e pesquisa)",
+      "Exportação e projetos internacionais"
+    ],
+    "produtosFamilias": [
+      {
+        "nome": "Portas seccionais residenciais",
+        "origem": "fabrico",
+        "descricao": "Portas de garagem para moradias e condomínios, painéis sandwich, fabrico por medida.",
+        "exemplos": [
+          "Seccional residencial 2500×2100",
+          "Seccional com porta peão integrada",
+          "Automatismo de teto residencial"
+        ]
+      },
+      {
+        "nome": "Portas seccionais industriais",
+        "origem": "fabrico",
+        "descricao": "Portas de grande dimensão para naves, armazéns e indústria, molas de torção industriais.",
+        "exemplos": [
+          "Seccional industrial 4000×4000",
+          "Seccional alumínio/vision",
+          "Porta de enrolar industrial"
+        ]
+      },
+      {
+        "nome": "Portas automáticas de vidro",
+        "origem": "fabrico",
+        "descricao": "Portas deslizantes de vidro para lojas, bancos, clínicas e edifícios públicos (fabrico próprio).",
+        "exemplos": [
+          "Deslizante 2 folhas 2000×2200",
+          "Operador deslizante 120 kg",
+          "Perfil de alumínio anodizado"
+        ]
+      },
+      {
+        "nome": "Automatismos & motores",
+        "origem": "revenda",
+        "descricao": "Motores e automatismos para portões e portas (representação exclusiva de marcas europeias).",
+        "exemplos": [
+          "Motor de portão basculante",
+          "Automatismo deslizante 600 kg",
+          "Central de comando + recetor"
+        ]
+      },
+      {
+        "nome": "Controlo de acessos",
+        "origem": "misto",
+        "descricao": "Leitores, fechaduras elétricas, torniquetes e gestão de acessos.",
+        "exemplos": ["Kit leitor RFID + fechadura", "Torniquete tripé", "Software de acessos"]
+      },
+      {
+        "nome": "Grades de enrolar",
+        "origem": "fabrico",
+        "descricao": "Grades e portadas de enrolar em aço galvanizado/alumínio para lojas e armazéns (fabrico).",
+        "exemplos": ["Grade de enrolar m² galvanizada", "Grade microperfurada", "Motor tubular"]
+      },
+      {
+        "nome": "Cais de carga",
+        "origem": "revenda",
+        "descricao": "Niveladores de doca, abrigos, portas rápidas e acessórios logísticos (representação).",
+        "exemplos": ["Nivelador de doca hidráulico 6t", "Abrigo de cais", "Porta rápida de PVC"]
+      },
+      {
+        "nome": "Paredes móveis acústicas",
+        "origem": "misto",
+        "descricao": "Paredes/painéis móveis amovíveis para salas, auditórios e hotéis.",
+        "exemplos": ["Parede móvel acústica m²", "Painel de porta em vidro", "Calha de suspensão"]
+      }
+    ],
+    "mercados": [
+      {
+        "tipo": "nacional",
+        "nota": "Todo o país, incluindo Açores e Madeira através de agentes revendedores."
+      },
+      {
+        "tipo": "internacional",
+        "paises": [
+          "França",
+          "Espanha",
+          "Cabo Verde",
+          "Guiné",
+          "Angola",
+          "Moçambique",
+          "Quénia",
+          "Luxemburgo",
+          "Antilhas Holandesas"
+        ],
+        "nota": "Exportação direta e via agentes; exige multimoeda, isenções de IVA, Intrastat e logística internacional."
+      }
+    ],
+    "clientes": [
+      "Empresas de construção civil e obras públicas",
+      "Bancos",
+      "Estado e administração pública",
+      "Hipermercados e grande distribuição",
+      "Indústria",
+      "Comércio e serviços",
+      "Serralharias e eletricistas (revenda/instalação)",
+      "Condomínios",
+      "Particulares"
+    ],
+    "canais": [
+      "Venda direta (estrutura comercial e técnica própria)",
+      "Agentes/revendedores em todo o país (incl. Açores e Madeira) — comissões",
+      "Exportação e projetos internacionais"
+    ],
+    "departamentos": [
+      {
+        "nome": "Comercial",
+        "funcao": "Orçamentação, venda direta e gestão de agentes/revendedores.",
+        "phc": ["CRM", "Gestão (Dossiers Internos, comissões)"]
+      },
+      {
+        "nome": "Técnico / Assistência",
+        "funcao": "Instalações, PAT, contratos de manutenção e equipamentos instalados.",
+        "phc": ["Suporte", "Equipamentos"]
+      },
+      {
+        "nome": "Estudo & Pesquisa (I&D)",
+        "funcao": "Soluções especiais por medida, contacto com fabricantes de tecnologia avançada.",
+        "phc": ["Gestão (obras/projetos)", "Contabilidade (SIFIDE/benefícios)"]
+      },
+      {
+        "nome": "Produção",
+        "funcao": "Fabrico de portas seccionais, de vidro e grades (compostos/BOM, ordens de fabrico).",
+        "phc": ["Manufactor", "Armazéns"]
+      },
+      {
+        "nome": "Logística / Expedição",
+        "funcao": "Stock de componentes, guias de transporte para obras, exportação.",
+        "phc": ["Gestão (transporte/AT)", "Armazéns"]
+      },
+      {
+        "nome": "Financeiro / Contabilidade",
+        "funcao": "Faturação, cobranças (obras pagam tarde), tesouraria, fecho e fiscal.",
+        "phc": ["Gestão", "Contabilidade", "Tesouraria"]
+      }
+    ],
+    "parceiro": {
+      "nome": "FERLUSA — Ferragens e Sistemas para Caixilharia, S.A.",
+      "papel": "Fornecedor/parceiro exclusivo de ferragens, acessórios para caixilharia exterior e sistemas de proteção solar.",
+      "descricao": "Empresa portuguesa dedicada a ferragens e acessórios para caixilharias exteriores e sistemas de proteção solar, promovendo materiais e soluções de alta qualidade para a construção. Fornece à PORTALUSA componentes (perfis, ferragens, acessórios) para o fabrico de portas e grades."
+    },
+    "clienteExemplo": {
+      "nome": "Construções Horizonte do Atlântico, Lda.",
+      "curto": "Horizonte Atlântico",
+      "nif": "571 204 863",
+      "tipo": "Construção civil / obra pública"
+    },
+    "fornecedorExemplo": {
+      "nome": "FERLUSA — Ferragens e Sistemas para Caixilharia, S.A.",
+      "curto": "FERLUSA",
+      "nif": "562 418 907"
+    }
+  },
+  "glossario": [
+    {
+      "t": "Porta seccional",
+      "d": "Porta formada por painéis articulados (seções) que deslizam verticalmente por calhas e recolhem sob o teto. Residencial ou industrial.",
+      "phc": "Artigo fabricado (composto/BOM) com variantes por medida."
+    },
+    {
+      "t": "Automatismo / motor",
+      "d": "Conjunto motor+central que automatiza uma porta ou portão. Frequentemente de representação exclusiva.",
+      "phc": "Artigo de revenda, muitas vezes com nº de série (garantia/rastreio)."
+    },
+    {
+      "t": "Painel sandwich",
+      "d": "Painel de duas chapas de aço com núcleo isolante (poliuretano) — matéria-prima da porta seccional.",
+      "phc": "Componente em compostos/BOM e em stock (matérias-primas)."
+    },
+    {
+      "t": "Mola de torção",
+      "d": "Mola que equilibra o peso da porta seccional; dimensionada por medida e ciclos.",
+      "phc": "Componente com nº de série/lote em produção."
+    },
+    {
+      "t": "Cais de carga / nivelador de doca",
+      "d": "Equipamento logístico que faz a ponte entre o cais e o veículo de carga.",
+      "phc": "Artigo de revenda + instalação (Suporte/Equipamentos)."
+    },
+    {
+      "t": "Grade de enrolar",
+      "d": "Portada/grade metálica que enrola num eixo, para proteção de lojas e armazéns.",
+      "phc": "Artigo fabricado, vendido ao m²."
+    },
+    {
+      "t": "Parede móvel acústica",
+      "d": "Painéis amovíveis que dividem salas com isolamento acústico.",
+      "phc": "Artigo misto (fabrico/revenda) vendido ao m², por projeto."
+    },
+    {
+      "t": "Controlo de acessos",
+      "d": "Sistema de leitores/fechaduras/gestão que controla entradas.",
+      "phc": "Kit (composto) + software + instalação."
+    },
+    {
+      "t": "Representação exclusiva",
+      "d": "Direito de comercializar em Portugal a marca de um fabricante europeu/mundial.",
+      "phc": "Compras a fornecedor único + margens de revenda."
+    },
+    {
+      "t": "Agente / revendedor",
+      "d": "Parceiro local que comercializa e/ou instala (incl. Açores e Madeira).",
+      "phc": "Vendedor/comissões (Gestão) + tabela de preços própria."
+    },
+    {
+      "t": "Obra / empreitada",
+      "d": "Fornecimento e instalação num projeto de construção (cliente construtor/Estado).",
+      "phc": "Dossiers Internos, medições, adiantamentos, retenções, CIUS-PT (Estado)."
+    },
+    {
+      "t": "Medições",
+      "d": "Levantamento das medidas reais em obra antes do fabrico.",
+      "phc": "Orçamento→encomenda por medida (DI); fabrico só após medição."
+    },
+    {
+      "t": "Assistência técnica",
+      "d": "Reparação/manutenção de portas e automatismos instalados.",
+      "phc": "Suporte: PAT, equipamentos instalados, contratos."
+    },
+    {
+      "t": "Nº de série (automatismo)",
+      "d": "Identificador único de cada motor/central instalado.",
+      "phc": "Séries em Equipamentos/Suporte para garantia e histórico."
+    },
+    {
+      "t": "I&D (estudo e pesquisa)",
+      "d": "Desenvolvimento de soluções especiais com fabricantes de tecnologia avançada.",
+      "phc": "Projetos/obras + benefícios fiscais (SIFIDE) na Contabilidade."
+    },
+    {
+      "t": "Intrastat",
+      "d": "Declaração estatística de trocas intracomunitárias (exportações/importações UE).",
+      "phc": "Gestão/Internacional + Contabilidade (obrigação declarativa)."
+    },
+    {
+      "t": "SIFIDE",
+      "d": "Sistema de Incentivos Fiscais à I&D — benefício em IRC sobre despesas de investigação.",
+      "phc": "Contabilidade: apuramento de benefícios fiscais."
+    }
+  ],
+  "produtos": [
+    {
+      "ref": "PL-SEC-RES-2521",
+      "familia": "Portas seccionais residenciais",
+      "nome": "Porta seccional residencial 2500×2100 (fabrico)",
+      "origem": "fabrico",
+      "unidade": "un",
+      "precoRef": 780.0,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-SEC-IND-4040",
+      "familia": "Portas seccionais industriais",
+      "nome": "Porta seccional industrial 4000×4000 (fabrico)",
+      "origem": "fabrico",
+      "unidade": "un",
+      "precoRef": 1950.0,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-VID-DES-2022",
+      "familia": "Portas automáticas de vidro",
+      "nome": "Porta automática de vidro deslizante 2000×2200 (fabrico)",
+      "origem": "fabrico",
+      "unidade": "un",
+      "precoRef": 1450.0,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-AUT-DES-600",
+      "familia": "Automatismos & motores",
+      "nome": "Automatismo deslizante 600 kg + central (revenda)",
+      "origem": "revenda",
+      "unidade": "un",
+      "precoRef": 320.0,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-AUT-BAS-RES",
+      "familia": "Automatismos & motores",
+      "nome": "Motor de portão basculante residencial (revenda)",
+      "origem": "revenda",
+      "unidade": "un",
+      "precoRef": 210.0,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-GRE-GALV-M2",
+      "familia": "Grades de enrolar",
+      "nome": "Grade de enrolar galvanizada (fabrico)",
+      "origem": "fabrico",
+      "unidade": "m²",
+      "precoRef": 95.0,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-ACE-KIT-RFID",
+      "familia": "Controlo de acessos",
+      "nome": "Kit controlo de acessos leitor RFID + fechadura",
+      "origem": "misto",
+      "unidade": "kit",
+      "precoRef": 260.0,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-CAIS-NIV-6T",
+      "familia": "Cais de carga",
+      "nome": "Nivelador de doca hidráulico 6 t (revenda)",
+      "origem": "revenda",
+      "unidade": "un",
+      "precoRef": 2300.0,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-PAR-ACU-M2",
+      "familia": "Paredes móveis acústicas",
+      "nome": "Parede móvel acústica (fabrico/instalação)",
+      "origem": "misto",
+      "unidade": "m²",
+      "precoRef": 210.0,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-PAN-SAND-M2",
+      "familia": "Matérias-primas",
+      "nome": "Painel sandwich 40 mm (matéria-prima)",
+      "origem": "revenda",
+      "unidade": "m²",
+      "precoRef": 28.5,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-MOLA-TOR-IND",
+      "familia": "Matérias-primas",
+      "nome": "Mola de torção industrial (componente)",
+      "origem": "revenda",
+      "unidade": "un",
+      "precoRef": 42.0,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-SERV-INST-H",
+      "familia": "Serviços",
+      "nome": "Instalação / assistência técnica (hora)",
+      "origem": "servico",
+      "unidade": "h",
+      "precoRef": 38.0,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-SERV-MANUT-ANO",
+      "familia": "Serviços",
+      "nome": "Contrato de manutenção anual (avença)",
+      "origem": "servico",
+      "unidade": "ano",
+      "precoRef": 240.0,
+      "iva": "normal"
+    },
+    {
+      "ref": "PL-EXP-SEC-FR",
+      "familia": "Exportação",
+      "nome": "Porta seccional industrial — exportação França (isenção IVA)",
+      "origem": "fabrico",
+      "unidade": "un",
+      "precoRef": 2100.0,
+      "iva": "isencao-intra"
+    }
+  ],
+  "ciclo": [
+    {
+      "fase": "CRM",
+      "modulo": "CRM & Marketing",
+      "nivel": 13,
+      "titulo": "Lead de uma obra: 12 portas seccionais + automatismos",
+      "cenario": "Um construtor (Horizonte Atlântico) pergunta por 12 portas seccionais industriais e automatismos para um novo armazém. O comercial cria a oportunidade no funil, agenda a visita/medições e qualifica o potencial.",
+      "dados": [
+        { "k": "Oportunidade", "v": "12× PL-SEC-IND-4040 + 12× PL-AUT-DES-600 ≈ 27.240 €" },
+        { "k": "Fase do funil", "v": "Qualificação → Proposta → Negociação" },
+        { "k": "Probabilidade", "v": "60% (pipeline ponderado)" }
+      ],
+      "conceitos": [
+        "Oportunidades e fases do funil",
+        "Ações/tarefas de seguimento (visita, medições)",
+        "Pipeline ponderado e previsões",
+        "Histórico 360º do cliente"
+      ],
+      "missoes": ["L90", "L91", "L92", "L94", "L95", "L96"]
+    },
+    {
+      "fase": "Vendas",
+      "modulo": "Gestão — Vendas/Faturação",
+      "nivel": 2,
+      "titulo": "Orçamento → encomenda → fatura (porta por medida)",
+      "cenario": "Após as medições, emite-se o orçamento (Dossier Interno), converte-se em encomenda com adiantamento de 30%, e só então arranca o fabrico. A fatura é emitida na entrega/instalação, com guia de transporte para a obra.",
+      "dados": [
+        { "k": "Adiantamento", "v": "30% na adjudicação (8.172 €)" },
+        { "k": "Documento", "v": "DI: Orçamento → Encomenda → Fatura" },
+        { "k": "Entrega", "v": "Guia de transporte comunicada à AT" }
+      ],
+      "conceitos": [
+        "Dossiers Internos (orçamento→encomenda→fatura)",
+        "Adiantamentos de clientes",
+        "Guias de transporte e comunicação à AT",
+        "Tabelas de preços por cliente/agente"
+      ],
+      "missoes": ["L17", "L18", "L19", "L11", "L14", "L21"]
+    },
+    {
+      "fase": "Compras",
+      "modulo": "Gestão — Compras",
+      "nivel": 3,
+      "titulo": "Comprar componentes à FERLUSA e motores ao fabricante europeu",
+      "cenario": "Para fabricar as 12 portas, encomendam-se painéis, molas e ferragens à FERLUSA (parceiro exclusivo) e os automatismos ao fabricante europeu representado. Há adiantamentos a fornecedores e custos acessórios (frete) que entram no PCMP.",
+      "dados": [
+        {
+          "k": "Fornecedor exclusivo",
+          "v": "FERLUSA (ferragens/perfis) + marca europeia (motores)"
+        },
+        { "k": "Custos acessórios", "v": "Frete + alfândega integram o custo (PCMP)" },
+        { "k": "Adiantamento", "v": "Sinal ao fornecedor estrangeiro" }
+      ],
+      "conceitos": [
+        "Encomenda a fornecedor / Comprar a Encomenda",
+        "Faturas de compra, custos e PCMP",
+        "Adiantamentos a fornecedores",
+        "Custos acessórios (frete/alfândega)"
+      ],
+      "missoes": ["L22", "L23", "L24", "L27"]
+    },
+    {
+      "fase": "Armazéns",
+      "modulo": "Gestão — Armazéns/Stocks",
+      "nivel": 3,
+      "titulo": "Stock de componentes e expedição para a obra",
+      "cenario": "Os componentes dão entrada no armazém FABRICO-AVEIRO; os produtos acabados saem para a obra com guia. Há transferências entre armazéns, inventários e controlo de ruturas (ponto de encomenda de motores).",
+      "dados": [
+        { "k": "Armazéns", "v": "FABRICO-AVEIRO (componentes) + OBRA (expedição)" },
+        { "k": "Ponto de encomenda", "v": "Motores: stock mínimo para não parar obras" },
+        { "k": "Inventário", "v": "Contagem periódica de painéis/ferragens" }
+      ],
+      "conceitos": [
+        "Movimentos de stock e transferências",
+        "Inventário físico e acertos",
+        "Análises de stock e aprovisionamento",
+        "Lotes de matéria-prima"
+      ],
+      "missoes": ["L25", "L26", "L27", "L10", "L102"]
+    },
+    {
+      "fase": "Produção",
+      "modulo": "Manufactor / Logística",
+      "nivel": 14,
+      "titulo": "Ordem de fabrico da porta seccional (BOM por medida)",
+      "cenario": "Cada porta é um composto (painéis + molas + calhas + automatismo). Cria-se a ordem de fabrico, consomem-se os componentes, regista-se a mão de obra e atribui-se nº de série ao automatismo para garantia/rastreio. O MRP propõe compras quando faltam componentes.",
+      "dados": [
+        {
+          "k": "Ficha técnica (BOM)",
+          "v": "Porta 4000×4000 = 8 painéis + 2 molas + calhas + motor"
+        },
+        { "k": "Ordem de fabrico", "v": "12 OF (uma por porta), consumos + mão de obra" },
+        { "k": "Séries", "v": "Nº de série por motor instalado" }
+      ],
+      "conceitos": [
+        "Artigos de produção e fichas técnicas (BOM)",
+        "Ordens de fabrico: criar, lançar, consumir",
+        "MRP e propostas de compra",
+        "Séries/lotes e rastreabilidade"
+      ],
+      "missoes": ["L98", "L99", "L100", "L101", "L09"]
+    },
+    {
+      "fase": "Internacional",
+      "modulo": "Gestão — Internacional/Fiscal",
+      "nivel": 5,
+      "titulo": "Exportar para França e Angola: isenções, Intrastat, multimoeda",
+      "cenario": "Uma venda para França (intra-UE, isenção com reverse charge) e outra para Angola (exportação fora da UE, isenção art. 14.º). Há multimoeda, Intrastat, e faturação eletrónica CIUS-PT quando o cliente é o Estado.",
+      "dados": [
+        { "k": "França (UE)", "v": "Isenção art. 14.º/RITI + reverse charge + Intrastat" },
+        { "k": "Angola (fora UE)", "v": "Exportação isenta art. 14.º + documentos alfandegários" },
+        { "k": "Estado", "v": "CIUS-PT / faturação eletrónica" }
+      ],
+      "conceitos": [
+        "Isenções de IVA (intra-UE e exportação)",
+        "Intrastat e documentos de transporte",
+        "Multimoeda e câmbios",
+        "Faturação eletrónica CIUS-PT"
+      ],
+      "missoes": ["L35", "L36", "L53", "L62", "L12"]
+    },
+    {
+      "fase": "Contabilidade",
+      "modulo": "Contabilidade",
+      "nivel": 9,
+      "titulo": "Integrar vendas/compras, apurar IVA, imobilizado e fecho",
+      "cenario": "As faturas de venda e compra integram-se na Contabilidade (documentos pré-definidos), apura-se o IVA (declarado à DSF/Modelo 30 no estrangeiro), depreciam-se as máquinas de fabrico (imobilizado) e fecha-se o exercício em 17 meses.",
+      "dados": [
+        { "k": "Integração", "v": "Gestão→Contab em lote (estornar/reconciliar)" },
+        { "k": "Imobilizado", "v": "Máquinas de perfilagem/corte (depreciações)" },
+        { "k": "I&D", "v": "SIFIDE sobre despesas de investigação" }
+      ],
+      "conceitos": [
+        "Integração Gestão→Contabilidade",
+        "Apuramento do IVA e Declaração Periódica",
+        "Imobilizado (máquinas de fabrico)",
+        "Fecho de ano e I&D/SIFIDE"
+      ],
+      "missoes": ["L38", "L61", "L62", "L66", "L65", "L64"]
+    },
+    {
+      "fase": "Pessoal",
+      "modulo": "Pessoal & Vencimentos",
+      "nivel": 10,
+      "titulo": "Técnicos de assistência: horas, comissões e vencimentos",
+      "cenario": "Os técnicos de instalação/assistência têm horas extraordinárias em obra, os comerciais recebem comissões, e o Pessoal integra na Contabilidade com pagamentos SEPA de salários.",
+      "dados": [
+        { "k": "Técnicos", "v": "Horas extra em obra + subsídio de deslocação" },
+        { "k": "Comissões", "v": "Vendedores/agentes (ligação a L32)" },
+        { "k": "Pessoal→Contab", "v": "Integração + SEPA salários" }
+      ],
+      "conceitos": [
+        "Fichas, contratos e admissão",
+        "Processamento de vencimentos (horas, faltas)",
+        "Comissões e despesas",
+        "Pessoal→Contabilidade e SEPA"
+      ],
+      "missoes": ["L67", "L68", "L70", "L73", "L74", "L32"]
+    },
+    {
+      "fase": "Suporte",
+      "modulo": "Suporte & Pós-venda",
+      "nivel": 12,
+      "titulo": "Avaria de um motor: PAT, equipamento instalado e contrato",
+      "cenario": "Um condomínio reporta avaria num automatismo instalado. Abre-se um PAT, o técnico intervém (peça + mão de obra), regista-se no equipamento (nº de série) e fatura-se; contratos de manutenção geram avenças.",
+      "dados": [
+        { "k": "Equipamento", "v": "Motor PL-AUT-DES-600, nº série, instalado em 2024" },
+        { "k": "PAT", "v": "Abertura→intervenção→relatório+assinatura→fatura" },
+        { "k": "Contrato", "v": "Manutenção anual (avença 240 €)" }
+      ],
+      "conceitos": [
+        "Instalações, equipamentos e contratos",
+        "PAT da abertura à resolução",
+        "Intervenções: relatório e assinatura",
+        "Faturação do Suporte + KPIs"
+      ],
+      "missoes": ["L83", "L84", "L85", "L87", "L88", "L89"]
+    },
+    {
+      "fase": "Fecho & KPIs",
+      "modulo": "Análises / Dashboard",
+      "nivel": 6,
+      "titulo": "Margens por produto, obras em curso e tesouraria",
+      "cenario": "A gestão acompanha margens por família (fabrico vs revenda), obras/medições em curso, envelhecimento de dívidas de construtores (que pagam tarde) e tesouraria previsional — em dashboards web.",
+      "dados": [
+        { "k": "Margem", "v": "Fabrico (maior) vs revenda de automatismos" },
+        { "k": "Aging", "v": "Construtores pagam a 60-90 dias" },
+        { "k": "Tesouraria", "v": "Previsional com adiantamentos de obras" }
+      ],
+      "conceitos": [
+        "Análises multidimensionais e snapshots",
+        "Monitores/alertas (crédito, ruturas)",
+        "Dashboards web em tempo real",
+        "Conta corrente/aging e tesouraria"
+      ],
+      "missoes": ["L42", "L43", "L28", "L29", "L31", "L113"]
+    }
+  ],
+  "porNivel": [
+    {
+      "level": 0,
+      "titulo": "PORTALUSA como EMPRESA MODELO",
+      "contexto": "O ambiente de treino usa a PORTALUSA (fabricante/comerciante de portas) como empresa-exemplo: ficheiros, utilizadores e SQL sobre dados reais do sector.",
+      "tarefa": "Configure a PORTALUSA: utilizadores (comercial, técnico, produção, financeiro) e permissões.",
+      "phc": ["Utilizadores/perfis", "Dicionário de Dados"]
+    },
+    {
+      "level": 1,
+      "titulo": "Ficheiros do sector",
+      "contexto": "Clientes (construtores, bancos, Estado, condomínios), fornecedores (FERLUSA, marcas europeias) e artigos (portas, motores, grades) com famílias e unidades (un, m², h).",
+      "tarefa": "Crie o artigo PL-SEC-IND-4040 (fabrico) e PL-AUT-DES-600 (revenda) com famílias e unidades.",
+      "phc": ["Artigos/famílias/unidades", "Compostos (porta = painéis+molas+motor)"]
+    },
+    {
+      "level": 2,
+      "titulo": "Vender portas por medida",
+      "contexto": "Orçamento→encomenda→fatura de portas fabricadas por medida, com adiantamento e guia de transporte para a obra.",
+      "tarefa": "Emita um Dossier Interno (orçamento) de 12 portas seccionais e converta em encomenda com adiantamento de 30%.",
+      "phc": ["Dossiers Internos", "Adiantamentos", "Guias/AT"]
+    },
+    {
+      "level": 3,
+      "titulo": "Comprar componentes e gerir stock",
+      "contexto": "Encomenda de painéis/molas à FERLUSA e motores ao fabricante europeu; stock de componentes e expedição para obras.",
+      "tarefa": "Faça uma encomenda a fornecedor com custos acessórios (frete) e um movimento de stock para a obra.",
+      "phc": ["Encomenda a fornecedor", "PCMP/custos", "Movimentos/inventário"]
+    },
+    {
+      "level": 4,
+      "titulo": "Cobrar construtores que pagam tarde",
+      "contexto": "Clientes de construção pagam a 60-90 dias: conta corrente, aging, cobranças e tesouraria previsional com adiantamentos de obra.",
+      "tarefa": "Analise o aging do cliente Horizonte Atlântico e registe uma liquidação parcial.",
+      "phc": ["C/C e aging", "Cobranças", "Tesouraria"]
+    },
+    {
+      "level": 5,
+      "titulo": "Fiscal e exportação",
+      "contexto": "Vendas para França/Angola (isenções, Intrastat, multimoeda), SAF-T, ATCUD/QR e faturação eletrónica CIUS-PT para o Estado.",
+      "tarefa": "Emita uma fatura de exportação intra-UE com isenção e verifique o SAF-T.",
+      "phc": ["Isenções/IVA", "Intrastat", "CIUS-PT"]
+    },
+    {
+      "level": 6,
+      "titulo": "Análises de gestão do sector",
+      "contexto": "Margens por família (fabrico vs revenda), obras em curso, ruturas de stock e dashboards para a administração.",
+      "tarefa": "Crie uma análise de margem por família de produto e um monitor de rutura de motores.",
+      "phc": ["Análises/snapshots", "Monitores/alertas", "Dashboards"]
+    },
+    {
+      "level": 7,
+      "titulo": "Personalizar para o sector",
+      "contexto": "Campos/regras de utilizador para portas por medida (validação de dimensões), eventos Xbase e ecrãs personalizados (IDU) para a produção.",
+      "tarefa": "Crie uma regra de validação de dimensões máximas numa porta seccional.",
+      "phc": ["Regras/eventos Xbase", "IDU", "Funções de utilizador"]
+    },
+    {
+      "level": 8,
+      "titulo": "Digital e projeto PORTALUSA",
+      "contexto": "EyePeak (loja online de automatismos), faturação eletrónica, Cegid Pulse e o projeto final de implementação da PORTALUSA.",
+      "tarefa": "No capstone, implemente o ciclo completo da PORTALUSA (CRM→venda→produção→fatura).",
+      "phc": ["EyePeak", "Docs/Pulse", "Projeto final"]
+    },
+    {
+      "level": 9,
+      "titulo": "Contabilidade da indústria",
+      "contexto": "Integração vendas/compras, apuramento de IVA (com exportações isentas), imobilizado (máquinas de fabrico), I&D/SIFIDE e fecho.",
+      "tarefa": "Integre as faturas do mês, apure o IVA e deprecie uma máquina de perfilagem.",
+      "phc": ["Integração Gestão→Contab", "IVA", "Imobilizado", "SIFIDE"]
+    },
+    {
+      "level": 10,
+      "titulo": "Pessoal: técnicos e comerciais",
+      "contexto": "Técnicos de assistência com horas extra em obra, comerciais com comissões, e integração na Contabilidade com SEPA.",
+      "tarefa": "Processe o vencimento de um técnico com horas extra e subsídio de deslocação.",
+      "phc": ["Vencimentos", "Horas/faltas", "Pessoal→Contab"]
+    },
+    {
+      "level": 11,
+      "titulo": "POS / balcão de peças",
+      "contexto": "Venda de balcão de pequenas peças e automatismos a serralharias/eletricistas (consumo imediato), com talão e fecho de caixa.",
+      "tarefa": "Registe uma venda de balcão de um motor e feche a caixa do dia.",
+      "phc": ["POS Front", "Caixa/sangrias", "FS a consumidor"]
+    },
+    {
+      "level": 12,
+      "titulo": "Assistência técnica (o coração do pós-venda)",
+      "contexto": "Equipamentos instalados (motores com nº de série), contratos de manutenção, PAT de avaria e faturação de intervenções.",
+      "tarefa": "Abra um PAT de avaria num motor instalado, registe a intervenção e fature peça+mão de obra.",
+      "phc": ["Equipamentos/séries", "PAT", "Contratos/avenças", "Faturação Suporte"]
+    },
+    {
+      "level": 13,
+      "titulo": "CRM: angariar obras",
+      "contexto": "Oportunidades de obras (construtores, Estado), funil, campanhas a serralharias/eletricistas e histórico 360º do cliente.",
+      "tarefa": "Crie a oportunidade das 12 portas, qualifique-a e converta em orçamento.",
+      "phc": ["Oportunidades/funil", "Campanhas", "CRM↔Gestão"]
+    },
+    {
+      "level": 14,
+      "titulo": "Produção: fabricar portas (Manufactor)",
+      "contexto": "Fichas técnicas/BOM de portas seccionais e de vidro, ordens de fabrico, MRP de componentes e séries/rastreabilidade de motores.",
+      "tarefa": "Crie a OF de uma porta seccional, consuma componentes e atribua nº de série ao motor.",
+      "phc": ["BOM/fichas técnicas", "Ordens de fabrico", "MRP", "Séries/rastreio"]
+    },
+    {
+      "level": 15,
+      "titulo": "Ecossistema digital do sector",
+      "contexto": "Ignios (preencher fichas de clientes/fornecedores), EyePeak (e-commerce de automatismos), Cegid Docs (dossiers de obra), open banking e Pulse.",
+      "tarefa": "Sincronize o stock de automatismos com a loja online (EyePeak).",
+      "phc": ["Ignios", "EyePeak", "Docs", "Open banking/Pulse"]
+    },
+    {
+      "level": 16,
+      "titulo": "Web & mobilidade dos técnicos",
+      "contexto": "App web/mobile para os técnicos de assistência em obra (PAT offline), dashboards web para a administração e PHC ON/Evolution cloud.",
+      "tarefa": "Use a app mobile para registar uma intervenção técnica offline e sincronizar.",
+      "phc": ["PHC CS Web", "Mobile/offline", "Dashboards web"]
+    }
+  ]
+}

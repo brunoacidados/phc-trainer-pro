@@ -21,6 +21,9 @@ import type {
   PhcSchema,
   Prompts,
   Quiz,
+  SectorCyclePhase,
+  SectorLevelCase,
+  SectorVertical,
   Segment,
   SqlPrompts,
   Voices,
@@ -43,6 +46,7 @@ import achievementsData from "./data/achievements.json";
 import voicesData from "./data/voices.json";
 import encRefData from "./data/enc-ref.json";
 import contabOficialData from "./data/contab-oficial.json";
+import sectorPortasData from "./data/sector-portas.json";
 import aiProvidersData from "./data/ai-providers.json";
 import promptsData from "./data/prompts.json";
 import promptsSqlData from "./data/prompts-sql.json";
@@ -65,6 +69,8 @@ export const VOICES = voicesData as unknown as Voices;
 export const ENC_REF = encRefData as unknown as EncRef;
 /** programa oficial PHC do módulo Contabilidade (certificação, aulas, manuais, vídeos) */
 export const CONTAB_OFICIAL = contabOficialData as unknown as CursoOficial;
+/** trilha vertical do setor Portas & Automatismos (empresa fictícia PORTALUSA) */
+export const SECTOR_PORTAS = sectorPortasData as unknown as SectorVertical;
 export const AI_PROVIDERS = aiProvidersData as unknown as AiProviderDef[];
 export const PROMPTS = promptsData as unknown as Prompts;
 export const SQL_PROMPTS = promptsSqlData as unknown as SqlPrompts;
@@ -93,6 +99,16 @@ export function countryById(id: string): Country | undefined {
 
 export function beltForLevel(lv: number): Belt {
   return BELTS[lv] ?? BELTS[0];
+}
+
+/** caso prático do setor Portas & Automatismos para um nível */
+export function sectorCaseForLevel(lv: number): SectorLevelCase | undefined {
+  return SECTOR_PORTAS.porNivel.find((c) => c.level === lv);
+}
+
+/** fases do ciclo ERP do setor que envolvem uma dada missão */
+export function sectorPhasesForMission(labId: string): SectorCyclePhase[] {
+  return SECTOR_PORTAS.ciclo.filter((f) => f.missoes.includes(labId));
 }
 
 export const CONTENT_STATS = {

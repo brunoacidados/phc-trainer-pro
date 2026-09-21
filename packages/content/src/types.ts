@@ -275,3 +275,102 @@ export interface SqlPrompts {
 
 export type GradeNotes = Record<string, string>;
 export type EncRef = Record<string, string[]>;
+
+/* ---------- Trilha vertical de setor (ex.: Portas & Automatismos) ---------- */
+
+/** família de produtos do setor (fabrico próprio, revenda/representação ou misto) */
+export interface SectorProductFamily {
+  nome: string;
+  origem: "fabrico" | "revenda" | "misto" | "servico";
+  descricao: string;
+  exemplos: string[];
+}
+
+export interface SectorMarket {
+  tipo: "nacional" | "internacional";
+  paises?: string[];
+  nota?: string;
+}
+
+export interface SectorDepartment {
+  nome: string;
+  funcao: string;
+  /** módulos PHC que o departamento usa */
+  phc: string[];
+}
+
+export interface SectorCompany {
+  nome: string;
+  curto: string;
+  sigla: string;
+  fundada: number;
+  forma: string;
+  nif: string;
+  morada: string;
+  cidade: string;
+  cae: string;
+  descricao: string;
+  atividades: string[];
+  produtosFamilias: SectorProductFamily[];
+  mercados: SectorMarket[];
+  clientes: string[];
+  canais: string[];
+  departamentos: SectorDepartment[];
+  parceiro: { nome: string; papel: string; descricao: string };
+  clienteExemplo: { nome: string; curto: string; nif: string; tipo: string };
+  fornecedorExemplo: { nome: string; curto: string; nif: string };
+}
+
+/** termo do vocabulário do setor */
+export interface SectorTerm {
+  t: string;
+  d: string;
+  /** como se reflete no PHC */
+  phc?: string;
+}
+
+/** artigo do catálogo do setor */
+export interface SectorProduct {
+  ref: string;
+  familia: string;
+  nome: string;
+  origem: "fabrico" | "revenda" | "misto" | "servico";
+  unidade: string;
+  precoRef?: number;
+  iva?: "normal" | "reduzida" | "isencao" | "isencao-intra";
+}
+
+/** fase do ciclo ERP completo da empresa do setor */
+export interface SectorCyclePhase {
+  fase: string;
+  modulo: string;
+  /** nível (BELTS) predominante */
+  nivel: number;
+  titulo: string;
+  cenario: string;
+  dados: { k: string; v: string }[];
+  conceitos: string[];
+  /** missões (ids L##) relacionadas */
+  missoes: string[];
+}
+
+/** caso prático do setor para um nível */
+export interface SectorLevelCase {
+  level: number;
+  titulo: string;
+  contexto: string;
+  tarefa: string;
+  phc: string[];
+}
+
+/** trilha vertical completa de um setor */
+export interface SectorVertical {
+  id: string;
+  nome: string;
+  setor: string;
+  empresa: SectorCompany;
+  glossario: SectorTerm[];
+  produtos: SectorProduct[];
+  ciclo: SectorCyclePhase[];
+  porNivel: SectorLevelCase[];
+}
