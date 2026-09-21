@@ -19,6 +19,8 @@ import {
   toggleStep,
   todayISO,
   updateProgressSchema,
+  migrateState,
+  STATE_VERSION,
   type ProgressState,
 } from "@phc/shared";
 import { companyFromSegment } from "@phc/shared";
@@ -58,9 +60,12 @@ async function save(doc: Awaited<ReturnType<typeof getOrCreateProgress>>, userId
   return doc.state;
 }
 
-/** GET /api/progress — estado completo (cria por omissão na 1ª vez) */
+/** GET /api/progress — estado completo (cria por omissão na 1ª vez; migra v3→v4: voz Gemini) */
 progressRouter.get("/", async (req, res) => {
   const doc = await getOrCreateProgress(req.auth!.sub);
+  const before = doc.state?.v ?? 3;
+  migrateState(doc.state);
+  if (before < STATE_VERSION) await save(doc, req.auth!.sub);
   res.json({ state: doc.state, updatedAt: doc.updatedAt });
 });
 
@@ -68,7 +73,8 @@ progressRouter.get("/", async (req, res) => {
 progressRouter.put("/", validate(updateProgressSchema), async (req, res) => {
   const doc = await getOrCreateProgress(req.auth!.sub);
   const patch = req.body as Partial<ProgressState>;
-  doc.state = { ...defaultProgress(), ...doc.state, ...patch, v: 3 };
+  doc.state = migrateState({ ...defaultProgress(), ...doc.state, ...patch });
+  doc.state.v = STATE_VERSION;
   res.json({ state: await save(doc, req.auth!.sub) });
 });
 
@@ -182,6 +188,10 @@ progressRouter.put("/contexto", validate(setContextoSchema), async (req, res) =>
 /** PUT /api/progress/settings — definições do aluno (voz, modo livre…) */
 progressRouter.put("/settings", validate(settingsSchema), async (req, res) => {
   const doc = await getOrCreateProgress(req.auth!.sub);
-  doc.state.settings = { ...doc.state.settings, ...(req.body as object) };
+  const patch = { ...(req.body as object) } as Record<string, unknown>;
+  // mexeu na voz explicitamente → futura migração de defaults não volta a pisar
+  const VOICE_KEYS = ["ttsProvider", "gmVoice", "gmModel", "elVoice", "grVoice"];
+  if (VOICE_KEYS.some((k) => k in patch)) patch.ttsTouched = true;
+  doc.state.settings = { ...doc.state.settings, ...patch };
   res.json({ state: await save(doc, req.auth!.sub) });
 });

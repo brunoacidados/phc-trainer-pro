@@ -28,7 +28,12 @@ export function useTts() {
                 : provider === "elevenlabs"
                   ? settings.elVoice
                   : settings.grVoice;
-            await speakCloud(c, provider, voice);
+            await speakCloud(
+              c,
+              provider,
+              voice,
+              provider === "gemini" ? settings.gmModel : undefined,
+            );
           }
         } catch {
           if (my !== gen.current) return;

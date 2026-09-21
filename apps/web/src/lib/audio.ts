@@ -42,8 +42,8 @@ export async function audioCacheSet(key: string, blob: Blob): Promise<void> {
   }
 }
 
-export function audioKeyFor(provider: string, voice: string, text: string): string {
-  return hashStr(`${provider}|${voice}|${text}`);
+export function audioKeyFor(provider: string, voice: string, text: string, model = ""): string {
+  return hashStr(`${provider}|${model}|${voice}|${text}`);
 }
 
 function base64ToBlob(b64: string, mime: string): Blob {
@@ -67,14 +67,15 @@ export async function speakCloud(
   text: string,
   provider: "gemini" | "elevenlabs" | "groq",
   voice?: string,
+  model?: string,
 ): Promise<void> {
-  const key = audioKeyFor(provider, voice || "", text);
+  const key = audioKeyFor(provider, voice || "", text, model);
   let blob = await audioCacheGet(key);
   if (!blob) {
     const { apiFetch } = await import("./api.ts");
     const r = await apiFetch<{ audio: string; mimeType: string }>("/api/ai/tts", {
       method: "POST",
-      body: { text, provider, voice },
+      body: { text, provider, voice, model },
     });
     blob = base64ToBlob(r.audio, r.mimeType);
     await audioCacheSet(key, blob);
@@ -93,19 +94,61 @@ export async function speakCloud(
   });
 }
 
-/** voz do navegador (grátis/offline) */
-export function speakBrowser(text: string, rate = 1): Promise<void> {
+/**
+ * Vozes do navegador: no Chrome a lista carrega de forma assíncrona —
+ * se vier vazia, espera por `voiceschanged` (até 400 ms).
+ */
+function browserVoices(): Promise<SpeechSynthesisVoice[]> {
+  return new Promise((resolve) => {
+    try {
+      const now = speechSynthesis.getVoices();
+      if (now.length) return resolve(now);
+      const t = setTimeout(done, 400);
+      function done() {
+        clearTimeout(t);
+        speechSynthesis.removeEventListener("voiceschanged", done);
+        try {
+          resolve(speechSynthesis.getVoices());
+        } catch {
+          resolve([]);
+        }
+      }
+      speechSynthesis.addEventListener("voiceschanged", done);
+    } catch {
+      resolve([]);
+    }
+  });
+}
+
+/**
+ * Escolhe a melhor voz PT disponível (1º pt-BR natural/online, depois pt-BR,
+ * pt-PT, qualquer pt). Sem voz PT devolve null — falar português com voz
+ * inglesa é precisamente a "voz que dá medo", por isso nesse caso fica em
+ * silêncio (o texto continua no ecrã).
+ */
+function pickPtVoice(voices: SpeechSynthesisVoice[]): SpeechSynthesisVoice | null {
+  const natural = /natural|online|google|microsoft|premium|enhanced|neural/i;
+  return (
+    voices.find((v) => /^pt[-_]BR/i.test(v.lang) && natural.test(v.name)) ||
+    voices.find((v) => /^pt[-_]BR/i.test(v.lang)) ||
+    voices.find((v) => /^pt[-_]PT/i.test(v.lang)) ||
+    voices.find((v) => /^pt/i.test(v.lang)) ||
+    null
+  );
+}
+
+/** voz do navegador (grátis/offline) — último recurso, robótica */
+export async function speakBrowser(text: string, rate = 1): Promise<void> {
+  const voices = await browserVoices();
+  const pt = pickPtVoice(voices);
+  if (!pt) return; // sem voz portuguesa: silêncio é melhor que susto
   return new Promise((resolve) => {
     try {
       speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
-      u.lang = "pt-BR";
+      u.lang = pt.lang;
+      u.voice = pt;
       u.rate = rate;
-      const voices = speechSynthesis.getVoices();
-      const pt =
-        voices.find((v) => /pt[-_]BR/i.test(v.lang) && /natural|online/i.test(v.name)) ||
-        voices.find((v) => /pt/i.test(v.lang));
-      if (pt) u.voice = pt;
       u.onend = () => resolve();
       u.onerror = () => resolve();
       speechSynthesis.speak(u);

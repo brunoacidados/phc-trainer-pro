@@ -49,9 +49,15 @@ export function SettingsPage() {
         <CardContent className="flex flex-wrap items-center justify-between gap-2 py-4">
           <div>
             <b className="text-sm">🌐 Idioma / Language</b>
-            <p className="text-xs text-muted-foreground">Interface (nav/labels). O conteúdo pedagógico mantém-se em PT.</p>
+            <p className="text-xs text-muted-foreground">
+              Interface (nav/labels). O conteúdo pedagógico mantém-se em PT.
+            </p>
           </div>
-          <select className="rounded-md border border-input bg-background/60 px-2 py-1.5 text-sm" value={lang} onChange={(e) => setLang(e.target.value as "pt" | "en")}>
+          <select
+            className="rounded-md border border-input bg-background/60 px-2 py-1.5 text-sm"
+            value={lang}
+            onChange={(e) => setLang(e.target.value as "pt" | "en")}
+          >
             <option value="pt">Português</option>
             <option value="en">English</option>
           </select>
@@ -202,20 +208,19 @@ export function SettingsPage() {
             <div>
               <Label>Provedor</Label>
               <Select
-                className="w-52"
+                className="w-64"
                 value={s.ttsProvider}
                 onChange={(e) =>
                   void store().updateSettings({
                     ttsProvider: e.target.value as typeof s.ttsProvider,
+                    ttsTouched: true,
                   })
                 }
               >
-                <option value="gemini">
-                  🇧🇷 Gemini TTS (recomendado — precisa de chave da equipa)
-                </option>
-                <option value="browser">🖥 Navegador (grátis/offline)</option>
+                <option value="gemini">🇧🇷 Gemini TTS (padrão — voz natural)</option>
                 <option value="elevenlabs">🎙 ElevenLabs (premium)</option>
-                <option value="groq">⚡ Groq Orpheus (experimental)</option>
+                <option value="browser">🖥 Navegador (voz robótica — só offline)</option>
+                <option value="groq">⚡ Groq Orpheus (só inglês — evitar em PT)</option>
               </Select>
             </div>
             {s.ttsProvider !== "browser" && (
@@ -234,10 +239,10 @@ export function SettingsPage() {
                     const v = e.target.value;
                     void store().updateSettings(
                       s.ttsProvider === "gemini"
-                        ? { gmVoice: v }
+                        ? { gmVoice: v, ttsTouched: true }
                         : s.ttsProvider === "elevenlabs"
-                          ? { elVoice: v }
-                          : { grVoice: v },
+                          ? { elVoice: v, ttsTouched: true }
+                          : { grVoice: v, ttsTouched: true },
                     );
                   }}
                 >
@@ -255,7 +260,9 @@ export function SettingsPage() {
                 <Select
                   className="w-72"
                   value={s.gmModel}
-                  onChange={(e) => void store().updateSettings({ gmModel: e.target.value })}
+                  onChange={(e) =>
+                    void store().updateSettings({ gmModel: e.target.value, ttsTouched: true })
+                  }
                 >
                   {VOICES.geminiModels.map(([label, id]) => (
                     <option key={id} value={id}>
@@ -296,6 +303,11 @@ export function SettingsPage() {
           >
             ▶ Testar voz
           </Button>
+          <p className="text-xs text-muted-foreground">
+            Padrão: <b>Gemini TTS</b> com a voz <b>Charon</b> (masculina, informativa) — voz natural
+            em português. A voz do navegador é robótica e serve apenas de recurso offline. O Gemini
+            usa a chave configurada no servidor/equipa (AI_KEY_GEMINI).
+          </p>
         </CardContent>
       </Card>
 

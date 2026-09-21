@@ -87,6 +87,12 @@ export interface UserSettings {
   grVoice: string;
   ttsFallback: boolean;
   freeMode: boolean;
+  /**
+   * true quando o aluno já escolheu explicitamente uma voz/fornecedor nas
+   * Definições. Sem isto, migrações de defaults (ex.: browser→gemini na v4)
+   * podem aplicar-se sem pisar uma escolha consciente.
+   */
+  ttsTouched?: boolean;
 }
 
 export interface DailyCounters {

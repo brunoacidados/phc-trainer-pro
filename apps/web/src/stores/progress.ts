@@ -4,6 +4,7 @@ import {
   bumpDaily,
   companyFromSegment,
   labSt,
+  migrateState,
   rateCard,
   registerLabRep,
   submitQuiz,
@@ -35,7 +36,8 @@ function saveSnapshot(s: ProgressState): void {
 function loadSnapshot(): ProgressState | null {
   try {
     const raw = localStorage.getItem(SNAPSHOT_KEY);
-    return raw ? (JSON.parse(raw) as ProgressState) : null;
+    // snapshot pode ser de uma versão antiga (v3: voz do navegador) → migrar
+    return raw ? migrateState(JSON.parse(raw) as ProgressState) : null;
   } catch {
     return null;
   }

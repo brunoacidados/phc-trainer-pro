@@ -4,7 +4,13 @@
  */
 import { z } from "zod";
 import { SEGMENTS, companyFromSegment } from "../company.ts";
-import { defaultSettings } from "../defaults.ts";
+import {
+  DEFAULT_GM_MODEL,
+  DEFAULT_GM_VOICE,
+  DEFAULT_TTS_PROVIDER,
+  STATE_VERSION,
+  defaultSettings,
+} from "../defaults.ts";
 import type { ProgressState, UserSettings } from "../types.ts";
 
 /* ============ progresso ============ */
@@ -41,13 +47,14 @@ export const settingsSchema = z.looseObject({
   tts: z.boolean().default(true),
   rate: z.number().min(0.5).max(2).default(1),
   economy: z.boolean().default(false),
-  ttsProvider: z.enum(["gemini", "browser", "elevenlabs", "groq"]).default("browser"),
-  gmVoice: z.string().default("Sulafat"),
-  gmModel: z.string().default("gemini-3.1-flash-tts-preview"),
+  ttsProvider: z.enum(["gemini", "browser", "elevenlabs", "groq"]).default(DEFAULT_TTS_PROVIDER),
+  gmVoice: z.string().default(DEFAULT_GM_VOICE),
+  gmModel: z.string().default(DEFAULT_GM_MODEL),
   elVoice: z.string().default("ErXwobaYiN019PkySvjV"),
   grVoice: z.string().default("troy"),
   ttsFallback: z.boolean().default(true),
   freeMode: z.boolean().default(false),
+  ttsTouched: z.boolean().optional(),
 });
 
 export const companySchema = z.looseObject({
@@ -79,7 +86,7 @@ export const planSchema = z
   .nullable();
 
 export const progressStateSchema = z.looseObject({
-  v: z.number().default(3),
+  v: z.number().default(STATE_VERSION),
   labs: z.record(z.string(), labStateSchema).default({}),
   cards: z.record(z.string(), cardStateSchema).default({}),
   quiz: z.record(z.string(), quizStateSchema).default({}),

@@ -12,28 +12,48 @@
     ["Charlotte — feminina britânica", "Xb7hH06UJpJdRQ0yWdEw"]
   ],
   "groq": [
-    ["troy (masculina)", "troy"],
-    ["hannah (feminina)", "hannah"],
-    ["austin (masculina)", "austin"]
+    ["troy — masculina (⚠ só inglês)", "troy"],
+    ["hannah — feminina (⚠ só inglês)", "hannah"],
+    ["austin — masculina (⚠ só inglês)", "austin"]
   ],
   "geminiVoices": [
-    ["⭐ Sulafat — feminina, calorosa (recomendada)", "Sulafat"],
+    ["⭐ Charon — masculina, informativa (voz do Professor)", "Charon"],
+    ["Sadaltager — masculina, sábia", "Sadaltager"],
+    ["Rasalgethi — masculina, informativa", "Rasalgethi"],
+    ["Orus — masculina, firme", "Orus"],
+    ["Algenib — masculina, rouca", "Algenib"],
+    ["Iapetus — masculina, clara", "Iapetus"],
+    ["Puck — masculina, animada", "Puck"],
+    ["Fenrir — masculina, expressiva", "Fenrir"],
+    ["Enceladus — masculina, sussurrada", "Enceladus"],
+    ["Umbriel — masculina, descontraída", "Umbriel"],
+    ["Alnilam — masculina, firme", "Alnilam"],
+    ["Schedar — masculina, uniforme", "Schedar"],
+    ["Achird — masculina, simpática", "Achird"],
+    ["Zubenelgenubi — masculina, casual", "Zubenelgenubi"],
+    ["Zephyr — masculina, brilhante", "Zephyr"],
     ["Kore — feminina, firme", "Kore"],
+    ["Sulafat — feminina, calorosa", "Sulafat"],
     ["Leda — feminina, jovem", "Leda"],
     ["Aoede — feminina, leve", "Aoede"],
     ["Achernar — feminina, suave", "Achernar"],
     ["Laomedeia — feminina, animada", "Laomedeia"],
     ["Gacrux — feminina, madura", "Gacrux"],
     ["Vindemiatrix — feminina, gentil", "Vindemiatrix"],
-    ["Puck — masculina, animada", "Puck"],
-    ["Charon — masculina, grave", "Charon"],
-    ["Fenrir — masculina, expressiva", "Fenrir"],
-    ["Orus — masculina, firme", "Orus"],
-    ["Sadaltager — masculina, informativa", "Sadaltager"]
+    ["Sadachbia — feminina, viva", "Sadachbia"],
+    ["Callirrhoe — feminina, descontraída", "Callirrhoe"],
+    ["Autonoe — feminina, brilhante", "Autonoe"],
+    ["Despina — feminina, macia", "Despina"],
+    ["Erinome — feminina, clara", "Erinome"],
+    ["Algieba — feminina, suave", "Algieba"],
+    ["Pulcherrima — feminina, direta", "Pulcherrima"]
   ],
   "geminiModels": [
-    ["gemini-3.1-flash-tts-preview (novo · rápido)", "gemini-3.1-flash-tts-preview"],
-    ["gemini-2.5-flash-preview-tts", "gemini-2.5-flash-preview-tts"],
+    [
+      "gemini-3.1-flash-tts-preview (padrão · rápido · melhor qualidade)",
+      "gemini-3.1-flash-tts-preview"
+    ],
+    ["gemini-2.5-flash-preview-tts (alternativa rápida)", "gemini-2.5-flash-preview-tts"],
     ["gemini-2.5-pro-preview-tts (máxima qualidade · mais lento)", "gemini-2.5-pro-preview-tts"]
   ]
 }

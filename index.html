@@ -435,7 +435,7 @@ var S=null, listeners=[], REV={n:0};
 function subscribe(cb){listeners.push(cb);return function(){var i=listeners.indexOf(cb);if(i>=0)listeners.splice(i,1)}}
 function getSnap(){return REV.n}
 function useStore(){useSyncExternalStore(subscribe,getSnap);return S}
-function defaultSettings(){return{aiKey:DEFAULT_AI_KEY,aiModel:"openai/gpt-4o-mini",tts:true,rate:1,economy:false,welcomePlayed:false,freeMode:false,ttsProvider:"browser",browserVoice:null,elKey:"",elVoice:"ErXwobaYiN019PkySvjV",grKey:"",grVoice:"troy",ttsFallback:true,gmKey:"",gmVoice:"Sulafat",gmModel:"gemini-3.1-flash-tts-preview",msKey:"",cbKey:"",nvKey:"",aiProvOrder:[],proxyUrl:DEFAULT_PROXY}}
+function defaultSettings(){return{aiKey:DEFAULT_AI_KEY,aiModel:"openai/gpt-4o-mini",tts:true,rate:1,economy:false,welcomePlayed:false,freeMode:false,ttsProvider:"gemini",browserVoice:null,elKey:"",elVoice:"ErXwobaYiN019PkySvjV",grKey:"",grVoice:"troy",ttsFallback:true,gmKey:"",gmVoice:"Charon",gmModel:"gemini-3.1-flash-tts-preview",msKey:"",cbKey:"",nvKey:"",aiProvOrder:[],proxyUrl:DEFAULT_PROXY}}
 function defaultState(){return{v:2,rev:0,labs:{},cards:{},quiz:{},evid:[],streak:{last:null,n:0},settings:defaultSettings(),ai:{},ui:{lastLab:null,tab:"hoje"},company:defaultCompany(),plan:null,stats:{lessons:0,chats:0,dict:0,circ:0,explics:0},achs:{},contexto:{pais:"PT",gama:"Advanced"},profile:{nome:""},team:[],onboarded:false,daily:{d:"",reps:0,cards:0,proofs:0,lessons:0},aiHealth:{},aiLast:null,dbSchema:""}}
 function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(S))}catch(e){}}
 function mut(fn){fn(S);REV.n++;persist();listeners.slice().forEach(function(f){try{f()}catch(e){}})}
@@ -455,6 +455,7 @@ function loadState(){
     }
   }
   s.settings=Object.assign(defaultSettings(),s.settings||{});
+  if(s.settings.ttsProvider==="browser"&&!s.settings.ttsTouched){s.settings.ttsProvider="gemini";if(!s.settings.gmVoice||s.settings.gmVoice==="Sulafat")s.settings.gmVoice="Charon"}
   if(!s.settings.proxyUrl)s.settings.proxyUrl=DEFAULT_PROXY;
   if(!s.ai)s.ai={}; if(!s.ui)s.ui={lastLab:null,tab:"hoje"};
   if(!s.company)s.company=defaultCompany(); if(s.plan===undefined)s.plan=null;
@@ -1701,7 +1702,7 @@ function speakBrowser(text,gen){
 }
 async function cloudAudioURL(prov,text){
   var key,voice,h;
-  if(prov==="gemini"){key=S.settings.gmKey;voice=S.settings.gmVoice||"Sulafat"}
+  if(prov==="gemini"){key=S.settings.gmKey;voice=S.settings.gmVoice||"Charon"}
   else if(prov==="elevenlabs"){key=S.settings.elKey;voice=S.settings.elVoice||"ErXwobaYiN019PkySvjV"}
   else{key=S.settings.grKey;voice=S.settings.grVoice||"troy"}
   h=hashStr(prov+"|"+voice+"|"+(S.settings.gmModel||"")+"|"+text);
@@ -1712,7 +1713,7 @@ async function cloudAudioURL(prov,text){
   if(prov==="gemini"){
     r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+(S.settings.gmModel||"gemini-3.1-flash-tts-preview")+":generateContent",
       {method:"POST",headers:{"x-goog-api-key":key,"Content-Type":"application/json"},
-       body:JSON.stringify({contents:[{parts:[{text:text}]}],generationConfig:{responseModalities:["AUDIO"],speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:voice}},languageCode:"pt-BR"}}})});
+       body:JSON.stringify({contents:[{parts:[{text:text}]}],generationConfig:{responseModalities:["AUDIO"],speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:voice}}}}})});
   }else if(prov==="elevenlabs"){
     r=await fetch("https://api.elevenlabs.io/v1/text-to-speech/"+encodeURIComponent(voice)+"?output_format=mp3_44100_128",
       {method:"POST",headers:{"xi-api-key":key,"Content-Type":"application/json"},
@@ -1777,7 +1778,7 @@ function speak(text,done){
   var gen=TTS.gen;
   TTS.on=true;TTS.done=done||null;
   MascotBus.set("mood","talk");
-  var prov=S.settings.ttsProvider||"browser";
+  var prov=S.settings.ttsProvider||"gemini";
   if(prov==="gemini"&&S.settings.gmKey)speakCloud("gemini",String(text),gen);
   else if(prov==="elevenlabs"&&S.settings.elKey)speakCloud("elevenlabs",String(text),gen);
   else if(prov==="groq"&&S.settings.grKey)speakCloud("groq",String(text),gen);
@@ -1807,31 +1808,48 @@ function pcmToWavBlob(bytes,rate){
   return new Blob([hdr,bytes],{type:"audio/wav"});
 }
 var GEMINI_VOICES=[
-["⭐ Sulafat — feminina, calorosa (recomendada)","Sulafat"],
+["⭐ Charon — masculina, informativa (voz do Professor)","Charon"],
+["Sadaltager — masculina, sábia","Sadaltager"],
+["Rasalgethi — masculina, informativa","Rasalgethi"],
+["Orus — masculina, firme","Orus"],
+["Algenib — masculina, rouca","Algenib"],
+["Iapetus — masculina, clara","Iapetus"],
+["Puck — masculina, animada","Puck"],
+["Fenrir — masculina, expressiva","Fenrir"],
+["Enceladus — masculina, sussurrada","Enceladus"],
+["Umbriel — masculina, descontraída","Umbriel"],
+["Alnilam — masculina, firme","Alnilam"],
+["Schedar — masculina, uniforme","Schedar"],
+["Achird — masculina, simpática","Achird"],
+["Zubenelgenubi — masculina, casual","Zubenelgenubi"],
+["Zephyr — masculina, brilhante","Zephyr"],
 ["Kore — feminina, firme","Kore"],
+["Sulafat — feminina, calorosa","Sulafat"],
 ["Leda — feminina, jovem","Leda"],
 ["Aoede — feminina, leve","Aoede"],
 ["Achernar — feminina, suave","Achernar"],
 ["Laomedeia — feminina, animada","Laomedeia"],
 ["Gacrux — feminina, madura","Gacrux"],
 ["Vindemiatrix — feminina, gentil","Vindemiatrix"],
-["Puck — masculina, animada","Puck"],
-["Charon — masculina, grave","Charon"],
-["Fenrir — masculina, expressiva","Fenrir"],
-["Orus — masculina, firme","Orus"],
-["Sadaltager — masculina, informativa","Sadaltager"]];
+["Sadachbia — feminina, viva","Sadachbia"],
+["Callirrhoe — feminina, descontraída","Callirrhoe"],
+["Autonoe — feminina, brilhante","Autonoe"],
+["Despina — feminina, macia","Despina"],
+["Erinome — feminina, clara","Erinome"],
+["Algieba — feminina, suave","Algieba"],
+["Pulcherrima — feminina, direta","Pulcherrima"]]
 var GEMINI_MODELS=[["gemini-3.1-flash-tts-preview (novo · rápido)","gemini-3.1-flash-tts-preview"],["gemini-2.5-flash-preview-tts","gemini-2.5-flash-preview-tts"],["gemini-2.5-pro-preview-tts (máxima qualidade · mais lento)","gemini-2.5-pro-preview-tts"]];
 function VoiceSettings(){
   var _f=useStore();
   var st=S.settings;
   var pv=ptVoices();
-  var prov=st.ttsProvider||"browser";
+  var prov=st.ttsProvider||"gemini";
   return (<Space direction="vertical" style={{width:"100%"}}>
     <Space>Ativar voz <Switch checked={st.tts} onChange={function(v){mut(function(s){s.settings.tts=v});if(!v)stopSpeak()}}/></Space>
     <span className="mut" style={{fontSize:12}}>Provedor de voz:</span>
-    <Select style={{width:"100%"}} value={prov} onChange={function(v){mut(function(s){s.settings.ttsProvider=v})}}
+    <Select style={{width:"100%"}} value={prov} onChange={function(v){mut(function(s){s.settings.ttsProvider=v;s.settings.ttsTouched=true})}}
       options={[
-        {value:"gemini",label:"🇧🇷 Gemini TTS — voz feminina brasileira natural (RECOMENDADO)"},
+        {value:"gemini",label:"🇧🇷 Gemini TTS — voz natural em português (PADRÃO · Charon)"},
         {value:"browser",label:"🖥 Navegador (grátis, offline — use Edge p/ voz neural)"},
         {value:"elevenlabs",label:"🎙 ElevenLabs (neural pt-BR premium · chave própria)"},
         {value:"groq",label:"⚡ Groq Orpheus (experimental · só inglês)"}]}/>
@@ -1850,10 +1868,10 @@ function VoiceSettings(){
         description="Vozes neurais do Google (30 vozes, 24 idiomas). Crie uma chave grátis em aistudio.google.com → API Keys e cole abaixo — fica só neste navegador. O áudio fica em CACHE local: o mesmo texto nunca gera custo duas vezes. Atalho: abra uma vez o link …/#gmk=SUA_CHAVE. Segurança: restrinja a chave à API 'Generative Language' e ao domínio bfrpaulondev.github.io no console do Google."/>
       <Input.Password value={st.gmKey||""} placeholder="chave Gemini (AIza... ou AQ....)" onChange={function(e){mut(function(s){s.settings.gmKey=e.target.value})}}/>
       <span className="mut" style={{fontSize:12,marginTop:8,display:"block"}}>Voz:</span>
-      <Select style={{width:"100%"}} value={st.gmVoice||"Sulafat"} onChange={function(v){mut(function(s){s.settings.gmVoice=v})}}
+      <Select style={{width:"100%"}} value={st.gmVoice||"Charon"} onChange={function(v){mut(function(s){s.settings.gmVoice=v;s.settings.ttsTouched=true})}}
         options={GEMINI_VOICES.map(function(x){return {value:x[1],label:x[0]}})}/>
       <span className="mut" style={{fontSize:12,marginTop:8,display:"block"}}>Modelo:</span>
-      <Select style={{width:"100%"}} value={st.gmModel||"gemini-3.1-flash-tts-preview"} onChange={function(v){mut(function(s){s.settings.gmModel=v})}}
+      <Select style={{width:"100%"}} value={st.gmModel||"gemini-3.1-flash-tts-preview"} onChange={function(v){mut(function(s){s.settings.gmModel=v;s.settings.ttsTouched=true})}}
         options={GEMINI_MODELS.map(function(x){return {value:x[1],label:x[0]}})}/>
     </div>:null}
     {prov==="elevenlabs"?<div>
@@ -1862,14 +1880,14 @@ function VoiceSettings(){
       <Input.Password value={st.elKey||""} placeholder="chave ElevenLabs (sk_...)" onChange={function(e){mut(function(s){s.settings.elKey=e.target.value})}}/>
       <span className="mut" style={{fontSize:12,marginTop:8,display:"block"}}>Voz (modelo multilíngue v2 — fala português com sotaque natural):</span>
       <Select style={{width:"100%"}} value={EL_VOICES.some(function(x){return x[1]===st.elVoice})?(st.elVoice||"ErXwobaYiN019PkySvjV"):"ErXwobaYiN019PkySvjV"}
-        onChange={function(v){mut(function(s){s.settings.elVoice=v})}}
+        onChange={function(v){mut(function(s){s.settings.elVoice=v;s.settings.ttsTouched=true})}}
         options={EL_VOICES.map(function(x){return {value:x[1],label:x[0]}})}/>
     </div>:null}
     {prov==="groq"?<div>
       <Alert type="warning" showIcon style={{margin:"8px 0"}} message="Groq Orpheus: apenas INGLÊS e árabe"
         description="Confirmado na documentação e em teste: o TTS atual do Groq não fala português — texto em PT sai com sotaque inglês forte. É preciso aceitar os termos do modelo uma vez em console.groq.com/playground. Para português: use Navegador (Edge) ou ElevenLabs. Chave via campo abaixo ou link …/#grk=SUA_CHAVE."/>
       <Input.Password value={st.grKey||""} placeholder="chave Groq (gsk_...)" onChange={function(e){mut(function(s){s.settings.grKey=e.target.value})}}/>
-      <Select style={{width:"100%",marginTop:6}} value={st.grVoice||"troy"} onChange={function(v){mut(function(s){s.settings.grVoice=v})}} options={GR_VOICES.map(function(x){return {value:x[1],label:x[0]}})}/>
+      <Select style={{width:"100%",marginTop:6}} value={st.grVoice||"troy"} onChange={function(v){mut(function(s){s.settings.grVoice=v;s.settings.ttsTouched=true})}} options={GR_VOICES.map(function(x){return {value:x[1],label:x[0]}})}/>
     </div>:null}
     <Space style={{marginTop:4}}>Se a voz cloud falhar, usar a do navegador <Switch size="small" checked={st.ttsFallback!==false} onChange={function(v){mut(function(s){s.settings.ttsFallback=v})}}/></Space>
     <Space wrap style={{marginTop:4}}>
@@ -2741,7 +2759,7 @@ try{
     var m=kv.match(/^([a-z]+)=([A-Za-z0-9_\-\.:\/]+)$/);
     if(m&&_MAP[m[1]]){
       S.settings[_MAP[m[1]]]=m[2];_anyKey=true;
-      if(m[1]==="gmk"){S.settings.ttsProvider="gemini";if(!S.settings.gmVoice)S.settings.gmVoice="Sulafat"}
+      if(m[1]==="gmk"){S.settings.ttsProvider="gemini";if(!S.settings.gmVoice)S.settings.gmVoice="Charon"}
       if(m[1]==="elk"){S.settings.ttsProvider="elevenlabs"}
     }
   });

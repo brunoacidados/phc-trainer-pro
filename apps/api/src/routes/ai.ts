@@ -28,7 +28,7 @@ import {
 import { resolveTeamKeys } from "./teams.ts";
 import { defaultOrder, envKeysMap, getRegistry, probeProvider } from "../services/providers.ts";
 import { semanticSearch, ragContextBlock, ragStats } from "../services/rag.ts";
-import { elevenlabsTts, geminiTts, groqTts } from "../services/tts.ts";
+import { elevenlabsTts, geminiTts, groqTts, GEMINI_DEFAULT_VOICE } from "../services/tts.ts";
 import { globalAiKeys } from "../config/env.ts";
 
 export const aiRouter = Router();
@@ -212,14 +212,14 @@ aiRouter.post("/chat-stream", validate(aiChatRequestSchema), async (req, res) =>
   }
 });
 
-/** POST /api/ai/tts — voz do Professor (Gemini/ElevenLabs/Groq) no servidor */
+/** POST /api/ai/tts — voz do Professor (Gemini por padrão; ElevenLabs/Groq alternativos) no servidor */
 aiRouter.post("/tts", validate(ttsRequestSchema), async (req, res) => {
   const { text, provider, voice, model } = req.body as ReturnType<typeof ttsRequestSchema.parse>;
   const { keys } = await resolveKeysAndOrder(req.auth!.teamId, req.auth!.sub);
   if (provider === "gemini") {
     const key = keys.gemini;
     if (!key) throw badRequest("Chave Gemini não configurada (Definições → IA da equipa).");
-    res.json(await geminiTts(key, text, voice || "Sulafat", model));
+    res.json(await geminiTts(key, text, voice || GEMINI_DEFAULT_VOICE, model));
     return;
   }
   if (provider === "elevenlabs") {
