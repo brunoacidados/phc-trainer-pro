@@ -34,7 +34,7 @@ phc-trainer-pro/
 │   └── web/                    # React 19 + Vite + Tailwind (SPA)
 ├── packages/
 │   ├── content/                # @phc/content — TODO o conteúdo pedagógico extraído do legado
-│   │   └── src/data/*.json     #   90 missões · 139 cartas · 13 testes · enciclopédia · guia 15 cap.
+│   │   └── src/data/*.json     #   114 missões · 188 cartas · 17 testes · enciclopédia · guia 15 cap.
 │   └── shared/                 # @phc/shared — schemas Zod, motor SRS, conquistas, prompts de IA
 ├── scripts/extract-legacy-content.mjs   # extrator legado → content (reprodutível)
 ├── docs/                       # ARQUITETURA · DEPLOY · MIGRACAO · LEGADO-v5 · guia expert

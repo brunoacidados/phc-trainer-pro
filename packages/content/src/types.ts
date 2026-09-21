@@ -21,6 +21,18 @@ export interface LabAsk {
   a: string;
 }
 
+/** tipo de recurso oficial ligado a uma missão */
+export type MissionLinkKind = "manual" | "video" | "doc" | "legal" | "canal";
+
+export interface MissionLink {
+  /** tipo: manual (Help Center) | video (YouTube) | doc (PDF/página oficial) | legal | canal */
+  k: MissionLinkKind;
+  /** título do recurso */
+  t: string;
+  /** URL */
+  u: string;
+}
+
 export interface Lab {
   /** ex.: "L00" */
   id: string;
@@ -40,6 +52,34 @@ export interface Lab {
   steps: string[];
   proofs: LabProof[];
   ask: LabAsk[];
+  /** recursos oficiais (Help Center, vídeos, PDFs de certificação) */
+  links?: MissionLink[];
+}
+
+/** programa oficial de formação/certificação de um módulo (fonte: PHC/Cegid) */
+export interface CursoOficialAula {
+  t: string;
+  min: number;
+  missao: string;
+}
+
+export interface CursoOficial {
+  intro: string;
+  certificacao: { nome: string; url: string; temas: string[] };
+  aulasElearning: CursoOficialAula[];
+  aulasEnterprise: CursoOficialAula[];
+  imobilizado: { nota: string; etapas: string[]; missao: string };
+  ambitoOficial: { url: string; descritivo: string; itens: string[] };
+  helpcenter: { t: string; u: string }[];
+  videos: {
+    t: string;
+    u: string;
+    dur?: string;
+    canal: string;
+    serie?: string;
+  }[];
+  canais: { t: string; u: string }[];
+  pep: { nome: string; url: string; nota: string };
 }
 
 export interface MissionTheory {

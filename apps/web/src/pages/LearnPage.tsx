@@ -1,7 +1,16 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Brain, ChevronLeft, ChevronRight, Search, Volume2 } from "lucide-react";
-import { CIRCUITS, ENCYCLOPEDIA, GLOSSARY, GUIDE, PROMPTS, SQL_PROMPTS } from "@phc/content";
+import {
+  CARDS,
+  CIRCUITS,
+  CONTAB_OFICIAL,
+  ENCYCLOPEDIA,
+  GLOSSARY,
+  GUIDE,
+  PROMPTS,
+  SQL_PROMPTS,
+} from "@phc/content";
 import {
   applyCompanyText,
   buildDiscovery,
@@ -349,7 +358,13 @@ function EnciclopediaTab({ initialQuery }: { initialQuery: string }) {
           {results.length} resultados para “{q}”
         </p>
       )}
-      <div className="max-h-[60vh] space-y-1 overflow-y-auto pr-1" onScroll={(e)=>{const el=e.currentTarget; if(el.scrollTop+el.clientHeight>=el.scrollHeight-60) setVisible(v=>v+80);}}>
+      <div
+        className="max-h-[60vh] space-y-1 overflow-y-auto pr-1"
+        onScroll={(e) => {
+          const el = e.currentTarget;
+          if (el.scrollTop + el.clientHeight >= el.scrollHeight - 60) setVisible((v) => v + 80);
+        }}
+      >
         {rows.slice(0, visible).map(({ n, d, tag }, i) => {
           const key = `${q}-${section}-${i}`;
           return (
@@ -787,7 +802,7 @@ function RecursosTab() {
     {
       ico: "🃏",
       t: "Flashcards PHC (CSV p/ Anki)",
-      d: "As 139 cartas em CSV (separador ;). Só precisa disto se quiser o Anki EXTERNO — na app já é nativo.",
+      d: `As ${CARDS.length} cartas em CSV (separador ;). Só precisa disto se quiser o Anki EXTERNO — na app já é nativo.`,
       href: "/flashcards-phc.csv",
       btn: "⬇ Baixar .csv",
     },
@@ -849,6 +864,53 @@ function RecursosTab() {
           </CardContent>
         </Card>
       </div>
+      {/* vídeos oficiais do canal PHC/Cegid */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">
+            🎬 Vídeos oficiais — canal Cegid PHC no YouTube
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <p className="text-xs text-muted-foreground">
+            Demos e webinars oficiais (série “Contabilidade Inteligente para Contabilistas do
+            Futuro”, selo SVAT/SAF-T, fiscalidade). Cada missão do curso de Contabilidade tem os
+            vídeos certos nos seus “Recursos oficiais”.
+          </p>
+          <ul className="grid gap-1 text-sm md:grid-cols-2">
+            {CONTAB_OFICIAL.videos.map((v) => (
+              <li key={v.u}>
+                <a
+                  href={v.u}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-primary hover:underline"
+                >
+                  ▶ {v.t}
+                </a>
+                <span className="text-xs text-muted-foreground">
+                  {" "}
+                  · {v.dur} · {v.canal}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="flex flex-wrap gap-3 text-xs">
+            {CONTAB_OFICIAL.canais.map((c) => (
+              <a
+                key={c.u}
+                href={c.u}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="text-primary hover:underline"
+                title={c.t}
+              >
+                📺 {c.t} ↗
+              </a>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

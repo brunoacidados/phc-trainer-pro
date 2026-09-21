@@ -1,0 +1,244 @@
+{
+  "intro": "Programa oficial da PHC/Cegid para o módulo Contabilidade — temas da certificação, aulas e-learning (com durações oficiais), manuais do Help Center e vídeos do canal oficial. É a referência de fidelidade deste curso: cada missão L57–L66 cobre aulas e artigos listados aqui.",
+  "certificacao": {
+    "nome": "Certificação PHC CS Contabilidade",
+    "url": "https://www.phc.pt/enews/PHC_HiTech_Perfil_Financeiro.pdf",
+    "temas": [
+      "Bem-vindo",
+      "Conceitos básicos da Contabilidade",
+      "Configurações Base do PHC CS Contabilidade",
+      "Introdução de documentos contabilísticos",
+      "Conceito de IVA e suas Declarações",
+      "O Fecho de Contas",
+      "Funcionalidades exclusivas do PHC CS Contabilidade na gama Enterprise"
+    ]
+  },
+  "aulasElearning": [
+    { "t": "Conceitos Gerais da Contabilidade", "min": 15, "missao": "L57" },
+    {
+      "t": "Parâmetros Gerais importantes na Configuração da Contabilidade",
+      "min": 14,
+      "missao": "L57"
+    },
+    { "t": "Rotinas Abertura de Novo Ano Contabilístico", "min": 7, "missao": "L65" },
+    { "t": "Como criar novas contas", "min": 21, "missao": "L57" },
+    { "t": "Como criar novos Diários", "min": 6, "missao": "L58" },
+    { "t": "Como criar Documentos Pré-Definidos", "min": 22, "missao": "L60" },
+    { "t": "Documentos pré-definidos na Gestão", "min": 23, "missao": "L60" },
+    { "t": "Introdução de Movimentos Contabilísticos", "min": 27, "missao": "L59" },
+    { "t": "Imputações de Valores em Centros Analíticos", "min": 34, "missao": "L64" },
+    {
+      "t": "Configuração das Contas e códigos para o Apuramento do IVA",
+      "min": 12,
+      "missao": "L62"
+    },
+    { "t": "Emissão da Declaração Periódica do IVA", "min": 21, "missao": "L62" },
+    { "t": "Apuramento do CEVMC", "min": 11, "missao": "L63" },
+    { "t": "Apuramento de Resultados", "min": 12, "missao": "L63" },
+    { "t": "Integrações da Gestão na Contabilidade: configurações", "min": 45, "missao": "L61" },
+    { "t": "Integrações do módulo PHC Gestão na Contabilidade", "min": 36, "missao": "L61" },
+    { "t": "Importação de Mapas de Gestão", "min": 13, "missao": "L63" },
+    { "t": "Emissão de Mapas de Gestão", "min": 22, "missao": "L63" },
+    { "t": "BD Pronta na Contabilidade", "min": 7, "missao": "L57" },
+    { "t": "PHC XL CS", "min": 16, "missao": "L64" },
+    { "t": "Tabela de taxonomia", "min": 2, "missao": "L57" }
+  ],
+  "aulasEnterprise": [
+    { "t": "PHC CS Contabilidade desktop", "min": 30, "missao": "L57" },
+    { "t": "Plano de Contas Paralelo", "min": 14, "missao": "L64" },
+    { "t": "Naturezas e Dimensões", "min": 16, "missao": "L64" }
+  ],
+  "imobilizado": {
+    "nota": "Circuito oficial do Imobilizado (integra na Contabilidade), coberto no programa de certificação.",
+    "etapas": [
+      "Ficha do ativo",
+      "Depreciações",
+      "Reavaliações",
+      "Revalorizações",
+      "Imparidades",
+      "Abate / alienação"
+    ],
+    "missao": "L66"
+  },
+  "ambitoOficial": {
+    "url": "http://www.phc.pt/portal/p/contabilidade.aspx",
+    "descritivo": "https://www.phc.pt/enews/DescricaoCompletaContabilidade.pdf",
+    "itens": [
+      "Contabilidade geral e analítica",
+      "Centros de custo",
+      "Mapas: Balanço, DR, Modelo 22, rácios, ABDR, DFC, IES/DA",
+      "Apuramento automático de IVA, CEVMC, resultados e imposto de selo",
+      "17 meses de exercício",
+      "Integração com Gestão, Imobilizado, InterOp, Consolidação e Pessoal",
+      "SAF-T (PT) Contabilidade",
+      "Reembolso de IVA",
+      "Grelha de transição",
+      "Movimentos do ano anterior",
+      "Regime especial de exigibilidade de IVA (caixa)",
+      "Inversão do sujeito passivo",
+      "Modelo 30"
+    ]
+  },
+  "helpcenter": [
+    {
+      "t": "O que é e para que serve um Plano de Contas",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=23d85e%3A%3A57ebe5%3Ac8c559c"
+    },
+    {
+      "t": "Constituição da Tabela do Plano de Contas",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=412111422-74%3A46414123WS"
+    },
+    {
+      "t": "Opções disponíveis no menu do Plano de Contas",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20344426"
+    },
+    {
+      "t": "Constituição da Tabela de Documentos Predefinidos",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20369222"
+    },
+    {
+      "t": "Como fazer a gestão de anos da Contabilidade",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=%3A11111619-39156414123WS"
+    },
+    {
+      "t": "Como efetuar o apuramento de IVA",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=ddd%3A266g8c7e%3A%3A9c2225cg"
+    },
+    {
+      "t": "O Apuramento do IVA e emissão do suporte informático",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20369176"
+    },
+    {
+      "t": "Produzir a Declaração Periódica (passos oficiais)",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=14681bb964f86eb9g%3A45e9"
+    },
+    {
+      "t": "Produção da Declaração Periódica do IVA em XML",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=221111%3A81-49156414123WS"
+    },
+    {
+      "t": "Configuração do apuramento CEV",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20344409"
+    },
+    {
+      "t": "Como efetuar o apuramento do CMVMC",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=4c37997f9bgd7%3A89157552"
+    },
+    {
+      "t": "Apuramento de Resultados",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20344429"
+    },
+    {
+      "t": "Página Contabilidade nas configurações de Compras",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20372467"
+    },
+    {
+      "t": "Página Contabilidade nos Recibos",
+      "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20370972"
+    },
+    {
+      "t": "Apresentação geral do módulo Contabilidade",
+      "u": "https://phc.pt/Portal/sug/ptxview.aspx?stamp=8235e59dfe42%3Acebg8958g"
+    }
+  ],
+  "videos": [
+    {
+      "t": "Demonstrações Financeiras — Ep.1 · Contabilidade Inteligente para Contabilistas do Futuro",
+      "u": "https://www.youtube.com/watch?v=-eKonAliBh4",
+      "dur": "25:04",
+      "canal": "Cegid PHC",
+      "serie": "Contabilidade Inteligente"
+    },
+    {
+      "t": "Encerramento de Contas — Ep.2 · Contabilidade Inteligente",
+      "u": "https://www.youtube.com/watch?v=VhY1LigOQd0",
+      "dur": "22:41",
+      "canal": "Cegid PHC",
+      "serie": "Contabilidade Inteligente"
+    },
+    {
+      "t": "Gestão de ativos (Imobilizado) — Ep.3 · Contabilidade Inteligente",
+      "u": "https://www.youtube.com/watch?v=pVBH69ifVrk",
+      "dur": "19:13",
+      "canal": "Cegid PHC",
+      "serie": "Contabilidade Inteligente"
+    },
+    {
+      "t": "Payroll — Ep.4 · Contabilidade Inteligente",
+      "u": "https://www.youtube.com/watch?v=lsc40Xi-lNc",
+      "dur": "29:34",
+      "canal": "Cegid PHC",
+      "serie": "Contabilidade Inteligente"
+    },
+    {
+      "t": "Conheça o futuro dos contabilistas — Ep.5 · Contabilidade Inteligente",
+      "u": "https://www.youtube.com/watch?v=4K833ohzXDE",
+      "dur": "28:36",
+      "canal": "Cegid PHC",
+      "serie": "Contabilidade Inteligente"
+    },
+    {
+      "t": "Software de Gestão PHC CS | O que é o selo SVAT? (SAF-T PT da contabilidade)",
+      "u": "https://www.youtube.com/watch?v=TKBfLQ12Qyc",
+      "dur": "4:06",
+      "canal": "Cegid PHC"
+    },
+    {
+      "t": "Webinar PHC | Selo SVAT: 15 pontos essenciais para a sua empresa",
+      "u": "https://www.youtube.com/watch?v=6ov4UgAafMc",
+      "dur": "38:01",
+      "canal": "Cegid PHC"
+    },
+    {
+      "t": "Software de Gestão PHC CS | Solução Financeira",
+      "u": "https://www.youtube.com/watch?v=lIQqjt4ObR4",
+      "dur": "3:41",
+      "canal": "Cegid PHC"
+    },
+    {
+      "t": "Pagamento por Conta e Pagamento Especial por Conta | Fiscalidade PHC",
+      "u": "https://www.youtube.com/watch?v=3CMQyWfyIMU",
+      "dur": "4:43",
+      "canal": "Cegid PHC"
+    },
+    {
+      "t": "Webinar PHC | Novas obrigações legais",
+      "u": "https://www.youtube.com/watch?v=NZIZOHo1zS0",
+      "dur": "26:18",
+      "canal": "Cegid PHC"
+    },
+    {
+      "t": "Inventários com valorização de stocks — o que muda? (impacto no CEVMC)",
+      "u": "https://www.youtube.com/watch?v=dHE26bk9t50",
+      "dur": "1:14",
+      "canal": "Cegid PHC"
+    },
+    {
+      "t": "Cegid Pulse — agentes inteligentes na gestão financeira (demonstração prática)",
+      "u": "https://www.youtube.com/watch?v=Oj5PkSKz91o",
+      "dur": "1:56",
+      "canal": "Cegid Portugal & África"
+    },
+    {
+      "t": "Demonstração do módulo PHC CS Contabilidade (parceiro FTP Soluções Empresariais)",
+      "u": "https://www.youtube.com/watch?v=Byabq9c_U3I",
+      "dur": "16:39",
+      "canal": "FTP (parceiro PHC)"
+    }
+  ],
+  "canais": [
+    {
+      "t": "Cegid PHC (@SoftwarePHC) — arquivo com a série Contabilidade Inteligente e webinars",
+      "u": "https://www.youtube.com/@SoftwarePHC"
+    },
+    {
+      "t": "Cegid Portugal & África — canal oficial atual (conteúdo centralizado desde set/2026)",
+      "u": "https://www.youtube.com/@CegidPortugalAfrica"
+    }
+  ],
+  "pep": {
+    "nome": "PEP — Cegid PHC Evolution Program (Cegid Academy)",
+    "url": "https://academyblob.blob.core.windows.net/academy/01_CONTEUDOS_DE_FORMACAO/_SOFTWARE/Cegid%20PHC/CP_PEP_Cegid_PHC_Evolution_Program_25199.pdf",
+    "nota": "Percurso oficial pago com exame Technician; inclui o bloco Contabilidade (Configuração, Contabilidade e Fiscalidade, IVA e declarações). As aulas e-learning completas (364 min) estão no portal PHC On / Comunidade PHC."
+  }
+}

@@ -17,7 +17,7 @@
    │                   prompts/persona, helpers de empresa       │
    ├─────────────────────────────────────────────────────────────│
    │ packages/content — dados pedagógicos (JSON tipado):         │
-   │   90 missões · teoria · 139 cartas · 13 testes · 12 segmentos│
+   │   114 missões · teoria · 188 cartas · 17 testes · 12 segmentos│
    │   dicionário · circuitos · países · enciclopédia · esquema  │
    │   BD · guia 15 cap. · conquistas · vozes · prompts de IA    │
    └─────────────────────────────────────────────────────────────┘

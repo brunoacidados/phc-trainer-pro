@@ -9,6 +9,7 @@ import type {
   Belt,
   Circuit,
   Country,
+  CursoOficial,
   EncRef,
   Encyclopedia,
   FlashCard,
@@ -41,6 +42,7 @@ import guideData from "./data/guide.json";
 import achievementsData from "./data/achievements.json";
 import voicesData from "./data/voices.json";
 import encRefData from "./data/enc-ref.json";
+import contabOficialData from "./data/contab-oficial.json";
 import aiProvidersData from "./data/ai-providers.json";
 import promptsData from "./data/prompts.json";
 import promptsSqlData from "./data/prompts-sql.json";
@@ -61,6 +63,8 @@ export const GUIDE = guideData as unknown as Guide;
 export const ACHIEVEMENTS = achievementsData as unknown as Achievement[];
 export const VOICES = voicesData as unknown as Voices;
 export const ENC_REF = encRefData as unknown as EncRef;
+/** programa oficial PHC do módulo Contabilidade (certificação, aulas, manuais, vídeos) */
+export const CONTAB_OFICIAL = contabOficialData as unknown as CursoOficial;
 export const AI_PROVIDERS = aiProvidersData as unknown as AiProviderDef[];
 export const PROMPTS = promptsData as unknown as Prompts;
 export const SQL_PROMPTS = promptsSqlData as unknown as SqlPrompts;

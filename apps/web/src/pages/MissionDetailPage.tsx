@@ -198,6 +198,42 @@ export function MissionDetailPage() {
         </div>
       )}
 
+      {lab.links && lab.links.length > 0 && (
+        <div className="space-y-1.5 rounded-lg border border-border bg-card/50 p-3">
+          <span className="text-xs font-medium text-muted-foreground">
+            🔗 Recursos oficiais (Help Center · vídeos · certificação):
+          </span>
+          <div className="flex flex-wrap gap-1.5">
+            {lab.links.map((l) => (
+              <a
+                key={l.u + l.t}
+                href={l.u}
+                target="_blank"
+                rel="noreferrer noopener"
+                title={l.u}
+                className="inline-flex max-w-full items-center gap-1 rounded-full border border-border bg-background px-2.5 py-1 text-xs hover:border-primary/50 hover:text-primary"
+              >
+                <span aria-hidden>
+                  {l.k === "manual"
+                    ? "📕"
+                    : l.k === "video"
+                      ? "🎬"
+                      : l.k === "canal"
+                        ? "📺"
+                        : l.k === "legal"
+                          ? "⚖️"
+                          : "📄"}
+                </span>
+                <span className="truncate">{l.t}</span>
+                <span aria-hidden className="text-[10px] opacity-60">
+                  ↗
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ações principais */}
       <div className="flex flex-wrap gap-2">
         <Button size="lg" onClick={() => openFocusFor(id)}>

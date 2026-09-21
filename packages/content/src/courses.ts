@@ -49,7 +49,7 @@ export const COURSES: Course[] = [
     id: "contab",
     title: "Contabilidade",
     icon: "🧮",
-    desc: "Plano de contas, lançamentos, IVA, fecho e articulação Gestão↔Contab.",
+    desc: "Alinhado à Certificação PHC CS Contabilidade: SNC e taxonomia, diários e movimentos, documentos pré-definidos, integrações Gestão↔Contab, IVA (apuramento, declaração periódica, regime de caixa, inversão do sujeito passivo), CEVMC, resultados, Modelo 22/IES, SAF-T (PT), imobilizado e fecho de ano (17 meses) — com manuais do Help Center e vídeos oficiais do canal Cegid PHC em cada missão.",
     status: "ativo",
     belts: [9],
     planned: [],

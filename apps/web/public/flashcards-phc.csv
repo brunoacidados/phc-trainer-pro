@@ -3,13 +3,13 @@
 #notetype:Basic
 #tags column:3
 O que é o Cegid PHC Evolution?;Sucessor do PHC CS desktop: mesma plataforma + subscrição anual, web incluído, IA (Cegid Pulse), Cegid Docs e open banking.;phc::nivel0
-Planos de subscrição do Evolution?;Standard, Plus, Advanced, Premium e Ultimate (BD 10 GB nos dois primeiros ,  web e Pulse a partir do Plus).;phc::nivel0
+Planos de subscrição do Evolution?;Standard, Plus, Advanced, Premium e Ultimate (BD 10 GB nos dois primeiros, web e Pulse a partir do Plus).;phc::nivel0
 Gamas funcionais históricas do PHC CS?;Corporate (micro/pequenas), Advanced (PME, personalização e análises), Enterprise (aprovações, eventos/páginas completos, log de atividade).;phc::nivel0
 Como é o versionamento atual do PHC CS/Evolution?;Anual: AAAANN — ex.: 202501, 202504, 202601 (antes: v18…v30).;phc::nivel0
 O que faz o 'exe único' de instalação?;Instala a aplicação, cria/attacha a base de dados e configura o ODBC automaticamente.;phc::nivel0
-BD mínima segundo os termos de licenciamento?;SQL Server 2008R2+ (instalações atuais: 2012+ ,  Express típico no Corporate).;phc::nivel0
+BD mínima segundo os termos de licenciamento?;SQL Server 2008R2+ (instalações atuais: 2012+, Express típico no Corporate).;phc::nivel0
 Relação empresa × base de dados?;Cada empresa = uma BD SQL Server própria.;phc::nivel0
-Onde ficam os erros de eventos Xbase?;Na Análise Interna (desktop) ,  na web, no Log de Código. Linha 0 = erro em expressão (não programa).;phc::nivel0
+Onde ficam os erros de eventos Xbase?;Na Análise Interna (desktop), na web, no Log de Código. Linha 0 = erro em expressão (não programa).;phc::nivel0
 O que mostra o Dicionário de Dados?;Campos, descrições, tipos e tamanhos de QUALQUER tabela + relações entre tabelas (desde a v2008). Menu Supervisor > Tratamento da base de dados.;phc::nivel0
 O que é o PHC On?;Acordo anual: atualizações de software e legislação + portal on.phc.pt (formação online, autoformação, truques e dicas) + Calendário PHC de obrigações legais.;phc::nivel0
 Como se entra na Comunidade PHC?;community.phcsoftware.com com Nº de Cliente + ID Técnico + password (área de parceiros/clientes).;phc::nivel0
@@ -18,30 +18,30 @@ Onde estão os manuais oficiais públicos?;Help Center (helpcenter.phccs.net / p
 Menu Supervisor serve para quê?;Administração: Framework PHC (personalização), Tratamento da base de dados (dicionário, desfragmentação), monitores (ex.: EyePeak Sincronização).;phc::nivel0
 Menu Sistema serve para quê?;Parâmetros gerais e por módulo, utilizadores, configuração da aplicação.;phc::nivel0
 O que é 'ecrãs em memória'?;Parâmetro de performance: ecrãs principais fechados mantêm-se em memória e reabrem instantaneamente.;phc::nivel0
-O que faz o parâmetro 'processamento assíncrono'?;Gravação/processamento de documentos em background ,  o documento fica marcado como 'não processado' até concluir (inibe gravação correta se algo falhar).;phc::nivel0
-O que é o File Storage (202501+)?;Armazenamento de anexos em diretoria física, na BD ou ambos ,  documentos fiscalmente relevantes ficam sempre na BD.;phc::nivel0
+O que faz o parâmetro 'processamento assíncrono'?;Gravação/processamento de documentos em background, o documento fica marcado como 'não processado' até concluir (inibe gravação correta se algo falhar).;phc::nivel0
+O que é o File Storage (202501+)?;Armazenamento de anexos em diretoria física, na BD ou ambos, documentos fiscalmente relevantes ficam sempre na BD.;phc::nivel0
 O que é o Cegid Account?;Autenticação híbrida do ecossistema Cegid: contas Microsoft/Google, 2FA e ativação por utilizador (202601+).;phc::nivel0
 Que executáveis/países a plataforma suporta?;PT, ES (SII/TicketBAI), PE (retenções), US (English) e geografias PALOP (AO, MZ, CV).;phc::nivel0
 Que tabelas guardam os clientes?;CL (ficha) e CL2 (Clientes - Outros Dados, ex.: país da morada).;phc::nivel1
-Numeração de sede e filiais do cliente?;Sede = 0 ,  filiais/estabelecimentos = 1 a 999.;phc::nivel1
+Numeração de sede e filiais do cliente?;Sede = 0, filiais/estabelecimentos = 1 a 999.;phc::nivel1
 O que é o serviço Ignios?;Preenchimento automático dos dados da empresa (nome, morada…) a partir do NIF — gama Advanced+.;phc::nivel1
-Efeito de cliente 'Inativo'?;Não aparece em opções/documentos novos ,  continua em análises ,  dossiers antigos ainda podem ser faturados.;phc::nivel1
+Efeito de cliente 'Inativo'?;Não aparece em opções/documentos novos, continua em análises, dossiers antigos ainda podem ser faturados.;phc::nivel1
 Com documentos certificados emitidos, o que fica protegido na ficha do cliente?;Sem nome/morada mas com NIF: pode definir nome/morada, não pode alterar NIF. Com nome/morada mas sem NIF: pode preencher NIF ou morada, não pode alterar o nome.;phc::nivel1
 O que são Moradas de Carga e Descarga?;Tabela de moradas do cliente que alimenta os campos Local de carga/descarga dos documentos de transporte (ShipFrom/ShipTo no SAF-T).;phc::nivel1
 O que são referências alternativas?;Códigos do artigo usados pelo cliente ou fornecedor — permitem introduzir o artigo por outro código no documento.;phc::nivel1
 O que é um composto (kit)?;Artigo formado por componentes (explode/consome os componentes conforme configuração).;phc::nivel1
-Para que serve a unidade alternativa + factor de conversão?;Vender/comprar noutra unidade (ex.: caixa = 10 un) convertendo quantidades e preços ,  o factor pode ser invertido.;phc::nivel1
+Para que serve a unidade alternativa + factor de conversão?;Vender/comprar noutra unidade (ex.: caixa = 10 un) convertendo quantidades e preços, o factor pode ser invertido.;phc::nivel1
 O que são stocks cativos e pré-cativos?;Reservas de stock: cativo (reservado/comprometido) e pré-cativo (pré-reserva) para controlo de disponibilidade.;phc::nivel1
-Como funcionam as tabelas de preços?;Várias tabelas com validades (início/fim) ,  no documento assume a tabela do cliente e o preço válido na data.;phc::nivel1
+Como funcionam as tabelas de preços?;Várias tabelas com validades (início/fim), no documento assume a tabela do cliente e o preço válido na data.;phc::nivel1
 O que é o rappel?;Desconto retroativo por volumes atingidos (clientes e fornecedores), apurado no fim do período.;phc::nivel1
 Que módulos opcionais estendem os artigos?;Cores/tamanhos (vestuário), lotes, números de série (Equipamentos), Ecovalor, terminais portáteis, EDI.;phc::nivel1
-Tipos de documento de uma série de faturação?;1/2/3 = Fatura, Fatura Simplificada, Fatura-Recibo (+ND/NC via SAF-T) ,  4 = documento de transporte (guia) ,  5 = outro (proforma).;phc::nivel2
+Tipos de documento de uma série de faturação?;1/2/3 = Fatura, Fatura Simplificada, Fatura-Recibo (+ND/NC via SAF-T), 4 = documento de transporte (guia), 5 = outro (proforma).;phc::nivel2
 Mapping SAF-T dos documentos?;FT (fatura), FS (simplificada), FR (fatura-recibo), NC (crédito), ND (débito), GT/GA/GC (transporte).;phc::nivel2
 O que uma série define?;Tipo de documento, mapping SAF-T, numeração e o que movimenta: stocks, conta corrente, tesouraria.;phc::nivel2
 Que tabela guarda os Documentos de Faturação?;FT (ex.: campo ft.ndoc = tipo de documento).;phc::nivel2
 O que a fatura atualiza automaticamente ao gravar?;Stocks (baixa), conta corrente do cliente (saldo/idades) e ficha do cliente (faturação acumulada).;phc::nivel2
 Campo obrigatório numa NC/ND?;Motivo de Retificação (ex.: numa regularização de adiantamento surge 'Retificação de Fatura de Adiantamento').;phc::nivel2
-Pode existir documento anulado sem motivo?;Não — o motivo de anulação é obrigatório ,  em anulações em série pede-se uma vez e aplica-se a todos.;phc::nivel2
+Pode existir documento anulado sem motivo?;Não — o motivo de anulação é obrigatório, em anulações em série pede-se uma vez e aplica-se a todos.;phc::nivel2
 O que é a Emissão Automática de Faturação?;Ecrã de preparação que fatura em lote por cópia de dossiers internos/guias (seleção por intervalo de datas, cliente…).;phc::nivel2
 O que são Dossiers Internos (DI)?;Documentos parametrizáveis para uso interno (tabela BO): orçamentos, encomendas, propostas, folhas de obra, consignações, avenças.;phc::nivel2
 Circuito comercial típico com DIs?;Orçamento → Encomenda de cliente → Guia → Fatura → Recibo (conversões por cópia com opções configuráveis).;phc::nivel2
@@ -50,10 +50,10 @@ O que é a 'data efetiva de entrega'?;Data em que bens/serviços foram/serão di
 Campos de transporte num documento tipo 4?;Local de carga/descarga, data e hora de início do transporte, matrícula, motorista, Cód. Ident. AT.;phc::nivel2
 Para que serve o campo 'Linha final'?;Texto livre impresso no rodapé do documento.;phc::nivel2
 O que fazem Segmento e Classificação de vendas?;Permitem análises de faturação por segmento/classificação (herdados da ficha do cliente).;phc::nivel2
-Recibo de C/C vs recibo de adiantamento?;C/C liquida documentos já emitidos ,  adiantamento regista dinheiro antes do documento fiscal e é regularizado depois na fatura.;phc::nivel2
+Recibo de C/C vs recibo de adiantamento?;C/C liquida documentos já emitidos, adiantamento regista dinheiro antes do documento fiscal e é regularizado depois na fatura.;phc::nivel2
 Que referências de pagamento o módulo gera?;Referências Multibanco (cobranças), ficheiros SEPA (débitos diretos/pagamentos), pagamentos online (Unicre/PayPal via web).;phc::nivel2
 O que é 'Comprar a Encomenda a Fornecedor'?;Conversão do DI de compra em documento de compra (guia/fatura), com receção total ou parcial.;phc::nivel3
-O que é o PCMP?;Preço de Custo Médio Ponderado — recálculo do custo médio do stock a cada entrada valorizada ,  base da valorização e do CEVMC.;phc::nivel3
+O que é o PCMP?;Preço de Custo Médio Ponderado — recálculo do custo médio do stock a cada entrada valorizada, base da valorização e do CEVMC.;phc::nivel3
 Que códigos tipificam as operações de armazém?;Códigos de Movimentos de Stocks (venda, compra, quebra, sobra, transferência, regularização…).;phc::nivel3
 Como se movimentam stocks entre armazéns?;Dossier de Transferência de Armazém (ou movimento manual com código próprio).;phc::nivel3
 O inventário físico gera o quê?;Acertos automáticos de quebra/sobra no ficheiro de movimentos, regularizando stock teórico = contado.;phc::nivel3
@@ -70,27 +70,27 @@ O que o open banking traz ao Evolution?;Importação automática de movimentos e
 Critérios de comissão suportados?;Por vendedor, tipo de cliente, família de produtos, etc., com mapas de apuramento.;phc::nivel4
 O que é o SAF-T (PT)?;Standard Audit File for Tax — ficheiro XML normalizado de auditoria fiscal (faturação, transportes, inventário, contabilidade).;phc::nivel5
 Dois métodos de comunicação de documentos de transporte à AT?;Webservice em tempo real (devolve o Cód. Ident. AT) ou SAF-T (PT) resumido (MovementOfGoods com ShipFrom/ShipTo).;phc::nivel5
-O que compõe o ATCUD?;Código de validação da série (atribuído pela AT) + número sequencial do documento ,  impresso com o QR Code.;phc::nivel5
+O que compõe o ATCUD?;Código de validação da série (atribuído pela AT) + número sequencial do documento, impresso com o QR Code.;phc::nivel5
 O que acontece a séries sem código de validação?;O software impede a impressão dos documentos (regra desde 01/01/2021, implementada na v27).;phc::nivel5
-Limitação dos motivos de isenção com webservice ativo?;Só são aceites os códigos normalizados M01 a M99 (ex.: M08 = isento art. 9.º) ,  motivos criados pelo utilizador geram aviso.;phc::nivel5
+Limitação dos motivos de isenção com webservice ativo?;Só são aceites os códigos normalizados M01 a M99 (ex.: M08 = isento art. 9.º), motivos criados pelo utilizador geram aviso.;phc::nivel5
 O que garante a integridade das faturas?;Assinatura digital qualificada (hash encadeada por série) + nº de certificado do software validado pela AT.;phc::nivel5
 Prazo da comunicação de inventário à AT?;Até 31 de janeiro (empresas abrangidas), por ficheiro SAF-T/CSV/XML conforme volume de negócios.;phc::nivel5
-Retenção de IRS numa fatura: campos?;Taxa de retenção e Valor de retenção de IRS (visível no mailing de C/C) ,  o cliente paga o líquido e entrega ao Estado.;phc::nivel5
-O que é CIUS-PT?;Especificação portuguesa de faturação eletrónica (obrigatória na contratação pública) ,  suportada via Documentos Eletrónicos/webservices (ex.: SaphetyDoc).;phc::nivel5
+Retenção de IRS numa fatura: campos?;Taxa de retenção e Valor de retenção de IRS (visível no mailing de C/C), o cliente paga o líquido e entrega ao Estado.;phc::nivel5
+O que é CIUS-PT?;Especificação portuguesa de faturação eletrónica (obrigatória na contratação pública), suportada via Documentos Eletrónicos/webservices (ex.: SaphetyDoc).;phc::nivel5
 Novidade 202601 para faturas de fornecedor?;Com Cegid Docs, faturas CIUS-PT são anexadas em PDF e pré-lançadas automaticamente (arquivo digital legal).;phc::nivel5
-O que é o SDR (2026)?;Sistema de Depósito e Recolha: desde 10/04/2026, depósito de 0,10 € por embalagem de bebida de uso único (até 3 L) ,  configuração única de itens SDR, aplicado automaticamente na venda.;phc::nivel5
-Obrigações Espanha no PHC?;SII (Suministro Inmediato AEAT) e TicketBAI — parâmetro geral com 4 opções ,  funções internas de envio de compras/vendas para o SII.;phc::nivel5
+O que é o SDR (2026)?;Sistema de Depósito e Recolha: desde 10/04/2026, depósito de 0,10 € por embalagem de bebida de uso único (até 3 L), configuração única de itens SDR, aplicado automaticamente na venda.;phc::nivel5
+Obrigações Espanha no PHC?;SII (Suministro Inmediato AEAT) e TicketBAI — parâmetro geral com 4 opções, funções internas de envio de compras/vendas para o SII.;phc::nivel5
 Ferramentas RGPD do módulo?;Aviso legal configurável, registo do tratamento de dados, direito ao esquecimento (anonimização), histórico de utilizadores.;phc::nivel5
 O que são documentos pré-definidos?;Modelos de contabilização automática: mapeiam documentos do Gestão para lançamentos na Contabilidade (contas de clientes, fornecedores, IVA, vendas/compras).;phc::nivel5
 O que é o CEVMC?;Custo das Existências Vendidas e das Mercadorias Consumidas — apurado na Contabilidade a partir dos consumos do Gestão.;phc::nivel5
 2FA na Segurança Social: desde quando?;12/05/2026 (obrigatório para empresas) — software atualizado para manter as comunicações (202601).;phc::nivel5
 O que valida antes de 'fechar o mês' fiscal?;SAF-T exportado e validado, séries/ATCUD ok, documentos de transporte comunicados, inventário (quando aplicável), integrações contabilísticas corretas.;phc::nivel5
-Análises Multidimensionais: de onde nascem e em que gama?;Criam-se a partir de Análises de Utilizador ,  gama Advanced+ (drill-down por dimensões).;phc::nivel6
+Análises Multidimensionais: de onde nascem e em que gama?;Criam-se a partir de Análises de Utilizador, gama Advanced+ (drill-down por dimensões).;phc::nivel6
 O que é um snapshot?;Consulta T-SQL 'fotografada' com variáveis (ex.: #stamp#) exibida em painel/grupo com cor — dados contextuais do registo atual.;phc::nivel6
 O que é a Impressão Definida pelo Utilizador?;Personalização de colunas/layout de listagens e impressões pelo utilizador (Advanced+).;phc::nivel6
-Sistema de Aprovação de Dossiers: que gama?;Enterprise (circuitos de aprovação de dossiers/documentos) ,  Workflow Operacional aparece no Advanced+.;phc::nivel6
+Sistema de Aprovação de Dossiers: que gama?;Enterprise (circuitos de aprovação de dossiers/documentos), Workflow Operacional aparece no Advanced+.;phc::nivel6
 Monitores e Itens de Monitor?;Apresentações sequenciais de dados operacionais com colunas configuráveis (ex.: dívidas, PATs, sincronizações).;phc::nivel6
-Exportações nativas de listagens?;Excel (xlsx), PDF e cópia de dados da grelha ,  importação: Excel para linhas de documentos, câmbios via ODBC.;phc::nivel6
+Exportações nativas de listagens?;Excel (xlsx), PDF e cópia de dados da grelha, importação: Excel para linhas de documentos, câmbios via ODBC.;phc::nivel6
 O que ativa as ferramentas da Framework PHC?;Parâmetros gerais ('Utiliza campos do utilizador?', 'Utiliza ecrãs do utilizador?'…) — aparecem depois no menu Supervisor > Framework PHC.;phc::nivel6
 Onde ficam gravadas as personalizações?;Na base de dados (framework) — sobrevivem à reinstalação do executável, mas devem ser revalidadas em cada upgrade.;phc::nivel6
 O que são Painéis de informação/navegação?;Componentes de UI agregáveis ao menu da aplicação (parâmetros próprios) para acesso rápido a análises/atalhos.;phc::nivel6
@@ -99,33 +99,33 @@ Como se descobre a estrutura de uma tabela para uma análise?;Dicionário de Dad
 Boas práticas de leitura SQL no PHC?;WITH (NOLOCK) em consultas analíticas, respeitar ref/stamp, não alterar esquemas do core, índices via framework.;phc::nivel6
 Linguagem de personalização do desktop?;Xbase (sintaxe Visual FoxPro) — eventos, regras, funções de utilizador.;phc::nivel7
 Eventos disponíveis nos objetos (lista-chave)?;Init, Ativar, Desativar, Refrescar, Clique, Duplo Clique, Clique Direito, Ao Entrar, Ao Sair, Após Atualizar, Após não Atualizado, Antes/Depois mudar Linha-Coluna, MouseEnter/Leave/Move/Wheel, Tecla Pressionada.;phc::nivel7
-Propriedades sempre disponíveis do ObjRecebido?;Janela (apontador para o ecrã) e Objecto (apontador para o objeto ,  inclui Value, Parent e MeusDados).;phc::nivel7
+Propriedades sempre disponíveis do ObjRecebido?;Janela (apontador para o ecrã) e Objecto (apontador para o objeto, inclui Value, Parent e MeusDados).;phc::nivel7
 Para que serve MeusDados?;Repositório chave-valor do utilizador para passar estado entre eventos: AddParametro, GuardaParametro, ExisteParametro, GetNomeParametro, GetIndexParametro, TotalParametros.;phc::nivel7
 O que faz Return .F. num evento?;Cancela o comportamento de raiz do objeto nesse evento (tecla não entra, calendário não abre…). Expressões não usam Return.;phc::nivel7
-Exemplo de alteração via ObjRecebido.Janela?;ObjRecebido.Janela.Caption = 'Exemplo' — muda o título do ecrã enquanto aberto (não persiste ,  repetir no Init).;phc::nivel7
+Exemplo de alteração via ObjRecebido.Janela?;ObjRecebido.Janela.Caption = 'Exemplo' — muda o título do ecrã enquanto aberto (não persiste, repetir no Init).;phc::nivel7
 Num Campo de Ligação, o que apontam .Lista1/.Procura/.Nossocampo1?;Sub-objetos do campo composto: botão de lista, botão de procura e campo de texto.;phc::nivel7
-Campos de Utilizador vs ALTER TABLE?;Campos de utilizador são geridos pela framework (persistem em upgrades, aparecem nos ecrãs) ,  ALTER TABLE direto quebra suporte/upgrades.;phc::nivel7
+Campos de Utilizador vs ALTER TABLE?;Campos de utilizador são geridos pela framework (persistem em upgrades, aparecem nos ecrãs), ALTER TABLE direto quebra suporte/upgrades.;phc::nivel7
 Regras de Utilizador: para quê?;Validações de negócio na introdução/gravacao (obrigar campos, bloquear sem stock, validar NIF) — com assistente ou código.;phc::nivel7
 O que são Instruções Internas?;Procedimentos/documentação escrita pelo utilizador, associados a cada ecrã principal (manual da casa in-app).;phc::nivel7
 Função interna CriaAvs?;Cria avisos/avisos internos a utilizadores (parâmetros incluem stamp do ecrã e userAv) — base de alertas personalizados.;phc::nivel7
 Função interna U_NAVEGA?;Navegação programática para registos/ecrãs (interage com o parâmetro 'mostrar último registo ao arrancar').;phc::nivel7
 Índices de Utilizador: capacidade especial?;Criar índices SQL sobre tabelas do software via framework, incluindo INCLUDED COLUMNS (v19+).;phc::nivel7
-O que é um IDU / Ecrã Personalizado?;Ecrã desenhado pelo utilizador (desenhador ,  drag-and-drop no POS touch) com objetos ligados a dados, eventos e menus próprios.;phc::nivel7
+O que é um IDU / Ecrã Personalizado?;Ecrã desenhado pelo utilizador (desenhador, drag-and-drop no POS touch) com objetos ligados a dados, eventos e menus próprios.;phc::nivel7
 Framework Web: linguagem e ferramentas?;C# no Editor de Código — Eventos, Regras, Scripts (por URL), Ecrãs/Objetos de utilizador, Monitores, Templates, Valores por Defeito, Filtros, RSS, Log de Código.;phc::nivel7
 O que são Scripts (web)?;Programas executados quando se chama um URL específico — endpoints próprios para integrações.;phc::nivel7
-PromptFunction() — o que é?;Nova função da framework (202601) para invocar IA (Cegid Pulse) a partir de código ,  base dos Smart Tools configuráveis/monetizáveis pelos parceiros.;phc::nivel7
+PromptFunction() — o que é?;Nova função da framework (202601) para invocar IA (Cegid Pulse) a partir de código, base dos Smart Tools configuráveis/monetizáveis pelos parceiros.;phc::nivel7
 Relatórios na web usam que tecnologia?;DevExpress ('Relatórios DevExpress no PHC CS Web' — Clientes, Faturação, Recibos de Adiantamento…).;phc::nivel7
 Ferramentas de debug do programador PHC?;Análise Interna (desktop), Log de Código (web), Simulador de SQL, Explorador de Dados, Dicionário de Dados.;phc::nivel7
 O que é o EyePeak?;Plataforma de logística/WMS/e-commerce (Cegid Primavera) que sincroniza com o PHC — monitor 'EyePeak Sincronização' no menu Supervisor.;phc::nivel8
 Sincronização EyePeak: o que inclui?;Artigos/stocks, séries de documentos de faturação (consistência ERP×EyePeak), fluxos de documentos (ex.: encomendas → guias de fornecedor).;phc::nivel8
 O que é o PHC CS Web?;Plataforma web sobre a mesma BD do desktop: aplicações Gestão Web, Front Web (extranet de clientes/fornecedores), POS Web, RH Web…;phc::nivel8
-Ativação do Cegid Pulse: 3 passos?;1) Dar acesso ao módulo Cegid Pulse ,  2) Ativar Cegid Account na ficha do utilizador ,  3) O utilizador faz login (deteção automática).;phc::nivel8
+Ativação do Cegid Pulse: 3 passos?;1) Dar acesso ao módulo Cegid Pulse, 2) Ativar Cegid Account na ficha do utilizador, 3) O utilizador faz login (deteção automática).;phc::nivel8
 O que são os assistentes de negócio (202601)?;Agentes de IA por área (o primeiro: comercial) que dão insights e cruzam dados do ERP em linguagem natural — simples de configurar pelo utilizador.;phc::nivel8
 Integração bancária histórica do Gestão?;WebBanking (ex.: Millennium BCP: saldos e extractos) — no Evolution evolui para open banking.;phc::nivel8
-Comunidade de utilizadores PHC (B2B)?;Sistema de troca de documentos cliente-fornecedor em XML (eProcurement) — histórico da plataforma ,  hoje: EDI/Documentos Eletrónicos e EyePeak.;phc::nivel8
+Comunidade de utilizadores PHC (B2B)?;Sistema de troca de documentos cliente-fornecedor em XML (eProcurement) — histórico da plataforma, hoje: EDI/Documentos Eletrónicos e EyePeak.;phc::nivel8
 Como se enviam documentos por e-mail a partir do PHC?;Envio direto configurado por SMTP (com idioma/descrições do cliente), anexos via File Storage/Cegid Docs.;phc::nivel8
-Migração PHC CS perpétuo → Evolution: etapas?;Diagnóstico e plano (escolher plano/módulos) → migração técnica (dados, configurações, integrações) → suporte pós-arranque ,  desenvolvimentos/addons mantêm-se.;phc::nivel8
-Quem vende/implementa o Cegid PHC?;Rede de parceiros certificados (com especializações setoriais) — diretoria pública no site ,  parceiros acedem a formação, demos e à Comunidade.;phc::nivel8
+Migração PHC CS perpétuo → Evolution: etapas?;Diagnóstico e plano (escolher plano/módulos) → migração técnica (dados, configurações, integrações) → suporte pós-arranque, desenvolvimentos/addons mantêm-se.;phc::nivel8
+Quem vende/implementa o Cegid PHC?;Rede de parceiros certificados (com especializações setoriais) — diretoria pública no site, parceiros acedem a formação, demos e à Comunidade.;phc::nivel8
 Onde ler as novidades de cada versão?;Help Center > Novidades (página por versão, ex.: 202601) + 'Listagem de Novidades' em PDF + artigos do blog.;phc::nivel8
 Que ferramentas de IA a PHC já tinha antes do Pulse?;Cris (assistente de gestão) e PHC CS GenAI (templates de perguntas/respostas reutilizáveis) — versão 202501.;phc::nivel8
 Função interna U_sendmail — para que serve?;Esta função permite enviar um email para um ou vários destinatários, indicando o Assunto, o Conteúdo e opcionalmente uma lista de ficheiros para enviar como… (Enciclopédia PHC · 📕 Funções PHC);phc::nivel7
@@ -141,3 +141,52 @@ Xbase: Alltrim() — o que faz?;Esta função retorna uma string sem espaços, r
 Xbase: Ctod() — o que faz?;Esta função converte uma expressão do tipo caracter numa expressão do tipo DATE. (Enciclopédia PHC · 📕 Xbase/VFP);phc::nivel7
 Xbase: Messagebox() — o que faz?;Esta função envia uma mensagem para o utilizador através de uma caixa de diálogo (Dialog Box). (Enciclopédia PHC · 📕 Xbase/VFP);phc::nivel7
 Onde está a documentação de TODAS as funções internas do PHC?;Na Enciclopédia PHC (CHM oficial/Help Center): 154 funções internas com parâmetros e exemplos. Neste app: aba 📕 Enciclopédia (versão destilada + pesquisa).;phc::nivel7
+O que é o funil de vendas no CRM?;Sequência de fases (Qualificação→Proposta→Negociação→Ganha/Perdida) por onde cada oportunidade progride, com probabilidade por fase.;phc::nivel13
+Diferença entre lead e oportunidade?;Lead=contacto não qualificado, oportunidade=negócio qualificado no funil com valor, fecho previsto e probabilidade.;phc::nivel13
+O que é pipeline ponderado?;Σ(valor × probabilidade) por oportunidade — o valor esperado de fecho, mais realista que o pipeline bruto.;phc::nivel13
+Para que servem os motivos de perda?;Analisar porque se perde negócio (preço, concorrência, timing) e corrigir a abordagem comercial.;phc::nivel13
+O que é uma ação/tarefa no CRM?;Interação planeada (chamada/visita/email) ligada a uma oportunidade, com prazo, responsável e lembrete.;phc::nivel13
+Para que serve a recorrência numa ação?;Follow-ups periódicos automáticos (ex.: semanal) em ciclos de venda longos.;phc::nivel13
+O que define o segmento de uma campanha?;Filtros sobre clientes/contactos (zona, CAE, volume, inatividade) = público-alvo da campanha.;phc::nivel13
+Como medir o ROI de uma campanha?;Oportunidades geradas e ganhas atribuídas à campanha vs esforço/custo da campanha.;phc::nivel13
+O que herda a FT ao converter uma oportunidade?;Cliente, artigos/valores, comercial e campanha — rastreabilidade sem redigitação.;phc::nivel13
+O que mostra a visão 360º do cliente?;Docs de venda + oportunidades + ações + campanhas (+suporte) num só histórico.;phc::nivel13
+O que indica a conversão por fase do funil?;Onde o funil 'verte' (gargalo): % de oportunidades que passa de cada fase.;phc::nivel13
+O que prova um ciclo CRM bem fechado?;Rastreabilidade campanha→oportunidade→ações→proposta→FT e a Ganha refletida no funil/análise.;phc::nivel13
+O que é uma BOM/lista de materiais?;Componentes e quantidades necessários para fabricar o artigo acabado (a 'receita' de produção).;phc::nivel14
+O que acontece ao stock numa OF ao consumir/concluir?;Consome componentes (baixa) e dá entrada do artigo acabado ao concluir.;phc::nivel14
+O que o MRP calcula?;Necessidades líquidas (procura−stock−encomendas em curso) e propõe compra/produção com prazos.;phc::nivel14
+Diferença rastreabilidade direta vs inversa?;Direta=lote→onde foi usado, inversa=acabado→componentes/lotes de origem.;phc::nivel14
+O que o acerto de inventário faz?;Entradas/saídas que alinham o stock físico com o sistema por armazém (e o valor/PCMP).;phc::nivel14
+O que o Ignios preenche automaticamente?;Fichas a partir de fontes externas: NIF→cliente, EAN→artigo, matrícula→veículo.;phc::nivel15
+O que o EyePeak sincroniza?;Artigos/stock/preços ERP→loja e encomendas loja→ERP (bidirecional).;phc::nivel15
+O que é o matching no open banking?;Ligar um movimento bancário à fatura que ele liquida (por valor/referência/cliente).;phc::nivel15
+O PHC CS Web partilha a BD com o desktop?;Sim — mesma BD, o web é outra camada de apresentação com as mesmas permissões.;phc::nivel16
+O que é um IDU web?;Ecrã/app web personalizado, desenhado no designer, ligado a dados e publicado para perfis.;phc::nivel16
+Na cloud, quem gere updates/backups?;O fornecedor (PHC ON/Evolution), o cliente gere utilizadores/dados/processos.;phc::nivel16
+O que acontece a operações registadas offline?;Ficam pendentes no dispositivo e sincronizam ao reconectar (com política de conflitos).;phc::nivel16
+Quais são as 8 classes do SNC?;1 Meios financeiros líquidos, 2 Terceiros, 3 Inventários e ativos biológicos, 4 Investimentos, 5 Capital, 6 Gastos, 7 Rendimentos, 8 Resultados.;phc::nivel9
+O que é a taxonomia SNC na Contabilidade PHC?;A tabela oficial que liga cada conta às rubricas das declarações fiscais (IES/Modelo 22). Sem taxonomia correta, as declarações saem erradas — aula oficial 'Tabela de taxonomia'.;phc::nivel9
+O que é a 'BD Pronta' da Contabilidade?;A base de dados oficial de demonstração, já configurada — usada nas aulas e-learning PHC ('BD Pronta na Contabilidade', 7 min) para praticar sem risco.;phc::nivel9
+Por que separar diários por natureza de operação?;Numeração sequencial e auditável por diário + reconciliações e fechos mais rápidos (vendas, compras, recebimentos, pagamentos, caixa, bancos). Aula oficial: 'Como criar novos Diários' (6 min).;phc::nivel9
+Regra de ouro de qualquer lançamento no PHC?;Débito = Crédito (partida dobrada) — sem equilíbrio não grava, e todo o movimento tem documento de suporte e período válido.;phc::nivel9
+O que é um documento pré-definido?;A regra de contabilização automática por tipo de documento: que contas usar (21/22/243/71/31…), em que diário, com que IVA e contrapartidas. Aulas oficiais: 22 min (Contabilidade) + 23 min (Gestão).;phc::nivel9
+Integração online × integração em lote?;Online: o lançamento nasce quando o documento do Gestão é gravado. Lote: integração periódica com relatório de execução e tratamento de rejeições na origem.;phc::nivel9
+Como se corrige um movimento já integrado?;Por estorno (lançamento de sinal contrário) + novo lançamento correto — nunca apagando o movimento integrado. Correções ficam como movimentos de regularização.;phc::nivel9
+Reconciliação mínima mensal Gestão × Contabilidade?;Vendas×71, compras×31/61, IVA×243, bancos×12 e C/C de clientes/fornecedores×21/22 — ao cêntimo, todos os meses (não só no fim do ano).;phc::nivel9
+O que compara o apuramento do IVA?;IVA liquidado (vendas) × IVA dedutível (compras): a diferença é IVA a pagar (a favor do Estado) ou a recuperar (a favor do sujeito passivo).;phc::nivel9
+Declaração Periódica de IVA no PHC: regimes e formato?;Mensal ou trimestral (consoante o volume de negócios), o PHC gera os campos do impresso oficial e o suporte informático XML para submissão no Portal das Finanças.;phc::nivel9
+O que é o regime especial de exigibilidade de caixa ('IVA de caixa')?;DL 71/2013: o IVA só é exigível quando o cliente paga. O PHC marca os documentos do regime e o IVA entra na declaração periódica no momento do recebimento.;phc::nivel9
+O que é a inversão do sujeito passivo (autoliquidação)?;Em aquisições intracomunitárias e certos serviços, o adquirente liquida e deduz o IVA em simultâneo — campos próprios da declaração periódica. Âmbito oficial do módulo.;phc::nivel9
+O que é o Modelo 30?;A declaração de operações com não residentes (pagamentos ao estrangeiro/retenções) — produzida pelo PHC CS Contabilidade (âmbito oficial).;phc::nivel9
+Fórmula do CEVMC/CMVMC?;Existências iniciais + compras (e custos acessórios) − existências finais, com inventários valorizados vindos do Gestão. Aula oficial: 'Apuramento do CEVMC' (11 min).;phc::nivel9
+O que faz o apuramento de resultados?;Fecha as classes 6 (gastos) e 7 (rendimentos) contra a conta 81 (resultado do período), no anual, o 81 transita para resultados transitados/capital. Aula oficial: 12 min.;phc::nivel9
+Que mapas fiscais/oficiais o PHC CS Contabilidade produz?;Balanço, DR, Modelo 22 (com PPC/PEC), rácios, ABDR (Anexo ao Balanço e à DR), DFC (Fluxos de Caixa), IES/DA — e apuramento automático de imposto de selo.;phc::nivel9
+O que é o SAF-T (PT) da Contabilidade?;O ficheiro XML anual de auditoria da contabilidade (distinto do SAF-T de faturação): gera-se e valida-se no fecho e acompanha a IES.;phc::nivel9
+O que é o selo SVAT?;O Selo de Validação dos programas informáticos atribuído pela AT — garante que o software cumpre os requisitos fiscais, incl. a produção do SAF-T (PT).;phc::nivel9
+O que é um centro analítico?;Dimensão da contabilidade analítica (departamento, projeto, loja, viatura): o mesmo movimento é-lhe imputado e mede-se a rentabilidade de cada um. Aula oficial: 'Imputações em Centros Analíticos' (34 min).;phc::nivel9
+Para que serve o PHC XL CS?;Componente para grandes volumes de movimentos e analítica avançada na Contabilidade — aula oficial 'PHC XL CS' (16 min).;phc::nivel9
+O que é o Plano de Contas Paralelo?;Funcionalidade Enterprise (aula oficial, 14 min): segunda estrutura de contas em paralelo com a legal (gestão/grupo/outro referencial), alimentada pelos mesmos movimentos.;phc::nivel9
+O que são Naturezas e Dimensões?;Bloco Enterprise (aula oficial, 16 min): classificação multidimensional dos movimentos para lá dos centros analíticos — naturezas (tipos de gasto/rendimento) e dimensões (eixos de análise).;phc::nivel9
+O que são os '17 meses' da Contabilidade PHC?;Capacidade oficial de continuar a trabalhar o exercício anterior nos primeiros meses do novo ano (fecho legal até 31 de maio): 12 meses do ano + até 5 meses de correções em paralelo.;phc::nivel9
+Circuito oficial do Imobilizado?;Ficha do ativo → depreciações (com duodécimos no ano de entrada) → reavaliações/revalorizações → imparidades (+reversão) → abate/alienação com ganhos/perdas — cada evento integra na Contabilidade.;phc::nivel9

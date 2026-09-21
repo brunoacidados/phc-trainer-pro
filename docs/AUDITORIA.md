@@ -77,6 +77,19 @@ Deploy: API Render · web Vercel · legado v5 ainda na raiz (GitHub Pages) com b
 - **Curso por módulos:** ✅ página 🎓 Cursos + **1º módulo planeado autorado: CRM & Marketing** (nível 13, L90–L97 + teoria + 12 cartas + teste).
 - **Diferidos (conscientes):** B14 real-time SSE, B15 i18n, B16 virtualização, B18 og.png (prompt pronto).
 
+## ✅ Conteúdo — upgrade de fidelidade: Contabilidade (v6.14.0)
+
+Curso de Contabilidade (nível 9, L57–L66) re-alinhado às **fontes oficiais PHC/Cegid** (programa da Certificação PHC CS Contabilidade, aulas e-learning oficiais, Help Center, ficha do produto e canal YouTube Cegid PHC):
+
+- **Recursos oficiais por missão** — novo campo `links` em `Lab` (tipos manual/vídeo/doc/canal): 41 ligações verificadas distribuídas por L57–L66 (15 artigos do Help Center, 4 PDFs oficiais, 13 vídeos do canal @SoftwarePHC/Cegid Portugal & África, incl. a série "Contabilidade Inteligente para Contabilistas do Futuro" Ep.1–5). Renderizados como chips clicáveis na página da missão.
+- **Painel "Programa oficial PHC"** na página 🎓 Cursos: 7 temas da certificação, as 20 aulas e-learning oficiais (com durações) + 3 do bloco Enterprise + circuito do Imobilizado, cada aula mapeada à missão correspondente; âmbito oficial do produto (13 itens da ficha PHC); PEP/Cegid Academy.
+- **Teoria enriquecida** (L57–L66) com conceitos oficiais: geral×analítica, BD Pronta, integração online×lote, documentos pré-definidos na Gestão, regime especial de caixa (DL 71/2013), inversão do sujeito passivo, suporte XML da Declaração Periódica, Modelo 30, Modelo 22 (PPC/PEC), IES/DA, ABDR, DFC, Plano de Contas Paralelo, Naturezas e Dimensões, 17 meses, grelha de transição, movimentos do ano anterior, SAF-T (PT) da Contabilidade, selo SVAT, reavaliação×revalorização.
+- **25 flashcards novos de nível 9** (o nível não tinha cartas): 163 → 188; CSV p/ Anki regenerado.
+- **Teste de nível 9: 6 → 14 perguntas** (taxonomia, SAF-T contabilidade, SVAT, regime de caixa, inversão, 17 meses, plano paralelo, PPC/PEC).
+- **Vídeos oficiais nos Recursos** (📚 Aprender → 📥 Recursos) + contagem de cartas dinâmica.
+- **Novos testes de integridade** (`content.test.ts`, 9 casos): missões/cartas/testes válidos, links bem formados, programa oficial completo (20+3 aulas → missões existentes), vídeos só YouTube, Help Center só domínios oficiais.
+- Fontes: `packages/content/src/data/contab-oficial.json` (nova) — certificação, aulas, âmbito, manuais, vídeos, canais, PEP.
+
 ## ✅ Plano recomendado (próximas iterações)
 
 1. **Quick wins (B1–B5)** — CSP, índice, compressão, limpeza, welcome email. (rápido, alto valor)
