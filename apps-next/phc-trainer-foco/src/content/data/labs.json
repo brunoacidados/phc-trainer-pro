@@ -1,0 +1,5078 @@
+[
+ {
+  "id": "L00",
+  "t": "Preparar o EMPRESA MODELO (ambiente de treino)",
+  "lv": 0,
+  "min": 60,
+  "meta": "30 min",
+  "pre": [],
+  "ref": "Cap. 2 e 3 do guia",
+  "goal": "Criar a estrutura de pastas, ferramentas e convenções do seu treino. Sem ambiente organizado, não há prova.",
+  "steps": [
+   "Criar C:\\PHC-Treino com as subpastas: evidencias\\, notas\\, sql\\, backups\\, exports\\",
+   "Instalar SQL Server Express + SSMS (ou confirmar os já existentes)",
+   "Decidir o ambiente PHC: instalação própria/demo no PC ou VM isolada (recomendado VM ou empresa demo separada)",
+   "Abrir a secção Cartas desta app e rever as primeiras 5 cartas do nível 0 (o estudo é nativo, sem imports).",
+   "Confirmar que o progresso desta app fica guardado automaticamente (marque este passo e recarregue a página)",
+   "Criar em notas\\ o arquivo diario.md com o template: Data | Missão | O que fiz | Prova | Dúvida"
+  ],
+  "proofs": [
+   {
+    "d": "Print da árvore de pastas C:\\PHC-Treino criada",
+    "k": "print"
+   },
+   {
+    "d": "Primeiro JSON de progresso exportado e guardado",
+    "k": "file"
+   },
+   {
+    "d": "diario.md criado com 1ª linha preenchida",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Por que treinar numa empresa demo/clonada e nunca na BD de produção?",
+    "a": "Porque o treino exige quebrar coisas: apagar registos, alterar parâmetros, restaurar backups. Em produção isso causaria perda de dados reais e problemas fiscais."
+   },
+   {
+    "q": "Qual é a convenção de nome de evidência?",
+    "a": "L<nn>\\AAAA-MM-DD-<descricao>.png — ex.: L13\\2026-09-16-serie-ft-a.png"
+   }
+  ]
+ },
+ {
+  "id": "L01",
+  "t": "SQL Server do zero: instalar, configurar, conectar",
+  "lv": 0,
+  "min": 60,
+  "meta": "30 min",
+  "pre": [
+   "L00"
+  ],
+  "ref": "Cap. 2.3 e 3.1",
+  "goal": "Dominar o servidor de base de dados que sustenta o PHC: instalação, protocolos, logins, collation.",
+  "steps": [
+   "Instalar SQL Server Express (2019/2022) com autenticação mista",
+   "Ativar TCP/IP no Configuration Manager e reiniciar o serviço",
+   "Abrir o SSMS e conectar com o sa (ou Windows Auth)",
+   "Executar: SELECT @@VERSION; SELECT SERVERPROPERTY('Collation'); — anotar resultados",
+   "Criar login phctreino com password forte e mapear para uma BD de teste",
+   "Criar a BD TREINO_EMPRESA MODELO (modelo simple) para experimentos",
+   "Abrir o firewall para a porta 1433 (se for aceder de outro posto)",
+   "Documentar em notas\\infra.md: versão, collation, instância, logins"
+  ],
+  "proofs": [
+   {
+    "d": "Print do SSMS conectado com resultado do SELECT @@VERSION",
+    "k": "print"
+   },
+   {
+    "d": "Login phctreino criado (print de Security > Logins)",
+    "k": "print"
+   },
+   {
+    "d": "infra.md preenchido",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Por que a collation importa no PHC?",
+    "a": "Porque afeta ordenação/comparação de texto e acentos; deve seguir a recomendação da PHC para a BD funcionar corretamente com a aplicação."
+   },
+   {
+    "q": "Qual o mínimo de SQL Server suportado pelos termos de licenciamento?",
+    "a": "SQL Server 2008R2 ou posterior (instalações atuais: 2012+; gama Corporate tipicamente usa Express)."
+   }
+  ]
+ },
+ {
+  "id": "L02",
+  "t": "Instalar o PHC e abrir a empresa demo",
+  "lv": 0,
+  "min": 90,
+  "meta": "45 min",
+  "pre": [
+   "L01"
+  ],
+  "ref": "Cap. 3.1",
+  "goal": "Executar a instalação do PHC (exe único), criar/apontar a empresa demo e mapear os menus principais.",
+  "steps": [
+   "Executar o instalador do PHC (exe único) — observar que ele trata de aplicação + BD + ODBC",
+   "Criar/apontar a empresa de demonstração (BD demo fornecida pela Cegid/parceiro ou empresa nova)",
+   "Abrir a aplicação e entrar na empresa demo",
+   "Identificar na barra de status: versão do software, empresa, utilizador",
+   "Mapear os menus: Sistema, Supervisor, Gestão (e restantes módulos instalados)",
+   "Abrir 5 ecrãs do módulo Gestão e anotar o caminho de menu de cada um em notas\\mapa-menus.md",
+   "Usar a busca instantânea do programa para abrir um ecrã sem usar o menu",
+   "Fechar e reabrir a aplicação cronometrando o arranque"
+  ],
+  "proofs": [
+   {
+    "d": "Print do ecrã principal com empresa demo e versão visíveis",
+    "k": "print"
+   },
+   {
+    "d": "mapa-menus.md com pelo menos 15 ecrãs e caminhos",
+    "k": "file"
+   },
+   {
+    "d": "Licença/plano identificado (print da ficha de licença ou status)",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que o 'exe único' faz automaticamente?",
+    "a": "Instala a aplicação, cria/faz attach da base de dados e configura o ODBC (DSN) de ligação ao SQL Server."
+   },
+   {
+    "q": "Onde vê rapidamente a versão instalada?",
+    "a": "Na barra de status/título da aplicação e na ficha de licença; importante para confirmar conformidade fiscal (versão atual)."
+   }
+  ]
+ },
+ {
+  "id": "L03",
+  "t": "Backup, restauro, detach/attach e agendamento",
+  "lv": 0,
+  "min": 60,
+  "meta": "25 min",
+  "pre": [
+   "L02"
+  ],
+  "ref": "Cap. 3.2 e 3.3",
+  "goal": "Saber proteger e mover bases de dados PHC — a habilidade que salva empregos.",
+  "steps": [
+   "Fazer backup FULL da BD demo via SSMS para C:\\PHC-Treino\\backups\\demo_YYYYMMDD.bak",
+   "Restaurar o backup como BD nova: DEMO_RESTORE (verificar que abre no SSMS)",
+   "Fazer detach da DEMO_RESTORE, copiar os ficheiros .mdf/.ldf e fazer attach de novo",
+   "Criar script T-SQL de backup (BACKUP DATABASE ... WITH COMPRESSION, INIT)",
+   "Agendar o script no Task Scheduler do Windows (diário, 23h) — Express não tem SQL Agent",
+   "Testar a rotina 'Backup de Base de Dados' dentro do próprio PHC (menu Supervisor/utilitários)",
+   "Verificar o tamanho da BD: sp_spaceused — anotar em infra.md",
+   "Simular desastre: apagar uma tabela de teste na TREINO_EMPRESA MODELO e recuperar pelo backup"
+  ],
+  "proofs": [
+   {
+    "d": "Ficheiro .bak criado + print do restauro bem-sucedido",
+    "k": "file"
+   },
+   {
+    "d": "Print da tarefa agendada no Task Scheduler",
+    "k": "print"
+   },
+   {
+    "d": "Análise sp_spaceused anotada",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Por que usar Task Scheduler com SQL Express?",
+    "a": "Porque o SQL Express não inclui SQL Agent; o agendamento é feito pelo Windows executando o script (sqlcmd)."
+   },
+   {
+    "q": "Qual a regra de ouro antes de qualquer upgrade de versão?",
+    "a": "Backup completo testado + clone da BD para validar personalizações antes de mexer em produção."
+   }
+  ]
+ },
+ {
+  "id": "L04",
+  "t": "Utilizadores, grupos, perfis e acessos",
+  "lv": 0,
+  "min": 60,
+  "meta": "30 min",
+  "pre": [
+   "L02"
+  ],
+  "ref": "Cap. 2.4 e 5.1",
+  "goal": "Dominar segurança: quem entra, o que vê, o que pode fazer — incluindo acessos a parâmetros.",
+  "steps": [
+   "Criar o utilizador treino.aluno com password",
+   "Criar o grupo 'Comercial EMPRESA MODELO' e adicionar o utilizador",
+   "Configurar acessos do grupo: permitir Clientes e Faturação; NEGAR acesso aos Parâmetros e ao Supervisor",
+   "Entrar como treino.aluno e confirmar: menus visíveis, tentativa de abrir Parâmetros bloqueada",
+   "Explorar o parâmetro 'Definição de tipos de acessos' (Grupos vs Perfis)",
+   "Configurar acessos finos num ecrã: reimprimir, totalizar, anexar, apagar",
+   "Testar 'Acessos a parâmetros por utilizador' (permitir 1 parâmetro específico)",
+   "Regressar ao admin e documentar a matriz de acessos em notas\\acessos.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print da configuração de acessos do grupo",
+    "k": "print"
+   },
+   {
+    "d": "Print do bloqueio ao tentar abrir Parâmetros como treino.aluno",
+    "k": "print"
+   },
+   {
+    "d": "acessos.md com matriz utilizador × permissão",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Grupos ou Perfis: o que define qual se usa?",
+    "a": "O parâmetro geral 'Definição de tipos de acessos'. Grupos = permissões coletivas; Perfis = modelo alternativo de definição de acessos."
+   },
+   {
+    "q": "Por que negar acesso a parâmetros a utilizadores normais?",
+    "a": "Porque parâmetros mudam comportamento fiscal/legal do sistema (séries, IVA, integrações). Só administradores/técnicos devem alterá-los."
+   }
+  ]
+ },
+ {
+  "id": "L05",
+  "t": "Dicionário de Dados + Simulador de SQL + Análise Interna",
+  "lv": 0,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L02"
+  ],
+  "ref": "Cap. 7.2 e 8.2",
+  "goal": "Conhecer as 3 ferramentas de diagnóstico/consulta que um técnico PHC usa todos os dias.",
+  "steps": [
+   "Abrir Supervisor → Tratamento da base de dados → Dicionário de Dados",
+   "Pesquisar '.CL' — explorar campos, tipos, descrições e RELAÇÕES da tabela de clientes",
+   "Duplo-clique numa relação para saltar para a tabela relacionada (ex.: CL2)",
+   "Repetir para 'Documentos de Faturação' (FT) e anotar 10 campos importantes",
+   "Abrir o menu de opções de um ecrã qualquer → Dicionário de Dados (ver que posiciona na tabela do ecrã)",
+   "Executar no Simulador de SQL: SELECT TOP 20 * FROM cl WITH (NOLOCK) ORDER BY nome",
+   "Localizar a Análise Interna e ver o registo de eventos/erros (se vazio, provocar um erro numa regra/evento de teste mais tarde)",
+   "Guardar as 3 consultas mais úteis em sql\\toolbox.sql"
+  ],
+  "proofs": [
+   {
+    "d": "Print do Dicionário de Dados aberto na tabela CL com relações visíveis",
+    "k": "print"
+   },
+   {
+    "d": "Resultado do SELECT TOP 20 (print ou export)",
+    "k": "print"
+   },
+   {
+    "d": "toolbox.sql criado",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Para que serve o campo 'stamp'?",
+    "a": "Identifica a versão/estado do registo para concorrência e navegação; aparece em snapshots com a variável #stamp#."
+   },
+   {
+    "q": "Onde ficam os erros de código Xbase de eventos?",
+    "a": "Na Análise Interna (desktop). Se a linha do erro for 0, o código era uma expressão e não um programa."
+   }
+  ]
+ },
+ {
+  "id": "L06",
+  "t": "Clientes a fundo: sede, filiais, zonas, idioma, Ignios",
+  "lv": 1,
+  "min": 60,
+  "meta": "25 min",
+  "pre": [
+   "L05"
+  ],
+  "ref": "Cap. 4.1",
+  "goal": "Dominar a tabela de Clientes (CL/CL2) e os seus comportamentos especiais.",
+  "steps": [
+   "Criar o cliente 'CLIENTE MODELO, LDA' com NIF válido, morada, contactos",
+   "Preencher: zona (campo de tabela do utilizador), idioma, tipo, classificação de vendas, condição de pagamento",
+   "Criar a filial 1 (duplicar registo e usar o número de estabelecimento) e a filial 2",
+   "Confirmar no Dicionário de Dados que o país da morada fica em CL2 (Clientes - Outros Dados)",
+   "Inativar o cliente e testar: emitir documento (deve bloquear) vs ver em análises (deve aparecer)",
+   "Reativar e criar moradas de Carga e Descarga para o cliente",
+   "Explorar o parâmetro 'Quando altera dados do cliente, não atualiza tabelas relacionadas' (testar alteração de abreviatura)",
+   "Se a sua gama tiver Ignios: preencher NIF de empresa real e ver o preenchimento automático"
+  ],
+  "proofs": [
+   {
+    "d": "Print da ficha do cliente com 2 filiais listadas",
+    "k": "print"
+   },
+   {
+    "d": "SQL: registo do cliente Modelo na tabela cl (print do resultado)",
+    "k": "sql"
+   },
+   {
+    "d": "Teste de inativo documentado (print do bloqueio)",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Como se numeram sede e filiais?",
+    "a": "Sede = 0; filiais/estabelecimentos = 1 a 999, associados ao mesmo número de cliente."
+   },
+   {
+    "q": "O que acontece aos dados relacionados ao alterar a abreviatura?",
+    "a": "Se o parâmetro estiver inativo, propaga para C/C, documentos não certificados e recibos (com regras de data); se ativo, não atualiza."
+   }
+  ]
+ },
+ {
+  "id": "L07",
+  "t": "Fornecedores + condições e formas de pagamento",
+  "lv": 1,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L06"
+  ],
+  "ref": "Cap. 4.1 e 5.2",
+  "goal": "Configurar o lado das compras: fornecedores e as tabelas de condições/formas de pagamento.",
+  "steps": [
+   "Criar as condições de pagamento: '30 dias', '30/60/90', 'Pronto pagamento'",
+   "Criar formas de pagamento: Transferência, Cheque, Multibanco",
+   "Criar o fornecedor 'FORNECEDOR MODELO, S.A.' e associar condição/forma",
+   "Configurar o fornecedor para retenções (se aplicável) e preencher dados bancários (IBAN)",
+   "Testar o preenchimento automático de dados por NIF (Ignios, se disponível)",
+   "Criar um segundo fornecedor intra-comunitário (Espanha) com NIF estrangeiro e país",
+   "Verificar no dicionário a tabela de fornecedores e anotar 8 campos",
+   "Documentar diferenças de ficha entre Cliente e Fornecedor em notas\\fichas.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print da ficha do fornecedor com condição de pagamento associada",
+    "k": "print"
+   },
+   {
+    "d": "Tabelas de condições/formas configuradas (print da lista)",
+    "k": "print"
+   },
+   {
+    "d": "fichas.md preenchido",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Onde se define se uma compra gera movimento de tesouraria previsto?",
+    "a": "Na condição de pagamento associada ao documento/fornecedor, que alimenta a tesouraria previsional e a conta corrente."
+   }
+  ]
+ },
+ {
+  "id": "L08",
+  "t": "Artigos: famílias, unidades, conversões, códigos de barras",
+  "lv": 1,
+  "min": 60,
+  "meta": "25 min",
+  "pre": [
+   "L06"
+  ],
+  "ref": "Cap. 4.1",
+  "goal": "Dominar o ficheiro de Stocks e Serviços — a base de tudo (vendas, compras, produção).",
+  "steps": [
+   "Criar 3 famílias (ex.: MOD-ELETR, MOD-ACESS, MOD-SERV) e 1 marca",
+   "Criar 10 artigos MOD-ART-01..10 com designação, família, unidade, preço de custo e preço de venda",
+   "No artigo 03 configurar unidade alternativa (cx) com factor de conversão 10 e testar a inversão do factor",
+   "Configurar código de barras/EAN em 3 artigos",
+   "Configurar stock mínimo/máximo e ponto de encomenda em 2 artigos",
+   "Criar 1 artigo do tipo serviço (sem stock)",
+   "Explorar o separador de preços: várias tabelas de preços no artigo",
+   "Verificar a designação multi-idioma (se multi-língua ativo)"
+  ],
+  "proofs": [
+   {
+    "d": "Print do ficheiro com os 10 artigos",
+    "k": "print"
+   },
+   {
+    "d": "Print da configuração de unidade alternativa com factor",
+    "k": "print"
+   },
+   {
+    "d": "Consulta SQL no dicionário/simulador listando os artigos criados",
+    "k": "sql"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Qual a diferença entre artigo e serviço no módulo?",
+    "a": "Serviços não movimentam stock (não há quantidades em armazém), mas integram faturação, compras e C/C da mesma forma."
+   },
+   {
+    "q": "Para que serve a inversão do factor de conversão?",
+    "a": "Para permitir vender/comprar na unidade alternativa convertendo corretamente quantidades e preços entre unidade base e alternativa."
+   }
+  ]
+ },
+ {
+  "id": "L09",
+  "t": "Compostos (kits) e referências alternativas",
+  "lv": 1,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L08"
+  ],
+  "ref": "Cap. 4.1",
+  "goal": "Configurar produtos compostos e referências cruzadas cliente/fornecedor.",
+  "steps": [
+   "Criar o artigo 'MOD-KIT-01' composto por 2x MOD-ART-01 + 1x MOD-ART-02",
+   "Configurar a composição (componentes e quantidades)",
+   "Criar referências alternativas: ref do cliente para o artigo 01 e ref do fornecedor para o artigo 02",
+   "Testar num documento: introduzir pela referência alternativa e ver assumir o artigo",
+   "Verificar como o kit se comporta na faturação (componentes vs conjunto, conforme configuração)",
+   "Documentar o comportamento observado em notas\\kits.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print da composição do kit",
+    "k": "print"
+   },
+   {
+    "d": "Print do documento usando referência alternativa",
+    "k": "print"
+   },
+   {
+    "d": "kits.md com o comportamento na faturação",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que é uma referência alternativa?",
+    "a": "É um código secundário do artigo (do cliente ou do fornecedor) que permite identificar/introduzir o mesmo artigo por outro código nos documentos."
+   }
+  ]
+ },
+ {
+  "id": "L10",
+  "t": "Armazéns, lotes e stock inicial",
+  "lv": 1,
+  "min": 60,
+  "meta": "25 min",
+  "pre": [
+   "L08"
+  ],
+  "ref": "Cap. 4.5",
+  "goal": "Estruturar armazéns e ativar rastreabilidade por lotes com entrada por dossier de stock inicial.",
+  "steps": [
+   "Criar os armazéns 'ARMAZEM-CENTRAL' e 'ARMAZEM-LOJA2'",
+   "Configurar 2 artigos com gestão de lotes (e validade, se aplicável)",
+   "Usar o Dossier de Stock Inicial para dar entrada: 100 un do artigo 01 no principal, 20 na loja2, com lote L2026A",
+   "Confirmar os stocks por armazém no ecrã de stocks",
+   "Explorar o ecrã de Lotes (validades, quantidades por lote)",
+   "Se tiver módulo Equipamentos: configurar 1 artigo com nº de série e dar entrada de 2 séries",
+   "Testar a consulta de movimentos do artigo (rastreio do lote)"
+  ],
+  "proofs": [
+   {
+    "d": "Print dos stocks por armazém após o dossier inicial",
+    "k": "print"
+   },
+   {
+    "d": "Print do lote L2026A com quantidade e validade",
+    "k": "print"
+   },
+   {
+    "d": "Movimentos do artigo showing a entrada (print)",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Por que o stock inicial entra por dossier e não por documento de compra?",
+    "a": "Porque é uma regularização de existência sem fornecedor/fatura — o Dossier de Stock Inicial existe exatamente para carregar stocks de arranque valorizados."
+   }
+  ]
+ },
+ {
+  "id": "L11",
+  "t": "Tabelas de preços com validades + descontos",
+  "lv": 1,
+  "min": 60,
+  "meta": "25 min",
+  "pre": [
+   "L08"
+  ],
+  "ref": "Cap. 4.8",
+  "goal": "Dominar política de preços: tabelas com validade, tipos de desconto e a sua aplicação automática.",
+  "steps": [
+   "Criar a tabela de preços 'MOD-REVENDA' com +10% sobre o preço base e validade de 1 ano",
+   "Criar a tabela 'MOD-PROMO' com -15% válida apenas no mês atual",
+   "Associar a tabela MOD-REVENDA ao cliente Modelo",
+   "Emitir um documento de teste e confirmar que o preço assumido é o da tabela vigente",
+   "Criar 2 tipos de desconto (percentual e valor) e configurar desconto de cliente",
+   "Testar desconto em cascata (Desc.1 + Desc.2) numa linha",
+   "Verificar o que acontece quando duas tabelas têm validades sobrepostas (prioridade)",
+   "Explorar a configuração de descontos automáticos (por tipo de cliente/artigo/quantidade — conforme versão)"
+  ],
+  "proofs": [
+   {
+    "d": "Print das duas tabelas de preços com validades",
+    "k": "print"
+   },
+   {
+    "d": "Documento de teste mostrando preço da tabela + descontos (print)",
+    "k": "print"
+   },
+   {
+    "d": "Conclusão sobre prioridade de tabelas em notas\\precos.md",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Como o PHC sabe 'qual o preço atual'?",
+    "a": "Pelas validades das tabelas de preços: no documento assume a tabela do cliente e o preço válido para a data; por isso as tabelas têm início/fim de validade."
+   }
+  ]
+ },
+ {
+  "id": "L12",
+  "t": "Tabelas base fiscais e gerais",
+  "lv": 1,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L05"
+  ],
+  "ref": "Cap. 5.2 e 6.5",
+  "goal": "Configurar IVA, motivos de isenção, países, moedas e câmbios — a base fiscal do módulo.",
+  "steps": [
+   "Rever a tabela de taxas de IVA (23%, 13%, 6%, isento) e os campos por taxa",
+   "Explorar a tabela de Motivos de Isenção: confirmar os códigos M01–M99 (ex.: M08 - IVA isento art.9º)",
+   "Criar/confirmar países: Portugal, Espanha, França; moedas: EUR, USD",
+   "Configurar taxa de câmbio USD e testar importação de câmbios via ODBC (se disponível)",
+   "Criar uma tabela de utilizador 'ZonasTreino' (Norte/Centro/Sul) e usar no campo Zona do cliente",
+   "Verificar o impacto do idioma nas descrições (multi-língua)",
+   "Documentar em notas\\tabelas-base.md onde fica cada tabela (caminho de menu)"
+  ],
+  "proofs": [
+   {
+    "d": "Print da tabela de motivos de isenção com M08 visível",
+    "k": "print"
+   },
+   {
+    "d": "Print da tabela de utilizador Zona criada",
+    "k": "print"
+   },
+   {
+    "d": "tabelas-base.md com caminhos de menu",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Por que os motivos de isenção são limitados a M01–M99 quando o envio é por webservice?",
+    "a": "Porque o webservice da AT/e-Fatura só aceita os códigos de isenção normalizados M01 a M99; motivos criados pelo utilizador fora disso geram aviso."
+   }
+  ]
+ },
+ {
+  "id": "L13",
+  "t": "Séries e configuração de documentos de faturação",
+  "lv": 2,
+  "min": 75,
+  "meta": "30 min",
+  "pre": [
+   "L12"
+  ],
+  "ref": "Cap. 5.3",
+  "goal": "O coração da configuração: criar e configurar séries dos 5 tipos de documento com mapping SAF-T.",
+  "steps": [
+   "Criar a série FT-A: tipo 1 (Fatura), SAF-T 'FT', movimenta stocks + c/c + tesouraria",
+   "Criar FS-A: tipo 2 (Fatura Simplificada), SAF-T 'FS'",
+   "Criar FR-A: tipo 3 (Fatura-Recibo), SAF-T 'FR'",
+   "Criar NC-A (Nota de Crédito, SAF-T 'NC') e ND-A (Nota de Débito, 'ND')",
+   "Criar GT-A: tipo 4 (Guia de Remessa/transporte) — ativar validação de locais de carga/descarga",
+   "Criar PRO-A: tipo 5 (Proforma) — não movimenta nada",
+   "Em cada série: definir numeração, impressão (quando imprimir), acessos",
+   "Explorar todas as opções da configuração de uma série e anotar as 10 mais importantes",
+   "Testar: emitir 1 documento de cada série com 1 linha"
+  ],
+  "proofs": [
+   {
+    "d": "Print da configuração completa da série FT-A",
+    "k": "print"
+   },
+   {
+    "d": "Print da série GT-A com opções de transporte",
+    "k": "print"
+   },
+   {
+    "d": "notas\\series.md com tabela série×tipo×SAF-T×movimenta",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Quais os 5 tipos de documento de uma série?",
+    "a": "1/2/3 = Fatura, Fatura Simplificada, Fatura-Recibo (e ND/NC via mapping SAF-T); 4 = documento de transporte (guia); 5 = outro (proforma)."
+   },
+   {
+    "q": "O que define se a série afeta stock e conta corrente?",
+    "a": "As opções 'movimenta' na configuração da série: stocks, conta corrente, tesouraria — uma proforma (tipo 5) tipicamente não movimenta nada."
+   }
+  ]
+ },
+ {
+  "id": "L14",
+  "t": "Emitir fatura completa e verificar atualizações automáticas",
+  "lv": 2,
+  "min": 60,
+  "meta": "15 min",
+  "pre": [
+   "L13"
+  ],
+  "ref": "Cap. 4.2",
+  "goal": "Emitir uma fatura e comprovar que stocks, C/C e ficha do cliente são atualizados automaticamente.",
+  "steps": [
+   "Antes: anotar stock do artigo 01, saldo do cliente Modelo",
+   "Emitir fatura FT-A: 3 artigos, 1 com desconto, IVA 23%, moeda EUR",
+   "Gravar e verificar a mensagem/estado de processamento (assíncrono, se ativo)",
+   "Conferir: baixa de stock nos 3 artigos",
+   "Conferir: movimento na conta corrente do cliente e novo saldo",
+   "Conferir: faturação acumulada na ficha do cliente",
+   "Localizar o documento no ecrã de consulta e ver totais por critérios",
+   "Anular um documento de teste e preencher o motivo de anulação obrigatório"
+  ],
+  "proofs": [
+   {
+    "d": "Print da fatura emitida (ecrã ou PDF)",
+    "k": "print"
+   },
+   {
+    "d": "Print do stock ANTES e DEPOIS",
+    "k": "print"
+   },
+   {
+    "d": "Print da conta corrente com o novo movimento",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que o documento atualiza automaticamente ao gravar?",
+    "a": "Stocks (baixa), conta corrente (saldo/idades do cliente) e ficha do cliente (faturação acumulada)."
+   },
+   {
+    "q": "Pode um documento anulado ficar sem motivo?",
+    "a": "Não — o motivo de anulação é obrigatório; a aplicação insiste até ser preenchido."
+   }
+  ]
+ },
+ {
+  "id": "L15",
+  "t": "Vendas a dinheiro, FS e consumidor final",
+  "lv": 2,
+  "min": 45,
+  "meta": "15 min",
+  "pre": [
+   "L14"
+  ],
+  "ref": "Cap. 4.2 e 6",
+  "goal": "Tratar o retalho/consumidor final: fatura simplificada, NIF genérico, regras de impressão.",
+  "steps": [
+   "Configurar/verificar o cliente 'Consumidor Final' genérico com NIF 999999990",
+   "Emitir uma Fatura Simplificada (FS-A) a dinheiro",
+   "Emitir uma Venda a Dinheiro (se a série existir) e comparar comportamentos",
+   "Testar regras de NIF em documentos (quando é obrigatório pedir NIF)",
+   "Verificar o layout impresso: hash/assinatura, nº certificado AT, QR/ATCUD se configurado",
+   "Reimprimir o documento com um utilizador sem acesso a reimpressão (deve bloquear) — testar com treino.aluno",
+   "Documentar as diferenças FT vs FS em notas\\fs-vs-ft.md"
+  ],
+  "proofs": [
+   {
+    "d": "PDF da Fatura Simplificada emitida",
+    "k": "file"
+   },
+   {
+    "d": "Print do bloqueio de reimpressão sem acesso",
+    "k": "print"
+   },
+   {
+    "d": "fs-vs-ft.md",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Quando se usa FS em vez de FT?",
+    "a": "Vendas de balcão/retalho a consumidor final ou pequenos valores onde não há necessidade de recibo separado — a FS fatura e pode receber no ato."
+   }
+  ]
+ },
+ {
+  "id": "L16",
+  "t": "Notas de crédito/débito e retificação",
+  "lv": 2,
+  "min": 45,
+  "meta": "15 min",
+  "pre": [
+   "L14"
+  ],
+  "ref": "Cap. 4.2 e 6.1",
+  "goal": "Corrigir faturas legalmente: NC total/parcial, ND, motivo de retificação, devoluções com stock.",
+  "steps": [
+   "A partir de uma fatura FT emitida, gerar NC total por cópia/conversão",
+   "Preencher o Motivo de Retificação (obrigatório em NC/ND)",
+   "Gerar NC parcial (1 de 3 linhas) e verificar o efeito no stock (devolução)",
+   "Emitir uma ND para corrigir preço em falta",
+   "Verificar a referência ao documento original na NC (ligação fatura→NC)",
+   "Conferir conta corrente: a NC abate o saldo do cliente",
+   "Testar o impacto no SAF-T (a NC aparece como documento NC no XML — validar na missão L33)"
+  ],
+  "proofs": [
+   {
+    "d": "Print da NC com motivo de retificação e referência à fatura",
+    "k": "print"
+   },
+   {
+    "d": "Print do stock devolvido após NC com movimento",
+    "k": "print"
+   },
+   {
+    "d": "C/C do cliente mostrando fatura + NC",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que campo é obrigatório numa NC/ND?",
+    "a": "O Motivo de Retificação — indica por que foi emitido o documento retificativo."
+   },
+   {
+    "q": "Uma NC pode repor stock?",
+    "a": "Sim, se a série estiver configurada para movimentar stocks (devolução de mercadoria)."
+   }
+  ]
+ },
+ {
+  "id": "L17",
+  "t": "Dossiers Internos: orçamento → encomenda → fatura",
+  "lv": 2,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L13"
+  ],
+  "ref": "Cap. 4.3",
+  "goal": "Dominar o conceito central de DI e as conversões do circuito comercial.",
+  "steps": [
+   "Explorar a configuração de tipos de DI existentes (Orçamento, Encomenda de Cliente...)",
+   "Criar o Orçamento MOD-ORC-01 para o cliente Modelo com 4 artigos",
+   "Converter o orçamento em Encomenda de Cliente",
+   "Na encomenda: reservar stock (quantidade reservada) e verificar o efeito na disponibilidade",
+   "Converter a encomenda em Fatura (opções de cópia entre DI e faturação)",
+   "Criar um DI personalizado novo (ex.: 'Pré-fatura EMPRESA MODELO') configurando o que movimenta",
+   "Consultar as Análises de DI (pendentes, conversão)",
+   "Verificar estados/fecho de dossiers"
+  ],
+  "proofs": [
+   {
+    "d": "Print do circuito: orçamento + encomenda + fatura ligados",
+    "k": "print"
+   },
+   {
+    "d": "Print do stock reservado pela encomenda",
+    "k": "print"
+   },
+   {
+    "d": "Print da análise de DI",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que é um Dossier Interno?",
+    "a": "Documento parametrizável pelo utilizador para uso interno (orçamentos, encomendas, folhas de obra, consignação, avenças) que alimenta conversões para faturação/compras."
+   },
+   {
+    "q": "Onde fica gravado um DI?",
+    "a": "Na tabela BO (dossiers internos), com linhas próprias — confirmável no Dicionário de Dados."
+   }
+  ]
+ },
+ {
+  "id": "L18",
+  "t": "Guias de transporte: locais, datas, comunicação à AT",
+  "lv": 2,
+  "min": 75,
+  "meta": "30 min",
+  "pre": [
+   "L17"
+  ],
+  "ref": "Cap. 4.2, 5.3 e 6.3",
+  "goal": "Emitir documentos de transporte corretos (tipo 4) e conhecer os dois métodos de comunicação à AT.",
+  "steps": [
+   "Configurar moradas de carga e descarga do cliente Modelo",
+   "Emitir guia GT-A: local de carga, local de descarga, data/hora de carga, data efetiva de entrega",
+   "Preencher matrícula (viatura de expedição) e motorista",
+   "Explorar o campo 'Cód. Ident. AT' e as opções de SMS ao motorista (módulo SMS)",
+   "Comparar nos parâmetros: Método de envio de documentos de transporte = Webservice vs Ficheiro SAF-T (PT) Resumido",
+   "Converter a guia em fatura (faturar a guia)",
+   "Verificar no SAF-T resumido os elementos ShipFrom/ShipTo (MovementOfGoods) — na missão L33",
+   "Testar o bloqueio de gravação sem locais (parâmetro de validação ativo)"
+  ],
+  "proofs": [
+   {
+    "d": "Print da guia com locais, data/hora e motorista",
+    "k": "print"
+   },
+   {
+    "d": "Print do parâmetro de método de envio de transporte",
+    "k": "print"
+   },
+   {
+    "d": "Print do documento convertido em fatura",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Quais os dois métodos de comunicação de documentos de transporte à AT?",
+    "a": "Webservice em tempo real (devolve o Cód. Ident. AT) ou ficheiro SAF-T (PT) resumido (com ShipFrom/ShipTo em MovementOfGoods)."
+   },
+   {
+    "q": "Que campos são obrigatórios num documento tipo 4 com validação ativa?",
+    "a": "Local de carga, local de descarga, data e hora de início de transporte (e a data efetiva de entrega por lei)."
+   }
+  ]
+ },
+ {
+  "id": "L19",
+  "t": "Recibos, liquidação e adiantamentos",
+  "lv": 2,
+  "min": 60,
+  "meta": "25 min",
+  "pre": [
+   "L14"
+  ],
+  "ref": "Cap. 4.6",
+  "goal": "Fechar o ciclo de recebimento: recibos de C/C, liquidação total/parcial, adiantamentos de cliente.",
+  "steps": [
+   "Emitir recibo (RE) de liquidação total de uma fatura do Cliente Modelo",
+   "Emitir recibo de liquidação parcial noutra fatura e ver o saldo remanescente",
+   "Criar um Recibo de Adiantamento (cliente paga antes da fatura)",
+   "Faturar e regularizar o adiantamento — observar a NC automática 'Retificação de Fatura de Adiantamento' se aplicável",
+   "Estornar/anular um recibo de teste e verificar o efeito na C/C",
+   "Explorar recibos incobráveis (conceito e onde se configura)",
+   "Conferir o saldo final do cliente = 0 após liquidações"
+  ],
+  "proofs": [
+   {
+    "d": "Print da liquidação (recibo × fatura) na C/C",
+    "k": "print"
+   },
+   {
+    "d": "Print do fluxo de adiantamento regularizado",
+    "k": "print"
+   },
+   {
+    "d": "SQL/print mostrando saldo zero do cliente",
+    "k": "sql"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Diferença entre recibo de C/C e de adiantamento?",
+    "a": "O de C/C liquida documentos já emitidos; o de adiantamento regista uma entrada de dinheiro antes do documento fiscal, para depois ser regularizado na fatura."
+   }
+  ]
+ },
+ {
+  "id": "L20",
+  "t": "Emissão automática + avenças (recorrência)",
+  "lv": 2,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L17"
+  ],
+  "ref": "Cap. 4.2 e 4.3",
+  "goal": "Faturar em massa sem esforço: preparação automática e avenças mensais.",
+  "steps": [
+   "Criar 5 encomendas de cliente para 3 clientes diferentes",
+   "Usar a Emissão Automática de Faturação: ecrã de preparação com intervalo de datas, seleção e emissão em lote",
+   "Verificar as faturas geradas e os dossiers fechados/convertidos",
+   "Configurar o Dossier de Avenças: 2 clientes com mensalidade",
+   "Processar a avença do mês (gerar faturas recorrentes)",
+   "Testar a importação de linhas de documento a partir de Excel (Importar Excel para Linhas)",
+   "Cronometrar o processo completo — repetir até bater a meta"
+  ],
+  "proofs": [
+   {
+    "d": "Print do ecrã de preparação da emissão automática com as 5 encomendas",
+    "k": "print"
+   },
+   {
+    "d": "Print das faturas geradas em lote",
+    "k": "print"
+   },
+   {
+    "d": "Avenças geradas (print das 2 faturas mensais)",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que documentos podem alimentar a faturação automática?",
+    "a": "Dossiers internos (encomendas, propostas, folhas de obra, avenças) e guias — por cópia/conversão com opções configuráveis."
+   }
+  ]
+ },
+ {
+  "id": "L21",
+  "t": "Layouts, templates e impressão com QR/ATCUD",
+  "lv": 2,
+  "min": 75,
+  "meta": "30 min",
+  "pre": [
+   "L14"
+  ],
+  "ref": "Cap. 5.3 e 6.3",
+  "goal": "Controlar totalmente a saída impressa: templates, campos, QR Code e ATCUD.",
+  "steps": [
+   "Abrir o editor de mapas/templates de impressão da fatura",
+   "Adicionar o logótipo da empresa e um rodapé personalizado",
+   "Inserir os campos QR Code e ATCUD no layout (placeholders da versão atual)",
+   "Imprimir em PDF e conferir o posicionamento",
+   "Configurar 'Imprimir quando' (impressão automática ao gravar, cópias)",
+   "Testar a Impressão Definida pelo Utilizador (Advanced+) alterando colunas de uma listagem",
+   "Definir assinatura/imagem de responsável no template (Definição de Assinaturas)",
+   "Imprimir uma listagem com repetição de valores controlada pelo parâmetro próprio"
+  ],
+  "proofs": [
+   {
+    "d": "PDF da fatura com logótipo, QR e ATCUD visíveis",
+    "k": "file"
+   },
+   {
+    "d": "Print do editor de template aberto",
+    "k": "print"
+   },
+   {
+    "d": "Antes/depois da listagem personalizada",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que compõe o ATCUD?",
+    "a": "Código de validação da série (atribuído pela AT após comunicação da série) + número sequencial do documento — impresso com o QR Code."
+   },
+   {
+    "q": "O que acontece a séries sem código de validação?",
+    "a": "O software impede a impressão dos documentos dessa série (regra em vigor desde 2021)."
+   }
+  ]
+ },
+ {
+  "id": "L22",
+  "t": "Encomenda a fornecedor e 'Comprar a Encomenda'",
+  "lv": 3,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L17"
+  ],
+  "ref": "Cap. 4.3 e 4.4",
+  "goal": "Dominar o circuito de aprovisionamento: DI de compra → documento de compra.",
+  "steps": [
+   "Criar a Encomenda a Fornecedor MOD-EF-01 ao fornecedor Modelo com 3 artigos",
+   "Verificar o efeito em 'Encomendado a fornecedor' na ficha do artigo",
+   "Usar a função 'Comprar a Encomenda a Fornecedor' para gerar a guia/fatura de compra",
+   "Receção parcial: comprar apenas 2 das 3 linhas e verificar o remanescente na encomenda",
+   "Fechar manualmente a linha restante",
+   "Explorar a análise de encomendas a fornecedor pendentes",
+   "Comparar o circuito de compra com o de venda em notas\\circuitos.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print da encomenda a fornecedor + documento de compra gerado",
+    "k": "print"
+   },
+   {
+    "d": "Print do campo 'Encomendado a fornecedor' no artigo",
+    "k": "print"
+   },
+   {
+    "d": "circuitos.md comparando venda×compra",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Qual a diferença entre DI de cliente e de fornecedor?",
+    "a": "O de cliente alimenta vendas (orçamento→encomenda→fatura); o de fornecedor alimenta compras (encomenda→receção→fatura de compra), com stock a entrar."
+   }
+  ]
+ },
+ {
+  "id": "L23",
+  "t": "Faturas de compra, custos e PCMP",
+  "lv": 3,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L22"
+  ],
+  "ref": "Cap. 4.4 e 4.5",
+  "goal": "Registar compras com impacto correto no custo médio ponderado (PCMP).",
+  "steps": [
+   "Anotar o preço de custo atual (PCMP) do artigo 01",
+   "Dar entrada de 50 un a custo superior via fatura de compra e verificar o novo PCMP",
+   "Lançar uma compra com IVA dedutível e outra com artigo isento (motivo M08)",
+   "Adicionar custos acessórios/despesas ao documento de compra (se a versão permitir)",
+   "Verificar a conta corrente do fornecedor após a compra",
+   "Explorar a configuração de aprovação de pagamentos a fornecedores",
+   "Anular um documento de compra de teste e verificar o estorno de stock/PCMP"
+  ],
+  "proofs": [
+   {
+    "d": "Print do PCMP antes/depois da compra",
+    "k": "print"
+   },
+   {
+    "d": "Print da C/C do fornecedor com a fatura",
+    "k": "print"
+   },
+   {
+    "d": "Cálculo manual do PCMP esperado vs real em notas\\pcmp.md",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que é o PCMP?",
+    "a": "Preço de Custo Médio Ponderado — método de custeio que recalcula o custo médio do stock a cada entrada valorizada; base da valorização de existências e do CEVMC."
+   }
+  ]
+ },
+ {
+  "id": "L24",
+  "t": "Adiantamentos a fornecedores",
+  "lv": 3,
+  "min": 45,
+  "meta": "15 min",
+  "pre": [
+   "L23"
+  ],
+  "ref": "Cap. 4.1 e 4.4",
+  "goal": "Pagar antes de receber a fatura e regularizar depois — com controlo.",
+  "steps": [
+   "Registar um pagamento de adiantamento ao fornecedor Modelo",
+   "Emitir a fatura de compra correspondente",
+   "Regularizar o adiantamento na fatura (total e parcial)",
+   "Verificar a C/C do fornecedor: adiantamento, fatura, regularização",
+   "Explorar o controlo de adiantamentos pendentes (análise/mapa)",
+   "Documentar o fluxo em notas\\adiantamentos.md com os estados da C/C"
+  ],
+  "proofs": [
+   {
+    "d": "Print da C/C do fornecedor mostrando as 3 peças (adiantamento, fatura, regularização)",
+    "k": "print"
+   },
+   {
+    "d": "adiantamentos.md com o fluxo",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que risco controla a aprovação de pagamentos?",
+    "a": "Evita pagamentos não autorizados: o documento de compra/pagamento entra num circuito de aprovação (configurável; aprovação completa de dossiers é gama Enterprise)."
+   }
+  ]
+ },
+ {
+  "id": "L25",
+  "t": "Movimentos de stock e transferências entre armazéns",
+  "lv": 3,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L10"
+  ],
+  "ref": "Cap. 4.5",
+  "goal": "Operar o armazém: códigos de movimento, transferências, rastreio total.",
+  "steps": [
+   "Explorar a tabela de Códigos de Movimentos de Stocks e criar o código 'MOD-AJUSTE'",
+   "Fazer um movimento manual de saída (quebra) de 2 un do artigo 02 com o código criado",
+   "Usar o Dossier de Transferência de Armazém: mover 10 un do artigo 01 de PRINCIPAL para LOJA2",
+   "Verificar stocks por armazém após a transferência",
+   "Consultar o histórico de movimentos do artigo (quem, quando, quê)",
+   "Testar stock cativo/pré-cativo se disponível na sua versão",
+   "Simular operação com terminal portátil/PDA (ou importação de movimentos de Excel)"
+  ],
+  "proofs": [
+   {
+    "d": "Print dos stocks por armazém antes/depois da transferência",
+    "k": "print"
+   },
+   {
+    "d": "Print do histórico de movimentos do artigo",
+    "k": "print"
+   },
+   {
+    "d": "Print do dossier de transferência configurado",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Para que servem os códigos de movimentos de stock?",
+    "a": "Tipificam cada movimento (venda, compra, quebra, sobra, transferência, regularização), permitindo análises e controlo por tipo de operação."
+   }
+  ]
+ },
+ {
+  "id": "L26",
+  "t": "Inventário físico: contagens e acertos",
+  "lv": 3,
+  "min": 75,
+  "meta": "30 min",
+  "pre": [
+   "L25"
+  ],
+  "ref": "Cap. 4.5 e 6",
+  "goal": "Executar um inventário completo com lançamento automático de acertos (quebras/sobras).",
+  "steps": [
+   "Escolher 10 artigos e fazer a contagem física simulada (folha de contagem)",
+   "Abrir o ecrã de inventário/contagens e criar a contagem do armazém PRINCIPAL",
+   "Introduzir as quantidades contadas (manual ou importação)",
+   "Comparar contagem vs stock teórico: identificar quebras e sobras",
+   "Lançar os acertos automaticamente no ficheiro de movimentos",
+   "Verificar o efeito no valor de stock (PCMP × quantidade)",
+   "Gerar o mapa de inventário e exportar para Excel",
+   "(Fiscal) Explorar a geração do ficheiro de inventário para a AT (comunicação até 31/jan quando aplicável)"
+  ],
+  "proofs": [
+   {
+    "d": "Print da contagem com diferenças (quebras/sobras)",
+    "k": "print"
+   },
+   {
+    "d": "Print dos movimentos de acerto gerados",
+    "k": "print"
+   },
+   {
+    "d": "Ficheiro Excel/PDF do mapa de inventário",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O inventário físico gera que tipo de movimento?",
+    "a": "Acertos automáticos de quebra (contagem < teórica) ou sobra (contagem > teórica), regularizando o stock para o valor contado."
+   },
+   {
+    "q": "Quando se comunica o inventário à AT?",
+    "a": "Até 31 de janeiro (empresas abrangidas), por ficheiro (SAF-T/CSV/XML conforme o volume de negócios) — o PHC gera os formatos."
+   }
+  ]
+ },
+ {
+  "id": "L27",
+  "t": "Análises de stock e aprovisionamento",
+  "lv": 3,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L26"
+  ],
+  "ref": "Cap. 4.5 e 4.9",
+  "goal": "Usar o stock como ferramenta de decisão: ruturas, máx/mín, rankings, margens.",
+  "steps": [
+   "Executar a análise de artigos acima do stock máximo",
+   "Executar a análise de artigos a encomendar (ponto de encomenda) e em rutura",
+   "Gerar o ranking de vendas por artigo e por família",
+   "Ver margem/contribuição por artigo (preço venda vs PCMP)",
+   "Exportar uma análise para Excel e fazer uma tabela dinâmica",
+   "Criar uma encomenda a fornecedor a partir da análise de 'a encomendar'",
+   "Documentar: qual análise usaria para uma reunião semanal de compras?"
+  ],
+  "proofs": [
+   {
+    "d": "Print das 3 análises (rutura, máx/mín, ranking)",
+    "k": "print"
+   },
+   {
+    "d": "Excel exportado com pivot",
+    "k": "file"
+   },
+   {
+    "d": "Resposta documentada da pergunta final em notas\\analises-stock.md",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que análise deteta dinheiro parado em armazém?",
+    "a": "Artigos acima do stock máximo + rotações baixas no ranking — cruzar valor de stock (PCMP×qtd) com saídas por período."
+   }
+  ]
+ },
+ {
+  "id": "L28",
+  "t": "Conta corrente a fundo: códigos, aging, extractos",
+  "lv": 4,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L19"
+  ],
+  "ref": "Cap. 4.6",
+  "goal": "Dominar a C/C: códigos de movimento, saldos por idades, extractos e mailing.",
+  "steps": [
+   "Explorar a tabela de Códigos de Conta Corrente e os códigos existentes",
+   "Ver a C/C do cliente Modelo: documentos, recibos, adiantamentos, saldos",
+   "Gerar o extracto de conta do cliente para um período e enviar/imprimir",
+   "Consultar os saldos por idades (aging): 0-30, 31-60, 61-90, +90 dias",
+   "Preparar um Mailing de C/C (aviso de cobrança) por documento",
+   "Testar a análise de faturação por segmento/zona a partir da C/C",
+   "Explorar o tratamento de Recibos Incobráveis (conceito + configuração)"
+  ],
+  "proofs": [
+   {
+    "d": "Print do aging do cliente com escalões",
+    "k": "print"
+   },
+   {
+    "d": "Extracto de conta em PDF",
+    "k": "file"
+   },
+   {
+    "d": "Print do mailing preparado",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que é o saldo por idades?",
+    "a": "Distribuição da dívida do cliente por escalões de antiguidade dos documentos em aberto — base do controlo de crédito e cobranças."
+   }
+  ]
+ },
+ {
+  "id": "L29",
+  "t": "Cobranças: monitor de dívidas e fluxo de cobrança",
+  "lv": 4,
+  "min": 45,
+  "meta": "15 min",
+  "pre": [
+   "L28"
+  ],
+  "ref": "Cap. 4.6 e 4.9",
+  "goal": "Operar cobranças com o monitor e ferramentas dedicadas.",
+  "steps": [
+   "Abrir o Monitor de controlo de dívidas de clientes",
+   "Configurar os critérios do monitor (dias de atraso, valor mínimo)",
+   "Ordenar por valor em atraso e contactar (simular) o top 3",
+   "Registar uma promessa de pagamento (nota/anexo no cliente ou documento)",
+   "Emitir recibo após 'pagamento recebido' e verificar saída do monitor",
+   "Explorar envio de avisos por e-mail (SMTP configurado) com o documento em anexo",
+   "Definir a rotina semanal de cobranças em notas\\cobrancas.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print do monitor com dívidas ordenadas",
+    "k": "print"
+   },
+   {
+    "d": "Print do e-mail/aviso gerado (ou configuração SMTP)",
+    "k": "print"
+   },
+   {
+    "d": "cobrancas.md com a rotina semanal",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que indicadores usa num painel de cobranças?",
+    "a": "Saldo total em atraso, aging por escalão, top devedores, antiguidade média, promessas de pagamento vs cumpridas."
+   }
+  ]
+ },
+ {
+  "id": "L30",
+  "t": "Bancos: contas, extractos, reconciliação, SEPA",
+  "lv": 4,
+  "min": 75,
+  "meta": "30 min",
+  "pre": [
+   "L28"
+  ],
+  "ref": "Cap. 4.7",
+  "goal": "Fechar o mês bancário: extractos, reconciliação, transferências e ficheiros SEPA.",
+  "steps": [
+   "Criar a Conta de Tesouraria 'MOD-BANCO-01' (banco + IBAN) e uma caixa 'MOD-CAIXA'",
+   "Registar movimentos: depósito, levantamento, comissão bancária (código de tesouraria)",
+   "Importar/registar um extracto bancário (manual ou ficheiro do banco)",
+   "Reconciliar movimentos do extracto com a tesouraria",
+   "Fazer uma transferência entre contas (caixa → banco)",
+   "Explorar a geração de ficheiro SEPA (débitos diretos de cobranças e/ou pagamentos)",
+   "Explorar referências Multibanco (geração para cobrança) e open banking (Evolution)"
+  ],
+  "proofs": [
+   {
+    "d": "Print do extracto reconciliado",
+    "k": "print"
+   },
+   {
+    "d": "Ficheiro SEPA gerado (ou print do ecrã de geração)",
+    "k": "file"
+   },
+   {
+    "d": "Print da transferência entre contas na tesouraria",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Para que serve a reconciliação bancária?",
+    "a": "Garantir que os movimentos registados no ERP batem certo com o extracto do banco, detetando omissões, duplicações e erros de valor/data."
+   }
+  ]
+ },
+ {
+  "id": "L31",
+  "t": "Tesouraria real, previsional e orçamental + títulos",
+  "lv": 4,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L30"
+  ],
+  "ref": "Cap. 4.7",
+  "goal": "Projetar o futuro financeiro: previsões por vencimentos, orçamentos e títulos.",
+  "steps": [
+   "Abrir a tesouraria previsional e ver as entradas/saídas previstas por período",
+   "Verificar como os documentos por vencer (faturas, compras) alimentam a previsão",
+   "Registar um título (letra/cheque pré-datado) e ver o efeito na previsão",
+   "Criar um orçamento de tesouraria mensal simples (receitas/despesas)",
+   "Comparar realizado vs previsto vs orçamental num mês de teste",
+   "Configurar alertas de saldo mínimo (alertas de utilizador/notificações se disponíveis)",
+   "Concluir: que decisão tomaria com os números vistos? (escrever em notas\\tesouraria.md)"
+  ],
+  "proofs": [
+   {
+    "d": "Print da tesouraria previsional por período",
+    "k": "print"
+   },
+   {
+    "d": "Print do realizado×previsto×orçamental",
+    "k": "print"
+   },
+   {
+    "d": "tesouraria.md com a conclusão/decisão",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que distingue tesouraria real de previsional?",
+    "a": "Real = movimentos ocorridos; previsional = entradas/saídas esperadas (documentos por vencer, títulos, avenças); orçamental = plano aprovado para comparar com ambas."
+   }
+  ]
+ },
+ {
+  "id": "L32",
+  "t": "Vendedores e comissões",
+  "lv": 4,
+  "min": 45,
+  "meta": "15 min",
+  "pre": [
+   "L14"
+  ],
+  "ref": "Cap. 4.8",
+  "goal": "Configurar e apurar comissões de vendas.",
+  "steps": [
+   "Criar 2 vendedores com percentagens de comissão diferentes",
+   "Associar o vendedor 1 ao cliente Modelo",
+   "Emitir 3 faturas com o vendedor associado",
+   "Configurar comissões por família de produtos (regra diferente)",
+   "Executar o mapa/análise de comissões do período",
+   "Verificar comissão sobre documento depois anulado (comportamento)",
+   "Documentar o esquema de comissões da 'empresa de treino' em notas\\comissoes.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print do mapa de comissões com os 2 vendedores",
+    "k": "print"
+   },
+   {
+    "d": "comissoes.md com o esquema (percentagens × critérios)",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que critérios de comissão o módulo suporta?",
+    "a": "Por vendedor, por tipo de cliente, por família de produtos, entre outros — configuráveis na gestão de comissões."
+   }
+  ]
+ },
+ {
+  "id": "L33",
+  "t": "SAF-T (PT) de faturação: exportar e auditar o XML",
+  "lv": 5,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L21"
+  ],
+  "ref": "Cap. 6.2",
+  "goal": "Gerar o SAF-T e saber LER o ficheiro — não apenas exportá-lo.",
+  "steps": [
+   "Exportar o SAF-T (PT) de faturação do mês de treino (menu de exportação/auditoria fiscal)",
+   "Abrir o XML num editor e identificar a estrutura: Header, Customer, Product, Invoice",
+   "Verificar os seus documentos EMPRESA MODELO: DocumentType (FT/FS/FR/NC/ND), Hash, ATCUD se presente",
+   "Procurar um documento isento e confirmar o TaxExemptionReason (ex.: M08)",
+   "Confirmar que documentos anulados NÃO aparecem (ou aparecem corretamente, conforme regra)",
+   "Validar o ficheiro num validador SAF-T (Portal das Finanças/teste ou ferramenta do contabilista)",
+   "Corrigir qualquer erro de configuração e reexportar até validação OK"
+  ],
+  "proofs": [
+   {
+    "d": "Ficheiro XML exportado guardado em exports\\saft_YYYYMM.xml",
+    "k": "file"
+   },
+   {
+    "d": "Print do validador com ficheiro aprovado",
+    "k": "print"
+   },
+   {
+    "d": "Anotação em notas\\saft.md: 5 elementos do XML e onde cada um se configura no PHC",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que tipos de documento aparecem no SAF-T de faturação?",
+    "a": "FT (fatura), FS (simplificada), FR (fatura-recibo), NC, ND (e GT/GA/GC no de transporte) — definidos pelo mapping SAF-T da série."
+   },
+   {
+    "q": "O que garante a integridade dos documentos no SAF-T?",
+    "a": "A hash (assinatura) de cada documento encadeada ao anterior + nº de certificado do software validado pela AT."
+   }
+  ]
+ },
+ {
+  "id": "L34",
+  "t": "ATCUD + QR Code na prática",
+  "lv": 5,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L33"
+  ],
+  "ref": "Cap. 6.3",
+  "goal": "Dominar o fluxo completo de validação de séries e ATCUD.",
+  "steps": [
+   "Identificar onde se associa o código de validação da série (configuração da série/documento)",
+   "Simular o processo: comunicar série à AT (produção/testes) → receber código → associar no PHC",
+   "Confirmar o formato do ATCUD impresso: CODIGOVALIDACAO-SEQUENCIAL",
+   "Verificar o QR Code no layout e ler um com o telemóvel (se configurado)",
+   "Testar o bloqueio de impressão de série sem validação (se a sua versão o aplicar)",
+   "Confirmar que o ATCUD aparece no XML do SAF-T",
+   "Ler o artigo oficial 'Faturas com código QR e ATCUD' e resumir o calendário legal em notas\\atcud.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print do documento impresso com QR + ATCUD",
+    "k": "print"
+   },
+   {
+    "d": "Print do campo de código de validação na série",
+    "k": "print"
+   },
+   {
+    "d": "atcud.md com o resumo do processo legal",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Quem atribui o código de validação da série?",
+    "a": "A AT, após comunicação das séries de faturação/documentos fiscalmente relevantes que a empresa vai usar."
+   },
+   {
+    "q": "Desde quando a impressão sem validação é bloqueada?",
+    "a": "Desde 1 de janeiro de 2021 (implementado na v27 do PHC CS)."
+   }
+  ]
+ },
+ {
+  "id": "L35",
+  "t": "Documentos de transporte: webservice vs SAF-T resumido",
+  "lv": 5,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L18",
+   "L33"
+  ],
+  "ref": "Cap. 6.2 e 6.3",
+  "goal": "Conhecer os dois métodos de comunicação de guias à AT e os seus artefactos.",
+  "steps": [
+   "Nos parâmetros: localizar 'Método de Envio de Documentos de Transporte'",
+   "Configurar webservice (ambiente de testes se possível) e emitir guia → observar o Cód. Ident. AT",
+   "Exportar SAF-T (PT) resumido e localizar MovementOfGoods, ShipFrom, ShipTo, Hash",
+   "Comparar os dois métodos: tempo real vs ficheiro; quando usar cada um",
+   "Verificar a opção de SMS ao motorista com o código da AT (série + módulo SMS)",
+   "Testar o envio por webservice de uma guia com data/hora de início de transporte futura",
+   "Resumir em notas\\transportes.md os prós/contras de cada método"
+  ],
+  "proofs": [
+   {
+    "d": "Print do parâmetro do método de envio",
+    "k": "print"
+   },
+   {
+    "d": "XML do SAF-T resumido com MovementOfGoods destacado",
+    "k": "file"
+   },
+   {
+    "d": "transportes.md com comparativo",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Onde aparecem os locais de carga/descarga no SAF-T de transporte?",
+    "a": "Nos elementos ShipFrom e ShipTo de cada documento em MovementOfGoods, alimentados pelas Moradas de Carga e Descarga."
+   }
+  ]
+ },
+ {
+  "id": "L36",
+  "t": "Retenções na fonte: IRS e Imposto do Selo",
+  "lv": 5,
+  "min": 45,
+  "meta": "15 min",
+  "pre": [
+   "L14"
+  ],
+  "ref": "Cap. 6.5",
+  "goal": "Emitir documentos com retenção e perceber o impacto em C/C e fiscais.",
+  "steps": [
+   "Configurar o parâmetro 'Percentagem de retenção de IRS'",
+   "Marcar o cliente como sujeito a retenção (agente/percentagem na ficha, conforme versão)",
+   "Emitir fatura com retenção: verificar campo 'Valor de retenção de IRS' no documento",
+   "Confirmar que a C/C considera o valor retido (cliente paga líquido)",
+   "Ver o tratamento no Mailing de C/C e nos mapas de retenções",
+   "Explorar Imposto do Selo onde aplicável (recibos/verbas)",
+   "Ler o artigo do Calendário PHC sobre 'Retenções na Fonte de IRS, IRC e Imposto de Selo'"
+  ],
+  "proofs": [
+   {
+    "d": "Print da fatura com valor de retenção destacado",
+    "k": "print"
+   },
+   {
+    "d": "Print da C/C evidenciando o líquido",
+    "k": "print"
+   },
+   {
+    "d": "notas\\retencoes.md com as regras observadas",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Quem entrega a retenção ao Estado?",
+    "a": "O cliente (substituto tributário) retém e entrega; o fornecedor declara. O ERP tem de mostrar o valor retido no documento e refleti-lo na conta corrente."
+   }
+  ]
+ },
+ {
+  "id": "L37",
+  "t": "RGPD na prática: aviso legal, esquecimento, registos",
+  "lv": 5,
+  "min": 45,
+  "meta": "15 min",
+  "pre": [
+   "L06"
+  ],
+  "ref": "Cap. 2.4 e 6.7",
+  "goal": "Operar as ferramentas RGPD do módulo (dados pessoais de clientes).",
+  "steps": [
+   "Configurar o Aviso Legal (texto de RGPD em documentos/ecrãs)",
+   "Localizar o Registo do Tratamento de Dados",
+   "Executar o processo de 'Esquecimento'/anonimização num cliente de teste MOD-RGPD",
+   "Verificar o que acontece aos documentos históricos do cliente anonimizado",
+   "Consultar o Histórico de Utilizadores (auditoria interna)",
+   "Documentar em notas\\rgpd.md o procedimento para responder a um pedido de esquecimento real"
+  ],
+  "proofs": [
+   {
+    "d": "Print do aviso legal configurado",
+    "k": "print"
+   },
+   {
+    "d": "Print do cliente de teste antes/depois do esquecimento",
+    "k": "print"
+   },
+   {
+    "d": "rgpd.md com o procedimento passo-a-passo",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Pode apagar fisicamente um cliente com documentos certificados?",
+    "a": "Não — a integridade fiscal impede; usa-se anonimização/tratamento de dados pessoais que preserva os documentos mas remove/apaga dados identificativos conforme a lei e a certificação."
+   }
+  ]
+ },
+ {
+  "id": "L38",
+  "t": "Integração Gestão → Contabilidade",
+  "lv": 5,
+  "min": 90,
+  "meta": "30 min",
+  "pre": [
+   "L14"
+  ],
+  "ref": "Cap. 4.10",
+  "goal": "Automatizar a contabilização dos documentos do Gestão (requer módulo Contabilidade; senão, estudar configuração + manuais).",
+  "steps": [
+   "Explorar os Documentos Pré-Definidos da Gestão (regras de contabilização por tipo de documento)",
+   "Configurar contas de integração: clientes, fornecedores, IVA liquidado, IVA dedutível, vendas, compras",
+   "Integrar um lote de faturas do mês e ver os lançamentos no diário",
+   "Integrar recibos e pagamentos (verificar descritivo com documento original — Advanced+)",
+   "Correr o Apuramento do IVA e a Declaração Periódica (módulo Contabilidade)",
+   "Verificar o CEVMC/apuramento de resultados numa demonstração",
+   "Estornar uma integração de teste e reintegrar corrigida",
+   "(Sem módulo?) Ler os manuais de integração e desenhar o esquema de contas da empresa de treino em notas\\integracao.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print dos documentos pré-definidos configurados",
+    "k": "print"
+   },
+   {
+    "d": "Print do diário com lançamentos integrados do Gestão",
+    "k": "print"
+   },
+   {
+    "d": "integracao.md com o mapa documento→contas",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que são documentos pré-definidos?",
+    "a": "Modelos de contabilização automática: para cada tipo de documento do Gestão definem-se as contas e regras de lançamento na Contabilidade."
+   },
+   {
+    "q": "Que impostos a integração alimenta diretamente?",
+    "a": "O apuramento do IVA (liquidado nas vendas, dedutível nas compras) e a base para IRC/CEVMC via mapas de gestão."
+   }
+  ]
+ },
+ {
+  "id": "L39",
+  "t": "Parâmetros: auditar, mudar, testar, reverter",
+  "lv": 6,
+  "min": 75,
+  "meta": "30 min",
+  "pre": [
+   "L14"
+  ],
+  "ref": "Cap. 5.2",
+  "goal": "Perder o medo dos parâmetros: método seguro para auditar e alterar configuração.",
+  "steps": [
+   "Exportar/anotar o estado atual dos Parâmetros Gerais e do módulo Gestão (prints ou exportação se existir)",
+   "Escolher 5 parâmetros de impacto visível: mostrar último registo ao arrancar, ecrãs em memória, processamento assíncrono, repetição de valores em grelhas, teclas em rodapé",
+   "Alterar UM de cada vez, testar o efeito e anotar (antes/depois)",
+   "Reverter todos e confirmar o comportamento original",
+   "Configurar acessos a parâmetros por utilizador (libertar 1 parâmetro para o gestor)",
+   "Criar o documento notas\\parametros.md: 20 parâmetros essenciais com o seu efeito (usar os manuais in-app)"
+  ],
+  "proofs": [
+   {
+    "d": "parametros.md com 20 parâmetros documentados",
+    "k": "file"
+   },
+   {
+    "d": "Print de 1 parâmetro com efeito antes/depois demonstrado",
+    "k": "print"
+   },
+   {
+    "d": "Backup da configuração (prints/export) guardado",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Qual a regra de ouro para alterar parâmetros?",
+    "a": "Uma alteração de cada vez, com registo do valor anterior, teste do efeito e capacidade de reverter — nunca alterar em produção sem janela e backup."
+   }
+  ]
+ },
+ {
+  "id": "L40",
+  "t": "Mapas definidos e impressão definida pelo utilizador",
+  "lv": 6,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L21"
+  ],
+  "ref": "Cap. 4.9",
+  "goal": "Criar relatórios standard à medida sem programar.",
+  "steps": [
+   "Listar os mapas definidos disponíveis no módulo Gestão",
+   "Criar um mapa: vendas por cliente/zona no período, com totais",
+   "Personalizar colunas, ordenação e filtros do mapa",
+   "Usar a Impressão Definida pelo Utilizador (Advanced+) para ajustar uma listagem",
+   "Configurar a impressão de grelhas com/sem repetição de valores (parâmetro)",
+   "Exportar o mapa para Excel e PDF",
+   "Guardar os 3 mapas mais pedidos pela 'direção da empresa de treino' como favoritos"
+  ],
+  "proofs": [
+   {
+    "d": "PDF do mapa criado",
+    "k": "file"
+   },
+   {
+    "d": "Print da configuração de colunas/filtros",
+    "k": "print"
+   },
+   {
+    "d": "Lista dos 3 mapas favoritos em notas\\mapas.md",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Mapa definido vs análise de utilizador?",
+    "a": "Mapa = relatório standard configurável (impressão/exportação); análise de utilizador = consulta SQL própria apresentada em grelha, mais livre e potente (Advanced+)."
+   }
+  ]
+ },
+ {
+  "id": "L41",
+  "t": "Análises de utilizador + filtros (SQL na prática)",
+  "lv": 6,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L05"
+  ],
+  "ref": "Cap. 4.9 e 7.2",
+  "goal": "Construir análises SQL reutilizáveis dentro do PHC.",
+  "steps": [
+   "Abrir as Análises/Consultas de utilizador (Supervisor > Framework PHC)",
+   "Criar a análise 'Vendas por Zona': JOIN ft × cl × cl2 com soma de totais e GROUP BY zona",
+   "Usar WITH (NOLOCK) e parâmetros de período se suportado",
+   "Criar um filtro de utilizador para a grelha de clientes (apenas zona Sul)",
+   "Promover a análise a atalho/menu para o utilizador comercial",
+   "Criar a análise 'Top 10 artigos por margem' (venda − PCMP)",
+   "Exportar resultados e comparar com o mapa standard equivalente"
+  ],
+  "proofs": [
+   {
+    "d": "Print da análise a correr com resultados",
+    "k": "print"
+   },
+   {
+    "d": "SQL da análise guardado em sql\\vendas-zona.sql",
+    "k": "file"
+   },
+   {
+    "d": "Print do filtro de utilizador aplicado",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Como descobre os nomes de tabelas/campos para a análise?",
+    "a": "Pelo Dicionário de Dados (campos, descrições e relações entre tabelas) — nunca por tentativa e erro às cegas."
+   }
+  ]
+ },
+ {
+  "id": "L42",
+  "t": "Snapshots, análises multidimensionais e dashboards",
+  "lv": 6,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L41"
+  ],
+  "ref": "Cap. 4.9",
+  "goal": "Construir a camada de business intelligence do utilizador (gamas Advanced/Enterprise).",
+  "steps": [
+   "Criar um snapshot com instrução T-SQL usando a variável #stamp# (dados do registo atual)",
+   "Agrupar snapshots num grupo com cor (parâmetro 'Utiliza cor de cabeçalhos nos grupos de snapshots')",
+   "Criar uma Análise Multidimensional a partir da análise de utilizador de vendas",
+   "Fazer drill-down na multidimensional (ano → mês → cliente → documento)",
+   "Montar um painel/dashboard com: vendas do mês, aging, top artigos, ruturas (PHC Dashboard se disponível)",
+   "Explorar painéis de informação no menu da aplicação (parâmetro próprio)",
+   "Apresentar o painel como se fosse à direção da empresa de treino (gravar 2 min)"
+  ],
+  "proofs": [
+   {
+    "d": "Print do snapshot a mostrar dados contextuais",
+    "k": "print"
+   },
+   {
+    "d": "Print da análise multidimensional com drill-down aberto",
+    "k": "print"
+   },
+   {
+    "d": "Vídeo/áudio de 2 min apresentando o painel",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Para que serve a variável #stamp# num snapshot?",
+    "a": "Para parametrizar a consulta com o stamp do registo em foco — o snapshot mostra dados contextualizados ao registo atual do ecrã."
+   }
+  ]
+ },
+ {
+  "id": "L43",
+  "t": "Monitores, alertas, notificações e workflow/aprovações",
+  "lv": 6,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L29"
+  ],
+  "ref": "Cap. 4.9, 6.2 e 7.2",
+  "goal": "Automatizar a vigilância do negócio: monitores + alertas + circuitos de aprovação.",
+  "steps": [
+   "Configurar um monitor com itens de monitor (colunas 1/2/3) para dívidas vencidas",
+   "Criar alertas de utilizador: stock abaixo do mínimo e documento por aprovar",
+   "Configurar o intervalo de refrescamento de alertas (parâmetro geral)",
+   "Ligar notificações (PHC Notify / aviso interno / e-mail SMTP) a um alerta",
+   "Se gama Enterprise: explorar o Sistema de Aprovação de Dossiers e o Workflow Operacional; senão, estudar o manual e desenhar o circuito da empresa de treino",
+   "Testar de ponta a ponta: provocar stock baixo e ver o alerta chegar",
+   "Documentar o desenho de alertas da empresa de treino em notas\\alertas.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print do monitor configurado com dados",
+    "k": "print"
+   },
+   {
+    "d": "Print do alerta/notificação disparado",
+    "k": "print"
+   },
+   {
+    "d": "alertas.md com o mapa evento→alerta→destinatário",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que canais de alerta a plataforma suporta?",
+    "a": "Aviso interno na aplicação, PHC Notify, e-mail (SMTP) e SMS (módulo SMS) — configuráveis por alerta."
+   }
+  ]
+ },
+ {
+  "id": "L44",
+  "t": "Campos de utilizador + tabelas de utilizador + valores por defeito",
+  "lv": 7,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L05"
+  ],
+  "ref": "Cap. 7.2",
+  "goal": "Estender o modelo de dados SEM tocar no core — a base de toda a personalização.",
+  "steps": [
+   "Ativar o parâmetro 'Utiliza campos do utilizador?' e reentrar na aplicação",
+   "Abrir Supervisor → Framework PHC → Campos de Utilizador",
+   "Criar na tabela de Clientes o campo 'TreinoLimiteCredito' (numérico) e 'TreinoGestorConta' (texto)",
+   "Criar na tabela FT (Documentos de Faturação) o campo 'TreinoNrContrato'",
+   "Criar a tabela de utilizador 'TreinoContratos' (nº, cliente, data início, data fim, valor)",
+   "Configurar Valores por Defeito: TreinoGestorConta = utilizador atual; data = hoje",
+   "Ver os campos novos nos ecrãs (páginas de dados) e preencher registos de teste",
+   "Confirmar no Dicionário de Dados que os campos/tabela existem na BD"
+  ],
+  "proofs": [
+   {
+    "d": "Print dos campos criados no ecrã do cliente",
+    "k": "print"
+   },
+   {
+    "d": "Print da tabela de utilizador no dicionário",
+    "k": "print"
+   },
+   {
+    "d": "Print do valor por defeito a funcionar num registo novo",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Por que não adicionar colunas diretamente com ALTER TABLE?",
+    "a": "Porque upgrades podem recriar/validar esquemas e a aplicação não conhece a coluna; campos de utilizador são geridos pela framework, persistem em upgrades e aparecem nos ecrãs/ferramentas."
+   }
+  ]
+ },
+ {
+  "id": "L45",
+  "t": "Regras de utilizador: validações de negócio",
+  "lv": 7,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L44"
+  ],
+  "ref": "Cap. 7.2 e 7.6",
+  "goal": "Impor política de negócio no momento da introdução de dados.",
+  "steps": [
+   "Abrir Supervisor → Framework PHC → Regras de Utilizador (+ Assistente de Regras)",
+   "Regra 1 (assistente): obrigar 'TreinoNrContrato' quando o cliente for do tipo 'Empresas'",
+   "Regra 2 (código): bloquear fatura se TreinoLimiteCredito do cliente < total do documento — mensagem clara",
+   "Regra 3: validar NIF português (9 dígitos + checksum) no cliente antes de gravar",
+   "Testar cada regra provocando a violação (e o cumprimento)",
+   "Ajustar as mensagens para linguagem de utilizador final",
+   "Desativar/reativar uma regra e confirmar o efeito"
+  ],
+  "proofs": [
+   {
+    "d": "Print da mensagem de bloqueio da regra de crédito",
+    "k": "print"
+   },
+   {
+    "d": "Print do código/assistente das 3 regras",
+    "k": "print"
+   },
+   {
+    "d": "notas\\regras.md: política → regra → teste",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Onde testar regras antes de produção?",
+    "a": "Num clone da BD (detach/copy/attach) — regras mal escritas podem bloquear a faturação de toda a empresa."
+   }
+  ]
+ },
+ {
+  "id": "L46",
+  "t": "Eventos Xbase: ObjRecebido, MeusDados, Return .F.",
+  "lv": 7,
+  "min": 90,
+  "meta": "30 min",
+  "pre": [
+   "L44"
+  ],
+  "ref": "Cap. 7.3",
+  "goal": "Programar comportamento dinâmico nos ecrãs — o coração do desenvolvimento desktop PHC.",
+  "steps": [
+   "Confirmar gama/parâmetros para eventos de utilizador (Enterprise para objetos/páginas completas)",
+   "Num objeto de uma página de utilizador, programar o Evento Init: ObjRecebido.Janela.Caption = 'EMPRESA MODELO - ' + ObjRecebido.Janela.Caption",
+   "Programar o Evento Clique de um botão que muda a cor do objeto e guarda a cor original com MeusDados.GuardaParametro",
+   "Programar o Evento Tecla Pressionada com Return .F. para bloquear letras num campo numérico",
+   "Usar ExisteParametro/GetIndexParametro do MeusDados num segundo evento (Refrescar)",
+   "Provocar um erro de propósito (função inexistente) e encontrá-lo na Análise Interna",
+   "Escrever em notas\\xbase.md um resumo: eventos disponíveis × quando disparam"
+  ],
+  "proofs": [
+   {
+    "d": "Print do título do ecrã alterado pelo Init",
+    "k": "print"
+   },
+   {
+    "d": "Print do código dos 3 eventos",
+    "k": "print"
+   },
+   {
+    "d": "Print da Análise Interna com o erro provocado",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Quais as 2 propriedades sempre disponíveis no ObjRecebido?",
+    "a": "Janela (apontador para o ecrã) e Objecto (apontador para o objeto do evento; com MeusDados para estado chave-valor)."
+   },
+   {
+    "q": "O que faz Return .F. num evento?",
+    "a": "Cancela o comportamento de raiz do objeto para esse evento (ex.: tecla não chega ao campo, calendário não abre)."
+   },
+   {
+    "q": "Evento é expressão ou programa: qual a diferença?",
+    "a": "Expressão avalia e retorna automaticamente (sem Return); programa permite várias instruções e usa Return. Erros de expressão aparecem sem nº de linha na Análise Interna."
+   }
+  ]
+ },
+ {
+  "id": "L47",
+  "t": "Funções, teclas, instruções internas e alertas programados",
+  "lv": 7,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L46"
+  ],
+  "ref": "Cap. 7.2 e 7.3",
+  "goal": "Criar utilitários reutilizáveis dentro da aplicação.",
+  "steps": [
+   "Criar uma Função de Utilizador Xbase: TreinoMargem(pv, pcmp) que devolve a margem %",
+   "Chamar a função numa regra ou evento de linhas de documento",
+   "Criar uma Tecla de Utilizador (atalho) que abre a análise 'Vendas por Zona' com descrição no rodapé",
+   "Escrever Instruções Internas no ecrã de Faturação (procedimento da casa para emitir fatura)",
+   "Criar um Alerta de utilizador que use função interna tipo CriaAvs para avisar o gestor quando stock < mínimo",
+   "Explorar as funções internas novas da versão (ex.: envio SII; PromptFunction() se tiver Pulse)"
+  ],
+  "proofs": [
+   {
+    "d": "Print da função criada e do resultado no documento",
+    "k": "print"
+   },
+   {
+    "d": "Print da tecla de utilizador + rodapé com descrição",
+    "k": "print"
+   },
+   {
+    "d": "Print do aviso/alerta disparado",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Para que servem as Instruções Internas?",
+    "a": "Documentação operacional escrita pelo utilizador, associada a cada ecrã principal — o manual da casa dentro do próprio programa."
+   }
+  ]
+ },
+ {
+  "id": "L48",
+  "t": "Ecrã personalizado (IDU) de ponta a ponta",
+  "lv": 7,
+  "min": 120,
+  "meta": "45 min",
+  "pre": [
+   "L46"
+  ],
+  "ref": "Cap. 7.2 e 7.6",
+  "goal": "Construir um ecrã novo: 'Crédito do Cliente EMPRESA MODELO'.",
+  "steps": [
+   "Ativar 'Utiliza ecrãs do utilizador?' (gama adequada) e abrir o Desenhador de Ecrãs",
+   "Criar o IDU 'TreinoCredito': campos de cliente (ligação à tabela CL), limite de crédito (campo de utilizador), saldo atual e aging resumido (grelha/consulta)",
+   "Adicionar botões: 'Atualizar saldos' (refrescar), 'Abrir C/C do cliente' (navegar com função interna tipo U_NAVEGA)",
+   "Programar eventos do IDU: Init (carregar dados), Clique dos botões",
+   "Criar um menu de utilizador 'Utilitários Treino' e lá colocar o IDU + análises criadas",
+   "Configurar parâmetros do ecrã e acessos por grupo",
+   "Testar com 3 clientes diferentes e cronometrar a consulta de crédito"
+  ],
+  "proofs": [
+   {
+    "d": "Print do IDU em funcionamento com dados reais",
+    "k": "print"
+   },
+   {
+    "d": "Print do menu de utilizador criado",
+    "k": "print"
+   },
+   {
+    "d": "Vídeo curto (1 min) a usar o ecrã",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Como liga IDUs entre si?",
+    "a": "Com 'Ligações entre IDUs' e navegação programada (funções internas/botões que abrem outro ecrã passando o registo em foco)."
+   }
+  ]
+ },
+ {
+  "id": "L49",
+  "t": "Índices de utilizador e tuning de performance",
+  "lv": 7,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L41"
+  ],
+  "ref": "Cap. 7.2, 8 e 10.2",
+  "goal": "Medir e otimizar: índices, desfragmentação, parâmetros de performance.",
+  "steps": [
+   "Escolher a análise mais lenta que criou (ex.: vendas por zona em ft×cl)",
+   "Medir o tempo de execução (SET STATISTICS TIME ON no SSMS ou cronómetro)",
+   "Criar Índice de Utilizador na framework cobrindo as colunas do JOIN/filtro (testar INCLUDED COLUMNS)",
+   "Voltar a medir e registar a melhoria em %",
+   "Correr o utilitário 'Desfragmentar as Tabelas Principais'",
+   "Ajustar parâmetros de performance: ecrãs em memória ON, mostrar último registo OFF",
+   "Verificar o espaço/fragmentação com sp_spaceused e sys.dm_db_index_physical_stats"
+  ],
+  "proofs": [
+   {
+    "d": "notas\\perf.md com medições antes/depois",
+    "k": "file"
+   },
+   {
+    "d": "Print do índice de utilizador criado",
+    "k": "print"
+   },
+   {
+    "d": "Print do resultado da desfragmentação",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Quando um índice de utilizador compensa?",
+    "a": "Quando a análise/JOIN filtra ou ordena por colunas sem índice adequado e a tabela é grande — medir sempre antes/depois; índices têm custo de escrita."
+   }
+  ]
+ },
+ {
+  "id": "L50",
+  "t": "Framework Web (C#): eventos, regras e scripts por URL",
+  "lv": 7,
+  "min": 90,
+  "meta": "30 min",
+  "pre": [
+   "L46"
+  ],
+  "ref": "Cap. 7.4",
+  "goal": "Personalizar o PHC CS Web incluído no Evolution (requer package web).",
+  "steps": [
+   "Aceder à aplicação web e ao seu menu de framework/Supervisor web",
+   "Criar um evento C#: ao gravar uma encomenda, enviar e-mail com as linhas (usar Editor de Código)",
+   "Criar uma regra C# de validação (ex.: impedir quantidades negativas)",
+   "Criar um Script (executado por URL) que devolve JSON simples (ex.: contagem de clientes ativos)",
+   "Configurar Valores por Defeito e um Filtro do Utilizador na web",
+   "Consultar o Log de Código após provocar um erro de propósito",
+   "Explorar Objetos de Ecrã/Templates de Tabela para acrescentar um campo a uma página existente"
+  ],
+  "proofs": [
+   {
+    "d": "Print do código C# do evento + e-mail recebido",
+    "k": "print"
+   },
+   {
+    "d": "Print do script por URL a responder no browser",
+    "k": "print"
+   },
+   {
+    "d": "Print do Log de Código com o erro",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que linguagem usa cada framework?",
+    "a": "Desktop: Xbase (sintaxe VFP) nos eventos/regras/funções; Web: C# no Editor de Código (eventos, regras, scripts). SQL (T-SQL) serve ambas."
+   }
+  ]
+ },
+ {
+  "id": "L51",
+  "t": "Mini-projeto: Controlo de Crédito (juntar tudo)",
+  "lv": 7,
+  "min": 180,
+  "meta": "90 min",
+  "pre": [
+   "L44",
+   "L45",
+   "L46",
+   "L48"
+  ],
+  "ref": "Cap. 7.6 e 7.7",
+  "goal": "Entregar uma solução completa como um parceiro faria: campo+regra+evento+IDU+análise+alerta.",
+  "steps": [
+   "Requisito: bloquear vendas a crédito acima do limite; gestor recebe alerta; comercial consulta crédito num ecrã próprio",
+   "Implementar: campo TreinoLimiteCredito (L44), regra de bloqueio com mensagem (L45), alerta ao gestor (L43/L47), IDU TreinoCredito (L48), análise 'Exposição por cliente' (L41)",
+   "Documentar a solução em notas\\projeto-credito.md: requisito → desenho → objetos criados → testes",
+   "Testar 5 cenários: dentro do limite, acima, cliente sem limite, documento a dinheiro (não bloqueia), alteração do limite",
+   "Simular upgrade: reinstalar/atualizar o executável e confirmar que a solução persiste (está na BD)",
+   "Apresentar a solução em 3 min gravados (como demo a cliente)"
+  ],
+  "proofs": [
+   {
+    "d": "projeto-credito.md completo",
+    "k": "file"
+   },
+   {
+    "d": "Prints dos 5 cenários de teste",
+    "k": "print"
+   },
+   {
+    "d": "Vídeo/áudio da demo de 3 min",
+    "k": "file"
+   },
+   {
+    "d": "Confirmação pós-reinstalação (print)",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Por que as personalizações sobrevivem à reinstalação do executável?",
+    "a": "Porque ficam gravadas na base de dados (framework), não nos ficheiros do programa — mas devem ser revalidadas a cada upgrade de versão."
+   }
+  ]
+ },
+ {
+  "id": "L52",
+  "t": "EyePeak: monitor de sincronização e fluxos",
+  "lv": 8,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L02"
+  ],
+  "ref": "Cap. 9",
+  "goal": "Conhecer a integração ERP ↔ EyePeak (logística/e-commerce).",
+  "steps": [
+   "Abrir o monitor 'EyePeak Sincronização' no menu Supervisor (desktop) / ecrã próprio (web)",
+   "Explorar o Monitor de Configurações: sincronização de séries de documentos de faturação",
+   "Estudar o fluxo documentado de fornecedores: encomendas → guias entre Cegid PHC e EyePeak",
+   "Se disponível no seu ambiente: sincronizar artigos/stock de teste e confirmar no EyePeak",
+   "Se não disponível: desenhar em notas\\eyepeak.md a arquitetura do fluxo encomenda online → EyePeak → ERP",
+   "Listar 3 casos de uso de negócio para um cliente de retalho/distribuição"
+  ],
+  "proofs": [
+   {
+    "d": "Print do monitor EyePeak Sincronização",
+    "k": "print"
+   },
+   {
+    "d": "eyepeak.md com o desenho do fluxo",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que é o EyePeak?",
+    "a": "Plataforma de logística/WMS/e-commerce da Cegid (Primavera) que sincroniza dados e documentos com o ERP PHC (artigos, stocks, encomendas, séries, guias)."
+   }
+  ]
+ },
+ {
+  "id": "L53",
+  "t": "Faturação eletrónica: SaphetyDoc, CIUS-PT, Cegid Docs",
+  "lv": 8,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L33"
+  ],
+  "ref": "Cap. 6.4 e 9",
+  "goal": "Conhecer o circuito de faturação eletrónica e arquivo digital legal.",
+  "steps": [
+   "Estudar o artigo oficial 'Comunicação de Documentos com SaphetyDoc via Webservice no PHC CS Desktop'",
+   "Localizar a configuração de Documentos Eletrónicos (código EAN da empresa, entidade)",
+   "Verificar requisitos CIUS-PT para faturação à Administração Pública",
+   "Explorar a configuração 'Arquivo Digital Legal com Cegid Docs' (artigo oficial + FAQs)",
+   "Simular/verificar o pré-lançamento de faturas de fornecedor CIUS-PT anexadas em PDF (202601+)",
+   "Desenhar em notas\\fat-eletronica.md o circuito: emissão → validação → envio → arquivo"
+  ],
+  "proofs": [
+   {
+    "d": "fat-eletronica.md com o circuito desenhado",
+    "k": "file"
+   },
+   {
+    "d": "Print de qualquer configuração de documentos eletrónicos disponível no seu ambiente",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que é CIUS-PT?",
+    "a": "A especificação portuguesa (Core Invoice Usage Specification) de faturação eletrónica, obrigatória em contratos públicos; o PHC suporta via módulos/webservices (SaphetyDoc, etc.)."
+   }
+  ]
+ },
+ {
+  "id": "L54",
+  "t": "Cegid Pulse: ativar, perguntar, Smart Tools",
+  "lv": 8,
+  "min": 45,
+  "meta": "15 min",
+  "pre": [
+   "L02"
+  ],
+  "ref": "Cap. 1.2 e 9",
+  "goal": "Usar a IA do ERP (plano Plus+) e perceber o que um parceiro pode construir.",
+  "steps": [
+   "Seguir os 3 passos de ativação: acesso ao módulo Cegid Pulse → ativar Cegid Account na ficha do utilizador → login (deteção automática)",
+   "Configurar autenticação Cegid Account (Microsoft/Google + 2FA, ativação por utilizador)",
+   "Perguntar ao assistente: 'Quais os clientes com faturas em atraso este mês?' e validar a resposta contra o monitor de dívidas",
+   "Explorar o assistente de negócio da área comercial (202601+)",
+   "Se disponível: configurar um assistente/Smart Tool simples (Configurador de Smart Tools) e estudar a função PromptFunction() na framework",
+   "Registar em notas\\pulse.md 5 perguntas úteis para um diretor comercial"
+  ],
+  "proofs": [
+   {
+    "d": "Print da conversa com o Pulse e resposta validada",
+    "k": "print"
+   },
+   {
+    "d": "pulse.md com as 5 perguntas",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "A partir de que plano o Pulse está disponível?",
+    "a": "Plano Plus (e superiores) do Cegid PHC Evolution."
+   }
+  ]
+ },
+ {
+  "id": "L55",
+  "t": "Upgrade de versão com validação de personalizações",
+  "lv": 8,
+  "min": 120,
+  "meta": "60 min",
+  "pre": [
+   "L51"
+  ],
+  "ref": "Cap. 10.3",
+  "goal": "Executar o ritual completo de atualização sem sustos.",
+  "steps": [
+   "Clonar a BD de treino (detach/copy/attach ou backup/restore)",
+   "Ler a Listagem de Novidades da versão de destino (Help Center > Novidades) — anotar o que afeta as suas personalizações",
+   "Fazer o upgrade no clone (procedimento oficial da versão)",
+   "Checklist de validação: abertura, séries, emissão de fatura, SAF-T, regras/eventos/campos de utilizador, IDUs, análises, web, alertas",
+   "Verificar a Análise Interna/Log de Código após o upgrade",
+   "Corrigir o que quebrou (adaptar código às novidades)",
+   "Escrever o procedimento de upgrade da casa em notas\\upgrade.md (plano de rollback incluído)"
+  ],
+  "proofs": [
+   {
+    "d": "upgrade.md com checklist preenchida",
+    "k": "file"
+   },
+   {
+    "d": "Print da versão nova na barra de status",
+    "k": "print"
+   },
+   {
+    "d": "Print de 1 personalização validada pós-upgrade",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Qual é o plano de rollback se o upgrade falhar?",
+    "a": "Restaurar o backup/clone anterior e manter a versão antiga até resolver — nunca fazer upgrade sem backup testado e janela de paragem."
+   }
+  ]
+ },
+ {
+  "id": "L56",
+  "t": "PROJETO FINAL: implementação completa da 'EMPRESA MODELO, LDA'",
+  "lv": 8,
+  "min": 600,
+  "meta": "—",
+  "pre": [
+   "L51",
+   "L53",
+   "L55"
+  ],
+  "ref": "Todo o guia + Cap. 12",
+  "goal": "Simular uma implementação real de ponta a ponta e apresentar como um consultor sénior.",
+  "steps": [
+   "Diagnóstico: escrever o cenário da empresa fictícia (2 armazéns, 3 vendedores, venda+compra+retalho, crédito controlado, SAF-T)",
+   "Configurar de raiz: empresa nova, parâmetros, utilizadores/grupos/acessos",
+   "Ficheiros: 30 clientes (com filiais/zonas), 15 fornecedores, 100 artigos (famílias, kits, lotes), preços e descontos",
+   "Circuitos: séries completas (FT/FS/FR/NC/ND/GT/PRO), DIs, compras com aprovação",
+   "Fiscal: SAF-T validado, ATCUD simulado, transporte por webservice (teste), inventário",
+   "Financeiro: C/C, cobranças, bancos/SEPA, tesouraria previsional, comissões",
+   "Análises: 3 mapas, 2 análises de utilizador, 1 multidimensional, painel/dashboard",
+   "Desenvolvimento: solução de Controlo de Crédito (L51) + 1 melhoria à escolha",
+   "Manual do utilizador da casa (5 páginas) + formação simulada de 30 min (gravada)",
+   "Defesa final: apresentar tudo em 10 min gravados, respondendo às perguntas do capítulo 13 do guia"
+  ],
+  "proofs": [
+   {
+    "d": "Dossier completo em C:\\PHC-Treino\\projeto-final\\ (prints, SQL, PDFs, SAF-T, docs)",
+    "k": "file"
+   },
+   {
+    "d": "Gravação da apresentação de 10 min",
+    "k": "file"
+   },
+   {
+    "d": "Manual do utilizador (PDF)",
+    "k": "file"
+   },
+   {
+    "d": "Autoavaliação com as checklists do guia (cap. 13) ≥ 90%",
+    "k": "oral"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que distingue um técnico de um consultor expert?",
+    "a": "O técnico configura o que pedem; o expert desenha o circuito completo (processo → configuração → fiscal → desenvolvimento → formação → operação) e antecipa riscos: upgrades, conformidade AT, performance e adoção pelos utilizadores."
+   }
+  ]
+ },
+ {
+  "id": "L57",
+  "t": "Contabilidade: arquitetura, contas e SNC",
+  "lv": 9,
+  "min": 75,
+  "meta": "30 min",
+  "pre": [
+   "L05"
+  ],
+  "ref": "Cap. 4.10 do guia + manuais in-app do módulo Contabilidade",
+  "goal": "Dominar a estrutura contabilística: SNC, contas, taxonomia e navegação no módulo (requer módulo Contabilidade instalado ou empresa demo com ele).",
+  "steps": [
+   "Abrir o módulo Contabilidade e mapear os menus principais (Contas, Diários, Movimentos, Mapas)",
+   "Explorar o Plano de Contas SNC: classes 1 a 8 (Meios financeiros, Terceiros, Inventários, Investimentos, Capital, Gastos, Rendimentos, Resultados)",
+   "Criar contas de terceiro nível para a empresa de treino (ex.: 211x clientes gerais, 221x fornecedores, 711x vendas por linha de negócio)",
+   "Configurar propriedades de uma conta: IVA associado, moeda, conta de contrapartida sugerida",
+   "Explorar a Tabela de Taxonomia (SNC) e o seu papel nas declarações",
+   "Consultar balancete/saldos das contas criadas (ainda sem movimento)",
+   "Documentar em notas o mapa de contas desenhado para a empresa de treino",
+   "Explorar a BD Pronta da Contabilidade (base de dados oficial de demonstração, já configurada) para comparar com o seu desenho de contas"
+  ],
+  "proofs": [
+   {
+    "d": "Print da árvore de contas com as contas novas criadas",
+    "k": "print"
+   },
+   {
+    "d": "Print da tabela de taxonomia aberta",
+    "k": "print"
+   },
+   {
+    "d": "notas/plano-contas.md com classes SNC e contas da empresa",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Quais são as 8 classes do SNC?",
+    "a": "1 Meios financeiros líquidos, 2 Terceiros, 3 Inventários e ativos biológicos, 4 Investimentos, 5 Capital, reservas e resultados transitados, 6 Gastos, 7 Rendimentos, 8 Resultados."
+   },
+   {
+    "q": "Para que serve a taxonomia?",
+    "a": "Liga cada conta às rubricas normalizadas exigidas nas declarações fiscais (IES/Modelo 22) — sem taxonomia correta, as declarações saem erradas."
+   },
+   {
+    "q": "Geral vs analítica: qual a diferença no âmbito oficial do módulo?",
+    "a": "A contabilidade geral produz as demonstrações legais (Balanço, DR, IES/Modelo 22); a analítica acrescenta centros de custo/dimensões para gestão interna. O módulo PHC cobre as duas."
+   }
+  ],
+  "links": [
+   {
+    "k": "manual",
+    "t": "Help Center — O que é e para que serve um Plano de Contas",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=23d85e%3A%3A57ebe5%3Ac8c559c"
+   },
+   {
+    "k": "manual",
+    "t": "Help Center — Constituição da Tabela do Plano de Contas",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=412111422-74%3A46414123WS"
+   },
+   {
+    "k": "manual",
+    "t": "Help Center — Opções do menu do Plano de Contas",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20344426"
+   },
+   {
+    "k": "doc",
+    "t": "Programa oficial — Certificação PHC CS Contabilidade (PDF)",
+    "u": "https://www.phc.pt/enews/PHC_HiTech_Perfil_Financeiro.pdf"
+   },
+   {
+    "k": "doc",
+    "t": "Ficha oficial do produto — PHC CS Contabilidade",
+    "u": "http://www.phc.pt/portal/p/contabilidade.aspx"
+   },
+   {
+    "k": "video",
+    "t": "Demonstração do módulo PHC CS Contabilidade (parceiro FTP, 16 min)",
+    "u": "https://www.youtube.com/watch?v=Byabq9c_U3I"
+   }
+  ]
+ },
+ {
+  "id": "L58",
+  "t": "Diários, documentos e numeração contabilística",
+  "lv": 9,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L57"
+  ],
+  "ref": "Cap. 4.10 + certificação (Diários, Documentos Pré-Definidos)",
+  "goal": "Organizar a escrituração: diários por natureza de operação e documentos contabilísticos numerados.",
+  "steps": [
+   "Explorar os diários existentes (geral, vendas, compras, recebimentos, pagamentos, caixa)",
+   "Criar um diário novo (ex.: 'Operações Treino') com numeração própria",
+   "Verificar as regras de numeração/sequência de documentos contabilísticos por diário",
+   "Consultar um diário preenchido e perceber cabeçalho vs linhas",
+   "Verificar o comportamento de documentos pré-numerados vs numeração automática",
+   "Anular/corrigir um documento de teste do diário (procedimento correto, sem apagar rasto)",
+   "Documentar em notas a estrutura de diários recomendada para a empresa de treino"
+  ],
+  "proofs": [
+   {
+    "d": "Print do diário criado com a sua configuração",
+    "k": "print"
+   },
+   {
+    "d": "Print de um diário consultado com documentos",
+    "k": "print"
+   },
+   {
+    "d": "notas/diarios.md com a estrutura proposta",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Por que separar operações por diário?",
+    "a": "Facilita auditoria, reconciliação e fecho: cada diário agrupa operações homogéneas (vendas, compras, caixa…), com numeração própria e controlo de sequências."
+   }
+  ],
+  "links": [
+   {
+    "k": "manual",
+    "t": "Help Center — Apresentação geral do módulo Contabilidade",
+    "u": "https://phc.pt/Portal/sug/ptxview.aspx?stamp=8235e59dfe42%3Acebg8958g"
+   },
+   {
+    "k": "doc",
+    "t": "Conteúdo programático oficial — aulas e-learning (inclui \"Como criar novos Diários\", 6 min)",
+    "u": "http://www.phc.pt/enews/Conte%C3%BAdo%20Program%C3%A1tico%20Certifica%C3%A7%C3%A3o%20PHC%20CS%20Desktop%20Enterprise.pdf"
+   },
+   {
+    "k": "canal",
+    "t": "Canal oficial YouTube — Cegid PHC",
+    "u": "https://www.youtube.com/@SoftwarePHC"
+   }
+  ]
+ },
+ {
+  "id": "L59",
+  "t": "Movimentos contabilísticos: introdução e controlo",
+  "lv": 9,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L58"
+  ],
+  "ref": "Cap. 4.10 (Introdução de Movimentos Contabilísticos)",
+  "goal": "Lançar movimentos manuais corretos: débito=crédito, datas, períodos, documentos de suporte.",
+  "steps": [
+   "Introduzir um movimento manual simples (2 linhas) e verificar o equilíbrio débito/crédito",
+   "Lançar um movimento com várias linhas e documento de suporte anexado (File Storage, se ativo)",
+   "Testar validações: período fechado, data inválida, conta inexistente",
+   "Consultar o histórico/razão de uma conta e seguir um movimento até ao documento original",
+   "Corrigir um lançamento errado pelo procedimento correto (estorno/retificação, nunca apagar às cegas)",
+   "Explorar a imputação a centros analíticos num movimento (se XL/analítica ativos)",
+   "Cronometrar um lançamento de 5 linhas — repetir até fluir"
+  ],
+  "proofs": [
+   {
+    "d": "Print do movimento equilibrado gravado",
+    "k": "print"
+   },
+   {
+    "d": "Print de uma validação a bloquear (período/data/conta)",
+    "k": "print"
+   },
+   {
+    "d": "Print do razão da conta com o movimento visível",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Regra de ouro de qualquer lançamento?",
+    "a": "Débito = Crédito (partida dobrada). O software valida e bloqueia movimentos desequilibrados."
+   },
+   {
+    "q": "Como se corrige um movimento errado já integrado?",
+    "a": "Por estorno/retificação com documento próprio (rasto auditável) — nunca por eliminação direta que quebre sequências e totais."
+   }
+  ],
+  "links": [
+   {
+    "k": "manual",
+    "t": "Help Center — Apresentação geral do módulo Contabilidade",
+    "u": "https://phc.pt/Portal/sug/ptxview.aspx?stamp=8235e59dfe42%3Acebg8958g"
+   },
+   {
+    "k": "video",
+    "t": "Demonstração do módulo PHC CS Contabilidade (parceiro FTP, 16 min)",
+    "u": "https://www.youtube.com/watch?v=Byabq9c_U3I"
+   },
+   {
+    "k": "doc",
+    "t": "Programa oficial — Certificação PHC CS Contabilidade (\"Introdução de documentos contabilísticos\")",
+    "u": "https://www.phc.pt/enews/PHC_HiTech_Perfil_Financeiro.pdf"
+   }
+  ]
+ },
+ {
+  "id": "L60",
+  "t": "Documentos pré-definidos a fundo",
+  "lv": 9,
+  "min": 90,
+  "meta": "30 min",
+  "pre": [
+   "L59"
+  ],
+  "ref": "Cap. 4.10 (Documentos pré-definidos na Gestão: 23 min do programa oficial)",
+  "goal": "Configurar a contabilização automática de TODOS os tipos de documento do Gestão.",
+  "steps": [
+   "Abrir os Documentos Pré-Definidos e estudar a anatomia de uma regra (tipo de documento → contas → diário)",
+   "Configurar a regra de faturas de venda: clientes (21), IVA liquidado (243), vendas (71)",
+   "Configurar compras: fornecedores (22), IVA dedutível (243), compras/inventários (31/61)",
+   "Configurar recibos e pagamentos (caixa/bancos vs terceiros)",
+   "Configurar regras por exceção: adiantamentos, NC/ND, documentos intra-UE (sem IVA)",
+   "Testar cada regra com documentos da empresa de treino num clone",
+   "Mapear clientes/fornecedores sem conta de integração e corrigir (rejeições típicas)",
+   "Documentar o mapa documento→contas em notas/pre-definidos.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print de 3 regras configuradas (venda, compra, recibo)",
+    "k": "print"
+   },
+   {
+    "d": "Lote de teste integrado com lançamentos corretos (print do diário)",
+    "k": "print"
+   },
+   {
+    "d": "pre-definidos.md com o mapa completo",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que acontece a um cliente sem conta de integração definida?",
+    "a": "O lançamento é rejeitado/fica pendente com erro — a integração exige mapping completo; valide sempre os ficheiros novos antes do lote."
+   }
+  ],
+  "links": [
+   {
+    "k": "manual",
+    "t": "Help Center — Constituição da Tabela de Documentos Predefinidos",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20369222"
+   },
+   {
+    "k": "doc",
+    "t": "Conteúdo programático oficial — \"Como criar Documentos Pré-Definidos\" (22 min) + \"na Gestão\" (23 min)",
+    "u": "http://www.phc.pt/enews/Conte%C3%BAdo%20Program%C3%A1tico%20Certifica%C3%A7%C3%A3o%20PHC%20CS%20Desktop%20Enterprise.pdf"
+   }
+  ]
+ },
+ {
+  "id": "L61",
+  "t": "Integrações em lote: correr, estornar, reconciliar",
+  "lv": 9,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L60"
+  ],
+  "ref": "Cap. 4.10 (Integrações da Gestão na Contabilidade)",
+  "goal": "Operar a integração periódica com segurança e reconciliar Gestão × Contabilidade ao cêntimo.",
+  "steps": [
+   "Correr a integração de um período (lote) e acompanhar o relatório de execução",
+   "Analisar rejeições/avisos do lote e corrigir na origem (ficheiros, contas)",
+   "Estornar um lote de teste e reintegrar corrigido",
+   "Reconciliar totais: vendas do Gestão (por série/tipo) × conta 71; compras × 31/61; IVA × 243",
+   "Conferir C/C de clientes: saldo do Gestão × saldo da conta 21 (subconta)",
+   "Conferir bancos: tesouraria × conta 12",
+   "Criar o checklist de reconciliação mensal em notas/reconciliacao.md"
+  ],
+  "proofs": [
+   {
+    "d": "Relatório de integração do lote (print/PDF)",
+    "k": "print"
+   },
+   {
+    "d": "Reconciliação Gestão×Contabilidade com totais iguais (print)",
+    "k": "print"
+   },
+   {
+    "d": "reconciliacao.md com o checklist",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Quando reconciliar?",
+    "a": "Sempre após cada integração e obrigatoriamente no fecho mensal — divergências descobertas tarde exigem estornos em massa."
+   }
+  ],
+  "links": [
+   {
+    "k": "manual",
+    "t": "Help Center — Página Contabilidade nas configurações de Compras",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20372467"
+   },
+   {
+    "k": "manual",
+    "t": "Help Center — Página Contabilidade nos Recibos",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20370972"
+   },
+   {
+    "k": "doc",
+    "t": "Conteúdo programático oficial — \"Integrações da Gestão na Contabilidade\" (45+36 min)",
+    "u": "http://www.phc.pt/enews/Conte%C3%BAdo%20Program%C3%A1tico%20Certifica%C3%A7%C3%A3o%20PHC%20CS%20Desktop%20Enterprise.pdf"
+   },
+   {
+    "k": "video",
+    "t": "PHC CS — Solução Financeira (visão oficial, 4 min)",
+    "u": "https://www.youtube.com/watch?v=lIQqjt4ObR4"
+   }
+  ]
+ },
+ {
+  "id": "L62",
+  "t": "Apuramento do IVA e Declaração Periódica",
+  "lv": 9,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L61"
+  ],
+  "ref": "Cap. 4.10 e 6.5 (Apuramento do IVA, Declaração Periódica)",
+  "goal": "Fechar o IVA do período: apuramento, declaração e coerência com e-Fatura.",
+  "steps": [
+   "Verificar as contas de IVA configuradas (liquidado, dedutível, regularizações)",
+   "Correr o Apuramento do IVA do período de treino e analisar o resultado (a pagar / a recuperar)",
+   "Explorar os campos da Declaração Periódica de IVA gerada (campos do impresso)",
+   "Verificar o suporte informático (XML) da Declaração Periódica para submissão no Portal das Finanças",
+   "Comparar valores declarados com o SAF-T de faturação do mesmo período",
+   "Simular a passagem de mensal a trimestral (regras e prazos)",
+   "Verificar o tratamento de operações intra-UE (autoliquidação) na declaração",
+   "Documentar o procedimento de fecho de IVA em notas/iva.md",
+   "Se aplicável à empresa de treino: identificar o regime especial de exigibilidade de caixa (IVA de caixa) e o tratamento de inversão do sujeito passivo (autoliquidação)"
+  ],
+  "proofs": [
+   {
+    "d": "Print do apuramento com valor a pagar/recuperar",
+    "k": "print"
+   },
+   {
+    "d": "Print da declaração periódica gerada",
+    "k": "print"
+   },
+   {
+    "d": "iva.md com o procedimento e prazos",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que dois grandes blocos o apuramento compara?",
+    "a": "IVA liquidado (das vendas) vs IVA dedutível (das compras/gastos) — a diferença é entregue ao Estado ou recuperada."
+   },
+   {
+    "q": "Quando se aplica a inversão do sujeito passivo?",
+    "a": "Em aquisições intracomunitárias e certos serviços (ex.: construção, sucata): quem adquire autoliquida o IVA — liquida e deduz em simultâneo, nos campos próprios da declaração."
+   }
+  ],
+  "links": [
+   {
+    "k": "manual",
+    "t": "Help Center — Como efetuar o apuramento de IVA",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=ddd%3A266g8c7e%3A%3A9c2225cg"
+   },
+   {
+    "k": "manual",
+    "t": "Help Center — O Apuramento do IVA e emissão do suporte informático",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20369176"
+   },
+   {
+    "k": "manual",
+    "t": "Help Center — Produzir a Declaração Periódica (passos oficiais)",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=14681bb964f86eb9g%3A45e9"
+   },
+   {
+    "k": "manual",
+    "t": "Help Center — Produção da Declaração Periódica do IVA em XML",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=221111%3A81-49156414123WS"
+   },
+   {
+    "k": "video",
+    "t": "Webinar oficial PHC — Novas obrigações legais (26 min)",
+    "u": "https://www.youtube.com/watch?v=NZIZOHo1zS0"
+   },
+   {
+    "k": "doc",
+    "t": "Programa oficial — Certificação (\"Conceito de IVA e suas Declarações\")",
+    "u": "https://www.phc.pt/enews/PHC_HiTech_Perfil_Financeiro.pdf"
+   }
+  ]
+ },
+ {
+  "id": "L63",
+  "t": "CEVMC, resultados e mapas de gestão",
+  "lv": 9,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L62"
+  ],
+  "ref": "Cap. 4.10 (CEVMC, Apuramento de Resultados, Mapas de Gestão)",
+  "goal": "Do resultado bruto ao resultado líquido: consumos, mapas e reporting de gestão.",
+  "steps": [
+   "Verificar o cálculo do CEVMC: compras ± variação de existências (inventários do Gestão)",
+   "Correr o apuramento de resultados do período (gastos vs rendimentos)",
+   "Emitir os Mapas de Gestão disponíveis (balancetes, Demonstração de Resultados, Balanço)",
+   "Localizar os mapas do âmbito oficial: Balanço, DR, Modelo 22 (com Pagamentos por Conta/PEC), rácios, ABDR (Anexo ao Balanço e DR), DFC (Demonstração dos Fluxos de Caixa) e IES/DA",
+   "Importar/exportar mapas de gestão (formatos para a direção/contabilista)",
+   "Comparar a margem bruta calculada com as análises de margem do Gestão",
+   "Explorar o conceito de 'BD Pronta' na Contabilidade (ambientes preparados)",
+   "Elaborar o report mensal de 1 página da empresa de treino (PDF)"
+  ],
+  "proofs": [
+   {
+    "d": "PDF do mapa de Demonstração de Resultados",
+    "k": "file"
+   },
+   {
+    "d": "PDF do Balanço do período",
+    "k": "file"
+   },
+   {
+    "d": "report-mensal.pdf de 1 página para a 'direção'",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Fórmula prática do CEVMC?",
+    "a": "Existências iniciais + compras (± custos de compra) − existências finais — é o custo do que foi vendido/consumido no período."
+   }
+  ],
+  "links": [
+   {
+    "k": "manual",
+    "t": "Help Center — Configuração do apuramento CEV",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20344409"
+   },
+   {
+    "k": "manual",
+    "t": "Help Center — Como efetuar o apuramento do CMVMC",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=4c37997f9bgd7%3A89157552"
+   },
+   {
+    "k": "manual",
+    "t": "Help Center — Apuramento de Resultados",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?ptxid=20344429"
+   },
+   {
+    "k": "video",
+    "t": "🎬 Demonstrações Financeiras — Ep.1 \"Contabilidade Inteligente\" (25 min)",
+    "u": "https://www.youtube.com/watch?v=-eKonAliBh4"
+   },
+   {
+    "k": "video",
+    "t": "Pagamento por Conta e PEC — Fiscalidade PHC (4 min)",
+    "u": "https://www.youtube.com/watch?v=3CMQyWfyIMU"
+   },
+   {
+    "k": "video",
+    "t": "Inventários com valorização de stocks — o que muda? (1 min)",
+    "u": "https://www.youtube.com/watch?v=dHE26bk9t50"
+   }
+  ]
+ },
+ {
+  "id": "L64",
+  "t": "Centros analíticos e contabilidade multidimensional (XL)",
+  "lv": 9,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L63"
+  ],
+  "ref": "Cap. 4.10 (Imputações em Centros Analíticos, PHC XL)",
+  "goal": "Acrescentar dimensões à contabilidade: departamentos, projetos, lojas — e medir rentabilidade por cada um.",
+  "steps": [
+   "Ativar/explorar centros analíticos (dimensões: departamento, projeto, filial)",
+   "Definir centros analíticos para a empresa de treino (ex.: Loja Lisboa, Loja Porto, Admin)",
+   "Imputar valores a centros em documentos do Gestão (campo centro analítico) e movimentos",
+   "Correr as imputações/análises por centro e ver rendimentos/gastos por dimensão",
+   "Configurar uma análise de rentabilidade por centro (resultado por loja/projeto)",
+   "Verificar o papel do PHC XL em grandes volumes de movimentos",
+   "Documentar o desenho analítico em notas/analitica.md",
+   "Em BD gama Enterprise: explorar o Plano de Contas Paralelo e as Naturezas e Dimensões (blocos oficiais avançados do programa de certificação)"
+  ],
+  "proofs": [
+   {
+    "d": "Print dos centros analíticos configurados",
+    "k": "print"
+   },
+   {
+    "d": "Print de um relatório por centro com resultados",
+    "k": "print"
+   },
+   {
+    "d": "analitica.md com o desenho (dimensões × regras de imputação)",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Contabilidade geral vs analítica?",
+    "a": "A geral responde 'quanto' (obrigações legais); a analítica responde 'onde/porquê' (rentabilidade por departamento, projeto, loja…) — dimensões extra sobre os mesmos movimentos."
+   },
+   {
+    "q": "Para que serve o Plano de Contas Paralelo?",
+    "a": "Manter uma segunda estrutura de contas em paralelo com a legal (visão de gestão, grupo ou outro referencial) — os mesmos movimentos alimentam os dois planos. Funcionalidade exclusiva da gama Enterprise."
+   }
+  ],
+  "links": [
+   {
+    "k": "doc",
+    "t": "Conteúdo programático oficial Enterprise — \"PHC XL CS\" (16), \"Plano de Contas Paralelo\" (14), \"Naturezas e Dimensões\" (16)",
+    "u": "http://www.phc.pt/enews/Conte%C3%BAdo%20Program%C3%A1tico%20Certifica%C3%A7%C3%A3o%20PHC%20CS%20Desktop%20Enterprise.pdf"
+   },
+   {
+    "k": "doc",
+    "t": "Descritivo completo oficial do módulo Contabilidade (PDF)",
+    "u": "https://www.phc.pt/enews/DescricaoCompletaContabilidade.pdf"
+   },
+   {
+    "k": "video",
+    "t": "Cegid Pulse — IA na gestão financeira (demonstração, 2 min)",
+    "u": "https://www.youtube.com/watch?v=Oj5PkSKz91o"
+   },
+   {
+    "k": "manual",
+    "t": "Help Center — Apresentação geral do módulo Contabilidade",
+    "u": "https://phc.pt/Portal/sug/ptxview.aspx?stamp=8235e59dfe42%3Acebg8958g"
+   }
+  ]
+ },
+ {
+  "id": "L65",
+  "t": "Fecho de ano e abertura do exercício seguinte",
+  "lv": 9,
+  "min": 90,
+  "meta": "30 min",
+  "pre": [
+   "L64"
+  ],
+  "ref": "Cap. 4.10 (Rotinas de Abertura de Novo Ano Contabilístico)",
+  "goal": "Executar as rotinas de viragem de ano com segurança: pré-fecho, encerramento, abertura, validação.",
+  "steps": [
+   "Correr o checklist de pré-fecho: integrações completas, IVA apurado, reconciliações OK, inventário valorizado",
+   "Verificar movimentos em rascunho/por aprovar e períodos abertos",
+   "Executar o apuramento de resultados anual (conta 8 → resultados transitados/reservas)",
+   "Correr a rotina de Abertura de Novo Ano Contabilístico (balanços de abertura)",
+   "Explorar a grelha de transição e a consulta de movimentos do ano anterior (funcionalidades oficiais de continuidade entre exercícios)",
+   "Validar os saldos de abertura conta a conta (comparar com balancete final do ano anterior)",
+   "Confirmurar períodos do novo ano e acessos",
+   "Documentar o procedimento de viragem em notas/fecho-ano.md (com plano de reversão)",
+   "Gerar e validar o SAF-T (PT) da Contabilidade do exercício (ficheiro XML de auditoria, entregue com a IES) — distinto do SAF-T de faturação"
+  ],
+  "proofs": [
+   {
+    "d": "Print do balancete final do ano N e do balanço de abertura do ano N+1 (valores coerentes)",
+    "k": "print"
+   },
+   {
+    "d": "Print da rotina de abertura executada",
+    "k": "print"
+   },
+   {
+    "d": "fecho-ano.md com checklist + rollback",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Regra absoluta antes da viragem de ano?",
+    "a": "Backup completo testado + clone para simular a rotina antes de executar em produção; uma abertura mal feita obriga a estornos complexos."
+   },
+   {
+    "q": "O que são os \"17 meses\" da Contabilidade PHC?",
+    "a": "É a capacidade oficial de continuar a trabalhar no exercício anterior durante os primeiros meses do novo ano (até ao prazo legal de fecho, 31 de maio) — no limite, 12 meses do ano + 5 meses de correções em simultâneo com o ano novo."
+   }
+  ],
+  "links": [
+   {
+    "k": "manual",
+    "t": "Help Center — Como fazer a gestão de anos da Contabilidade",
+    "u": "https://helpcenter.phccs.net/pt/sug/ptxview.aspx?stamp=%3A11111619-39156414123WS"
+   },
+   {
+    "k": "video",
+    "t": "🎬 Encerramento de Contas — Ep.2 \"Contabilidade Inteligente\" (22 min)",
+    "u": "https://www.youtube.com/watch?v=VhY1LigOQd0"
+   },
+   {
+    "k": "video",
+    "t": "O que é o selo SVAT? SAF-T (PT) da contabilidade (4 min)",
+    "u": "https://www.youtube.com/watch?v=TKBfLQ12Qyc"
+   },
+   {
+    "k": "doc",
+    "t": "Programa oficial — Certificação (\"O Fecho de Contas\")",
+    "u": "https://www.phc.pt/enews/PHC_HiTech_Perfil_Financeiro.pdf"
+   }
+  ]
+ },
+ {
+  "id": "L66",
+  "t": "Imobilizado: ficha do ativo, depreciações, abates",
+  "lv": 9,
+  "min": 90,
+  "meta": "30 min",
+  "pre": [
+   "L57"
+  ],
+  "ref": "Programa oficial (Criação da Ficha do Ativo, Depreciações, Reavaliações, Revalorizações, Imparidades, Abate/Alienação)",
+  "goal": "Gerir o ciclo de vida completo de um ativo fixo tangível no módulo Imobilizado.",
+  "steps": [
+   "Criar a ficha de um ativo (ex.: viatura de mercadorias da empresa de treino): custo de aquisição, data de entrada, taxa/método de depreciação",
+   "Configurar a conta do ativo, depreciações acumuladas e gastos de depreciação (integração)",
+   "Processar as depreciações do período e verificar o mapa",
+   "Simular uma depreciação em duodécimos (entrada a meio do ano)",
+   "Registar uma imparidade (perda de valor) e a sua reversão",
+   "Registar uma reavaliação do ativo (atualização legal/fiscal de valor) e comparar com uma revalorização — verificar o impacto nas depreciações futuras",
+   "Processar o abate/alienação do ativo (venda) e verificar ganhos/perdas",
+   "Consultar o circuito genérico do Imobilizado e o histórico de recuperação",
+   "Integrar os movimentos do Imobilizado na Contabilidade"
+  ],
+  "proofs": [
+   {
+    "d": "Print da ficha do ativo com depreciações processadas",
+    "k": "print"
+   },
+   {
+    "d": "Print do abate/alienação com resultado (ganho/perda)",
+    "k": "print"
+   },
+   {
+    "d": "Mapa de imobilizado do período (PDF)",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que contas um ativo movimenta ao longo da vida?",
+    "a": "Ativo (43x), depreciações acumuladas (438/448x conforme plano), gasto de depreciações (64/65), e na alienação: baixa do ativo, acumuladas, e resultado (68/78)."
+   },
+   {
+    "q": "Depreciação em duodécimos: quando?",
+    "a": "Quando o ativo entra em funcionamento a meio do exercício — deprecia-se apenas os meses de utilização nesse ano."
+   }
+  ],
+  "links": [
+   {
+    "k": "video",
+    "t": "🎬 Gestão de ativos — Ep.3 \"Contabilidade Inteligente\" (19 min)",
+    "u": "https://www.youtube.com/watch?v=pVBH69ifVrk"
+   },
+   {
+    "k": "doc",
+    "t": "Conteúdo programático oficial — circuito do Imobilizado (ficha, depreciações, reavaliações, revalorizações, imparidades, abate)",
+    "u": "http://www.phc.pt/enews/Conte%C3%BAdo%20Program%C3%A1tico%20Certifica%C3%A7%C3%A3o%20PHC%20CS%20Desktop%20Enterprise.pdf"
+   },
+   {
+    "k": "manual",
+    "t": "Help Center — Apresentação geral do módulo Contabilidade (integração Imobilizado→Contab)",
+    "u": "https://phc.pt/Portal/sug/ptxview.aspx?stamp=8235e59dfe42%3Acebg8958g"
+   }
+  ]
+ },
+ {
+  "id": "L67",
+  "t": "Funcionários: ficha completa, contratos e admissão",
+  "lv": 10,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L02"
+  ],
+  "ref": "Programa oficial (registo de funcionários) + manuais in-app do módulo Pessoal",
+  "goal": "Registar e contratar corretamente: a ficha do funcionário é a base de todo o processamento (requer módulo Pessoal ou empresa demo com ele).",
+  "steps": [
+   "Criar o funcionário 1 da empresa de treino: identificação completa (NIF, NISS, morada, IBAN, contacto)",
+   "Configurar o contrato: tipo (termo certo/incerto/sem termo), data de entrada, categoria/profissão, vencimento base, subsídio de alimentação",
+   "Definir a taxa de retenção de IRS (situação familiar: estado civil, dependentes) e verificar a tabela aplicável",
+   "Registar a admissão na Segurança Social (procedimento/comunicação — DRI) e guardar o comprovativo",
+   "Criar um segundo funcionário a tempo parcial (percentagem/horas) e um 'Outro Profissional' (recibo verde/serviços)",
+   "Explorar o histórico contratual e anexos da ficha (contrato, documentos RGPD)",
+   "Documentar o checklist de admissão em notas/admissao.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print da ficha do funcionário com contrato configurado",
+    "k": "print"
+   },
+   {
+    "d": "Print do cálculo da taxa de IRS sugerida pela situação familiar",
+    "k": "print"
+   },
+   {
+    "d": "admissao.md com o checklist completo",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que dados da ficha afetam diretamente o processamento?",
+    "a": "Vencimento base, tipo de contrato/percentagem, situação familiar (taxa IRS), NISS (TSU), IBAN (pagamento) e subsídio de alimentação."
+   },
+   {
+    "q": "O que distingue 'Funcionário' de 'Outros Profissionais'?",
+    "a": "Funcionário tem vínculo laboral (TSU, IRS retido, férias/subsídios); Outros Profissionais são prestadores externos (recibos verdes) com tratamento fiscal próprio."
+   }
+  ]
+ },
+ {
+  "id": "L68",
+  "t": "Processamento de vencimentos: o ciclo mensal",
+  "lv": 10,
+  "min": 90,
+  "meta": "30 min",
+  "pre": [
+   "L67"
+  ],
+  "ref": "Programa oficial (Processamento de Vencimentos)",
+  "goal": "Processar um mês completo de salários com rigor: abonos, descontos, líquidos e recibos.",
+  "steps": [
+   "Abrir o processamento do mês de treino e verificar a lista de funcionários abrangidos",
+   "Processar: vencimento base + subsídio de alimentação (modo/limite) + horas extra de teste",
+   "Verificar descontos: IRS (retenção) e TSU do trabalhador (11%)",
+   "Conferir a TSU da entidade patronal (23,75%) nos mapas de encargos",
+   "Gerar os recibos de vencimento (PDF) e conferir 2 casos manualmente (cálculo à mão)",
+   "Processar em lote e verificar o resumo/erros do lote",
+   "Fechar o processamento do mês e verificar o bloqueio a alterações",
+   "Anular/reprocessar um mês de teste e compreender o procedimento correto"
+  ],
+  "proofs": [
+   {
+    "d": "Recibo de vencimento gerado (PDF) com valores conferidos manualmente",
+    "k": "file"
+   },
+   {
+    "d": "Print do resumo do lote com totais (líquidos, IRS, TSU)",
+    "k": "print"
+   },
+   {
+    "d": "notas/processamento.md: ciclo mês a mês + conferência manual de 1 recibo",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Quais as taxas gerais da TSU?",
+    "a": "11% a cargo do trabalhador (retidos no recibo) e 23,75% a cargo da entidade patronal — sobre a matéria coletável."
+   },
+   {
+    "q": "Por que conferir manualmente o primeiro recibo de cada caso novo?",
+    "a": "Porque situações especiais (parte de mês, faltas, isenções, duodécimos de subsídios) têm regras de cálculo que só a conferência garante."
+   }
+  ]
+ },
+ {
+  "id": "L69",
+  "t": "Tabelas de IRS e atualizações legais",
+  "lv": 10,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L68"
+  ],
+  "ref": "Novidades 202601 (tabelas com data de vigência) + Calendário PHC",
+  "goal": "Dominar as tabelas de retenção na fonte: carregamento, vigências e casos especiais.",
+  "steps": [
+   "Explorar as tabelas de retenção de IRS ativas (gerais, por situação familiar)",
+   "Carregar tabelas novas antecipadamente com data de vigência futura (coexistência — novidade 202601)",
+   "Processar um vencimento com data anterior à vigência e outro posterior — verificar a tabela aplicada",
+   "Testar casos especiais: pessoa com deficiência, casado dois titulares, dependentes",
+   "Verificar o efeito de uma taxa manual diferente da sugerida (com justificação)",
+   "Consultar o histórico de alterações de tabelas",
+   "Documentar o procedimento de atualização de tabelas em notas/irs.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print das tabelas com datas de vigência (antiga e nova coexistindo)",
+    "k": "print"
+   },
+   {
+    "d": "Dois recibos (antes/depois da vigência) com retenções diferentes",
+    "k": "print"
+   },
+   {
+    "d": "irs.md com o procedimento de atualização",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que mudou com as tabelas com data de vigência (202601)?",
+    "a": "Podem carregar-se tabelas futuras antecipadamente: o software aplica automaticamente a tabela correta pela data do processamento — sem corridas de última hora."
+   }
+  ]
+ },
+ {
+  "id": "L70",
+  "t": "Férias, faltas, horas e ausências",
+  "lv": 10,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L68"
+  ],
+  "ref": "Programa oficial (Marcação de férias, Horas e Faltas, Mapa de Férias)",
+  "goal": "Gerir o tempo: direitos de férias, marcações, faltas justificadas/injustificadas e horas extra.",
+  "steps": [
+   "Verificar o direito de férias do funcionário (22 dias úteis + majorações, se aplicável)",
+   "Marcar férias para 2 funcionários (com aprovação, se configurada) e ver o efeito no mapa",
+   "Registar faltas: justificada (com perda/não de retribuição) e injustificada — efeito no processamento",
+   "Registar horas extra (normais/isentas) e feriados trabalhados",
+   "Emitir o Mapa de Férias obrigatório e o relatório de horas/faltas",
+   "Testar o meio-dia de férias (funcionalidade específica) e faltas por motivo legal",
+   "Simular o efeito de faltas no recibo do mês seguinte"
+  ],
+  "proofs": [
+   {
+    "d": "Print do mapa de férias com as marcações",
+    "k": "print"
+   },
+   {
+    "d": "Recibo com desconto de falta injustificada (print/PDF)",
+    "k": "print"
+   },
+   {
+    "d": "Print do registo de horas extra processadas",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Dias de férias por ano (regra geral)?",
+    "a": "22 dias úteis, com majorações possíveis (ex.: sem faltas); o gozo e o pagamento seguem o Código do Trabalho e o mapa de férias é obrigatório."
+   },
+   {
+    "q": "Falta justificada paga sempre?",
+    "a": "Não — há faltas justificadas com perda de retribuição (conforme o tipo); o software aplica a regra configurada por tipo de falta."
+   }
+  ]
+ },
+ {
+  "id": "L71",
+  "t": "Declarações obrigatórias: DMR, Segurança Social, Relatório Único",
+  "lv": 10,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L68"
+  ],
+  "ref": "Programa oficial (Mapas Obrigatórios) + novidades 202601 (DMR sem negativos, 2FA SS)",
+  "goal": "Cumprir o calendário declarativo sem falhas: AT e Segurança Social.",
+  "steps": [
+   "Gerar a Declaração Mensal de Remunerações (DMR) do mês de treino — verificar a validação de valores negativos (202601)",
+   "Preparar a declaração à Segurança Social (DRI) e o ficheiro de entrega",
+   "Verificar a comunicação com a Segurança Social Direta e o requisito de 2FA (obrigatório para empresas desde 12/05/2026)",
+   "Explorar o Relatório Único (anexos de recursos humanos) e os prazos",
+   "Emitir mapas obrigatórios: quadro de pessoal, fluxos de contratação/cessação",
+   "Verificar o tratamento de 'Outros Profissionais' nas declarações",
+   "Montar o calendário declarativo anual em notas/declaracoes.md (quem, o quê, quando)"
+  ],
+  "proofs": [
+   {
+    "d": "DMR gerada (print do ecrã de validação/entrega)",
+    "k": "print"
+   },
+   {
+    "d": "Print da configuração/comunicação SS Direta (2FA)",
+    "k": "print"
+   },
+   {
+    "d": "declaracoes.md com o calendário anual",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que a 2FA mudou na Segurança Social (2026)?",
+    "a": "Desde 12/05/2026 a autenticação de dois fatores é obrigatória para empresas na SS Direta — o software foi atualizado (202601) para manter as comunicações."
+   },
+   {
+    "q": "DMR: que regra nova existe desde a 202601?",
+    "a": "A emissão sem valores negativos — evita rejeições e correções na entrega à AT."
+   }
+  ]
+ },
+ {
+  "id": "L72",
+  "t": "Cessação de contratos: aviso, cálculos e fundos",
+  "lv": 10,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L70"
+  ],
+  "ref": "Programa oficial (Avisos de Fim de contrato, Cálculo de valores a pagar à saída, Fundo Compensação)",
+  "goal": "Desligar corretamente: pré-aviso, acerto final e obrigações associadas.",
+  "steps": [
+   "Emitir o aviso de fim de contrato (termo certo a caducar) com os prazos legais",
+   "Usar o cálculo automático de valores a pagar à saída: férias não gozadas, proporcionais de subsídios, outros créditos",
+   "Verificar o tratamento de faltas/adiantamentos pendentes no acerto",
+   "Explorar o Fundo de Compensação do Trabalho (FGCT/FCT) quando aplicável: entregas e registos",
+   "Processar o último recibo (com as rubricas de cessação) e conferir manualmente",
+   "Registar a cessação na ficha (data, motivo) e verificar a saída dos mapas/declarações",
+   "Documentar o checklist de desligamento em notas/cessacao.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print do cálculo de valores à saída com as parcelas",
+    "k": "print"
+   },
+   {
+    "d": "Último recibo processado (PDF) conferido",
+    "k": "file"
+   },
+   {
+    "d": "cessacao.md com o checklist legal",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que entra tipicamente no acerto final?",
+    "a": "Retribuição do mês/proporcional, férias vencidas não gozadas e respetivo subsídio, proporcionais de subsídio de férias/Natal (conforme o regime) e outros créditos/débitos."
+   }
+  ]
+ },
+ {
+  "id": "L73",
+  "t": "Adiantamentos, despesas, penhoras e remunerações em espécie",
+  "lv": 10,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L68"
+  ],
+  "ref": "Programa oficial (Despesas de Funcionários, Penhoras de vencimentos, Remunerações em espécie, Vales Sociais)",
+  "goal": "Dominar os casos especiais que aparecem todos os meses em qualquer empresa.",
+  "steps": [
+   "Registar um adiantamento salarial e verificar o desconto automático no recibo seguinte",
+   "Configurar e processar uma despesa de funcionário (reembolso com documento de suporte)",
+   "Registar uma penhora de vencimento (ofício judicial) e verificar o limite/legalidade do desconto",
+   "Processar uma remuneração em espécie (ex.: viatura para uso pessoal — enquadramento IRS/TSU)",
+   "Explorar vales sociais (apoios) e o seu tratamento",
+   "Testar o processamento de penhoras na web (novidade 202601) se tiver PHC CS Web",
+   "Documentar cada caso com a regra aplicada em notas/especiais.md"
+  ],
+  "proofs": [
+   {
+    "d": "Recibo com desconto de adiantamento (print/PDF)",
+    "k": "print"
+   },
+   {
+    "d": "Recibo com penhora aplicada dentro do limite (print)",
+    "k": "print"
+   },
+   {
+    "d": "especiais.md com os 4 casos e regras",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Penhora de vencimento: que cuidado essencial?",
+    "a": "Respeitar os limites legais de impenhorabilidade (o mínimo vital não pode ser penhorado) e documentar o ofício/processo judicial no registo."
+   }
+  ]
+ },
+ {
+  "id": "L74",
+  "t": "Pessoal → Contabilidade + pagamentos SEPA de salários",
+  "lv": 10,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L68",
+   "L60"
+  ],
+  "ref": "Programa oficial (Automatização de transferências de vencimentos) + Cap. 4.10",
+  "goal": "Fechar o ciclo RH: contabilização automática dos salários e pagamento em lote ao banco.",
+  "steps": [
+   "Configurar os documentos pré-definidos do processamento (contas 23 Pessoal, 24 Estado/IRS, Segurança Social, 63 gastos com pessoal)",
+   "Integrar o processamento do mês na Contabilidade e conferir o lançamento (débitos/créditos)",
+   "Gerar o ficheiro SEPA de transferências de vencimentos para o banco",
+   "Validar o ficheiro (IBANs, totais = líquido a pagar) e simular a entrega",
+   "Conferir: líquido dos recibos = total do ficheiro SEPA = crédito da conta 23 na contabilidade",
+   "Configurar avisos/notificações de fim de mês (alertas de processamento)",
+   "Elaborar o procedimento de fecho mensal de RH em notas/fecho-rh.md (calendário: processar → integrar → pagar → declarar)"
+  ],
+  "proofs": [
+   {
+    "d": "Lançamento contabilístico do processamento integrado (print)",
+    "k": "print"
+   },
+   {
+    "d": "Ficheiro SEPA gerado com total = líquidos (print)",
+    "k": "file"
+   },
+   {
+    "d": "fecho-rh.md com o calendário mensal completo",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que contas o processamento movimenta na contabilidade?",
+    "a": "Gastos com pessoal (63x) a débito; a crédito: remunerações a pagar (23), retenções de IRS (24) e Segurança Social (24/23x conforme plano) — o pagamento depois debita 23 contra banco (12)."
+   },
+   {
+    "q": "Reconciliação final do ciclo de RH?",
+    "a": "Recibos (líquidos) = SEPA = conta 23 paga = declarações (DMR/SS) coerentes. Qualquer diferença bloqueia o fecho."
+   }
+  ]
+ },
+ {
+  "id": "L75",
+  "t": "POS: arquitetura, lojas, séries e acessos",
+  "lv": 11,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L15"
+  ],
+  "ref": "Programa oficial (Acessos no módulo POS, Tabela de Lojas) + manuais in-app do POS",
+  "goal": "Montar a base do retalho: loja, operadores, série de talão/FS e permissões (requer módulo POS ou demo com ele).",
+  "steps": [
+   "Distinguir os três contextos: POS Desktop (backoffice), POS Front (toque/venda) e POS Web",
+   "Criar/configurar a Tabela de Lojas (a loja da empresa de treino, com armazém associado)",
+   "Criar operadores de caixa com acessos próprios (vender, anular linha, desconto, fecho — permissões separadas)",
+   "Configurar/verificar a série de documentos do POS (Fatura Simplificada, consumidor final, numeração)",
+   "Definir formas de pagamento do balcão (numerário, MB, TPA, vouchers)",
+   "Associar a loja ao armazém de stock (LOJA do perfil de empresa)",
+   "Configurar o cliente 'Consumidor Final' e as regras de NIF no talão",
+   "Documentar o desenho da loja em notas/pos-base.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print da ficha da loja com armazém associado",
+    "k": "print"
+   },
+   {
+    "d": "Print dos acessos de 2 operadores com permissões diferentes",
+    "k": "print"
+   },
+   {
+    "d": "pos-base.md com o desenho (loja, série, pagamentos, perfis)",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que documento fiscal o POS emite tipicamente?",
+    "a": "Fatura Simplificada (FS) a consumidor final — com QR/ATCUD como qualquer documento fiscalmente relevante; fatura completa quando o cliente pede NIF."
+   },
+   {
+    "q": "Por que permissões granulares no POS?",
+    "a": "Caixa é ponto de risco: anulações, descontos e aberturas de gaveta têm de ser restritos e auditáveis por operador."
+   }
+  ]
+ },
+ {
+  "id": "L76",
+  "t": "POS Front: um dia na loja",
+  "lv": 11,
+  "min": 90,
+  "meta": "30 min",
+  "pre": [
+   "L75"
+  ],
+  "ref": "Programa oficial (Um dia na Loja, 36 min + POS Front)",
+  "goal": "Operar o ponto de venda de ponta a ponta como um caixa treinado.",
+  "steps": [
+   "Abrir o POS Front em modo toque e mapear a interface (famílias, artigos, busca, carrinho)",
+   "Vender com leitura de código de barras (simulado) e com busca por designação",
+   "Aplicar desconto de linha (com permissão) e vender artigo pesável/quantidade fracionada se configurado",
+   "Receber em numerário (com troco) e por MB/TPA (simulado)",
+   "Emitir talão/FS e segunda via (reimpressão com permissão)",
+   "Fazer uma devolução/troca: NC ou retorno no POS com reposição de stock",
+   "Registar venda a cliente identificado (NIF na fatura) e consultar o histórico do documento no Gestão",
+   "Vender com artigo sem stock (ver comportamento configurado) e suspender/retomar um talão"
+  ],
+  "proofs": [
+   {
+    "d": "Print/PDF de 3 talões (venda numerário, venda MB, devolução)",
+    "k": "file"
+   },
+   {
+    "d": "Print do stock da loja atualizado após as operações",
+    "k": "print"
+   },
+   {
+    "d": "Cronómetro: 5 vendas completas em < 5 min (registar tempo)",
+    "k": "oral"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que acontece no Gestão quando o POS vende?",
+    "a": "A série do POS movimenta stock (baixa no armazém da loja), conta corrente (se cliente identificado/pendente) e tesouraria (entrada na caixa) — a venda de balcão integra-se como qualquer FS."
+   }
+  ]
+ },
+ {
+  "id": "L77",
+  "t": "Caixas: transferências, sangrias e fecho",
+  "lv": 11,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L76"
+  ],
+  "ref": "Programa oficial (Transferências entre Caixas, Histórico de Caixa, Contar Notas e Moedas, Reimprimir Fecho)",
+  "goal": "Controlar o numerário do dia: abertura, sangrias, transferências e fecho com contagem.",
+  "steps": [
+   "Abrir a caixa (fundo de maneio) e registar a abertura",
+   "Fazer uma sangria (retirada de numerário para o cofre) e documentar o motivo",
+   "Executar uma transferência entre caixas (caixa loja → caixa sede/banco)",
+   "Chegar ao fim do turno: executar o fecho de caixa com contagem de notas e moedas",
+   "Comparar contagem física vs sistema: identificar e justificar diferenças (quebra/sobra de caixa)",
+   "Reimprimir o fecho de caixa (com acessos) e consultar o histórico de caixa",
+   "Verificar a integração do fecho na tesouraria (conta caixa → banco)",
+   "Definir a rotina diária de caixa em notas/caixa.md (abertura → sangrias → fecho → depósito)"
+  ],
+  "proofs": [
+   {
+    "d": "Print do fecho de caixa com contagem e diferenças",
+    "k": "print"
+   },
+   {
+    "d": "Print da transferência entre caixas",
+    "k": "print"
+   },
+   {
+    "d": "caixa.md com a rotina diária",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Para que servem sangrias frequentes?",
+    "a": "Reduzir o numerário em gaveta (risco de roubo/perda) — o excedente vai para cofre/banco, mantendo a gaveta no mínimo operacional."
+   },
+   {
+    "q": "Diferença no fecho: o que fazer?",
+    "a": "Registar como quebra/sobra de caixa com justificação e responsável; investigar padrões (operador, turno, método de pagamento) se recorrente."
+   }
+  ]
+ },
+ {
+  "id": "L78",
+  "t": "Vales: reembolso, oferta e desconto",
+  "lv": 11,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L76"
+  ],
+  "ref": "Programa oficial (Vales de Reembolso + circuito, Assistente em Touch, Cheques Oferta, Vales de Desconto)",
+  "goal": "Dominar os instrumentos promocionais e de devolução de dinheiro do retalho.",
+  "steps": [
+   "Configurar/verificar os tipos de vale: reembolso, oferta (cheque-oferta) e desconto",
+   "Emitir um vale de reembolso numa devolução sem talão original (crédito para compra futura)",
+   "Usar o circuito completo do vale: emissão → validade → utilização numa venda → saldo/restante",
+   "Testar o Assistente de vales de reembolso em modo touch",
+   "Emitir e vender um cheque-oferta (valor fixo) e resgatá-lo",
+   "Aplicar um vale de desconto numa venda e verificar o efeito no documento/IVA",
+   "Consultar o relatório de vales emitidos/utilizados/expirados",
+   "Documentar as regras da casa para vales em notas/vales.md (validades, acumulabilidade, troco)"
+  ],
+  "proofs": [
+   {
+    "d": "Print do circuito: vale emitido na devolução e usado numa venda",
+    "k": "print"
+   },
+   {
+    "d": "Print do cheque-oferta vendido e resgatado",
+    "k": "print"
+   },
+   {
+    "d": "vales.md com a política definida",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Vale de reembolso vs nota de crédito?",
+    "a": "NC é o documento fiscal de devolução de dinheiro de uma fatura; o vale de reembolso é crédito comercial para futura compra (sem saída de dinheiro) — a devolução em dinheiro segue o caminho fiscal normal."
+   },
+   {
+    "q": "Cheque-oferta vendido: que IVA?",
+    "a": "Vouchers têm regras próprias (monofuncionais vs multifuncionais) — valide o enquadramento fiscal com o contabilista antes de configurar."
+   }
+  ]
+ },
+ {
+  "id": "L79",
+  "t": "TPA, pagamentos eletrónicos e segundo monitor",
+  "lv": 11,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L76"
+  ],
+  "ref": "Programa oficial (Ligação com TPA's, Suporte para segundo monitor no POS desktop)",
+  "goal": "Integrar meios de pagamento e a experiência do cliente no balcão.",
+  "steps": [
+   "Explorar a configuração de ligação a TPA (terminal de pagamento automático) no POS",
+   "Simular uma venda com pagamento por TPA e verificar o registo/cruzamento no talão",
+   "Configurar referências Multibanco para pagamentos pendentes (encomendas de balcão)",
+   "Ativar o segundo monitor no POS Desktop (Advanced+): o que o cliente vê (publicidade/totais)",
+   "Verificar pagamentos online (Unicre/PayPal) nos documentos com PHC CS Web",
+   "Conferir no fecho de caixa o breakdown por meio de pagamento (numerário vs TPA vs MB)",
+   "Documentar o reconciliation de TPA: talões do terminal × fecho POS × extrato bancário"
+  ],
+  "proofs": [
+   {
+    "d": "Print de venda com pagamento TPA registado",
+    "k": "print"
+   },
+   {
+    "d": "Print do fecho com totais por meio de pagamento",
+    "k": "print"
+   },
+   {
+    "d": "notas/tpa.md com o procedimento de reconciliation",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Por que reconciliar TPA separadamente?",
+    "a": "O dinheiro do TPA entra no banco dias depois (com comissão): POS regista a venda, banco regista o líquido — sem reconciliation, o fecho 'fecha' mas a tesouraria não."
+   }
+  ]
+ },
+ {
+  "id": "L80",
+  "t": "Promoções e campanhas no retalho",
+  "lv": 11,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L76",
+   "L11"
+  ],
+  "ref": "Programa oficial (Tipos de promoções) + Cap. 4.8 (Promoções e campanhas)",
+  "goal": "Configurar e validar promoções de loja sem furar margens nem a fiscalidade.",
+  "steps": [
+   "Levantar os tipos de promoção disponíveis (percentagem, valor, 2 por 1, pack, artigo oferta — conforme versão)",
+   "Criar uma promoção com datas de validade para 3 artigos da empresa de treino",
+   "Criar uma campanha (desconto progressivo por quantidade) e testar no POS Front",
+   "Verificar a prioridade/conflito entre promoção, tabela de preços e desconto de cliente",
+   "Confirmar o valor tributável no talão (IVA incide sobre o preço efetivamente cobrado)",
+   "Testar o fim da promoção (data) — o preço volta ao normal automaticamente",
+   "Medir o efeito: relatório de vendas dos artigos promovidos antes/depois",
+   "Documentar a política promocional em notas/promos.md (quem aprova, margem mínima)"
+  ],
+  "proofs": [
+   {
+    "d": "Print da promoção configurada com validades",
+    "k": "print"
+   },
+   {
+    "d": "Talão com artigo promovido (preço promocional visível)",
+    "k": "print"
+   },
+   {
+    "d": "promos.md com a política e controlos",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "IVA numa promoção '2 por 1'?",
+    "a": "O IVA incide sobre o valor efetivamente cobrado ao cliente (o preço promocional) — a configuração do documento tem de refletir o desconto real, não o preço de tabela."
+   }
+  ]
+ },
+ {
+  "id": "L81",
+  "t": "Integração POS ↔ Gestão e monitor do POS",
+  "lv": 11,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L77"
+  ],
+  "ref": "Programa oficial (Monitor do PHC POS, Templates no POS Desktop) + Cap. 4.2",
+  "goal": "Ver a loja como parte do ERP: fluxos, monitorização e templates.",
+  "steps": [
+   "Seguir uma venda POS até ao Gestão: documento FS na tabela de faturação, stock, tesouraria",
+   "Configurar templates no POS Desktop (layout do talão, logótipo, mensagens legais/QR/ATCUD)",
+   "Abrir o Monitor do PHC POS: o que vigia (caixas abertas, documentos, estados)",
+   "Simular um cenário de quebra de rede/BD durante uma venda (comportamento offline/pendentes, se suportado)",
+   "Verificar a exportação/fecho do dia: resumo de vendas por loja/período para a direção",
+   "Testar a emissão de fatura completa a partir de talões FS (quando o cliente pede fatura com NIF depois)",
+   "Documentar o fluxo completo loja→ERP em notas/pos-erp.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print do documento POS visível no ecrã de Documentos de Faturação do Gestão",
+    "k": "print"
+   },
+   {
+    "d": "Print do Monitor do POS com dados",
+    "k": "print"
+   },
+   {
+    "d": "pos-erp.md com o fluxo desenhado",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Talão FS e fatura com NIF pedida depois: como se resolve?",
+    "a": "Conforme as regras em vigor, emite-se a fatura/ou substitui-se o documento dentro dos prazos legais — o PHC suporta o fluxo; valide o procedimento atual com o contabilista."
+   }
+  ]
+ },
+ {
+  "id": "L82",
+  "t": "Retalho avançado: grelhas, códigos de barras e omnicanal",
+  "lv": 11,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L08"
+  ],
+  "ref": "Cap. 4.1 (grelha de cores e tamanhos, códigos de barras) + Cap. 9 (EyePeak/e-commerce)",
+  "goal": "Preparar a loja para moda/Calçado e para o canal online.",
+  "steps": [
+   "Ativar/configurar a grelha de cores e tamanhos num artigo de vestuário (variante por combinação)",
+   "Vender no POS usando a grelha (seleção de cor/tamanho) e verificar o stock por variante",
+   "Configurar etiquetas/códigos de barras EAN por variante e imprimir etiquetas (se disponível)",
+   "Configurar a sincronização de stock loja ↔ online (EyePeak ou processo manual documentado)",
+   "Simular click & collect: encomenda online levantada em loja (entrada/saída de stock correta)",
+   "Analisar vendas por variante (cor/tamanho) para decisões de compra",
+   "Documentar o modelo omnicanal da empresa de treino em notas/omnicanal.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print da grelha de cores/tamanhos com stock por variante",
+    "k": "print"
+   },
+   {
+    "d": "Etiqueta com código de barras gerada (print)",
+    "k": "print"
+   },
+   {
+    "d": "omnicanal.md com o fluxo loja↔online",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Grelha de cores e tamanhos: que problema resolve?",
+    "a": "Evita criar um artigo por cada combinação (T-shirt azul M, azul L…): um artigo-pai com variantes geridas em grelha — stock e vendas por combinação, sem explosão do ficheiro."
+   }
+  ]
+ },
+ {
+  "id": "L83",
+  "t": "Suporte: conceito, configuração e circuito",
+  "lv": 12,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L06"
+  ],
+  "ref": "Programa oficial (Conceito do PHC Suporte, Circuito de Compra e Venda) + manuais in-app",
+  "goal": "Montar a base do pós-venda: configuração do módulo e o circuito compra→venda com serviços (requer módulo Suporte ou demo).",
+  "steps": [
+   "Explorar o conceito do módulo: pedido de assistência (PAT), instalações, equipamentos, contratos",
+   "Configurar os parâmetros do Suporte (séries de PAT, estados/tipos, prioridades)",
+   "Mapear o circuito de compra e venda de serviços de assistência (entrada de pedidos → intervenção → faturação)",
+   "Criar tipos de pedido (instalação, reparação, manutenção, formação) e prioridades (SLA)",
+   "Configurar a equipa de técnicos e as suas competências/disponibilidades",
+   "Verificar a integração com o Gestão (faturação de intervenções, stock de peças)",
+   "Documentar o desenho do serviço pós-venda da empresa de treino em notas/suporte-base.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print da configuração de tipos/prioridades de PAT",
+    "k": "print"
+   },
+   {
+    "d": "Print da equipa de técnicos configurada",
+    "k": "print"
+   },
+   {
+    "d": "suporte-base.md com o circuito desenhado",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que é um PAT?",
+    "a": "Pedido de Assistência Técnica — o documento central do pós-venda: regista o pedido do cliente, a intervenção, materiais/tempo e alimenta a faturação."
+   },
+   {
+    "q": "Por que o Suporte depende do Gestão?",
+    "a": "Porque as intervenções consomem peças (stock), horas (serviços) e geram faturação — tudo integrado nos documentos do Gestão."
+   }
+  ]
+ },
+ {
+  "id": "L84",
+  "t": "Instalações, equipamentos e contratos",
+  "lv": 12,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L83"
+  ],
+  "ref": "Programa oficial (Instalações e Equipamentos, Faturação de Instalações, Faturação de Contratos)",
+  "goal": "Registar o parque instalado dos clientes e os contratos que geram receita recorrente.",
+  "steps": [
+   "Criar uma instalação no cliente da empresa de treino (local com equipamentos)",
+   "Registar equipamentos com número de série (integração com ficheiro de artigos/Equipamentos)",
+   "Associar garantia e histórico de intervenções ao equipamento",
+   "Criar um contrato de manutenção (cobertura, periodicidade, SLA, valor/avença)",
+   "Configurar as regras de faturação do contrato (recorrente por avença ou por consumo de pontos)",
+   "Verificar a ligação equipamento → contrato → instalação (visão 360º do cliente)",
+   "Simular uma chamada de cliente: pelo equipamento, identificar contrato e cobertura em segundos",
+   "Documentar a estrutura instalações/equipamentos/contratos em notas/instalacoes.md"
+  ],
+  "proofs": [
+   {
+    "d": "Print da instalação com equipamentos e números de série",
+    "k": "print"
+   },
+   {
+    "d": "Print do contrato de manutenção com cobertura",
+    "k": "print"
+   },
+   {
+    "d": "Print da visão do equipamento com histórico",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Números de série no Suporte: para quê?",
+    "a": "Identificam cada unidade vendida (com o módulo Equipamentos): garantia, histórico de intervenções por equipamento e rastreio de recalls."
+   }
+  ]
+ },
+ {
+  "id": "L85",
+  "t": "PAT da abertura à resolução",
+  "lv": 12,
+  "min": 90,
+  "meta": "30 min",
+  "pre": [
+   "L84"
+  ],
+  "ref": "Programa oficial (Abertura de PAT, Monitor de PATs)",
+  "goal": "Executar o fluxo completo de um pedido de assistência com qualidade e tempos controlados.",
+  "steps": [
+   "Abrir um PAT por telefone: identificar cliente, equipamento, descrever o problema",
+   "Classificar: tipo, prioridade e SLA associado; atribuir técnico",
+   "Registar o agendamento e comunicar a janela ao cliente (SMS/e-mail se configurado)",
+   "Executar a intervenção: registo de tempos (mão de obra) e materiais/peças consumidos",
+   "Atualizar estados do PAT (aberto → em curso → resolvido) com notas de intervenção",
+   "Fechar o PAT com a validação do cliente e gerar o documento para faturação",
+   "Consultar o histórico completo do PAT (quem, quando, o quê)",
+   "Repetir com um segundo PAT urgente e comparar tempos"
+  ],
+  "proofs": [
+   {
+    "d": "Print do PAT aberto com classificação e técnico atribuído",
+    "k": "print"
+   },
+   {
+    "d": "Print do PAT resolvido com tempos e materiais",
+    "k": "print"
+   },
+   {
+    "d": "Print do histórico/linha de tempo do PAT",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que campos alimentam a faturação do PAT?",
+    "a": "Tempos de mão de obra (tabela de horas/serviços) + materiais consumidos (baixa de stock) — o PAT gera o documento de faturação correspondente."
+   },
+   {
+    "q": "Por que registar estados com timestamp?",
+    "a": "SLA mede-se: tempo de resposta e tempo de resolução só existem com estados datados — e o cliente pergunta sempre."
+   }
+  ]
+ },
+ {
+  "id": "L86",
+  "t": "Aberturas especiais, agenda e monitor de PATs",
+  "lv": 12,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L85"
+  ],
+  "ref": "Programa oficial (Abertura Especial de PAT, Monitor de PATs, Agenda de Marcações)",
+  "goal": "Ganhar escala: entradas automáticas, agenda de técnicos e visão operacional em tempo real.",
+  "steps": [
+   "Usar a abertura especial de PAT (a partir do equipamento/contrato/série — origem pré-preenchida)",
+   "Configurar a Agenda de Marcações (marcações por técnico/dia com janelas)",
+   "Abrir o Monitor de PATs: estados, prioridades, atrasos de SLA, carga por técnico",
+   "Reordenar a fila do dia com base no monitor (urgências primeiro)",
+   "Configurar alertas automáticos (PAT sem atribuição, SLA a estourar, PAT parado)",
+   "Testar a remarcação de uma intervenção (efeito na agenda e no SLA)",
+   "Definir a rotina diária do coordenador de suporte em notas/coordenacao.md (manhã: monitor → atribuições → alertas)"
+  ],
+  "proofs": [
+   {
+    "d": "Print do Monitor de PATs com a fila do dia",
+    "k": "print"
+   },
+   {
+    "d": "Print da Agenda de Marcações de um técnico",
+    "k": "print"
+   },
+   {
+    "d": "Print de um alerta de SLA disparado",
+    "k": "print"
+   },
+   {
+    "d": "coordenacao.md com a rotina diária",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Qual o KPI mais importante no monitor?",
+    "a": "PATs fora do SLA (resposta/resolução) por técnico e por prioridade — é o que dispara ação imediata; volume em fila é o segundo."
+   }
+  ]
+ },
+ {
+  "id": "L87",
+  "t": "Intervenções: relatório, assinatura e envio",
+  "lv": 12,
+  "min": 60,
+  "meta": "20 min",
+  "pre": [
+   "L85"
+  ],
+  "ref": "Cap. 7.4 (Definição de Assinaturas) + manuais do Suporte",
+  "goal": "Profissionalizar a intervenção no terreno: relatório claro, assinatura do cliente e envio automático.",
+  "steps": [
+   "Configurar o template do relatório de intervenção (campos: diagnóstico, ações, peças, tempos, recomendações)",
+   "Capturar a assinatura digital do cliente no ato (tablet/touch — Definição de Assinaturas)",
+   "Configurar o envio automático do relatório por e-mail ao cliente (SMTP)",
+   "Anexar fotos/documentos à intervenção (File Storage, se ativo)",
+   "Registar uma intervenção com peças fora de garantia e validar a aprovação de custo pelo cliente",
+   "Testar o fluxo completo: intervenção → assinatura → e-mail recebido → PAT pronto a faturar",
+   "Documentar o padrão de qualidade do relatório em notas/relatorio.md"
+  ],
+  "proofs": [
+   {
+    "d": "Relatório de intervenção com assinatura capturada (print/PDF)",
+    "k": "file"
+   },
+   {
+    "d": "E-mail de envio do relatório (print)",
+    "k": "print"
+   },
+   {
+    "d": "relatorio.md com o padrão definido",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Para que serve a assinatura digital no relatório?",
+    "a": "Prova de aceitação do serviço (e de eventuais custos extra) — reduz disputas de faturação e dá suporte legal ao trabalho realizado."
+   }
+  ]
+ },
+ {
+  "id": "L88",
+  "t": "Faturação do Suporte: intervenções, instalações e contratos",
+  "lv": 12,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L87",
+   "L20"
+  ],
+  "ref": "Programa oficial (Faturar Instalações, Faturação de Contratos)",
+  "goal": "Transformar serviço prestado em receita faturada, sem fugas.",
+  "steps": [
+   "Faturar um PAT resolvido: mão de obra (horas × tabela) + materiais (peças do stock)",
+   "Faturar uma instalação (trabalho de montagem/ativação com materiais)",
+   "Configurar e processar a faturação de contratos (avenças recorrentes — integração com Dossier de Avenças)",
+   "Testar faturação parcial (cliente aprova só parte do orçamento) e o remanescente",
+   "Verificar IVA e retenções aplicáveis a serviços de assistência",
+   "Conferir a conta corrente do cliente após a faturação dos serviços",
+   "Reconciliar: PATs resolvidos do mês × documentos faturados (nada pode ficar por faturar)",
+   "Documentar o fecho mensal do Suporte em notas/fecho-suporte.md"
+  ],
+  "proofs": [
+   {
+    "d": "Fatura de intervenção com horas + peças (PDF)",
+    "k": "file"
+   },
+   {
+    "d": "Print da reconciliation PATs resolvidos × faturados",
+    "k": "print"
+   },
+   {
+    "d": "fecho-suporte.md com o checklist mensal",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "A fuga de receita clássica do Suporte?",
+    "a": "PAT resolvido não faturado (peças e horas perdidas) — o fecho mensal reconcilia resolvidos × faturados e apanha tudo."
+   },
+   {
+    "q": "Contratos: avença vs pontos?",
+    "a": "Avença = valor fixo periódico com cobertura definida; pontos = pré-pago consumido por intervenção. Muitos contratos misturam ambos."
+   }
+  ]
+ },
+ {
+  "id": "L89",
+  "t": "Pontos, análises e KPIs de suporte",
+  "lv": 12,
+  "min": 75,
+  "meta": "25 min",
+  "pre": [
+   "L88"
+  ],
+  "ref": "Programa oficial (Gestão de Pontos no Suporte, Análises do PHC Suporte)",
+  "goal": "Medir e melhorar: sistema de pontos, indicadores de serviço e rentabilidade.",
+  "steps": [
+   "Configurar a Gestão de Pontos: pacotes vendidos, regras de consumo por tipo de intervenção",
+   "Vender um pacote de pontos ao cliente e consumir num PAT (verificar saldo)",
+   "Consultar o saldo/extracto de pontos do cliente (visível ao comercial)",
+   "Explorar as Análises do Suporte: tempo médio de atendimento/resolução, PATs por técnico/cliente/tipo",
+   "Calcular a rentabilidade por contrato (receita − horas − peças) para os 3 maiores contratos",
+   "Configurar um dashboard/monitor de KPIs de suporte para a direção",
+   "Propor 3 melhorias concretas baseadas nos números (em notas/kpis-suporte.md) e apresentá-las (2 min gravados)"
+  ],
+  "proofs": [
+   {
+    "d": "Print do saldo de pontos após consumo num PAT",
+    "k": "print"
+   },
+   {
+    "d": "Print das análises com tempos médios",
+    "k": "print"
+   },
+   {
+    "d": "kpis-suporte.md com as 3 melhorias + gravação de 2 min",
+    "k": "file"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Que KPIs um diretor de suporte olha todos os dias?",
+    "a": "Fila e atrasos de SLA, tempo médio de resolução, primeira-visita-resolve (first-time-fix), utilização dos técnicos e receita por contrato vs custo."
+   }
+  ]
+ },
+ {
+  "id": "L90",
+  "t": "CRM: parâmetros, fases do funil e equipa comercial",
+  "lv": 13,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L89"
+  ],
+  "ref": "Módulo CRM · configuração",
+  "goal": "Deixar o CRM pronto a usar: definir as fases do funil de vendas, perfis/comercial e parâmetros base antes de registar oportunidades.",
+  "steps": [
+   "Abrir o módulo CRM e identificar os menus principais (Oportunidades, Campanhas, Ações, Análises)",
+   "Configurar as FASES do funil de vendas (ex.: Qualificação → Proposta → Negociação → Ganha/Perdida) com probabilidade por fase",
+   "Definir motivos de perda (preço, concorrência, timing…) para análise posterior",
+   "Criar/comercial atribuir vendedores e equipas com permissões de carteira",
+   "Configurar regras de atribuição automática de oportunidades (por zona/segmento, se disponível)",
+   "Validar que o funil aparece nas análises com as fases configuradas"
+  ],
+  "proofs": [
+   {
+    "d": "Print das fases do funil configuradas com probabilidades",
+    "k": "print"
+   },
+   {
+    "d": "Print da equipa comercial/comerciais criados",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Porque definir probabilidade por fase do funil?",
+    "a": "Para calcular pipeline ponderado (valor esperado) e previsões realistas, em vez de somar tudo a 100%."
+   },
+   {
+    "q": "Para que servem os motivos de perda?",
+    "a": "Para analisar porque se perde negócio (preço, concorrência…) e corrigir a abordagem comercial."
+   }
+  ]
+ },
+ {
+  "id": "L91",
+  "t": "Oportunidades: criar, qualificar e mover no funil",
+  "lv": 13,
+  "min": 50,
+  "meta": "25 min",
+  "pre": [
+   "L90"
+  ],
+  "ref": "CRM · Oportunidades",
+  "goal": "Dominar o ciclo de uma oportunidade: criação, qualificação, mudança de fase, valor/probabilidade e fecho (ganha/perdida).",
+  "steps": [
+   "Criar oportunidade ligada a um cliente (ou lead/prospeto) com origem (campanha, website, telefone)",
+   "Qualificar: preencher necessidade, valor estimado, fecho previsto e probabilidade",
+   "Anexar documentos/notas e registar a primeira interação",
+   "Mover a oportunidade de fase e observar o histórico de mudanças",
+   "Marcar como GANHA e verificar a ligação ao documento de venda; marcar outra como PERDIDA com motivo",
+   "Comparar o funil antes/depois nas análises"
+  ],
+  "proofs": [
+   {
+    "d": "Print da oportunidade em fase intermédia com valor e probabilidade",
+    "k": "print"
+   },
+   {
+    "d": "Print da oportunidade GANHA ligada ao documento de venda",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Diferença entre lead/prospeto e oportunidade?",
+    "a": "Lead é um contacto não qualificado; oportunidade é um negócio qualificado com valor e probabilidade, já no funil."
+   },
+   {
+    "q": "O que regista o histórico da oportunidade?",
+    "a": "Mudanças de fase, alterações de valor/probabilidade e interações — auditoria do ciclo de venda."
+   }
+  ]
+ },
+ {
+  "id": "L92",
+  "t": "Ações e tarefas de seguimento (agenda comercial)",
+  "lv": 13,
+  "min": 40,
+  "meta": "20 min",
+  "pre": [
+   "L91"
+  ],
+  "ref": "CRM · Ações/Agenda",
+  "goal": "Garantir que nenhuma oportunidade fica sem seguimento: criar ações/tarefas com prazo, responsável e lembrete, ligadas à oportunidade.",
+  "steps": [
+   "Criar uma ação de seguimento (chamada/visita/email) ligada a uma oportunidade aberta",
+   "Definir prazo, responsável e prioridade; ativar lembrete",
+   "Ver a agenda do comercial com as ações do dia/semana",
+   "Concluir uma ação e registar o resultado (notas/next-step)",
+   "Criar ação recursiva (ex.: follow-up semanal) e verificar recorrência",
+   "Confirmar que ações vencidas aparecem destacadas/pendentes"
+  ],
+  "proofs": [
+   {
+    "d": "Print da agenda do comercial com ações do dia",
+    "k": "print"
+   },
+   {
+    "d": "Print de uma ação concluída com resultado registado",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Porque ligar a ação à oportunidade?",
+    "a": "Para que o histórico do negócio inclua o seguimento e o funil reflita atividade real, não oportunidades abandonadas."
+   },
+   {
+    "q": "Para que serve a recorrência numa ação?",
+    "a": "Para follow-ups periódicos automáticos (ex.: semanal), evitando esquecimentos em ciclos longos."
+   }
+  ]
+ },
+ {
+  "id": "L93",
+  "t": "Campanhas de marketing: segmento, alvo e acompanhamento",
+  "lv": 13,
+  "min": 50,
+  "meta": "25 min",
+  "pre": [
+   "L91"
+  ],
+  "ref": "CRM · Campanhas",
+  "goal": "Criar uma campanha de marketing: definir objetivo, segmentar o público (clientes por critério), associar oportunidades e medir resultado.",
+  "steps": [
+   "Criar campanha com objetivo e período (ex.: campanha de primavera segmento hotelaria)",
+   "Segmentar o público-alvo por critério (zona, CAE, volume de compras, inatividade)",
+   "Associar contactos/clientes do segmento à campanha",
+   "Criar oportunidades em massa a partir do segmento (se disponível) ou manualmente",
+   "Registar envios/interações da campanha (email/call)",
+   "Analisar resultado: oportunidades geradas e ganhas pela campanha"
+  ],
+  "proofs": [
+   {
+    "d": "Print da campanha com segmento e nº de contactos associados",
+    "k": "print"
+   },
+   {
+    "d": "Print da análise de resultado da campanha (oportunidades geradas)",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Como o segmento é construído?",
+    "a": "Por filtros sobre clientes/contactos (zona, CAE, volume, inatividade) — o público-alvo da campanha."
+   },
+   {
+    "q": "Como medir se a campanha funcionou?",
+    "a": "Oportunidades geradas e ganhas atribuídas à campanha vs. custo/esforço da campanha."
+   }
+  ]
+ },
+ {
+  "id": "L94",
+  "t": "Da oportunidade à venda: proposta e conversão",
+  "lv": 13,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L91",
+   "L13"
+  ],
+  "ref": "CRM↔Gestão · conversão",
+  "goal": "Fechar o ciclo comercial: gerar proposta/orçamento a partir da oportunidade e convertê-la em documento de faturação no Gestão.",
+  "steps": [
+   "A partir de uma oportunidade em Negociação, gerar proposta/orçamento (DI) com os artigos/serviços",
+   "Enviar/imprimir a proposta e registar o envio na oportunidade",
+   "Aceite a proposta, converter a oportunidade em documento de venda (FT) no Gestão",
+   "Verificar que o documento herda cliente/valores da oportunidade",
+   "Marcar a oportunidade como GANHA com referência ao documento",
+   "Confirmar que o funil e a análise de vendas refletem a conversão"
+  ],
+  "proofs": [
+   {
+    "d": "Print da proposta gerada a partir da oportunidade",
+    "k": "print"
+   },
+   {
+    "d": "Print da FT convertida com a oportunidade ligada",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Porque converter e não criar a FT à parte?",
+    "a": "Para manter rastreabilidade comercial (funil, campanha, comercial) ligada à fatura e medir conversão real."
+   },
+   {
+    "q": "O que herda o documento da oportunidade?",
+    "a": "Cliente, artigos/valores, comercial e campanha — evitando redigitação e erro."
+   }
+  ]
+ },
+ {
+  "id": "L95",
+  "t": "Análise de funil e previsões (pipeline ponderado)",
+  "lv": 13,
+  "min": 40,
+  "meta": "20 min",
+  "pre": [
+   "L91",
+   "L42"
+  ],
+  "ref": "CRM · Análises",
+  "goal": "Ler o funil como gestor: pipeline por fase, pipeline ponderado por probabilidade, taxa de conversão e previsão de fecho.",
+  "steps": [
+   "Abrir a análise de funil/pipeline e ler valores por fase",
+   "Calcular pipeline ponderado (valor × probabilidade) e comparar com o total",
+   "Medir taxa de conversão por fase e global (ganhas/oportunidades)",
+   "Analisar motivos de perda (gráfico/lista) e identificar o principal",
+   "Filtrar o funil por comercial e por campanha e comparar desempenho",
+   "Exportar a análise de funil para partilha com a direção"
+  ],
+  "proofs": [
+   {
+    "d": "Print do funil com pipeline ponderado vs total",
+    "k": "print"
+   },
+   {
+    "d": "Print da análise de motivos de perda",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que é pipeline ponderado?",
+    "a": "Soma de (valor × probabilidade) por oportunidade — o valor 'esperado', mais realista que o total bruto."
+   },
+   {
+    "q": "Para que serve a conversão por fase?",
+    "a": "Para encontrar onde o funil 'verte' (ex.: muitas propostas, poucas negociações) e corrigir essa etapa."
+   }
+  ]
+ },
+ {
+  "id": "L96",
+  "t": "Integração CRM↔Gestão: histórico 360º do cliente",
+  "lv": 13,
+  "min": 40,
+  "meta": "20 min",
+  "pre": [
+   "L94",
+   "L06"
+  ],
+  "ref": "CRM↔Gestão · 360º",
+  "goal": "Ter a visão 360º do cliente: oportunidades, ações, campanhas, documentos e suporte num só lugar, ligando CRM e Gestão.",
+  "steps": [
+   "Abrir a ficha de um cliente e localizar o separador/área de CRM (oportunidades/ações)",
+   "Ver o histórico 360º: documentos de venda + oportunidades + ações + campanhas do cliente",
+   "Criar uma nova oportunidade diretamente a partir da ficha do cliente",
+   "Registar uma ação de seguimento a partir do histórico do cliente",
+   "Confirmar que uma campanha associada aparece no histórico do cliente",
+   "Validar que suporte/PATs (se módulo Suporte) também aparecem no 360º"
+  ],
+  "proofs": [
+   {
+    "d": "Print do histórico 360º de um cliente (docs + oportunidades + ações)",
+    "k": "print"
+   },
+   {
+    "d": "Print de oportunidade criada a partir da ficha do cliente",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Porque a visão 360º importa ao comercial?",
+    "a": "Porque reúne todo o relacionamento (vendas, oportunidades, ações, suporte) antes de uma chamada/visita — contexto completo."
+   },
+   {
+    "q": "O que liga o CRM ao Gestão?",
+    "a": "O cliente/contacto comum e os documentos (proposta→FT) — o CRM herda e referencia os dados do Gestão."
+   }
+  ]
+ },
+ {
+  "id": "L97",
+  "t": "Capstone CRM: ciclo completo lead→fatura com campanha",
+  "lv": 13,
+  "min": 70,
+  "meta": "35 min",
+  "pre": [
+   "L93",
+   "L94",
+   "L95"
+  ],
+  "ref": "CRM · capstone",
+  "goal": "Executar ponta-a-ponta: campanha→segmento→oportunidade→ações→proposta→FT→análise de funil, sem erros e com evidências.",
+  "steps": [
+   "Criar campanha e segmentar um público-alvo (≥3 clientes)",
+   "Gerar oportunidade a partir do segmento para 1 cliente",
+   "Criar ≥2 ações de seguimento e concluir uma com resultado",
+   "Gerar proposta a partir da oportunidade e converter em FT",
+   "Marcar oportunidade GANHA e confirmar ligação ao documento",
+   "Validar o funil: a oportunidade aparece na fase Ganha e na análise da campanha",
+   "Documentar o ciclo completo com prints em cada etapa"
+  ],
+  "proofs": [
+   {
+    "d": "Print da campanha com segmento",
+    "k": "print"
+   },
+   {
+    "d": "Print da oportunidade com ações",
+    "k": "print"
+   },
+   {
+    "d": "Print da FT convertida + funil com a Ganha",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que prova que o ciclo está bem fechado?",
+    "a": "A rastreabilidade: campanha→oportunidade→ações→proposta→FT todas ligadas, e o funil/análise a refletir a Ganha."
+   },
+   {
+    "q": "Onde detetar um ciclo mal fechado?",
+    "a": "Oportunidades ganhas sem documento ligado, ou FTs sem oportunidade/campanha — quebras de rastreabilidade."
+   }
+  ]
+ },
+ {
+  "id": "L98",
+  "t": "Manufactor: artigos de produção, fichas técnicas e listas de materiais",
+  "lv": 14,
+  "min": 50,
+  "meta": "25 min",
+  "pre": [
+   "L97"
+  ],
+  "ref": "Manufactor · dados base",
+  "goal": "Preparar os dados de produção: artigos de produção (semi-acabado/acabado), fichas técnicas e listas de materiais (BOM) com consumos.",
+  "steps": [
+   "Criar artigo de produção (acabado) e componentes (matéria-prima/semi-acabado)",
+   "Construir a ficha técnica/lista de materiais (BOM) do acabado com componentes e quantidades",
+   "Definir tempos de operação/rotas (se disponível) na ficha técnica",
+   "Validar custo estimado do acabado a partir dos consumos (PCMP/roll-up)",
+   "Criar variante/tamanho se aplicável e ligar à BOM",
+   "Confirmar que a BOM aparece na estrutura de produção do artigo"
+  ],
+  "proofs": [
+   {
+    "d": "Print da ficha técnica/BOM com componentes e quantidades",
+    "k": "print"
+   },
+   {
+    "d": "Print do custo estimado roll-up do acabado",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que é uma lista de materiais (BOM)?",
+    "a": "A receita de produção: componentes e quantidades necessários para fabricar o artigo acabado."
+   },
+   {
+    "q": "Para que servem tempos/rotas na ficha técnica?",
+    "a": "Para calcular custo de mão-de-obra e planear capacidade/ordens de fabrico."
+   }
+  ]
+ },
+ {
+  "id": "L99",
+  "t": "Ordens de fabrico (OF): criar, lançar e consumir",
+  "lv": 14,
+  "min": 55,
+  "meta": "25 min",
+  "pre": [
+   "L98"
+  ],
+  "ref": "Manufactor · OF",
+  "goal": "Executar produção: criar OF a partir de encomenda/stock, lançar, consumir componentes (baixa de stock) e dar entrada do acabado.",
+  "steps": [
+   "Criar OF para o artigo acabado (quantidade e prazo), ligada a encomenda de cliente se aplicável",
+   "Lançar a OF e verificar reserva de componentes",
+   "Registar consumo de componentes (baixa de stock automática/manual)",
+   "Dar entrada do artigo acabado (aumento de stock) ao concluir",
+   "Apontar tempos reais de mão-de-obra na OF",
+   "Fechar a OF e verificar custos reais vs estimados"
+  ],
+  "proofs": [
+   {
+    "d": "Print da OF lançada com componentes reservados",
+    "k": "print"
+   },
+   {
+    "d": "Print da entrada do acabado + consumo dos componentes",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que acontece ao stock ao consumir componentes?",
+    "a": "Baixa de stock dos componentes (saída) e, ao concluir, entrada do artigo acabado."
+   },
+   {
+    "q": "Porque apontar tempos reais na OF?",
+    "a": "Para custeio real (mão-de-obra) e análise de eficiência vs tempos padrão."
+   }
+  ]
+ },
+ {
+  "id": "L100",
+  "t": "MRP: planeamento de necessidades e propostas",
+  "lv": 14,
+  "min": 50,
+  "meta": "25 min",
+  "pre": [
+   "L99",
+   "L20"
+  ],
+  "ref": "Manufactor · MRP",
+  "goal": "Deixar o MRP calcular necessidades: propostas de compra (componentes) e de produção (acabados) a partir de procura (encomendas/previsão).",
+  "steps": [
+   "Configurar pontos de encomenda/stock mín/máx e prazos de aprovisionamento dos componentes",
+   "Registar procura (encomenda de cliente ou previsão) que gera necessidade",
+   "Correr o MRP e ler as propostas geradas (compra de componentes / produção de acabados)",
+   "Converter uma proposta de compra em encomenda a fornecedor",
+   "Converter uma proposta de produção em OF",
+   "Validar que o MRP considera stock existente e encomendas em curso"
+  ],
+  "proofs": [
+   {
+    "d": "Print das propostas MRP (compra+produção)",
+    "k": "print"
+   },
+   {
+    "d": "Print da encomenda/OF gerada a partir de proposta",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que o MRP calcula?",
+    "a": "Necessidades líquidas (procura − stock − encomendas em curso) e propõe compra/produção com prazos."
+   },
+   {
+    "q": "Porque o MRP olha para stock e encomendas em curso?",
+    "a": "Para não propor comprar/produzir o que já existe ou já está a caminho."
+   }
+  ]
+ },
+ {
+  "id": "L101",
+  "t": "Séries, lotes e rastreabilidade ponta-a-ponta",
+  "lv": 14,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L99"
+  ],
+  "ref": "Logística · séries/lotes",
+  "goal": "Rastrear de ponta a ponta: lote/série do componente → OF → lote do acabado → documento de venda → cliente (recall inverso e direto).",
+  "steps": [
+   "Ativar gestão de lotes/séries num componente e num acabado",
+   "Registar entrada de componente com lote e validade",
+   "Consumir o lote do componente numa OF e dar entrada do acabado com lote derivado",
+   "Vender o acabado registando o lote no documento (FT)",
+   "Fazer rastreabilidade direta (lote componente → onde foi usado) e inversa (lote acabado → componentes)",
+   "Simular recall: listar clientes que receberam um lote afetado"
+  ],
+  "proofs": [
+   {
+    "d": "Print da rastreabilidade direta do lote do componente",
+    "k": "print"
+   },
+   {
+    "d": "Print do recall (clientes com o lote afetado)",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Diferença entre rastreabilidade direta e inversa?",
+    "a": "Direta: lote→onde foi usado; inversa: produto acabado→componentes/lotes de origem."
+   },
+   {
+    "q": "Para que serve o recall por lote?",
+    "a": "Identificar rapidamente clientes/documentos afetados por um lote com problema."
+   }
+  ]
+ },
+ {
+  "id": "L102",
+  "t": "Armazéns avançados: multi-armazém, transferências e inventário",
+  "lv": 14,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L20"
+  ],
+  "ref": "Logística · armazéns",
+  "goal": "Gerir vários armazéns: transferências entre armazéns, stock por armazém e contagem de inventário com acerto.",
+  "steps": [
+   "Criar 2 armazéns e distribuir stock inicial entre eles",
+   "Fazer transferência de stock entre armazéns e validar movimento nos dois",
+   "Consultar stock por armazém e stock consolidado",
+   "Fazer contagem de inventário num armazém e registar diferenças",
+   "Gerar acerto de inventário (entrada/saída de acerto) e validar stock final",
+   "Validar que o inventário fica refletido no PCMP/valor de stock"
+  ],
+  "proofs": [
+   {
+    "d": "Print da transferência entre armazéns",
+    "k": "print"
+   },
+   {
+    "d": "Print do acerto de inventário com diferenças",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "Porque contar inventário por armazém?",
+    "a": "Porque o stock é gerido por armazém; o acerto corrige diferenças reais vs sistema em cada armazém."
+   },
+   {
+    "q": "O que o acerto de inventário movimenta?",
+    "a": "Entradas/saídas de acerto que alinham o stock físico com o sistema (e o valor/PCMP)."
+   }
+  ]
+ },
+ {
+  "id": "L103",
+  "t": "Capstone Logística: encomenda→MRP→OF→lote→FT→recall",
+  "lv": 14,
+  "min": 70,
+  "meta": "35 min",
+  "pre": [
+   "L100",
+   "L101"
+  ],
+  "ref": "Logística · capstone",
+  "goal": "Ciclo logístico completo com rastreabilidade: encomenda→MRP→OF→lote→entrada→FT→recall, sem quebras de rastreabilidade.",
+  "steps": [
+   "Registar encomenda de cliente de um artigo acabado com lote",
+   "Correr MRP e converter propostas (compra componente + OF)",
+   "Consumir componente com lote na OF; entrada do acabado com lote",
+   "Faturar o acabado registando o lote (FT)",
+   "Fazer rastreabilidade inversa do lote vendido até ao lote do componente",
+   "Simular recall do lote e listar clientes afetados; documentar com prints"
+  ],
+  "proofs": [
+   {
+    "d": "Print MRP→OF com lotes",
+    "k": "print"
+   },
+   {
+    "d": "Print FT com lote + rastreabilidade inversa",
+    "k": "print"
+   },
+   {
+    "d": "Print do recall com clientes afetados",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que prova rastreabilidade sem quebras?",
+    "a": "Cada elo ligado: lote componente→OF→lote acabado→FT→cliente, e o recall a encontrar todos."
+   },
+   {
+    "q": "Onde uma quebra de rastreabilidade aparece?",
+    "a": "Lotes não registados na FT ou consumos sem lote — o recall devolve resultados incompletos."
+   }
+  ]
+ },
+ {
+  "id": "L104",
+  "t": "Ignios: preenchimento automático de fichas (NIF/matrícula)",
+  "lv": 15,
+  "min": 40,
+  "meta": "20 min",
+  "pre": [
+   "L06"
+  ],
+  "ref": "Ignios · auto-preenchimento",
+  "goal": "Usar o Ignios para preencher fichas automaticamente (cliente por NIF, artigo por EAN, matrícula) e reduzir erro de digitação.",
+  "steps": [
+   "Ativar/confirmar o Ignios nos parâmetros (serviço de preenchimento automático)",
+   "Criar cliente introduzindo só o NIF e deixar o Ignios preencher nome/morada/CAE",
+   "Criar/artigo preencher por EAN/código de barras via Ignios",
+   "Testar preenchimento por matrícula (veículo) se aplicável",
+   "Validar os campos preenchidos e corrigir o que for necessário",
+   "Comparar tempo/erro com vs sem Ignios"
+  ],
+  "proofs": [
+   {
+    "d": "Print de cliente preenchido por NIF via Ignios",
+    "k": "print"
+   },
+   {
+    "d": "Print de artigo preenchido por EAN",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que o Ignios faz?",
+    "a": "Preenche fichas automaticamente a partir de fontes externas (NIF, EAN, matrícula), reduzindo digitação/erro."
+   },
+   {
+    "q": "Quando o Ignios não preenche?",
+    "a": "Quando a fonte externa não tem o registo ou o serviço está inativo — preenche-se manualmente."
+   }
+  ]
+ },
+ {
+  "id": "L105",
+  "t": "EyePeak: sincronização e-commerce↔ERP",
+  "lv": 15,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L94"
+  ],
+  "ref": "EyePeak · e-commerce",
+  "goal": "Ligar a loja online ao ERP: sincronizar artigos/stock/preços e receber encomendas web como documentos no Gestão.",
+  "steps": [
+   "Configurar a ligação EyePeak (loja online ↔ ERP)",
+   "Mapear artigos/stock/preços ERP→loja e sincronizar",
+   "Registar uma encomenda na loja e verificar entrada no ERP como encomenda/venda",
+   "Sincronizar stock após venda web (baixa no ERP reflete na loja)",
+   "Validar estados de encomenda web→ERP (paga/expedida)",
+   "Confirmar reconciliação de encomendas web vs documentos ERP"
+  ],
+  "proofs": [
+   {
+    "d": "Print da sincronização artigos/stock ERP→loja",
+    "k": "print"
+   },
+   {
+    "d": "Print da encomenda web entrada no ERP",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que o EyePeak sincroniza?",
+    "a": "Artigos, stock, preços e encomendas entre a loja online e o ERP (bidirecional)."
+   },
+   {
+    "q": "Porque sincronizar stock após venda web?",
+    "a": "Para a loja não vender stock que o ERP já vendeu (rutura pública)."
+   }
+  ]
+ },
+ {
+  "id": "L106",
+  "t": "Cegid Docs / File Storage: anexos e arquivos ligados a registos",
+  "lv": 15,
+  "min": 40,
+  "meta": "20 min",
+  "pre": [
+   "L94"
+  ],
+  "ref": "Cegid Docs · anexos",
+  "goal": "Guardar documentação ligada aos registos (faturas, clientes, OF): anexar, versionar e recuperar ficheiros do File Storage/Cegid Docs.",
+  "steps": [
+   "Ativar File Storage/Cegid Docs nos parâmetros",
+   "Anexar ficheiro (PDF/imagem) a um documento de faturação e a um cliente",
+   "Versionar um anexo (nova versão do mesmo ficheiro) e recuperar versão anterior",
+   "Pesquisar/recuperar anexos por registo e por pesquisa global",
+   "Validar permissões de acesso aos anexos",
+   "Confirmar que os anexos aparecem no histórico/360º do registo"
+  ],
+  "proofs": [
+   {
+    "d": "Print de anexo ligado a uma FT + cliente",
+    "k": "print"
+   },
+   {
+    "d": "Print de versões de um anexo (atual+anterior)",
+    "k": "print"
+   }
+  ],
+  "proofs2": [],
+  "ask": [
+   {
+    "q": "Para que serve ligar anexos aos registos?",
+    "a": "Para ter a documentação (contratos, comprovativos) junto do registo, recuperável e versionada."
+   },
+   {
+    "q": "O que acrescenta a versão de anexos?",
+    "a": "Histórico de alterações do ficheiro, podendo recuperar versões anteriores."
+   }
+  ]
+ },
+ {
+  "id": "L107",
+  "t": "Open banking & pagamentos: reconciliação bancária automática",
+  "lv": 15,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L30"
+  ],
+  "ref": "Open banking · pagamentos",
+  "goal": "Automatizar tesouraria: extratos bancários via open banking, matching automático de pagamentos a faturas e reconciliação.",
+  "steps": [
+   "Configurar a ligação open banking (conta bancária ligada ao ERP)",
+   "Importar extrato bancário automaticamente",
+   "Fazer matching automático de movimentos a faturas em aberto (pagamentos recebidos)",
+   "Validar matches sugeridos e corrigir os duvidosos",
+   "Reconciliar a conta (saldo ERP vs banco) e fechar o período",
+   "Confirmar que as faturas ficam liquidadas após matching"
+  ],
+  "proofs": [
+   {
+    "d": "Print do extrato importado via open banking",
+    "k": "print"
+   },
+   {
+    "d": "Print do matching automático + faturas liquidadas",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que o open banking automatiza?",
+    "a": "A importação de extratos e o matching de pagamentos a faturas, reduzindo trabalho manual de tesouraria."
+   },
+   {
+    "q": "O que é o matching?",
+    "a": "Ligar um movimento bancário ao documento (fatura) que ele liquida, por valor/referência/cliente."
+   }
+  ]
+ },
+ {
+  "id": "L108",
+  "t": "Cegid Pulse (IA) & assistentes: resumos e sugestões no ERP",
+  "lv": 15,
+  "min": 40,
+  "meta": "20 min",
+  "pre": [
+   "L104"
+  ],
+  "ref": "Cegid Pulse · IA",
+  "goal": "Usar a IA embutida (Cegid Pulse/assistentes): resumos de registos, sugestões de next-best-action e respostas a perguntas sobre dados.",
+  "steps": [
+   "Ativar/aceder ao assistente de IA (Cegid Pulse) no ERP",
+   "Pedir resumo de um cliente (histórico, risco, próximas ações)",
+   "Pedir sugestão de next-best-action para uma oportunidade",
+   "Fazer uma pergunta sobre dados (ex.: top clientes do mês) e validar a resposta",
+   "Usar a IA para rascunhar um email/comercial a partir de um registo",
+   "Avaliar limites: o que a IA não deve decidir sem humano"
+  ],
+  "proofs": [
+   {
+    "d": "Print do resumo de cliente gerado por IA",
+    "k": "print"
+   },
+   {
+    "d": "Print de uma pergunta-a-dados respondida pela IA",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que a IA embutida acrescenta?",
+    "a": "Resumos, sugestões e respostas-a-dados dentro do ERP, acelerando análise e comunicação."
+   },
+   {
+    "q": "O que a IA não deve decidir sozinha?",
+    "a": "Decisões com impacto fiscal/financeiro ou de dados mestres sem validação humana."
+   }
+  ]
+ },
+ {
+  "id": "L109",
+  "t": "PHC CS Web: arquitetura, acesso e apps web base",
+  "lv": 16,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L02"
+  ],
+  "ref": "PHC CS Web · base",
+  "goal": "Entender e aceder ao PHC CS Web: arquitetura (servidor web + BD), autenticação, e navegação nas apps web base.",
+  "steps": [
+   "Aceder ao PHC CS Web (URL do servidor web) e autenticar",
+   "Identificar a arquitetura: servidor web, BD partilhada com o desktop, sessão",
+   "Navegar nas apps web base (vendas, clientes, consultas)",
+   "Comparar uma operação no web vs desktop (mesmo registo)",
+   "Verificar permissões/perfis aplicados no web (iguais ao desktop)",
+   "Confirmar acesso seguro (HTTPS) e sessão"
+  ],
+  "proofs": [
+   {
+    "d": "Print do login/acesso ao PHC CS Web",
+    "k": "print"
+   },
+   {
+    "d": "Print de uma operação web vs desktop do mesmo registo",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O PHC CS Web partilha a BD com o desktop?",
+    "a": "Sim — o web e o desktop acedem à mesma BD; o web é outra camada de apresentação."
+   },
+   {
+    "q": "As permissões no web são as mesmas do desktop?",
+    "a": "Sim — perfis/acessos são os do utilizador na BD, aplicados em ambas as camadas."
+   }
+  ]
+ },
+ {
+  "id": "L110",
+  "t": "IDU/Ecrãs web personalizados: desenhar e publicar",
+  "lv": 16,
+  "min": 50,
+  "meta": "25 min",
+  "pre": [
+   "L109",
+   "L46"
+  ],
+  "ref": "PHC CS Web · IDU web",
+  "goal": "Criar ecrãs web personalizados (IDU web): desenhar layout, ligar a dados (tabelas/consultas) e publicar para utilizadores.",
+  "steps": [
+   "Abrir o designer de ecrãs web (IDU web) e criar um ecrã novo",
+   "Ligar o ecrã a uma tabela/consulta (clientes/artigos) com campos e grelha",
+   "Adicionar ações (abrir ficha, novo, pesquisar) e validações simples",
+   "Publicar o ecrã e atribuir a um perfil/utilizador",
+   "Testar o ecrã publicado no browser como utilizador de teste",
+   "Ajustar layout/responsividade e republicar"
+  ],
+  "proofs": [
+   {
+    "d": "Print do ecrã web no designer com ligação a dados",
+    "k": "print"
+   },
+   {
+    "d": "Print do ecrã publicado a funcionar no browser",
+    "k": "print"
+   }
+  ],
+  "proofs2": [],
+  "ask": [
+   {
+    "q": "O que é um IDU web?",
+    "a": "Um ecrã/app web personalizado, desenhado no designer e ligado a dados do ERP, publicado para utilizadores."
+   },
+   {
+    "q": "Para que servem as ações num ecrã web?",
+    "a": "Operações (abrir/novo/pesquisar) que o utilizador pode executar no ecrã publicado."
+   }
+  ]
+ },
+ {
+  "id": "L111",
+  "t": "PHC ON / Evolution cloud: subscrição, tenants e administração",
+  "lv": 16,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L109"
+  ],
+  "ref": "PHC ON · cloud",
+  "goal": "Administrar o PHC na cloud (PHC ON/Evolution): modelo de subscrição, tenants, updates geridos e backups geridos.",
+  "steps": [
+   "Identificar o modelo de subscrição (PHC ON/Evolution) e o que está incluído (updates, backups)",
+   "Aceder ao tenant na cloud e verificar versão/estado",
+   "Verificar políticas de backup gerido e ponto de restauro",
+   "Verificar ciclo de updates geridos (janelas de manutenção)",
+   "Configurar utilizadores/acessos no tenant cloud",
+   "Comparar responsabilidades partilhadas (fornecedor vs cliente) na cloud"
+  ],
+  "proofs": [
+   {
+    "d": "Print do tenant cloud com versão/estado",
+    "k": "print"
+   },
+   {
+    "d": "Print das políticas de backup/updates geridos",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que muda na cloud vs on-premise?",
+    "a": "Updates, backups e infraestrutura geridos pelo fornecedor; o cliente gere utilizadores/dados."
+   },
+   {
+    "q": "O que é o modelo de responsabilidades partilhadas?",
+    "a": "O fornecedor garante plataforma/updates/backups; o cliente garante dados mestres/acessos/processos."
+   }
+  ]
+ },
+ {
+  "id": "L112",
+  "t": "Mobile & offline: apps móveis e trabalho sem ligação",
+  "lv": 16,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L109"
+  ],
+  "ref": "Mobility · offline",
+  "goal": "Trabalhar em mobilidade: apps móveis do PHC, sincronização e comportamento offline (vendas/visitas sem ligação).",
+  "steps": [
+   "Instalar/aceder à app móvel do PHC e autenticar",
+   "Registar uma operação (visita/encomenda) online e verificar sincronização",
+   "Simular offline: registar operação sem ligação e verificar pendência",
+   "Reconectar e validar sincronização das operações pendentes",
+   "Verificar conflitos de sincronização e resolução",
+   "Confirmar que anexos/fotos offline sincronizam"
+  ],
+  "proofs": [
+   {
+    "d": "Print de operação registada offline pendente",
+    "k": "print"
+   },
+   {
+    "d": "Print da sincronização após reconectar",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que acontece a operações offline?",
+    "a": "Ficam pendentes no dispositivo e sincronizam ao reconectar."
+   },
+   {
+    "q": "Como se resolvem conflitos de sincronização?",
+    "a": "Por política (último-a-escrever ou resolução manual) conforme o tipo de registo."
+   }
+  ]
+ },
+ {
+  "id": "L113",
+  "t": "Dashboards web (PHC Dashboard) & KPIs em tempo real",
+  "lv": 16,
+  "min": 45,
+  "meta": "20 min",
+  "pre": [
+   "L42",
+   "L109"
+  ],
+  "ref": "PHC Dashboard · KPIs",
+  "goal": "Construir dashboards web de gestão: KPIs de vendas/stock/tesouraria em painéis partilháveis com refresh.",
+  "steps": [
+   "Abrir o PHC Dashboard e criar um painel novo",
+   "Adicionar KPIs (vendas do mês, margem, stock abaixo de mín., saldo tesouraria)",
+   "Configurar gráficos (barras/linhas/tart) ligados a consultas/análises",
+   "Configurar refresh automático e partilha do painel com a direção",
+   "Adicionar filtro interativo (período/loja/comercial) ao painel",
+   "Validar que os KPIs refletem dados em tempo real"
+  ],
+  "proofs": [
+   {
+    "d": "Print do painel com KPIs e gráficos",
+    "k": "print"
+   },
+   {
+    "d": "Print do filtro interativo a alterar o painel",
+    "k": "print"
+   }
+  ],
+  "ask": [
+   {
+    "q": "O que um dashboard web acrescenta vs análises?",
+    "a": "Painéis visuais partilháveis com refresh e filtros interativos, para gestão em tempo real."
+   },
+   {
+    "q": "Para que serve a partilha de painéis?",
+    "a": "Para a direção/acessores verem KPIs sem aceder ao ERP diretamente."
+   }
+  ]
+ }
+]

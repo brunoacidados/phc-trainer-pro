@@ -1,0 +1,942 @@
+[
+ {
+  "t": "O que é o Cegid PHC Evolution?",
+  "b": "Sucessor do PHC CS desktop: mesma plataforma + subscrição anual, web incluído, IA (Cegid Pulse), Cegid Docs e open banking.",
+  "lv": 0
+ },
+ {
+  "t": "Planos de subscrição do Evolution?",
+  "b": "Standard, Plus, Advanced, Premium e Ultimate (BD 10 GB nos dois primeiros; web e Pulse a partir do Plus).",
+  "lv": 0
+ },
+ {
+  "t": "Gamas funcionais históricas do PHC CS?",
+  "b": "Corporate (micro/pequenas), Advanced (PME, personalização e análises), Enterprise (aprovações, eventos/páginas completos, log de atividade).",
+  "lv": 0
+ },
+ {
+  "t": "Como é o versionamento atual do PHC CS/Evolution?",
+  "b": "Anual: AAAANN — ex.: 202501, 202504, 202601 (antes: v18…v30).",
+  "lv": 0
+ },
+ {
+  "t": "O que faz o 'exe único' de instalação?",
+  "b": "Instala a aplicação, cria/attacha a base de dados e configura o ODBC automaticamente.",
+  "lv": 0
+ },
+ {
+  "t": "BD mínima segundo os termos de licenciamento?",
+  "b": "SQL Server 2008R2+ (instalações atuais: 2012+; Express típico no Corporate).",
+  "lv": 0
+ },
+ {
+  "t": "Relação empresa × base de dados?",
+  "b": "Cada empresa = uma BD SQL Server própria.",
+  "lv": 0
+ },
+ {
+  "t": "Onde ficam os erros de eventos Xbase?",
+  "b": "Na Análise Interna (desktop); na web, no Log de Código. Linha 0 = erro em expressão (não programa).",
+  "lv": 0
+ },
+ {
+  "t": "O que mostra o Dicionário de Dados?",
+  "b": "Campos, descrições, tipos e tamanhos de QUALQUER tabela + relações entre tabelas (desde a v2008). Menu Supervisor > Tratamento da base de dados.",
+  "lv": 0
+ },
+ {
+  "t": "O que é o PHC On?",
+  "b": "Acordo anual: atualizações de software e legislação + portal on.phc.pt (formação online, autoformação, truques e dicas) + Calendário PHC de obrigações legais.",
+  "lv": 0
+ },
+ {
+  "t": "Como se entra na Comunidade PHC?",
+  "b": "community.phcsoftware.com com Nº de Cliente + ID Técnico + password (área de parceiros/clientes).",
+  "lv": 0
+ },
+ {
+  "t": "O que é o PEP?",
+  "b": "Cegid PHC Evolution Program: especialização prática de 140 h, online pós-laboral, com certificação oficial Cegid (instalação, SQL, módulos, processos).",
+  "lv": 0
+ },
+ {
+  "t": "Onde estão os manuais oficiais públicos?",
+  "b": "Help Center (helpcenter.phccs.net / phc.pt portal) + botão Ajuda dentro da aplicação (manuais in-app).",
+  "lv": 0
+ },
+ {
+  "t": "Menu Supervisor serve para quê?",
+  "b": "Administração: Framework PHC (personalização), Tratamento da base de dados (dicionário, desfragmentação), monitores (ex.: EyePeak Sincronização).",
+  "lv": 0
+ },
+ {
+  "t": "Menu Sistema serve para quê?",
+  "b": "Parâmetros gerais e por módulo, utilizadores, configuração da aplicação.",
+  "lv": 0
+ },
+ {
+  "t": "O que é 'ecrãs em memória'?",
+  "b": "Parâmetro de performance: ecrãs principais fechados mantêm-se em memória e reabrem instantaneamente.",
+  "lv": 0
+ },
+ {
+  "t": "O que faz o parâmetro 'processamento assíncrono'?",
+  "b": "Gravação/processamento de documentos em background; o documento fica marcado como 'não processado' até concluir (inibe gravação correta se algo falhar).",
+  "lv": 0
+ },
+ {
+  "t": "O que é o File Storage (202501+)?",
+  "b": "Armazenamento de anexos em diretoria física, na BD ou ambos; documentos fiscalmente relevantes ficam sempre na BD.",
+  "lv": 0
+ },
+ {
+  "t": "O que é o Cegid Account?",
+  "b": "Autenticação híbrida do ecossistema Cegid: contas Microsoft/Google, 2FA e ativação por utilizador (202601+).",
+  "lv": 0
+ },
+ {
+  "t": "Que executáveis/países a plataforma suporta?",
+  "b": "PT, ES (SII/TicketBAI), PE (retenções), US (English) e geografias PALOP (AO, MZ, CV).",
+  "lv": 0
+ },
+ {
+  "t": "Que tabelas guardam os clientes?",
+  "b": "CL (ficha) e CL2 (Clientes - Outros Dados, ex.: país da morada).",
+  "lv": 1
+ },
+ {
+  "t": "Numeração de sede e filiais do cliente?",
+  "b": "Sede = 0; filiais/estabelecimentos = 1 a 999.",
+  "lv": 1
+ },
+ {
+  "t": "O que é o serviço Ignios?",
+  "b": "Preenchimento automático dos dados da empresa (nome, morada…) a partir do NIF — gama Advanced+.",
+  "lv": 1
+ },
+ {
+  "t": "Efeito de cliente 'Inativo'?",
+  "b": "Não aparece em opções/documentos novos; continua em análises; dossiers antigos ainda podem ser faturados.",
+  "lv": 1
+ },
+ {
+  "t": "Com documentos certificados emitidos, o que fica protegido na ficha do cliente?",
+  "b": "Sem nome/morada mas com NIF: pode definir nome/morada, não pode alterar NIF. Com nome/morada mas sem NIF: pode preencher NIF ou morada, não pode alterar o nome.",
+  "lv": 1
+ },
+ {
+  "t": "O que são Moradas de Carga e Descarga?",
+  "b": "Tabela de moradas do cliente que alimenta os campos Local de carga/descarga dos documentos de transporte (ShipFrom/ShipTo no SAF-T).",
+  "lv": 1
+ },
+ {
+  "t": "O que são referências alternativas?",
+  "b": "Códigos do artigo usados pelo cliente ou fornecedor — permitem introduzir o artigo por outro código no documento.",
+  "lv": 1
+ },
+ {
+  "t": "O que é um composto (kit)?",
+  "b": "Artigo formado por componentes (explode/consome os componentes conforme configuração).",
+  "lv": 1
+ },
+ {
+  "t": "Para que serve a unidade alternativa + factor de conversão?",
+  "b": "Vender/comprar noutra unidade (ex.: caixa = 10 un) convertendo quantidades e preços; o factor pode ser invertido.",
+  "lv": 1
+ },
+ {
+  "t": "O que são stocks cativos e pré-cativos?",
+  "b": "Reservas de stock: cativo (reservado/comprometido) e pré-cativo (pré-reserva) para controlo de disponibilidade.",
+  "lv": 1
+ },
+ {
+  "t": "Como funcionam as tabelas de preços?",
+  "b": "Várias tabelas com validades (início/fim); no documento assume a tabela do cliente e o preço válido na data.",
+  "lv": 1
+ },
+ {
+  "t": "O que é o rappel?",
+  "b": "Desconto retroativo por volumes atingidos (clientes e fornecedores), apurado no fim do período.",
+  "lv": 1
+ },
+ {
+  "t": "Que módulos opcionais estendem os artigos?",
+  "b": "Cores/tamanhos (vestuário), lotes, números de série (Equipamentos), Ecovalor, terminais portáteis, EDI.",
+  "lv": 1
+ },
+ {
+  "t": "Tipos de documento de uma série de faturação?",
+  "b": "1/2/3 = Fatura, Fatura Simplificada, Fatura-Recibo (+ND/NC via SAF-T); 4 = documento de transporte (guia); 5 = outro (proforma).",
+  "lv": 2
+ },
+ {
+  "t": "Mapping SAF-T dos documentos?",
+  "b": "FT (fatura), FS (simplificada), FR (fatura-recibo), NC (crédito), ND (débito), GT/GA/GC (transporte).",
+  "lv": 2
+ },
+ {
+  "t": "O que uma série define?",
+  "b": "Tipo de documento, mapping SAF-T, numeração e o que movimenta: stocks, conta corrente, tesouraria.",
+  "lv": 2
+ },
+ {
+  "t": "Que tabela guarda os Documentos de Faturação?",
+  "b": "FT (ex.: campo ft.ndoc = tipo de documento).",
+  "lv": 2
+ },
+ {
+  "t": "O que a fatura atualiza automaticamente ao gravar?",
+  "b": "Stocks (baixa), conta corrente do cliente (saldo/idades) e ficha do cliente (faturação acumulada).",
+  "lv": 2
+ },
+ {
+  "t": "Campo obrigatório numa NC/ND?",
+  "b": "Motivo de Retificação (ex.: numa regularização de adiantamento surge 'Retificação de Fatura de Adiantamento').",
+  "lv": 2
+ },
+ {
+  "t": "Pode existir documento anulado sem motivo?",
+  "b": "Não — o motivo de anulação é obrigatório; em anulações em série pede-se uma vez e aplica-se a todos.",
+  "lv": 2
+ },
+ {
+  "t": "O que é a Emissão Automática de Faturação?",
+  "b": "Ecrã de preparação que fatura em lote por cópia de dossiers internos/guias (seleção por intervalo de datas, cliente…).",
+  "lv": 2
+ },
+ {
+  "t": "O que são Dossiers Internos (DI)?",
+  "b": "Documentos parametrizáveis para uso interno (tabela BO): orçamentos, encomendas, propostas, folhas de obra, consignações, avenças.",
+  "lv": 2
+ },
+ {
+  "t": "Circuito comercial típico com DIs?",
+  "b": "Orçamento → Encomenda de cliente → Guia → Fatura → Recibo (conversões por cópia com opções configuráveis).",
+  "lv": 2
+ },
+ {
+  "t": "Dossiers especiais que tem de conhecer?",
+  "b": "Stock Inicial, Transferência de Armazém, Preços (cliente/fornecedor), Avenças (recorrência), Composição/Produção.",
+  "lv": 2
+ },
+ {
+  "t": "O que é a 'data efetiva de entrega'?",
+  "b": "Data em que bens/serviços foram/serão disponibilizados ao adquirente — obrigatória por lei e comunicada no SAF-T.",
+  "lv": 2
+ },
+ {
+  "t": "Campos de transporte num documento tipo 4?",
+  "b": "Local de carga/descarga, data e hora de início do transporte, matrícula, motorista, Cód. Ident. AT.",
+  "lv": 2
+ },
+ {
+  "t": "Para que serve o campo 'Linha final'?",
+  "b": "Texto livre impresso no rodapé do documento.",
+  "lv": 2
+ },
+ {
+  "t": "O que fazem Segmento e Classificação de vendas?",
+  "b": "Permitem análises de faturação por segmento/classificação (herdados da ficha do cliente).",
+  "lv": 2
+ },
+ {
+  "t": "Recibo de C/C vs recibo de adiantamento?",
+  "b": "C/C liquida documentos já emitidos; adiantamento regista dinheiro antes do documento fiscal e é regularizado depois na fatura.",
+  "lv": 2
+ },
+ {
+  "t": "Que referências de pagamento o módulo gera?",
+  "b": "Referências Multibanco (cobranças), ficheiros SEPA (débitos diretos/pagamentos), pagamentos online (Unicre/PayPal via web).",
+  "lv": 2
+ },
+ {
+  "t": "O que é 'Comprar a Encomenda a Fornecedor'?",
+  "b": "Conversão do DI de compra em documento de compra (guia/fatura), com receção total ou parcial.",
+  "lv": 3
+ },
+ {
+  "t": "O que é o PCMP?",
+  "b": "Preço de Custo Médio Ponderado — recálculo do custo médio do stock a cada entrada valorizada; base da valorização e do CEVMC.",
+  "lv": 3
+ },
+ {
+  "t": "Que códigos tipificam as operações de armazém?",
+  "b": "Códigos de Movimentos de Stocks (venda, compra, quebra, sobra, transferência, regularização…).",
+  "lv": 3
+ },
+ {
+  "t": "Como se movimentam stocks entre armazéns?",
+  "b": "Dossier de Transferência de Armazém (ou movimento manual com código próprio).",
+  "lv": 3
+ },
+ {
+  "t": "O inventário físico gera o quê?",
+  "b": "Acertos automáticos de quebra/sobra no ficheiro de movimentos, regularizando stock teórico = contado.",
+  "lv": 3
+ },
+ {
+  "t": "Análises de stock essenciais?",
+  "b": "Ruturas, acima do stock máximo, a encomendar (ponto de encomenda), ranking de vendas, margem/contribuição, entradas/saídas com comparação anual.",
+  "lv": 3
+ },
+ {
+  "t": "O que mostra 'Encomendado a fornecedor' no artigo?",
+  "b": "Quantidades em encomendas de compra pendentes — visível na ficha de stock do artigo.",
+  "lv": 3
+ },
+ {
+  "t": "O que é o saldo por idades (aging)?",
+  "b": "Dívida distribuída por escalões de antiguidade dos documentos em aberto (0-30, 31-60, 61-90, +90) — base de cobranças e crédito.",
+  "lv": 4
+ },
+ {
+  "t": "Que tabela guarda os recibos?",
+  "b": "RE.",
+  "lv": 4
+ },
+ {
+  "t": "O que são Códigos de Conta Corrente?",
+  "b": "Tipos de movimento de C/C (fatura, recibo, adiantamento, juros, regularização…) que classificam os lançamentos.",
+  "lv": 4
+ },
+ {
+  "t": "Ferramentas de cobrança do módulo?",
+  "b": "Monitor de controlo de dívidas, extractos de conta, Mailing de C/C por documento, cheques em carteira, recibos incobráveis.",
+  "lv": 4
+ },
+ {
+  "t": "Tesouraria: as 3 visões?",
+  "b": "Real (ocorrida), previsional (vencimentos/títulos previstos) e orçamental (plano aprovado).",
+  "lv": 4
+ },
+ {
+  "t": "O que se faz com extractos bancários?",
+  "b": "Importam-se/registam-se e reconciliam-se com os movimentos de tesouraria para fechar o mês bancário.",
+  "lv": 4
+ },
+ {
+  "t": "Gestão de títulos de tesouraria: exemplos?",
+  "b": "Letras e cheques (pré-datados, em carteira) — alimentam previsões e cobranças/pagamentos.",
+  "lv": 4
+ },
+ {
+  "t": "O que o open banking traz ao Evolution?",
+  "b": "Importação automática de movimentos e reconciliação acelerada + melhores previsões de tesouraria.",
+  "lv": 4
+ },
+ {
+  "t": "Critérios de comissão suportados?",
+  "b": "Por vendedor, tipo de cliente, família de produtos, etc., com mapas de apuramento.",
+  "lv": 4
+ },
+ {
+  "t": "O que é o SAF-T (PT)?",
+  "b": "Standard Audit File for Tax — ficheiro XML normalizado de auditoria fiscal (faturação, transportes, inventário, contabilidade).",
+  "lv": 5
+ },
+ {
+  "t": "Dois métodos de comunicação de documentos de transporte à AT?",
+  "b": "Webservice em tempo real (devolve o Cód. Ident. AT) ou SAF-T (PT) resumido (MovementOfGoods com ShipFrom/ShipTo).",
+  "lv": 5
+ },
+ {
+  "t": "O que compõe o ATCUD?",
+  "b": "Código de validação da série (atribuído pela AT) + número sequencial do documento; impresso com o QR Code.",
+  "lv": 5
+ },
+ {
+  "t": "O que acontece a séries sem código de validação?",
+  "b": "O software impede a impressão: sem código de validação não se forma o ATCUD, obrigatório desde 01/01/2023 (Portaria 195/2020; Despacho 351/2021-XXII).",
+  "lv": 5
+ },
+ {
+  "t": "Limitação dos motivos de isenção com webservice ativo?",
+  "b": "Só são aceites os códigos normalizados M01 a M99 (ex.: M08 = isento art. 9.º); motivos criados pelo utilizador geram aviso.",
+  "lv": 5
+ },
+ {
+  "t": "O que garante a integridade das faturas?",
+  "b": "Assinatura digital qualificada (hash encadeada por série) + nº de certificado do software validado pela AT.",
+  "lv": 5
+ },
+ {
+  "t": "Prazo da comunicação de inventário à AT?",
+  "b": "Até 31 de janeiro (empresas abrangidas), por ficheiro SAF-T/CSV/XML conforme volume de negócios.",
+  "lv": 5
+ },
+ {
+  "t": "Retenção de IRS numa fatura: campos?",
+  "b": "Taxa de retenção e Valor de retenção de IRS (visível no mailing de C/C); o cliente paga o líquido e entrega ao Estado.",
+  "lv": 5
+ },
+ {
+  "t": "O que é CIUS-PT?",
+  "b": "Especificação portuguesa de faturação eletrónica (obrigatória na contratação pública); suportada via Documentos Eletrónicos/webservices (ex.: SaphetyDoc).",
+  "lv": 5
+ },
+ {
+  "t": "Novidade 202601 para faturas de fornecedor?",
+  "b": "Com Cegid Docs, faturas CIUS-PT são anexadas em PDF e pré-lançadas automaticamente (arquivo digital legal).",
+  "lv": 5
+ },
+ {
+  "t": "O que é o SDR (2026)?",
+  "b": "Sistema de Depósito e Recolha: desde 10/04/2026, depósito de 0,10 € por embalagem de bebida de uso único (até 3 L); configuração única de itens SDR, aplicado automaticamente na venda.",
+  "lv": 5
+ },
+ {
+  "t": "Obrigações Espanha no PHC?",
+  "b": "SII (Suministro Inmediato AEAT) e TicketBAI — parâmetro geral com 4 opções; funções internas de envio de compras/vendas para o SII.",
+  "lv": 5
+ },
+ {
+  "t": "Ferramentas RGPD do módulo?",
+  "b": "Aviso legal configurável, registo do tratamento de dados, direito ao esquecimento (anonimização), histórico de utilizadores.",
+  "lv": 5
+ },
+ {
+  "t": "O que são documentos pré-definidos?",
+  "b": "Modelos de contabilização automática: mapeiam documentos do Gestão para lançamentos na Contabilidade (contas de clientes, fornecedores, IVA, vendas/compras).",
+  "lv": 5
+ },
+ {
+  "t": "O que é o CEVMC?",
+  "b": "Custo das Existências Vendidas e das Mercadorias Consumidas — apurado na Contabilidade a partir dos consumos do Gestão.",
+  "lv": 5
+ },
+ {
+  "t": "2FA na Segurança Social: desde quando?",
+  "b": "12/05/2026 (obrigatório para empresas) — software atualizado para manter as comunicações (202601).",
+  "lv": 5
+ },
+ {
+  "t": "O que valida antes de 'fechar o mês' fiscal?",
+  "b": "SAF-T exportado e validado, séries/ATCUD ok, documentos de transporte comunicados, inventário (quando aplicável), integrações contabilísticas corretas.",
+  "lv": 5
+ },
+ {
+  "t": "Análises Multidimensionais: de onde nascem e em que gama?",
+  "b": "Criam-se a partir de Análises de Utilizador; gama Advanced+ (drill-down por dimensões).",
+  "lv": 6
+ },
+ {
+  "t": "O que é um snapshot?",
+  "b": "Consulta T-SQL 'fotografada' com variáveis (ex.: #stamp#) exibida em painel/grupo com cor — dados contextuais do registo atual.",
+  "lv": 6
+ },
+ {
+  "t": "O que é a Impressão Definida pelo Utilizador?",
+  "b": "Personalização de colunas/layout de listagens e impressões pelo utilizador (Advanced+).",
+  "lv": 6
+ },
+ {
+  "t": "Sistema de Aprovação de Dossiers: que gama?",
+  "b": "Enterprise (circuitos de aprovação de dossiers/documentos); Workflow Operacional aparece no Advanced+.",
+  "lv": 6
+ },
+ {
+  "t": "Monitores e Itens de Monitor?",
+  "b": "Apresentações sequenciais de dados operacionais com colunas configuráveis (ex.: dívidas, PATs, sincronizações).",
+  "lv": 6
+ },
+ {
+  "t": "Exportações nativas de listagens?",
+  "b": "Excel (xlsx), PDF e cópia de dados da grelha; importação: Excel para linhas de documentos, câmbios via ODBC.",
+  "lv": 6
+ },
+ {
+  "t": "O que ativa as ferramentas da Framework PHC?",
+  "b": "Parâmetros gerais ('Utiliza campos do utilizador?', 'Utiliza ecrãs do utilizador?'…) — aparecem depois no menu Supervisor > Framework PHC.",
+  "lv": 6
+ },
+ {
+  "t": "Onde ficam gravadas as personalizações?",
+  "b": "Na base de dados (framework) — sobrevivem à reinstalação do executável, mas devem ser revalidadas em cada upgrade.",
+  "lv": 6
+ },
+ {
+  "t": "O que são Painéis de informação/navegação?",
+  "b": "Componentes de UI agregáveis ao menu da aplicação (parâmetros próprios) para acesso rápido a análises/atalhos.",
+  "lv": 6
+ },
+ {
+  "t": "PHC Dashboard: o que acrescenta?",
+  "b": "Templates de dashboards por módulo (ex.: Gestão) com visão 360º — vendas, C/C, tesouraria num só ecrã.",
+  "lv": 6
+ },
+ {
+  "t": "Como se descobre a estrutura de uma tabela para uma análise?",
+  "b": "Dicionário de Dados (menu de opções do ecrã posiciona na tabela atual) — campos, tipos e relações.",
+  "lv": 6
+ },
+ {
+  "t": "Boas práticas de leitura SQL no PHC?",
+  "b": "Filtrar por período e TOP enquanto explora; NOLOCK só em análises indicativas (pode ler dados sujos); ligar tabelas pelo stamp (ft.ftstamp = fi.ftstamp); não alterar esquemas do core; índices via framework.",
+  "lv": 6
+ },
+ {
+  "t": "Linguagem de personalização do desktop?",
+  "b": "Xbase (sintaxe Visual FoxPro) — eventos, regras, funções de utilizador.",
+  "lv": 7
+ },
+ {
+  "t": "Eventos disponíveis nos objetos (lista-chave)?",
+  "b": "Init, Ativar, Desativar, Refrescar, Clique, Duplo Clique, Clique Direito, Ao Entrar, Ao Sair, Após Atualizar, Após não Atualizado, Antes/Depois mudar Linha-Coluna, MouseEnter/Leave/Move/Wheel, Tecla Pressionada.",
+  "lv": 7
+ },
+ {
+  "t": "Propriedades sempre disponíveis do ObjRecebido?",
+  "b": "Janela (apontador para o ecrã) e Objecto (apontador para o objeto; inclui Value, Parent e MeusDados).",
+  "lv": 7
+ },
+ {
+  "t": "Para que serve MeusDados?",
+  "b": "Repositório chave-valor do utilizador para passar estado entre eventos: AddParametro, GuardaParametro, ExisteParametro, GetNomeParametro, GetIndexParametro, TotalParametros.",
+  "lv": 7
+ },
+ {
+  "t": "O que faz Return .F. num evento?",
+  "b": "Cancela o comportamento de raiz do objeto nesse evento (tecla não entra, calendário não abre…). Expressões não usam Return.",
+  "lv": 7
+ },
+ {
+  "t": "Exemplo de alteração via ObjRecebido.Janela?",
+  "b": "ObjRecebido.Janela.Caption = 'Exemplo' — muda o título do ecrã enquanto aberto (não persiste; repetir no Init).",
+  "lv": 7
+ },
+ {
+  "t": "Num Campo de Ligação, o que apontam .Lista1/.Procura/.Nossocampo1?",
+  "b": "Sub-objetos do campo composto: botão de lista, botão de procura e campo de texto.",
+  "lv": 7
+ },
+ {
+  "t": "Campos de Utilizador vs ALTER TABLE?",
+  "b": "Campos de utilizador são geridos pela framework (persistem em upgrades, aparecem nos ecrãs); ALTER TABLE direto quebra suporte/upgrades.",
+  "lv": 7
+ },
+ {
+  "t": "Regras de Utilizador: para quê?",
+  "b": "Validações de negócio na introdução/gravacao (obrigar campos, bloquear sem stock, validar NIF) — com assistente ou código.",
+  "lv": 7
+ },
+ {
+  "t": "O que são Instruções Internas?",
+  "b": "Procedimentos/documentação escrita pelo utilizador, associados a cada ecrã principal (manual da casa in-app).",
+  "lv": 7
+ },
+ {
+  "t": "Função interna CriaAvs?",
+  "b": "Cria avisos/avisos internos a utilizadores (parâmetros incluem stamp do ecrã e userAv) — base de alertas personalizados.",
+  "lv": 7
+ },
+ {
+  "t": "Função interna U_NAVEGA?",
+  "b": "Navegação programática para registos/ecrãs (interage com o parâmetro 'mostrar último registo ao arrancar').",
+  "lv": 7
+ },
+ {
+  "t": "Índices de Utilizador: capacidade especial?",
+  "b": "Criar índices SQL sobre tabelas do software via framework, incluindo INCLUDED COLUMNS (v19+).",
+  "lv": 7
+ },
+ {
+  "t": "O que é um IDU / Ecrã Personalizado?",
+  "b": "Ecrã desenhado pelo utilizador (desenhador; drag-and-drop no POS touch) com objetos ligados a dados, eventos e menus próprios.",
+  "lv": 7
+ },
+ {
+  "t": "Framework Web: linguagem e ferramentas?",
+  "b": "C# no Editor de Código — Eventos, Regras, Scripts (por URL), Ecrãs/Objetos de utilizador, Monitores, Templates, Valores por Defeito, Filtros, RSS, Log de Código.",
+  "lv": 7
+ },
+ {
+  "t": "O que são Scripts (web)?",
+  "b": "Programas executados quando se chama um URL específico — endpoints próprios para integrações.",
+  "lv": 7
+ },
+ {
+  "t": "PromptFunction() — o que é?",
+  "b": "Nova função da framework (202601) para invocar IA (Cegid Pulse) a partir de código; base dos Smart Tools configuráveis/monetizáveis pelos parceiros.",
+  "lv": 7
+ },
+ {
+  "t": "Relatórios na web usam que tecnologia?",
+  "b": "DevExpress ('Relatórios DevExpress no PHC CS Web' — Clientes, Faturação, Recibos de Adiantamento…).",
+  "lv": 7
+ },
+ {
+  "t": "Ferramentas de debug do programador PHC?",
+  "b": "Análise Interna (desktop), Log de Código (web), Simulador de SQL, Explorador de Dados, Dicionário de Dados.",
+  "lv": 7
+ },
+ {
+  "t": "O que é o EyePeak?",
+  "b": "Plataforma de logística/WMS/e-commerce (Cegid Primavera) que sincroniza com o PHC — monitor 'EyePeak Sincronização' no menu Supervisor.",
+  "lv": 8
+ },
+ {
+  "t": "Sincronização EyePeak: o que inclui?",
+  "b": "Artigos/stocks, séries de documentos de faturação (consistência ERP×EyePeak), fluxos de documentos (ex.: encomendas → guias de fornecedor).",
+  "lv": 8
+ },
+ {
+  "t": "O que é o PHC CS Web?",
+  "b": "Plataforma web sobre a mesma BD do desktop: aplicações Gestão Web, Front Web (extranet de clientes/fornecedores), POS Web, RH Web…",
+  "lv": 8
+ },
+ {
+  "t": "Ativação do Cegid Pulse: 3 passos?",
+  "b": "1) Dar acesso ao módulo Cegid Pulse; 2) Ativar Cegid Account na ficha do utilizador; 3) O utilizador faz login (deteção automática).",
+  "lv": 8
+ },
+ {
+  "t": "O que são os assistentes de negócio (202601)?",
+  "b": "Agentes de IA por área (o primeiro: comercial) que dão insights e cruzam dados do ERP em linguagem natural — simples de configurar pelo utilizador.",
+  "lv": 8
+ },
+ {
+  "t": "Integração bancária histórica do Gestão?",
+  "b": "WebBanking (ex.: Millennium BCP: saldos e extractos) — no Evolution evolui para open banking.",
+  "lv": 8
+ },
+ {
+  "t": "Comunidade de utilizadores PHC (B2B)?",
+  "b": "Sistema de troca de documentos cliente-fornecedor em XML (eProcurement) — histórico da plataforma; hoje: EDI/Documentos Eletrónicos e EyePeak.",
+  "lv": 8
+ },
+ {
+  "t": "Como se enviam documentos por e-mail a partir do PHC?",
+  "b": "Envio direto configurado por SMTP (com idioma/descrições do cliente), anexos via File Storage/Cegid Docs.",
+  "lv": 8
+ },
+ {
+  "t": "Migração PHC CS perpétuo → Evolution: etapas?",
+  "b": "Diagnóstico e plano (escolher plano/módulos) → migração técnica (dados, configurações, integrações) → suporte pós-arranque; desenvolvimentos/addons mantêm-se.",
+  "lv": 8
+ },
+ {
+  "t": "Quem vende/implementa o Cegid PHC?",
+  "b": "Rede de parceiros certificados (com especializações setoriais) — diretoria pública no site; parceiros acedem a formação, demos e à Comunidade.",
+  "lv": 8
+ },
+ {
+  "t": "Onde ler as novidades de cada versão?",
+  "b": "Help Center > Novidades (página por versão, ex.: 202601) + 'Listagem de Novidades' em PDF + artigos do blog.",
+  "lv": 8
+ },
+ {
+  "t": "Que ferramentas de IA a PHC já tinha antes do Pulse?",
+  "b": "Cris (assistente de gestão) e PHC CS GenAI (templates de perguntas/respostas reutilizáveis) — versão 202501.",
+  "lv": 8
+ },
+ {
+  "t": "Função interna U_sendmail — para que serve?",
+  "b": "Esta função permite enviar um email para um ou vários destinatários, indicando o Assunto, o Conteúdo e opcionalmente uma lista de ficheiros para enviar como… (Enciclopédia PHC · 📕 Funções PHC)",
+  "lv": 7
+ },
+ {
+  "t": "Função interna Navega — para que serve?",
+  "b": "Esta função é utilizada para navegar para um ecrã da aplicação. (Enciclopédia PHC · 📕 Funções PHC)",
+  "lv": 7
+ },
+ {
+  "t": "Função interna Mensagem — para que serve?",
+  "b": "Esta função envia uma mensagem ao utilizador (Enciclopédia PHC · 📕 Funções PHC)",
+  "lv": 7
+ },
+ {
+  "t": "Função interna Pergunta — para que serve?",
+  "b": "Esta função é utilizada para introduzir uma pergunta ao utilizador. (Enciclopédia PHC · 📕 Funções PHC)",
+  "lv": 7
+ },
+ {
+  "t": "Função interna Browlist — para que serve?",
+  "b": "Esta função permite mostrar ao utilizador, um cursor em modo de listagem. (Enciclopédia PHC · 📕 Funções PHC)",
+  "lv": 7
+ },
+ {
+  "t": "Função interna Listtoexcel — para que serve?",
+  "b": "Esta função permite criar uma listagem em Excel a partir de um cursor. (Enciclopédia PHC · 📕 Funções PHC)",
+  "lv": 7
+ },
+ {
+  "t": "Função interna U_sqlexec — para que serve?",
+  "b": "Esta função permite criar um cursor temporário com base numa expressão Transact SQL (Enciclopédia PHC · 📕 Funções PHC)",
+  "lv": 7
+ },
+ {
+  "t": "Função interna Ret_grid — para que serve?",
+  "b": "Esta função permite retornar a largura e ordem das colunas e a altura das linhas de uma Grid (grelha). (Enciclopédia PHC · 📕 Funções PHC)",
+  "lv": 7
+ },
+ {
+  "t": "Xbase: Strtran() — o que faz?",
+  "b": "Esta função retorna uma expressão de carateres, como resultado final. (Enciclopédia PHC · 📕 Xbase/VFP)",
+  "lv": 7
+ },
+ {
+  "t": "Xbase: Alltrim() — o que faz?",
+  "b": "Esta função retorna uma string sem espaços, removendo os espaços que se encontrem à esquerda e/ ou à direita de uma expressão de carateres. (Enciclopédia PHC · 📕 Xbase/VFP)",
+  "lv": 7
+ },
+ {
+  "t": "Xbase: Ctod() — o que faz?",
+  "b": "Esta função converte uma expressão do tipo caracter numa expressão do tipo DATE. (Enciclopédia PHC · 📕 Xbase/VFP)",
+  "lv": 7
+ },
+ {
+  "t": "Xbase: Messagebox() — o que faz?",
+  "b": "Esta função envia uma mensagem para o utilizador através de uma caixa de diálogo (Dialog Box). (Enciclopédia PHC · 📕 Xbase/VFP)",
+  "lv": 7
+ },
+ {
+  "t": "Onde está a documentação de TODAS as funções internas do PHC?",
+  "b": "Na Enciclopédia PHC (CHM oficial/Help Center): 154 funções internas com parâmetros e exemplos. Neste app: aba 📕 Enciclopédia (versão destilada + pesquisa).",
+  "lv": 7
+ },
+ {
+  "t": "O que é o funil de vendas no CRM?",
+  "b": "Sequência de fases (Qualificação→Proposta→Negociação→Ganha/Perdida) por onde cada oportunidade progride, com probabilidade por fase.",
+  "lv": 13
+ },
+ {
+  "t": "Diferença entre lead e oportunidade?",
+  "b": "Lead=contacto não qualificado; oportunidade=negócio qualificado no funil com valor, fecho previsto e probabilidade.",
+  "lv": 13
+ },
+ {
+  "t": "O que é pipeline ponderado?",
+  "b": "Σ(valor × probabilidade) por oportunidade — o valor esperado de fecho, mais realista que o pipeline bruto.",
+  "lv": 13
+ },
+ {
+  "t": "Para que servem os motivos de perda?",
+  "b": "Analisar porque se perde negócio (preço, concorrência, timing) e corrigir a abordagem comercial.",
+  "lv": 13
+ },
+ {
+  "t": "O que é uma ação/tarefa no CRM?",
+  "b": "Interação planeada (chamada/visita/email) ligada a uma oportunidade, com prazo, responsável e lembrete.",
+  "lv": 13
+ },
+ {
+  "t": "Para que serve a recorrência numa ação?",
+  "b": "Follow-ups periódicos automáticos (ex.: semanal) em ciclos de venda longos.",
+  "lv": 13
+ },
+ {
+  "t": "O que define o segmento de uma campanha?",
+  "b": "Filtros sobre clientes/contactos (zona, CAE, volume, inatividade) = público-alvo da campanha.",
+  "lv": 13
+ },
+ {
+  "t": "Como medir o ROI de uma campanha?",
+  "b": "Oportunidades geradas e ganhas atribuídas à campanha vs esforço/custo da campanha.",
+  "lv": 13
+ },
+ {
+  "t": "O que herda a FT ao converter uma oportunidade?",
+  "b": "Cliente, artigos/valores, comercial e campanha — rastreabilidade sem redigitação.",
+  "lv": 13
+ },
+ {
+  "t": "O que mostra a visão 360º do cliente?",
+  "b": "Docs de venda + oportunidades + ações + campanhas (+suporte) num só histórico.",
+  "lv": 13
+ },
+ {
+  "t": "O que indica a conversão por fase do funil?",
+  "b": "Onde o funil 'verte' (gargalo): % de oportunidades que passa de cada fase.",
+  "lv": 13
+ },
+ {
+  "t": "O que prova um ciclo CRM bem fechado?",
+  "b": "Rastreabilidade campanha→oportunidade→ações→proposta→FT e a Ganha refletida no funil/análise.",
+  "lv": 13
+ },
+ {
+  "t": "O que é uma BOM/lista de materiais?",
+  "b": "Componentes e quantidades necessários para fabricar o artigo acabado (a 'receita' de produção).",
+  "lv": 14
+ },
+ {
+  "t": "O que acontece ao stock numa OF ao consumir/concluir?",
+  "b": "Consome componentes (baixa) e dá entrada do artigo acabado ao concluir.",
+  "lv": 14
+ },
+ {
+  "t": "O que o MRP calcula?",
+  "b": "Necessidades líquidas (procura−stock−encomendas em curso) e propõe compra/produção com prazos.",
+  "lv": 14
+ },
+ {
+  "t": "Diferença rastreabilidade direta vs inversa?",
+  "b": "Direta=lote→onde foi usado; inversa=acabado→componentes/lotes de origem.",
+  "lv": 14
+ },
+ {
+  "t": "O que o acerto de inventário faz?",
+  "b": "Entradas/saídas que alinham o stock físico com o sistema por armazém (e o valor/PCMP).",
+  "lv": 14
+ },
+ {
+  "t": "O que o Ignios preenche automaticamente?",
+  "b": "Fichas a partir de fontes externas: NIF→cliente, EAN→artigo, matrícula→veículo.",
+  "lv": 15
+ },
+ {
+  "t": "O que o EyePeak sincroniza?",
+  "b": "Artigos/stock/preços ERP→loja e encomendas loja→ERP (bidirecional).",
+  "lv": 15
+ },
+ {
+  "t": "O que é o matching no open banking?",
+  "b": "Ligar um movimento bancário à fatura que ele liquida (por valor/referência/cliente).",
+  "lv": 15
+ },
+ {
+  "t": "O PHC CS Web partilha a BD com o desktop?",
+  "b": "Sim — mesma BD; o web é outra camada de apresentação com as mesmas permissões.",
+  "lv": 16
+ },
+ {
+  "t": "O que é um IDU web?",
+  "b": "Ecrã/app web personalizado, desenhado no designer, ligado a dados e publicado para perfis.",
+  "lv": 16
+ },
+ {
+  "t": "Na cloud, quem gere updates/backups?",
+  "b": "O fornecedor (PHC ON/Evolution); o cliente gere utilizadores/dados/processos.",
+  "lv": 16
+ },
+ {
+  "t": "O que acontece a operações registadas offline?",
+  "b": "Ficam pendentes no dispositivo e sincronizam ao reconectar (com política de conflitos).",
+  "lv": 16
+ },
+ {
+  "t": "Quais são as 8 classes do SNC?",
+  "b": "1 Meios financeiros líquidos, 2 Terceiros, 3 Inventários e ativos biológicos, 4 Investimentos, 5 Capital, 6 Gastos, 7 Rendimentos, 8 Resultados.",
+  "lv": 9
+ },
+ {
+  "t": "O que é a taxonomia SNC na Contabilidade PHC?",
+  "b": "A tabela oficial que liga cada conta às rubricas das declarações fiscais (IES/Modelo 22). Sem taxonomia correta, as declarações saem erradas — aula oficial 'Tabela de taxonomia'.",
+  "lv": 9
+ },
+ {
+  "t": "O que é a 'BD Pronta' da Contabilidade?",
+  "b": "A base de dados oficial de demonstração, já configurada — usada nas aulas e-learning PHC ('BD Pronta na Contabilidade', 7 min) para praticar sem risco.",
+  "lv": 9
+ },
+ {
+  "t": "Por que separar diários por natureza de operação?",
+  "b": "Numeração sequencial e auditável por diário + reconciliações e fechos mais rápidos (vendas, compras, recebimentos, pagamentos, caixa, bancos). Aula oficial: 'Como criar novos Diários' (6 min).",
+  "lv": 9
+ },
+ {
+  "t": "Regra de ouro de qualquer lançamento no PHC?",
+  "b": "Débito = Crédito (partida dobrada) — sem equilíbrio não grava; e todo o movimento tem documento de suporte e período válido.",
+  "lv": 9
+ },
+ {
+  "t": "O que é um documento pré-definido?",
+  "b": "A regra de contabilização automática por tipo de documento: que contas usar (21/22/243/71/31…), em que diário, com que IVA e contrapartidas. Aulas oficiais: 22 min (Contabilidade) + 23 min (Gestão).",
+  "lv": 9
+ },
+ {
+  "t": "Integração online × integração em lote?",
+  "b": "Online: o lançamento nasce quando o documento do Gestão é gravado. Lote: integração periódica com relatório de execução e tratamento de rejeições na origem.",
+  "lv": 9
+ },
+ {
+  "t": "Como se corrige um movimento já integrado?",
+  "b": "Por estorno (lançamento de sinal contrário) + novo lançamento correto — nunca apagando o movimento integrado. Correções ficam como movimentos de regularização.",
+  "lv": 9
+ },
+ {
+  "t": "Reconciliação mínima mensal Gestão × Contabilidade?",
+  "b": "Vendas×71, compras×31/61, IVA×243, bancos×12 e C/C de clientes/fornecedores×21/22 — ao cêntimo, todos os meses (não só no fim do ano).",
+  "lv": 9
+ },
+ {
+  "t": "O que compara o apuramento do IVA?",
+  "b": "IVA liquidado (vendas) × IVA dedutível (compras): a diferença é IVA a pagar (a favor do Estado) ou a recuperar (a favor do sujeito passivo).",
+  "lv": 9
+ },
+ {
+  "t": "Declaração Periódica de IVA no PHC: regimes e formato?",
+  "b": "Mensal ou trimestral (consoante o volume de negócios); o PHC gera os campos do impresso oficial e o suporte informático XML para submissão no Portal das Finanças.",
+  "lv": 9
+ },
+ {
+  "t": "O que é o regime especial de exigibilidade de caixa ('IVA de caixa')?",
+  "b": "DL 71/2013: o IVA só é exigível quando o cliente paga. O PHC marca os documentos do regime e o IVA entra na declaração periódica no momento do recebimento.",
+  "lv": 9
+ },
+ {
+  "t": "O que é a inversão do sujeito passivo (autoliquidação)?",
+  "b": "Em aquisições intracomunitárias e certos serviços, o adquirente liquida e deduz o IVA em simultâneo — campos próprios da declaração periódica. Âmbito oficial do módulo.",
+  "lv": 9
+ },
+ {
+  "t": "O que é o Modelo 30?",
+  "b": "A declaração de operações com não residentes (pagamentos ao estrangeiro/retenções) — produzida pelo PHC CS Contabilidade (âmbito oficial).",
+  "lv": 9
+ },
+ {
+  "t": "Fórmula do CEVMC/CMVMC?",
+  "b": "Existências iniciais + compras (e custos acessórios) − existências finais, com inventários valorizados vindos do Gestão. Aula oficial: 'Apuramento do CEVMC' (11 min).",
+  "lv": 9
+ },
+ {
+  "t": "O que faz o apuramento de resultados?",
+  "b": "Fecha as classes 6 (gastos) e 7 (rendimentos) contra a conta 81 (resultado do período); no anual, o 81 transita para resultados transitados/capital. Aula oficial: 12 min.",
+  "lv": 9
+ },
+ {
+  "t": "Que mapas fiscais/oficiais o PHC CS Contabilidade produz?",
+  "b": "Balanço, DR, Modelo 22 (com PPC/PEC), rácios, ABDR (Anexo ao Balanço e à DR), DFC (Fluxos de Caixa), IES/DA — e apuramento automático de imposto de selo.",
+  "lv": 9
+ },
+ {
+  "t": "O que é o SAF-T (PT) da Contabilidade?",
+  "b": "O ficheiro XML anual de auditoria da contabilidade (distinto do SAF-T de faturação): gera-se e valida-se no fecho e acompanha a IES.",
+  "lv": 9
+ },
+ {
+  "t": "O que é o selo SVAT?",
+  "b": "O Selo de Validação dos programas informáticos atribuído pela AT — garante que o software cumpre os requisitos fiscais, incl. a produção do SAF-T (PT).",
+  "lv": 9
+ },
+ {
+  "t": "O que é um centro analítico?",
+  "b": "Dimensão da contabilidade analítica (departamento, projeto, loja, viatura): o mesmo movimento é-lhe imputado e mede-se a rentabilidade de cada um. Aula oficial: 'Imputações em Centros Analíticos' (34 min).",
+  "lv": 9
+ },
+ {
+  "t": "Para que serve o PHC XL CS?",
+  "b": "Componente para grandes volumes de movimentos e analítica avançada na Contabilidade — aula oficial 'PHC XL CS' (16 min).",
+  "lv": 9
+ },
+ {
+  "t": "O que é o Plano de Contas Paralelo?",
+  "b": "Funcionalidade Enterprise (aula oficial, 14 min): segunda estrutura de contas em paralelo com a legal (gestão/grupo/outro referencial), alimentada pelos mesmos movimentos.",
+  "lv": 9
+ },
+ {
+  "t": "O que são Naturezas e Dimensões?",
+  "b": "Bloco Enterprise (aula oficial, 16 min): classificação multidimensional dos movimentos para lá dos centros analíticos — naturezas (tipos de gasto/rendimento) e dimensões (eixos de análise).",
+  "lv": 9
+ },
+ {
+  "t": "O que são os '17 meses' da Contabilidade PHC?",
+  "b": "Capacidade oficial de continuar a trabalhar o exercício anterior nos primeiros meses do novo ano (fecho legal até 31 de maio): 12 meses do ano + até 5 meses de correções em paralelo.",
+  "lv": 9
+ },
+ {
+  "t": "Circuito oficial do Imobilizado?",
+  "b": "Ficha do ativo → depreciações (com duodécimos no ano de entrada) → reavaliações/revalorizações → imparidades (+reversão) → abate/alienação com ganhos/perdas — cada evento integra na Contabilidade.",
+  "lv": 9
+ }
+]

@@ -1,0 +1,3073 @@
+{
+ "L00": {
+  "c": "Aprender um ERP é como aprender a conduzir: não se aprende a ler o manual — aprende-se ao volante, mas num campo de treino. O ambiente de treino é esse campo: um ambiente onde pode errar à vontade, com um método (prática deliberada + repetição espaçada + provas) que garante que o conhecimento fica. Prática deliberada = treinar tarefas específicas no limite da sua capacidade, com feedback imediato. Repetição espaçada = rever em intervalos crescentes (1, 2, 4, 7... dias). Espaçar revisões fixa muito melhor do que concentrá-las (Cepeda et al., 2006). Esta escada fixa é uma aproximação simples e previsível; algoritmos adaptativos (SM-2, FSRS) ajustam o intervalo a cada pessoa.",
+  "s": [
+   [
+    "Ambiente de treino",
+    "Uma instalação PHC isolada (VM ou empresa demo) onde pode apagar, quebrar e repetir sem risco — nunca a BD de produção de um cliente."
+   ],
+   [
+    "Evidência/prova",
+    "Registo objetivo de que executou a tarefa (print nomeado, resultado SQL, ficheiro gerado). Sem prova, o cérebro auto-engana-se ('isso eu sei')."
+   ],
+   [
+    "Repetição espaçada (SRS)",
+    "Agendar repetições em intervalos crescentes; cada missão volta automaticamente até ficar 'de cor'."
+   ],
+   [
+    "Meta cronometrada",
+    "Tempo-alvo de execução: distingue 'sei fazer' de 'sei fazer como um profissional'."
+   ]
+  ],
+  "e": [
+   "Treinar diretamente na BD de produção de um cliente",
+   "Marcar 'feito' sem prova nem repetição — sensação de progresso sem competência real"
+  ]
+ },
+ "L01": {
+  "c": "O PHC é uma aplicação client/server: o programa no posto de trabalho é apenas o 'volante' — quem guarda e processa os dados é o Microsoft SQL Server. Todo o técnico PHC tem de saber instalar, configurar e diagnosticar esta camada: instância, autenticação, rede (TCP/IP 1433), collation (regra de ordenação/acentos), logins (SQL) vs utilizadores (PHC) e manutenção. A gama Corporate usa tipicamente SQL Server Express (gratuito, com limitações: sem SQL Agent, limite de recursos).",
+  "s": [
+   [
+    "Instância",
+    "Uma instalação do motor SQL Server, identificada por nome (MSSQLSERVER = default, ou nomeada como SQLEXPRESS). O PHC liga-se a uma instância."
+   ],
+   [
+    "Autenticação mista",
+    "Modo que aceita login Windows E logins SQL com password (ex.: sa). O ODBC do PHC usa normalmente autenticação SQL."
+   ],
+   [
+    "TCP/IP 1433",
+    "Protocolo/porta por onde as aplicações falam com o SQL. Vem desativado por omissão no Express — ativá-lo no SQL Server Configuration Manager."
+   ],
+   [
+    "Collation",
+    "Regra de ordenação e comparação de texto (acentos, maiúsculas). Deve seguir a recomendação da PHC; collations erradas causam problemas de ordenação/duplicados."
+   ],
+   [
+    "Login vs utilizador BD",
+    "Login = identidade no servidor; utilizador = mapeamento desse login dentro de cada base de dados. Sem o mapeamento, o login não vê a BD."
+   ],
+   [
+    "HCL",
+    "Hardware Compatibility List — equipamentos (impressoras, TPA, PDA) validados; importante para POS e documentos."
+   ]
+  ],
+  "e": [
+   "Deixar TCP/IP desativado e perder tempo a 'culpar' o PHC pela falta de ligação",
+   "Usar collation diferente da recomendada e ter comparações de texto inconsistentes",
+   "Esquecer a password do sa sem alternativa de acesso"
+  ]
+ },
+ "L02": {
+  "c": "A instalação do PHC é feita por um executável único que trata de três coisas de uma vez: instala a aplicação, cria/faz attach da base de dados da empresa e configura o ODBC (a 'ponte' padrão entre o programa e o SQL Server). Cada empresa = uma base de dados. Ao abrir, escolhe a empresa (BD) e o utilizador. O licenciamento define plano (Standard→Ultimate), gama funcional (Corporate/Advanced/Enterprise) e módulos ativos — é isto que determina o que consegue configurar e desenvolver.",
+  "s": [
+   [
+    "ODBC/DSN",
+    "Camada standard de acesso a dados; o instalador cria o DSN que aponta para o SQL Server. Muitos problemas de ligação resolvem-se testando o ODBC."
+   ],
+   [
+    "Empresa = BD",
+    "Multiempresa = várias BDs no mesmo servidor; a seleção de empresa ao entrar decide a BD usada."
+   ],
+   [
+    "Licença",
+    "Ficheiro/validação associada ao nº de cliente que ativa plano, gama e módulos. Sem licença válida, funcionalidades ficam bloqueadas."
+   ],
+   [
+    "Menus nucleares",
+    "Sistema (parâmetros/utilizadores), Supervisor (framework + tratamento da BD + monitores) e os menus dos módulos (Gestão, etc.)."
+   ],
+   [
+    "Barra de status",
+    "Mostra versão, empresa e utilizador — primeiro sítio a confirmar num pedido de suporte ('que versão tem?')."
+   ]
+  ],
+  "e": [
+   "Não anotar versão/gama/módulos logo no início — todo o resto do suporte depende disso",
+   "Instalar o executável sem validar o ODBC e depois não saber por que não liga"
+  ]
+ },
+ "L03": {
+  "c": "Backups são a apólice de seguro do técnico: uma atualização falhada, um disco morto ou um utilizador 'criativo' podem destruir dados fiscais irrecuperáveis. O ciclo profissional: backup FULL regular (+ logs se aplicável), teste de restauro periódico, e sempre um backup extra antes de qualquer upgrade. Também precisa de saber mover BDs (detach/attach ou backup/restore) para criar clones de teste — a base de todo o desenvolvimento seguro.",
+  "s": [
+   [
+    "Backup FULL",
+    "Cópia completa da BD para um ficheiro .bak (WITH COMPRESSION, INIT). Ponto de retorno garantido."
+   ],
+   [
+    "Detach/Attach",
+    "Desanexar a BD do servidor (liberta os ficheiros .mdf/.ldf) e anexá-la noutro sítio — forma rápida de clonar."
+   ],
+   [
+    "SQL Agent vs Task Scheduler",
+    "O Agent (agendador do SQL) não existe no Express; usa-se o Task Scheduler do Windows com sqlcmd para automatizar backups."
+   ],
+   [
+    "sp_spaceused",
+    "Procedure que mostra o espaço usado pela BD — vigiar contra o limite do plano (10 GB em Standard/Plus)."
+   ],
+   [
+    "Clone de teste",
+    "Cópia da BD onde se validam upgrades e personalizações antes de tocar em produção."
+   ]
+  ],
+  "e": [
+   "Fazer backups e nunca testar o restauro (backup não testado = backup inexistente)",
+   "Upgrade sem backup fresco + janela sem utilizadores",
+   "Guardar o .bak no mesmo disco da BD"
+  ]
+ },
+ "L04": {
+  "c": "Segurança no PHC tem duas camadas: o login SQL (ligação à BD) e o utilizador PHC (identidade na aplicação). Dentro da aplicação, os acessos definem-se por Grupos (ou Perfis, conforme parâmetro) e são granulares: por ecrã, por operação (consultar/introduzir/alterar/apagar), por ações especiais (reimprimir, totalizar, anexar) e até por parâmetro. O princípio é o do menor privilégio: cada utilizador vê apenas o que precisa — parâmetros e Supervisor ficam reservados a administradores.",
+  "s": [
+   [
+    "Grupos vs Perfis",
+    "Dois modelos de definição de acessos; qual está ativo depende do parâmetro geral 'Definição de tipos de acessos'."
+   ],
+   [
+    "Acessos por operação",
+    "Não basta permitir o ecrã Faturação: pode permitir emitir mas proibir reimprimir ou anular."
+   ],
+   [
+    "Acessos a parâmetros",
+    "Possível libertar parâmetros específicos a utilizadores não-admin (ex.: gestor comercial altera 1-2 parâmetros)."
+   ],
+   [
+    "Histórico/log",
+    "Histórico de utilizadores e (Enterprise, v30+) log de atividade: quem consultou/alterou/apagou o quê — auditoria."
+   ]
+  ],
+  "e": [
+   "Dar acesso de admin 'para não chatear' — a primeira asneira grave sai cara",
+   "Testar acessos sempre com o utilizador admin (não deteta bloqueios reais)"
+  ]
+ },
+ "L05": {
+  "c": "Três ferramentas separam o técnico que 'acha' do técnico que 'sabe': o Dicionário de Dados (estrutura e relações de QUALQUER tabela — campos, tipos, descrições), o Simulador de SQL (correr consultas dentro do PHC, com variáveis como #stamp#) e a Análise Interna (o log onde ficam os erros do código de utilizador — eventos Xbase). Antes de escrever SQL ou depurar uma personalização, é aqui que se vem. Regra de ouro: nunca adivinhe nomes de tabelas/campos — confirme no dicionário.",
+  "s": [
+   [
+    "Dicionário de Dados",
+    "Supervisor → Tratamento da base de dados (ou menu de opções de qualquer ecrã, já posicionado na tabela desse ecrã). Mostra relações desde a versão 2008; duplo-clique navega para a tabela relacionada."
+   ],
+   [
+    "Tabelas PHC",
+    "Nomes curtos: CL/CL2 (clientes), FT (faturação), BO (dossiers), RE (recibos)... O dicionário revela o resto."
+   ],
+   [
+    "ref / stamp",
+    "<tabela>stamp (ex.: clstamp, ftstamp) é a chave técnica única de cada registo, gerada pela aplicação: é por ela que cabeçalho e linhas se ligam (ft.ftstamp = fi.ftstamp) e é o valor que #stamp# injeta nos snapshots. ref é a referência do artigo (st.ref), não um identificador genérico de registo."
+   ],
+   [
+    "Análise Interna",
+    "Log de erros de eventos/código do utilizador. Erro com linha 0 = falha numa expressão (não num programa)."
+   ]
+  ],
+  "e": [
+   "Fazer SELECT * a tabelas enormes sem NOLOCK/top e bloquear a aplicação",
+   "Alterar dados por SQL sem perceber stamp/concorrência (a app pode sobrescrever ou dar conflito)"
+  ]
+ },
+ "L06": {
+  "c": "O cliente é a entidade central das vendas: a ficha (tabela CL + extensão CL2) guarda identidade (NIF, moradas), classificação comercial (zona, tipo, segmento, idioma) e condições (pagamento, descontos, tabela de preços, vendedor). Conceitos próprios: sede (0) vs filiais/estabelecimentos (1-999) do mesmo número; inativação (bloqueia documentos novos mas preserva histórico/análises); e regras de proteção de dados em clientes com documentos certificados (campos bloqueados a alterações). Alterações de dados podem propagar-se a C/C e documentos — controlado por parâmetro.",
+  "s": [
+   [
+    "CL e CL2",
+    "Ficha principal e 'Outros Dados' (ex.: país da morada) — descubra mais campos no Dicionário de Dados."
+   ],
+   [
+    "Estabelecimentos",
+    "Sede = 0; filiais 1-999 criadas por duplicação. Útil para empresas com várias moradas de entrega/faturação."
+   ],
+   [
+    "Ignios",
+    "Serviço (Advanced+) que preenche nome/morada automaticamente a partir do NIF válido."
+   ],
+   [
+    "Inativo",
+    "Sai das opções de documentos novos; mantém-se em análises; dossiers antigos ainda faturáveis."
+   ],
+   [
+    "Moradas de Carga/Descarga",
+    "Tabela própria que alimenta os documentos de transporte (ShipFrom/ShipTo no SAF-T)."
+   ],
+   [
+    "Propagação de alterações",
+    "O parâmetro 'Quando altera dados do cliente, não atualiza tabelas relacionadas' controla se abreviatura/morada/zona se propagam a C/C, documentos não certificados e recibos."
+   ]
+  ],
+  "e": [
+   "Apagar clientes em vez de inativar (destrói integridade histórica)",
+   "Alterar NIF/nome de cliente com documentos certificados — a aplicação bloqueia por razões fiscais (e ainda bem)"
+  ]
+ },
+ "L07": {
+  "c": "O fornecedor espelha o cliente no ciclo de compras, com duas tabelas críticas de apoio: Condições de Pagamento (prazos/vencimentos — ex.: 30/60/90 dias, que alimentam a tesouraria previsional e a C/C) e Formas de Pagamento (como se paga: transferência, cheque...). Dados bancários (IBAN) na ficha permitem gerar pagamentos/SEPA. Fornecedores intra-comunitários exigem NIF estrangeiro + país corretos para o IVA e Intrastat.",
+  "s": [
+   [
+    "Condição de pagamento",
+    "Define vencimento(s) dos documentos — sem ela bem configurada, previsões de tesouraria e aging ficam errados."
+   ],
+   [
+    "Forma de pagamento",
+    "Instrumento (transferência, cheque, MB...) — alimenta tesouraria e ficheiros bancários."
+   ],
+   [
+    "Fornecedor intra-UE",
+    "País + NIF válido de outro estado-membro; afeta regras de IVA (autoliquidação/reverse charge) e mapas."
+   ]
+  ],
+  "e": [
+   "Criar condições de pagamento 'à medida de um caso' e poluir a tabela — desenhe 3-5 condições standard",
+   "Esquecer IBAN e depois não conseguir gerar pagamentos automáticos"
+  ]
+ },
+ "L08": {
+  "c": "O ficheiro de Stocks e Serviços (artigos) é o coração operacional: cada referência tem designação (multi-idioma), família/marca, unidade base e unidade alternativa com factor de conversão (vender caixas de 10), código de barras/EAN, preços (custo, venda por tabela) e regras de aprovisionamento (stock mín/máx, ponto de encomenda). Serviços são 'artigos sem stock'. O custo de stock valoriza-se por PCMP (ver L23). Tudo o que se configura aqui ecoa em vendas, compras, armazém e fiscalidade.",
+  "s": [
+   [
+    "Família/Marca",
+    "Agrupamentos para análises, comissões e preços (comissões podem variar por família)."
+   ],
+   [
+    "Unidade alternativa + factor",
+    "Caixa = 10 unidades; o factor converte quantidades/preços nos documentos; existe opção de inversão do factor."
+   ],
+   [
+    "Stock mín/máx e ponto de encomenda",
+    "Alimentam as análises de rutura e 'a encomendar' — a base do aprovisionamento."
+   ],
+   [
+    "Serviço vs artigo",
+    "Serviço não movimenta stock; o resto do ciclo (faturação, C/C) funciona igual."
+   ],
+   [
+    "EAN/código de barras",
+    "Usado em POS, PDAs e documentos eletrónicos."
+   ]
+  ],
+  "e": [
+   "Criar artigos duplicados por falta de convenção de referências (defina uma: ex., FAM-TAM-COR)",
+   "Esquecer o factor de conversão e faturar 1 caixa como 1 unidade"
+  ]
+ },
+ "L09": {
+  "c": "Dois conceitos que evitam duplicação e fricção comercial. Compostos (kits): um artigo 'conjunto' formado por componentes — a configuração define como se comporta na faturação/stock (vende-se o conjunto, consomem-se os componentes). Referências alternativas: o MESMO artigo com códigos usados pelo cliente ou pelo fornecedor — ao digitar a referência do cliente no documento, o PHC assume o artigo certo. Elimina o clássico 'o meu código não é o seu'.",
+  "s": [
+   [
+    "Composto/Kit",
+    "Artigo pai com lista de componentes e quantidades; útil para packs, conjuntos e produções simples."
+   ],
+   [
+    "Referência alternativa (cliente)",
+    "Código do artigo na linguagem do cliente — pesquisável nos documentos."
+   ],
+   [
+    "Referência alternativa (fornecedor)",
+    "Código do fornecedor para o artigo — essencial em compras e encomendas."
+   ]
+  ],
+  "e": [
+   "Criar um artigo novo para cada kit em vez de usar compostos (stock dos componentes nunca baixa)",
+   "Confundir referência alternativa com designação por cliente (são mecanismos distintos)"
+  ]
+ },
+ "L10": {
+  "c": "Stock existe SEMPRE num armazém (pode haver vários: principal, loja, trânsito...). Artigos com lotes ganham rastreabilidade (lote, validade) — obrigatório em sectores como alimentar/farma; números de série (módulo Equipamentos) identificam unidades individuais. Para carregar stocks de arranque não se usam compras: usa-se o Dossier de Stock Inicial, uma regularização valorizada sem fornecedor. Movimentos de stock são tipificados por Códigos de Movimentos (entrada, saída, quebra, sobra, transferência...).",
+  "s": [
+   [
+    "Armazém",
+    "Local lógico de stock; cada movimento indica origem/destino."
+   ],
+   [
+    "Lote",
+    "Sub-divisão do stock com validade/rastreio; entradas e saídas referenciam o lote."
+   ],
+   [
+    "Nº de série",
+    "Identificador único por unidade (com PHC Equipamentos) — para garantias e manutenção."
+   ],
+   [
+    "Dossier de Stock Inicial",
+    "DI que carrega existências de arranque (com lotes e valores) sem documento de compra."
+   ],
+   [
+    "Códigos de movimentos",
+    "Tipificam operações de stock para análises e controlo."
+   ]
+  ],
+  "e": [
+   "Dar entrada inicial por fatura de compra 'falsa' (distorce compras, IVA e PCMP)",
+   "Ativar lotes num artigo já com stock e não regularizar o lote das quantidades antigas"
+  ]
+ },
+ "L11": {
+  "c": "Preço não é um número — é uma política. O PHC suporta várias tabelas de preços COM VALIDADES (a tabela do cliente + a data do documento determinam o preço), tipos de desconto (percentual/valor), descontos em cascata (Desc.1, Desc.2) e descontos automáticos por critérios (tipo de cliente, artigo, quantidade, valor). Promoções/campanhas e rappel completam o arsenal comercial. Configurar isto bem = menos erros de faturação e menos 'descontos inventados' à última hora.",
+  "s": [
+   [
+    "Tabela de preços com validade",
+    "Conjunto nomeado de preços (ex.: Revenda, Retalho, Promo) com início/fim; o documento assume o preço válido na data."
+   ],
+   [
+    "Tabela do cliente",
+    "Cada cliente/fornecedor tem a sua tabela associada — base da negociação."
+   ],
+   [
+    "Desconto em cascata",
+    "Desc.1 aplicado e depois Desc.2 sobre o resultado — a ordem importa."
+   ],
+   [
+    "Promoções/campanhas",
+    "Descontos temporários por artigo/família com datas; há opções específicas na gama Advanced/Enterprise."
+   ],
+   [
+    "Rappel",
+    "Desconto retroativo por volume atingido no período (cliente ou fornecedor)."
+   ]
+  ],
+  "e": [
+   "Criar tabelas de preços sem validade e ter dois preços 'válidos' em conflito",
+   "Mudar preços na tabela errada e o documento continuar a assumir a antiga (verifique qual tabela o cliente usa)"
+  ]
+ },
+ "L12": {
+  "c": "As tabelas base são a 'gramática' fiscal e organizacional do módulo: taxas de IVA (23/13/6/isento por zona fiscal), Motivos de Isenção com códigos normalizados M01-M99 (o webservice da AT só aceita estes), países (zona fiscal/moeda), moedas e câmbios (com importação via ODBC), idiomas (designações multi-idioma dos artigos) e tabelas de utilizador (listas controladas para campos extra — ex.: Zonas). Erros aqui propagam-se a todos os documentos e ao SAF-T.",
+  "s": [
+   [
+    "Taxa de IVA",
+    "Percentagem + enquadramento por país/zona; artigos e documentos referenciam a taxa."
+   ],
+   [
+    "Motivo de isenção (M01-M99)",
+    "Código legal que justifica IVA zero (ex.: M08 — art. 9.º). Com envio por webservice, só os códigos M são aceites."
+   ],
+   [
+    "País/zona fiscal",
+    "Determina IVA nacional, intra-UE ou extracomunitário (e regras como operações triangulares)."
+   ],
+   [
+    "Moeda/câmbio",
+    "Documentos em moeda estrangeira usam a taxa de câmbio (importável via ODBC)."
+   ],
+   [
+    "Tabela de utilizador",
+    "Lista controlada criada na framework para alimentar campos extra (ex.: Zona do cliente)."
+   ]
+  ],
+  "e": [
+   "Criar motivos de isenção 'caseiros' fora de M01-M99 e o webservice da AT rejeitar",
+   "Esquecer atualizar câmbios e faturar USD ao câmbio do ano passado"
+  ]
+ },
+ "L13": {
+  "c": "A série é o objeto de configuração mais importante da faturação: dá identidade a um documento. Define o TIPO (1/2/3 = fatura/simplificada/fatura-recibo e ND/NC; 4 = documento de transporte/guia; 5 = outro/proforma), o mapping SAF-T (FT, FS, FR, ND, NC, GT...), a numeração, e O QUE MOVIMENTA: stocks? conta corrente? tesouraria? Além disso concentra opções fiscais (ATCUD/código de validação, motivos de isenção nas linhas, validação de locais de carga/descarga, envio de SMS ao motorista) e de impressão. Série mal configurada = documento legalmente errado.",
+  "s": [
+   [
+    "Tipo de documento 1-5",
+    "Classifica o comportamento: 4 e 5 não são faturas (transporte e proforma); 1-3 geram documentos fiscais FT/FS/FR/ND/NC."
+   ],
+   [
+    "Mapping SAF-T",
+    "A série declara como o documento entra no SAF-T — inconsistência aqui invalida o ficheiro."
+   ],
+   [
+    "Movimenta stocks/C/C/tesouraria",
+    "Três interruptores que decidem o efeito do documento (proforma tipicamente não movimenta nada)."
+   ],
+   [
+    "Numeração",
+    "Sequência por série (e ano) — deve garantir numeração sequencial e cronológica exigida por lei."
+   ],
+   [
+    "Código de validação da série",
+    "Dado pela AT após comunicação da série; sem ele o ATCUD não se forma e a impressão é bloqueada."
+   ]
+  ],
+  "e": [
+   "Criar séries 'só para testar' no meio das reais (numeração e SAF-T poluem-se — teste em BD clonada)",
+   "Esquecer de definir o que movimenta e descobrir que as guias baixaram stock duas vezes"
+  ]
+ },
+ "L14": {
+  "c": "Emitir um documento fiscal no PHC dispara uma reação em cadeia automática: baixa de stock nos artigos, lançamento na conta corrente do cliente (com efeito no aging), atualização de acumulados na ficha do cliente e, se configurado, movimento previsto de tesouraria. Por isso 'gravar' não é um clique trivial — com processamento assíncrono ativo, o documento fica em estado 'não processado' até concluir. Documentos certificados não se alteram nem apagam: corrigem-se por NC e anulam-se com motivo obrigatório (a hash encadeada garante a integridade auditável).",
+  "s": [
+   [
+    "Atualização automática",
+    "Stock + C/C + ficha do cliente num só gesto — a integração é o valor do ERP."
+   ],
+   [
+    "Processamento assíncrono",
+    "Gravação em background (parâmetro); se algo inibir, o documento marca-se 'não processado' — verifique este estado em problemas."
+   ],
+   [
+    "Anulação vs eliminação",
+    "Documento certificado anula-se (com motivo obrigatório), nunca se elimina; o registo fica para auditoria/SAF-T."
+   ],
+   [
+    "Totais/IVA",
+    "O documento calcula por linha (preço × qty − descontos + IVA) e totals por taxa — base do SAF-T."
+   ]
+  ],
+  "e": [
+   "Apagar/alterar documentos de testes emitidos em séries certificadas (use séries de teste na BD clonada)",
+   "Ignorar o estado 'não processado' e assumir que a fatura está fechada"
+  ]
+ },
+ "L15": {
+  "c": "Retalho e balcão têm regras próprias: Fatura Simplificada (FS) para vendas a consumidor final (fatura e recebe num só documento), vendas a dinheiro, e o cliente genérico 'Consumidor Final' com NIF 999999990 quando o comprador não dá NIF. A FS comunica-se no SAF-T como FS. Layouts devem incluir QR/ATCUD como em qualquer documento fiscalmente relevante. Controlo de reimpressão por acessos evita 'faturas fantasma'.",
+  "s": [
+   [
+    "FS vs FT",
+    "FS = documento único para venda a dinheiro/consumidor final; FT = fatura clássica (pode exigir recibo separado para pagamento)."
+   ],
+   [
+    "Consumidor final",
+    "Cliente genérico (NIF 999999990) para vendas sem identificação do comprador."
+   ],
+   [
+    "NIF obrigatório",
+    "Há regras sobre quando é obrigatório pedir NIF (ex.: valores acima de certo montante / pedidos do cliente) — o software valida."
+   ],
+   [
+    "Reimpressão controlada",
+    "Acesso próprio para reimprimir — cada reimpressão fica registada (documentos certificados)."
+   ]
+  ],
+  "e": [
+   "Emitir FS em série com mapping SAF-T errado (FS vs FT)",
+   "Deixar qualquer utilizador reimprimir sem acesso controlado"
+  ]
+ },
+ "L16": {
+  "c": "Depois de emitida, uma fatura certificada não se 'desfaz' — corrige-se. Nota de Crédito (NC) anula/devolve (total ou parcial, com ou sem reposição de stock conforme a série); Nota de Débito (ND) acrescenta valor em falta. Ambas exigem Motivo de Retificação e ligam-se ao documento original. A regularização de recibos de adiantamento gera NC automática ('Retificação de Fatura de Adiantamento'). No SAF-T, NC/ND aparecem com os seus tipos próprios — e a cadeia de hashes mantém-se íntegra.",
+  "s": [
+   [
+    "NC total vs parcial",
+    "Anula o documento inteiro ou apenas linhas/valores; parcial pode devolver só os artigos das linhas creditadas."
+   ],
+   [
+    "Motivo de Retificação",
+    "Campo obrigatório que justifica a NC/ND (exige-se por lei e no SAF-T)."
+   ],
+   [
+    "Ligação ao original",
+    "A NC referencia a fatura retificada — essencial para auditoria e para a AT."
+   ],
+   [
+    "Recibos incobráveis",
+    "Tratamento específico de dívidas consideradas incobráveis (com implicações fiscais)."
+   ]
+  ],
+  "e": [
+   "Emitir NC sem repor stock quando houve devolução física (ou repor quando não houve)",
+   "NC sem motivo de retificação — o SAF-T/e-fatura rejeitam ou invalidam"
+  ]
+ },
+ "L17": {
+  "c": "Dossiers Internos (DI) são o 'rascunho estruturado' do circuito comercial: documentos parametrizáveis pelo utilizador (tabela BO) que não são fiscais mas organizam o processo — Orçamentos/Propostas, Encomendas de Cliente, Folhas de Obra, Consignações, Avenças. O poder está nas conversões (cópias): orçamento → encomenda → guia → fatura, com opções de cópia configuráveis, mantendo o rasto. Encomendas podem reservar stock (quantidade reservada), e o estado/fecho do dossier controla o que ainda está pendente. Aprovação de dossiers (circuito formal) existe na gama Enterprise.",
+  "s": [
+   [
+    "DI (BO)",
+    "Documento interno configurável: o utilizador cria tipos à medida do processo da empresa."
+   ],
+   [
+    "Conversão/cópia",
+    "Passagem de um documento a outro (DI→fatura, guia→fatura...) com mapeamento de linhas e fecho do anterior."
+   ],
+   [
+    "Stock reservado",
+    "A encomenda de cliente pode cativar/reservar quantidade — visível na ficha do artigo."
+   ],
+   [
+    "Análises de DI",
+    "Pendentes, convertidos, taxas de conversão — gestão comercial."
+   ],
+   [
+    "Aprovação de dossiers",
+    "Circuito de aprovação formal (Enterprise); workflow operacional aparece no Advanced+."
+   ]
+  ],
+  "e": [
+   "Usar Excel para orçamentos/encomendas quando o DI já dá rasto, conversão e análises",
+   "Converter parcialmente sem fechar linhas pendentes — fica 'encomenda fantasma' a reservar stock para sempre"
+  ]
+ },
+ "L18": {
+  "c": "Documento de transporte (guia de remessa, tipo 4) acompanha mercadorias em circulação e tem obrigações próprias: locais de carga e descarga (tabelas de Moradas de Carga e Descarga → ShipFrom/ShipTo no SAF-T), data e HORA de início do transporte, matrícula e motorista. Antes de a mercadoria circular, a guia deve ser comunicada à AT — por webservice em tempo real (devolve o Cód. Ident. AT, que pode seguir por SMS ao motorista) ou por SAF-T (PT) resumido. A 'data efetiva de entrega' é obrigatória por lei em documentos fiscais. Guias convertem-se em fatura no fim.",
+  "s": [
+   [
+    "Tipo 4 = transporte",
+    "Série própria com validações de transporte; não é fatura mas entra no SAF-T de transporte (GT)."
+   ],
+   [
+    "Webservice vs SAF-T resumido",
+    "Os dois métodos de comunicação à AT; o parâmetro 'Método de envio de documentos de transporte' decide."
+   ],
+   [
+    "Cód. Ident. AT",
+    "Código devolvido pelo webservice que prova a comunicação — pode ir por SMS ao motorista (série + módulo SMS)."
+   ],
+   [
+    "ShipFrom/ShipTo",
+    "Elementos XML do SAF-T com locais de carga/descarga."
+   ],
+   [
+    "Data efetiva de entrega",
+    "Quando bens/serviços foram/serão disponibilizados — obrigatória e comunicada no SAF-T."
+   ]
+  ],
+  "e": [
+   "Emitir guia com data/hora de transporte já passada sem comunicação (coima)",
+   "Esquecer locais de carga/descarga com a validação ativa — gravação bloqueada (e é mesmo assim)"
+  ]
+ },
+ "L19": {
+  "c": "O dinheiro entra pelo lado da C/C: recibos (tabela RE) liquidam documentos de conta corrente, total ou parcialmente (liquidação). Recibo de adiantamento regista dinheiro recebido ANTES da fatura — depois é regularizado contra ela (podendo gerar NC de retificação automática). Cada liquidação atualiza saldos e aging. Recibos podem estornar-se/anular-se com efeito inverso. Este circuito é a base das cobranças e do reporting financeiro.",
+  "s": [
+   [
+    "Liquidação",
+    "Casar recibos com faturas (total/parcial) — o que sobra fica como saldo pendente."
+   ],
+   [
+    "Recibo de adiantamento",
+    "Entrada de dinheiro sem documento fiscal ainda emitido; regulariza-se na fatura futura."
+   ],
+   [
+    "Estorno/anulação de recibo",
+    "Desfaz a liquidação e repõe a dívida (com rasto)."
+   ],
+   [
+    "Cheques em carteira",
+    "Títulos recebidos ainda não cobrados — gestão própria na C/C."
+   ]
+  ],
+  "e": [
+   "Registar recebimento sem liquidar o documento (aging fica errado e as cobranças duplicam trabalho)",
+   "Adiantamento esquecido sem regularizar — vira saldo 'misterioso' na C/C"
+  ]
+ },
+ "L20": {
+  "c": "Quando o volume cresce, faturar um a um é insustentável. A Emissão Automática de Faturação fatura em lote: um ecrã de preparação lista dossiers/guias por período/cliente e emite as faturas correspondentes de uma vez. O Dossier de Avenças automatiza a faturação recorrente (mensalidades, contratos) — configura-se uma vez e gera a fatura de cada período. E há importação de linhas de Excel para documentos (listas grandes de artigos). Juntas, estas ferramentas cortam horas de trabalho repetitivo.",
+  "s": [
+   [
+    "Emissão automática (preparação)",
+    "Ecrã que agrupa documentos a faturar (por intervalo de datas, cliente, série) e emite em massa por cópia."
+   ],
+   [
+    "Dossier de Avenças",
+    "Faturação recorrente parametrizada (periodicidade, artigos, cliente) — o motor gera o documento do período."
+   ],
+   [
+    "Importar Excel para Linhas",
+    "Carregar centenas de linhas de um documento a partir de uma folha de cálculo."
+   ]
+  ],
+  "e": [
+   "Correr emissão automática sem testar o filtro de datas/estado (fatura dossiers já faturados ou errados)",
+   "Avenças mal parametrizadas gerarem faturas duplicadas mês após mês sem ninguém dar por isso"
+  ]
+ },
+ "L21": {
+  "c": "O que o cliente vê é a impressão: layouts/templates definem cabeçalho, logótipo, colunas, rodapés, QR Code e ATCUD, e condições de impressão ('imprimir quando', cópias, rascunho). Na gama Advanced+ há Impressão Definida pelo Utilizador (ajustar colunas/ordens de listagens) e Definição de Assinaturas. Documentos fiscalmente relevantes TÊM de imprimir QR + ATCUD — o template é parte da conformidade, não cosmética. Exportação PDF é o canal para e-mail/arquivo (com File Storage/Cegid Docs).",
+  "s": [
+   [
+    "Template de documento",
+    "Desenho da impressão (campos, ordem, logótipo, totais, certificação/QR/ATCUD)."
+   ],
+   [
+    "Imprimir quando",
+    "Regras de impressão automática (ao gravar, nº de cópias, rascunho vs definitivo)."
+   ],
+   [
+    "Impressão Definida pelo Utilizador",
+    "Personalização de colunas/totais de listagens pelo utilizador (Advanced+)."
+   ],
+   [
+    "QR + ATCUD no layout",
+    "Obrigatórios nos documentos fiscalmente relevantes desde 2021 — o template tem de os conter."
+   ],
+   [
+    "File Storage",
+    "Anexos/PDFs podem ir para diretoria física (não fiscalmente relevantes) ou BD."
+   ]
+  ],
+  "e": [
+   "Editar templates em produção sem backup do template original",
+   "Layout sem QR/ATCUD após atualização — documentos saem não conformes"
+  ]
+ },
+ "L22": {
+  "c": "O ciclo de compras espelha o de vendas: Encomenda a Fornecedor (DI) → receção (guia/fatura de compra) → C/C do fornecedor → pagamento. A conversão 'Comprar a Encomenda a Fornecedor' gera o documento de compra a partir do DI, suportando receções parciais (o remanescente fica pendente na encomenda). 'Encomendado a fornecedor' na ficha do artigo mostra a pipeline de aprovisionamento. Análises de encomendas pendentes evitam ruturas e duplicações.",
+  "s": [
+   [
+    "Encomenda a Fornecedor (DI)",
+    "Documento interno de compra: o que se pretende receber, de quem, a que preço."
+   ],
+   [
+    "Comprar a Encomenda",
+    "Conversão do DI em documento de compra (total ou parcial)."
+   ],
+   [
+    "Receção parcial",
+    "Entrada de só parte das quantidades; a encomenda mantém o resto pendente."
+   ],
+   [
+    "Encomendado a fornecedor",
+    "Campo da ficha do artigo com as quantidades em pipeline de compra."
+   ]
+  ],
+  "e": [
+   "Rececionar sem encomenda (perde-se o controlo do que falta) ou receber duas vezes a mesma linha",
+   "Não fechar linhas canceladas — ficam 'encomendadas' para sempre e distorcem o aprovisionamento"
+  ]
+ },
+ "L23": {
+  "c": "A fatura de compra não é só um custo: é o evento que REVALORIZA o stock. Cada entrada valorizada recalcula o PCMP (Preço de Custo Médio Ponderado): novo PCMP = (valor stock anterior + valor entrada) / (qty anterior + qty entrada). É o PCMP que valoriza saídas, margens, inventário e o CEVMC na contabilidade. Compras distinguem IVA dedutível/não dedutível, podem ter custos acessórios e alimentam a C/C do fornecedor (e a tesouraria previsional).",
+  "s": [
+   [
+    "PCMP",
+    "Custo médio ponderado recalculado a cada entrada valorizada — base de margens e valor de stock."
+   ],
+   [
+    "Margem/contribuição",
+    "Preço de venda vs PCMP — as análises de rentabilidade dependem do custo estar certo."
+   ],
+   [
+    "IVA na compra",
+    "Dedutível (recupera) ou não; artigos isentos usam motivo de isenção."
+   ],
+   [
+    "Custos acessórios",
+    "Fretes/taxas que devem integrar o custo do artigo (conforme configuração)."
+   ],
+   [
+    "CEVMC",
+    "Custo das existências vendidas/consumidas apurado na Contabilidade a partir dos consumos."
+   ]
+  ],
+  "e": [
+   "Lançar compras a custo 0 'para despachar' — destrói PCMP, margens e inventário valorizado",
+   "Não conferir o novo PCMP após entradas grandes (erro de preço de compra passa para todas as vendas seguintes)"
+  ]
+ },
+ "L24": {
+  "c": "Adiantamentos a fornecedores = dinheiro entregue antes da fatura (sinal, pagamento antecipado). Registam-se como pagamento de adiantamento na C/C do fornecedor e são regularizados quando a fatura chega. Em empresas com muitos adiantamentos, o controlo (pendentes, antiguidade, regularizações) evita pagamentos duplicados e 'buracos' na tesouraria. A aprovação de pagamentos (configurável; circuitos formais nas gamas superiores) é o controlo interno que autoriza cada saída de dinheiro.",
+  "s": [
+   [
+    "Pagamento de adiantamento",
+    "Saída de dinheiro sem fatura ainda — fica como saldo adiantado na C/C do fornecedor."
+   ],
+   [
+    "Regularização",
+    "Quando a fatura chega, o adiantamento abate-lhe o valor (total/parcial)."
+   ],
+   [
+    "Aprovação de pagamentos",
+    "Circuito que exige autorização antes de pagar (gestão de aprovações; Enterprise tem aprovação de dossiers)."
+   ]
+  ],
+  "e": [
+   "Pagar 'por fora' sem registar adiantamento e depois pagar a fatura inteira (duplicação)",
+   "Adiantamentos antigos sem regularizar — saldo do fornecedor nunca fecha"
+  ]
+ },
+ "L25": {
+  "c": "Todo o stock mexe por movimentos tipificados (Códigos de Movimentos de Stocks): vendas e compras geram movimentos automáticos; quebras/sobras, transferências e regularizações usam movimentos manuais ou dossiers próprios (ex.: Dossier de Transferência de Armazém). O histórico de movimentos é a 'caixa negra' do armazém: quem moveu, quando, de/para onde, porquê. Stock cativo/pré-cativo reserva quantidades. Terminais portáteis (PDA) aceleram operações físicas.",
+  "s": [
+   [
+    "Código de movimento",
+    "Tipo da operação de stock (entrada, saída, quebra, sobra, transferência...) — base das análises."
+   ],
+   [
+    "Dossier de Transferência",
+    "Move quantidades entre armazéns com rasto documental."
+   ],
+   [
+    "Stock cativo/pré-cativo",
+    "Reservas (comprometidas ou indicativas) que reduzem a disponibilidade efetiva."
+   ],
+   [
+    "Histórico de movimentos",
+    "Rasto completo por artigo/lote/armazém — ferramenta de auditoria de stock."
+   ],
+   [
+    "PDA/terminais portáteis",
+    "Captura física (contagens, picking) integrada no módulo."
+   ]
+  ],
+  "e": [
+   "Corrigir stock 'direto' sem código de movimento adequado (perde-se o porquê)",
+   "Transferir sem documento e os dois armazéns ficarem desacertados sem rasto"
+  ]
+ },
+ "L26": {
+  "c": "O inventário físico é o momento da verdade: contar o que existe e confrontar com o stock teórico do sistema. Diferenças geram acertos automáticos — quebra (faltam) ou sobra (excedem) — lançados no ficheiro de movimentos, que corrigem quantidades E valor (via PCMP). Além da gestão interna, há a obrigação fiscal: comunicação do inventário à AT até 31 de janeiro (empresas abrangidas), por ficheiro (formatos conforme volume). Contagens cíclicas (por família/armazém) reduzem a dor do inventário anual.",
+  "s": [
+   [
+    "Stock teórico vs contado",
+    "O sistema sabe quanto 'deveria' haver; a contagem diz quanto há; a diferença é o acerto."
+   ],
+   [
+    "Quebra/Sobra",
+    "Acerto negativo/positivo lançado automaticamente no movimento de stock."
+   ],
+   [
+    "Valor de inventário",
+    "Quantidades × PCMP — o valor das existências para balanço/CEVMC."
+   ],
+   [
+    "Comunicação à AT",
+    "Ficheiro de inventário (SAF-T/CSV/XML conforme regras) entregue até 31 de janeiro."
+   ]
+  ],
+  "e": [
+   "Fazer contagem com movimentos a acontecer em simultâneo (congelar operações durante a contagem)",
+   "Contar sem lotes quando o artigo é lotado — o acerto fica impossível de aplicar"
+  ]
+ },
+ "L27": {
+  "c": "Gestão de stock é decisão: o que comprar, quando, quanto, e onde está o dinheiro parado. As análises standard dão as respostas — ruturas (sem stock para vender), acima do máximo (capital empatado), ponto de encomenda (quando pedir), ranking de vendas (o que gira), margem/contribuição (o que ganha). Cruzar valor de stock (PCMP × qty) com rotação revela o 'stock morto'. O técnico expert sabe configurar estas análises e transformá-las em rotina semanal de compras.",
+  "s": [
+   [
+    "Rutura",
+    "Artigo com stock ≤ 0 (ou abaixo do mínimo) que impede vendas — custo de oportunidade."
+   ],
+   [
+    "Ponto de encomenda",
+    "Nível que dispara a recomendação de compra (considera lead time e consumo)."
+   ],
+   [
+    "Ranking/ABC",
+    "Ordenação por vendas/margem — os A (20% dos artigos, 80% do valor) merecem controlo fino."
+   ],
+   [
+    "Rotação vs stock morto",
+    "Sai pouco e vale muito = candidato a promoção/descontinuação."
+   ]
+  ],
+  "e": [
+   "Comprar 'por intuição' ignorando ponto de encomenda e stock máximo",
+   "Não exportar as análises para partilhar com a direção (decisões ficam no técnico)"
+  ]
+ },
+ "L28": {
+  "c": "A conta corrente (C/C) é o livro de dívidas e créditos: cada cliente/fornecedor tem movimentos tipificados por Códigos de C/C (fatura, recibo, adiantamento, juros...) que determinam o saldo. O aging (saldos por idades) distribui a dívida por escalões de atraso — é O indicador de risco de crédito. Extractos de conta comunicam a posição ao cliente; o mailing de C/C prepara avisos de cobrança por documento. Recibos incobráveis tratam dívidas perdidas (com regras fiscais).",
+  "s": [
+   [
+    "Códigos de C/C",
+    "Tipos de movimento da conta corrente — classificam e filtram os lançamentos."
+   ],
+   [
+    "Aging (saldos por idades)",
+    "Dívida por escalões (0-30, 31-60, 61-90, +90) — base de cobrança e provisionamento."
+   ],
+   [
+    "Extracto de conta",
+    "Documento periódico com movimentos e saldo — comunicação formal com o cliente."
+   ],
+   [
+    "Mailing de C/C",
+    "Preparação de avisos/carta de cobrança por documento em atraso."
+   ],
+   [
+    "Recibos incobráveis",
+    "Registo e tratamento fiscal de dívidas consideradas perdidas."
+   ]
+  ],
+  "e": [
+   "Lançar 'acertos' na C/C sem código adequado (o aging deixa de fazer sentido)",
+   "Discutir saldos com clientes sem extracto de conta (cada um tem 'a sua' versão)"
+  ]
+ },
+ "L29": {
+  "c": "Cobrança é processo, não improviso: um monitor que liste dívidas por atraso/valor, uma rotina semanal (quem contacta, quando, com que argumento), registo das promessas de pagamento e escalada (aviso → carta → incobrável). O PHC dá as peças: Monitor de controlo de dívidas, extractos, mailing de C/C por documento e envio por e-mail (SMTP). O técnico configura o sistema; a disciplina de uso é que recupera o dinheiro.",
+  "s": [
+   [
+    "Monitor de dívidas",
+    "Vista operacional de valores em atraso com critérios (dias, montante) e ordenações — o 'painel de controlo' das cobranças."
+   ],
+   [
+    "Mailing de C/C",
+    "Geração de avisos de cobrança por documento (carta/e-mail)."
+   ],
+   [
+    "Promessa de pagamento",
+    "Registo do compromisso do cliente (nota/anexo) para seguimento — sem registo, a equipa perde o fio."
+   ],
+   [
+    "Escalada",
+    "Sequência aviso → contacto → carta → jurídico/incobrável, com prazos definidos por política interna."
+   ]
+  ],
+  "e": [
+   "Cobrar sem extracto/validos atualizados (o cliente contesta e a conversa reinicia)",
+   "Não registar interações — três pessoas ligam ao mesmo cliente no mesmo dia"
+  ]
+ },
+ "L30": {
+  "c": "O fecho bancário mensal garante que 'o que o ERP diz' = 'o que o banco diz'. Contas de Tesouraria representam caixas e bancos (com IBAN); movimentos tipificados por Códigos de Tesouraria; o extracto bancário importa-se/regista-se e reconcilia-se movimento a movimento (detetando omissões, duplicações, comissões não registadas). Para cobranças/pagamentos em massa há ficheiros SEPA (débitos diretos, transferências), referências Multibanco e, no Evolution, open banking (importação automática e reconciliação acelerada).",
+  "s": [
+   [
+    "Conta de Tesouraria",
+    "Cada caixa/banco é uma conta com movimentos próprios; transferências movem entre contas."
+   ],
+   [
+    "Extracto bancário",
+    "Lista oficial de movimentos do banco — importa-se ou digita-se para reconciliar."
+   ],
+   [
+    "Reconciliação",
+    "Casar extracto × movimentos do ERP; diferenças = erros a corrigir (nunca 'tapar')."
+   ],
+   [
+    "SEPA",
+    "Standard europeu: ficheiros de débitos diretos (cobranças) e transferências (pagamentos em lote)."
+   ],
+   [
+    "Referências Multibanco",
+    "Entidade/referência geradas por documento/cliente para pagamento fácil e identificação automática."
+   ],
+   [
+    "Open banking",
+    "No Evolution: ligação direta aos bancos para movimentos e previsões (sem ficheiros manuais)."
+   ]
+  ],
+  "e": [
+   "Reconciliar 'por totais' em vez de movimento a movimento (erros escondem-se)",
+   "Esquecer comissões bancárias — o saldo nunca fecha e ninguém sabe porquê"
+  ]
+ },
+ "L31": {
+  "c": "Tesouraria tem três camadas: REAL (o que já aconteceu), PREVISIONAL (o que vai acontecer — alimentada por documentos por vencer, títulos, avenças) e ORÇAMENTAL (o plano aprovado). Comparar as três responde às perguntas da gestão: 'chega para os salários?', 'podemos investir?'. Títulos (letras, cheques pré-datados) entram nas previsões. Alertas de saldo mínimo evitam surpresas. É a área onde o ERP prova valor à administração.",
+  "s": [
+   [
+    "Tesouraria previsional",
+    "Projeção de entradas/saídas com base em vencimentos de C/C, títulos e documentos pendentes."
+   ],
+   [
+    "Orçamento de tesouraria",
+    "Plano mensal/anual de receitas e despesas para comparar com o realizado."
+   ],
+   [
+    "Títulos",
+    "Letras/cheques com data futura — dinheiro 'prometido' que entra na previsão."
+   ],
+   [
+    "Alertas de saldo",
+    "Notificações quando uma conta desce do mínimo definido (framework de alertas)."
+   ]
+  ],
+  "e": [
+   "Previsão desatualizada (documentos por lançar = previsão errada)",
+   "Confundir lucro com caixa: vendas a prazo geram lucro hoje e caixa só no vencimento"
+  ]
+ },
+ "L32": {
+  "c": "Comissões alinham vendedores com a estratégia: configuram-se por vendedor, tipo de cliente, família de produtos (ou combinação), como percentagem sobre vendas (faturado e/ou cobrado — decisão política importante). O apuramento sai em mapas por período. Documentos anulados/creditados devem reverter comissões — validar este comportamento. Vendedores têm ficha própria e associam-se a clientes/documentos.",
+  "s": [
+   [
+    "Vendedor",
+    "Ficha com percentagens/regras; associa-se ao cliente (vendedor da conta) e/ou ao documento (vendedor da venda)."
+   ],
+   [
+    "Critérios de comissão",
+    "Por vendedor, tipo de cliente, família de artigos, etc."
+   ],
+   [
+    "Faturado vs cobrado",
+    "Comissão sobre a venda emitida ou sobre o dinheiro recebido — muda radicalmente o comportamento da equipa."
+   ],
+   [
+    "Mapa de comissões",
+    "Apuramento por vendedor/período para pagamento."
+   ]
+  ],
+  "e": [
+   "Comissão só sobre faturado em empresas com muito incobrável (paga-se comissão de vendas nunca recebidas)",
+   "Esquecer o efeito das NC no apuramento (comissão de venda creditada deve estornar)"
+  ]
+ },
+ "L33": {
+  "c": "O SAF-T (PT) é o ficheiro XML normalizado que 'fotografa' a faturação (e transportes/inventário) para a AT e contabilistas: Header (nº certificado do software, NIF), Customer, Product e Invoice com totais por taxa, hashes e tipos de documento (FT/FS/FR/NC/ND). A integridade vem da hash encadeada (cada documento assina o anterior) + software certificado pela AT. Exportar é fácil; o técnico expert sabe LER o XML, validar num validador e diagnosticar rejeições (motivos de isenção inválidos, datas, sequências).",
+  "s": [
+   [
+    "SAF-T de faturação",
+    "Exportação mensal (e-fatura) e para auditoria — elementos Invoice/DocumentType/Hash."
+   ],
+   [
+    "Hash encadeada",
+    "Assinatura de cada documento encadeada ao anterior — deteta adulterações; documentos anulados ficam marcados."
+   ],
+   [
+    "Nº de certificado AT",
+    "Identifica o software validado pela AT — impresso nos documentos e no Header do SAF-T."
+   ],
+   [
+    "Validador",
+    "Ferramenta (Portal das Finanças/contabilistas) que verifica estrutura e regras antes da entrega."
+   ],
+   [
+    "TaxExemptionReason",
+    "Código M01-M99 obrigatório em linhas isentas com valores."
+   ]
+  ],
+  "e": [
+   "Exportar o SAF-T e não validar (descobrir o erro no prazo da entrega)",
+   "Mudar séries/tipos sem verificar o mapping SAF-T — o ficheiro sai com tipos errados"
+  ]
+ },
+ "L34": {
+  "c": "Os documentos fiscalmente relevantes têm de imprimir Código QR (obrigatório desde 1 jan 2022) e ATCUD (obrigatório desde 1 jan 2023, imediatamente acima do QR e em todas as páginas). O DL 28/2019 previa 2021, mas o prazo foi adiado (OE2021; Despachos 412/2020-XXII e 351/2021-XXII). O PHC CS preparou-se na v27. O ATCUD = código de validação da série (atribuído pela AT quando a empresa comunica as séries que vai usar) + '-' + número sequencial do documento. Sem código de validação associado à série, o software BLOQUEIA a impressão. O processo anual: comunicar séries à AT → receber códigos → associá-los nas séries do PHC → confirmar layouts com QR/ATCUD. É conformidade pura — erro aqui = documentos inválidos.",
+  "s": [
+   [
+    "Comunicação de séries",
+    "Antes de usar séries novas (e na viragem de ano), comunicam-se à AT; a resposta é o código de validação."
+   ],
+   [
+    "Código de validação",
+    "String da AT que se associa à série no PHC — componente fixa do ATCUD."
+   ],
+   [
+    "ATCUD",
+    "CODIGODEVALIDACAO-SEQUENCIAL: identificador único do documento, legível por máquina (QR) e por humano."
+   ],
+   [
+    "QR Code",
+    "Código bidimensional impresso com dados do documento para leitura por qualquer smartphone (e-fatura)."
+   ],
+   [
+    "Bloqueio de impressão",
+    "Séries sem validação não imprimem — proteção contra documentos não conformes."
+   ]
+  ],
+  "e": [
+   "Criar série nova em janeiro sem a comunicar à AT (bloqueio de impressão no pior momento)",
+   "Atualizar layouts e perder o QR/ATCUD (validar sempre com um documento de teste)"
+  ]
+ },
+ "L35": {
+  "c": "Mercadoria em circulação exige documento de transporte comunicado à AT ANTES do início do transporte (regra geral). Dois métodos: webservice em tempo real — a AT devolve o Cód. Ident. AT (que pode seguir por SMS ao motorista, se a série + módulo SMS estiverem configurados) — ou SAF-T (PT) resumido (ficheiro com MovementOfGoods, onde os locais de carga/descarga viajam como ShipFrom/ShipTo). O parâmetro 'Método de Envio de Documentos de Transporte' decide. Há regimes especiais (venda ambulante, isenções por faturação no ato) que o técnico deve reconhecer.",
+  "s": [
+   [
+    "Webservice AT",
+    "Comunicação síncrona que devolve o código de identificação do documento — prova imediata."
+   ],
+   [
+    "SAF-T resumido",
+    "Alternativa por ficheiro: MovementOfGoods com ShipFrom/ShipTo, datas/horas e Hash."
+   ],
+   [
+    "Cód. Ident. AT",
+    "Campo do documento com o código devolvido pela AT — exigível em fiscalização na estrada."
+   ],
+   [
+    "SMS ao motorista",
+    "Automatismo (série + módulo SMS) que envia o código da AT ao condutor."
+   ],
+   [
+    "Data/hora de início",
+    "Elementos críticos: o transporte não pode 'começar' antes da comunicação."
+   ]
+  ],
+  "e": [
+   "Emitir guias com hora de carga já passada e comunicar depois (infração)",
+   "Usar SAF-T resumido sem conferir ShipFrom/ShipTo (locais errados invalidam)"
+  ]
+ },
+ "L36": {
+  "c": "Retenções na fonte = o cliente retém parte do pagamento e entrega ao Estado por conta do fornecedor (IRS/IRC) — comum em serviços de profissionais liberais e empresas enquadradas. Na fatura aparecem taxa e valor de retenção; a C/C regista o líquido a receber (o retido não é dívida do cliente). Imposto do Selo aplica-se a certas operações (verbas próprias). O Calendário PHC (PHC On) documenta o tratamento no software; declarações (Modelo 30 para não residentes, etc.) têm guias oficiais no Help Center.",
+  "s": [
+   [
+    "Agente de retenção",
+    "Quem paga e retém (cliente empresarial, tipicamente) — a ficha do cliente marca o enquadramento."
+   ],
+   [
+    "Taxa/valor de retenção",
+    "Campos do documento; o total a pagar = total − retenção."
+   ],
+   [
+    "Líquido na C/C",
+    "A dívida do cliente é pelo líquido — aging e cobranças refletem isso."
+   ],
+   [
+    "Imposto do Selo",
+    "Taxa sobre operações específicas (ex.: crédito) com verbas legais."
+   ],
+   [
+    "Modelo 30",
+    "Declaração de rendimentos pagos a não residentes — guia passo-a-passo oficial no Help Center."
+   ]
+  ],
+  "e": [
+   "Cobrar ao cliente o valor total de fatura com retenção (está-se a cobrar o que ele entrega ao Estado)",
+   "Esquecer a retenção num recibo/liquidação e o saldo nunca fechar"
+  ]
+ },
+ "L37": {
+  "c": "O módulo trata dados pessoais (nomes, NIFs, contactos, moradas) — o RGPD exige base legal, transparência (aviso legal), minimização e direitos do titular (acesso, retificação, ESQUECIMENTO). O PHC implementa: aviso legal configurável, registo do tratamento de dados, processo de esquecimento/anonimização (remove dados identificativos preservando documentos fiscais — que por lei NÃO podem ser apagados) e histórico de utilizadores. O técnico opera estes pedidos com procedimento documentado.",
+  "s": [
+   [
+    "Aviso legal",
+    "Texto de privacidade apresentado/documentado conforme configuração."
+   ],
+   [
+    "Registo do tratamento",
+    "Inventário dos tratamentos de dados feitos pela empresa (obrigação RGPD)."
+   ],
+   [
+    "Direito ao esquecimento",
+    "Anonimização de dados pessoais do titular — preservando integridade fiscal dos documentos emitidos."
+   ],
+   [
+    "Histórico de utilizadores",
+    "Rasto de quem fez o quê (auditoria interna)."
+   ],
+   [
+    "Prazo de conservação fiscal",
+    "Documentos fiscais guardam-se anos (10 em regra) — o 'esquecimento' é anonimização, não eliminação total."
+   ]
+  ],
+  "e": [
+   "Prometer 'apagar tudo' a um titular sem explicar o conflito com obrigações fiscais",
+   "Executar esquecimento em produção sem procedimento/teste prévio (é irreversível)"
+  ]
+ },
+ "L38": {
+  "c": "A integração Gestão→Contabilidade transforma documentos comerciais em lançamentos contabilísticos automáticos via Documentos Pré-Definidos: para cada tipo de documento definem-se contas (clientes, fornecedores, IVA liquidado/dedutível, vendas, compras, contrapartidas) e regras (diário, documento pré-numerado). O contabilístico fecha o ciclo: apuramento do IVA, declaração periódica, CEVMC, resultados. Mesmo sem o módulo Contabilidade instalado, o técnico de Gestão DEVE conhecer o esquema de integração — é o que faz o ERP ser 'um só sistema'.",
+  "s": [
+   [
+    "Documentos pré-definidos",
+    "Modelos de contabilização por tipo de documento do Gestão."
+   ],
+   [
+    "Contas de integração",
+    "Contas SNC mapeadas: clientes (21), fornecedores (22), IVA (24), vendas (71/72), compras (31/22)..."
+   ],
+   [
+    "Diários",
+    "Agrupamentos de lançamentos (vendas, compras, recebimentos, pagamentos)."
+   ],
+   [
+    "Apuramento do IVA",
+    "Confronto do IVA liquidado (vendas) vs dedutível (compras) → declaração periódica."
+   ],
+   [
+    "CEVMC e resultados",
+    "Consumos + variações de existências alimentam o apuramento de resultados."
+   ],
+   [
+    "PHC XL / centros analíticos",
+    "Grandes volumes e contabilidade multidimensional (dimensões/centros)."
+   ]
+  ],
+  "e": [
+   "Integrar sem validar as contas de teste num clone (um mapa de contas errado exige estornos massivos)",
+   "Desintegrar/reintegrar sem critério e duplicar lançamentos"
+  ]
+ },
+ "L39": {
+  "c": "Parâmetros são interruptores globais que mudam o comportamento do software — de performance (ecrãs em memória, processamento assíncrono) a regras fiscais (métodos de envio à AT, validações). Estão no menu Sistema, protegidos por acessos (configuráveis por utilizador). O método profissional para mexer: documentar o valor atual → alterar UM → testar → reverter ou manter. Cada parâmetro tem manual in-app (botão Ajuda) — leia antes de mudar.",
+  "s": [
+   [
+    "Parâmetros gerais vs de módulo",
+    "Gerais afetam a plataforma (UI, performance, acessos); de módulo afinam faturação/stocks/tesouraria."
+   ],
+   [
+    "Parâmetros de faturação",
+    "Retenção IRS, método de envio à AT, validações de transporte, isenção nas linhas..."
+   ],
+   [
+    "Acessos a parâmetros",
+    "Pode-se libertar parâmetros específicos a utilizadores não-admin."
+   ],
+   [
+    "Documentação in-app",
+    "O botão Ajuda de cada parâmetro abre o manual oficial — fonte primária."
+   ],
+   [
+    "Metodologia 1-2-3",
+    "Um parâmetro de cada vez + registo antes/depois + teste + capacidade de reverter."
+   ]
+  ],
+  "e": [
+   "Mudar parâmetros 'para ver o que acontece' em produção",
+   "Copiar parâmetros de outra instalação sem entender cada um (contextos diferem)"
+  ]
+ },
+ "L40": {
+  "c": "Reporting standard: Mapas Definidos são relatórios prontos e configuráveis (colunas, filtros, totais, ordenações) que cobrem o dia-a-dia (vendas por cliente, dívidas, compras). A Impressão Definida pelo Utilizador (Advanced+) permite ajustar layouts de listagens à casa. Saídas: ecrã, impressora, Excel, PDF. Antes de desenvolver um relatório novo, procure o mapa standard — 80% das necessidades já existem configuráveis.",
+  "s": [
+   [
+    "Mapa definido",
+    "Relatório standard com configuração de colunas/filtros/totais pelo utilizador."
+   ],
+   [
+    "Impressão definida pelo utilizador",
+    "Personalização de o que sai impresso nas listagens (Advanced+)."
+   ],
+   [
+    "Exportar vs imprimir",
+    "Excel para análise, PDF para arquivo/envio — escolher o canal certo."
+   ],
+   [
+    "Repetição de valores em grelhas",
+    "Parâmetro que imprime (ou não) valores repetidos por coluna."
+   ]
+  ],
+  "e": [
+   "Desenvolver à medida o que um mapa standard já faz configurado",
+   "Mapas com filtros errados guardados como 'definitivos' (validar com dados conhecidos)"
+  ]
+ },
+ "L41": {
+  "c": "Análises de Utilizador = consultas SQL criadas pelo utilizador (Advanced+) apresentadas como grelhas vivas dentro do PHC, com filtros próprios e possibilidade de promoção a atalhos/menus. É a ferramenta de reporting livre: JOINs entre tabelas (ex.: ft × cl para vendas por zona), agregações, parâmetros de período. Boas práticas: filtrar por período e usar TOP enquanto explora, só usar NOLOCK em análises indicativas (lê dados não confirmados e pode duplicar ou saltar linhas), descobrir campos pelo Dicionário de Dados, guardar o SQL em ficheiro (versionamento) e documentar o propósito.",
+  "s": [
+   [
+    "Análise de utilizador",
+    "Consulta SQL reutilizável exposta como ecrã de grelha na aplicação."
+   ],
+   [
+    "Filtro de utilizador",
+    "Condições guardadas sobre grelhas/tabelas (ex.: 'só clientes zona Sul')."
+   ],
+   [
+    "JOINs típicos",
+    "Documentos × clientes × artigos — as relações vêem-se no Dicionário de Dados."
+   ],
+   [
+    "NOLOCK",
+    "Hint equivalente a READUNCOMMITTED: não pede bloqueios partilhados, mas pode ler dados não confirmados e até duplicar ou saltar linhas. Aceitável em análises indicativas; nunca em valores para faturar, pagar ou declarar."
+   ],
+   [
+    "Guardar SQL",
+    "Versionar as consultas fora da BD (ficheiros .sql) para reutilização/auditoria."
+   ]
+  ],
+  "e": [
+   "UPDATE/DELETE 'para corrigir' a partir de uma análise (análise é LEITURA; correções fazem-se pelos ecrãs)",
+   "Escrever SQL a adivinhar nomes de campos em vez de usar o dicionário"
+  ]
+ },
+ "L42": {
+  "c": "Camada de BI do utilizador: Snapshots são consultas T-SQL contextualizadas (usam variáveis como #stamp# para mostrar dados do registo em foco) exibíveis em painéis com cores por grupo. Análises Multidimensionais (Advanced+) promovem análises de utilizador a cubos com drill-down (ano → mês → cliente → documento). Dashboards (PHC Dashboard) e painéis de informação agregam indicadores num ecrã de comando. É o que transforma 'dados espalhados' em decisão rápida.",
+  "s": [
+   [
+    "Snapshot",
+    "Consulta 'fotografada' com variáveis de contexto (#stamp#) — ex.: painel lateral do cliente com últimos documentos."
+   ],
+   [
+    "Análise multidimensional",
+    "Cubo OLAP-like criado a partir de análise de utilizador; drill-down por dimensões."
+   ],
+   [
+    "Painéis/Dashboard",
+    "Agregadores visuais (indicadores, gráficos) — template de Dashboard existe para o módulo Gestão."
+   ],
+   [
+    "Grupos de snapshots com cor",
+    "Organização visual de conjuntos de snapshots (parâmetro próprio)."
+   ]
+  ],
+  "e": [
+   "Snapshots pesados a correr em cada abertura de ecrã (lentidão) — otimizar a consulta",
+   "Multidimensional sobre dados errados (validar totais contra mapas standard antes de confiar)"
+  ]
+ },
+ "L43": {
+  "c": "Automação de vigilância: Monitores (com Itens de Monitor configurando colunas) apresentam filas de trabalho operacionais (dívidas, aprovações, sincronizações). Alertas de utilizador disparam por condições (stock mínimo, documento pendente) e distribuem-se por canais: aviso interno, PHC Notify, e-mail (SMTP), SMS (módulo). O intervalo de refrescamento é um parâmetro geral. Nas gamas superiores, Workflow Operacional e Sistema de Aprovação de Dossiers formalizam circuitos de autorização.",
+  "s": [
+   [
+    "Monitor + itens",
+    "Vista sequencial de dados operacionais com colunas configuráveis por item."
+   ],
+   [
+    "Alerta de utilizador",
+    "Condição → aviso automático; funções internas (ex.: CriaAvs) criam avisos a utilizadores."
+   ],
+   [
+    "Canais de notificação",
+    "Aviso interno na app, PHC Notify, e-mail SMTP, SMS."
+   ],
+   [
+    "Workflow/aprovações",
+    "Circuitos formais de autorização (Workflow Operacional no Advanced+; Aprovação de Dossiers no Enterprise)."
+   ]
+  ],
+  "e": [
+   "Alertas sem dono (disparam e ninguém atua — definir destinatário e ação)",
+   "Refrescamento demasiado agressivo de alertas/monitores (carga na BD)"
+  ]
+ },
+ "L44": {
+  "c": "A Framework PHC permite estender o modelo de dados SEM tocar no core: Campos de Utilizador adicionam colunas a tabelas do software (ativas por parâmetro, visíveis nos ecrãs, persistentes em upgrades); Tabelas de Utilizador criam entidades novas; Valores por Defeito pré-preenchem campos por expressão; Índices de Utilizador aceleram consultas (com INCLUDED COLUMNS). É o primeiro passo de qualquer personalização — e a alternativa correta ao ALTER TABLE manual (que quebra suporte e upgrades).",
+  "s": [
+   [
+    "Campo de utilizador",
+    "Coluna extra gerida pela framework (tipo, validações) — sobrevive a upgrades porque é metadata na BD."
+   ],
+   [
+    "Tabela de utilizador",
+    "Entidade nova (ex.: ZonasTreino, Contratos) integrada nas ferramentas da framework."
+   ],
+   [
+    "Valores por defeito",
+    "Preenchimento automático de qualquer campo (expressão: data atual, utilizador, cálculos)."
+   ],
+   [
+    "Índice de utilizador",
+    "Índice SQL criado via framework, incluindo colunas incluídas (INCLUDED COLUMNS)."
+   ],
+   [
+    "Ativação por parâmetro",
+    "'Utiliza campos do utilizador?' etc. — ferramentas aparecem no Supervisor → Framework PHC."
+   ]
+  ],
+  "e": [
+   "ALTER TABLE direto nas tabelas do core (upgrade pode falhar/ignorar; perde suporte)",
+   "Criar campos sem convenção de nomes (prefixo do projeto/parceiro evita colisões futuras)"
+  ]
+ },
+ "L45": {
+  "c": "Regras de Utilizador são validações de negócio executadas pela aplicação no momento da introdução/gravacao: obrigar campos condicionais, impedir vendas sem stock ou acima do limite de crédito, validar NIF (9 dígitos + checksum). Criam-se por assistente (condições simples sem código) ou em Xbase (lógica complexa). Mensagens claras e em linguagem de utilizador final são parte do trabalho. Testam-se SEMPRE num clone antes de produção — uma regra errada pode bloquear a faturação da empresa toda.",
+  "s": [
+   [
+    "Assistente de Regras",
+    "Construtor visual para condições simples (campo X obrigatório quando Y)."
+   ],
+   [
+    "Regra em código Xbase",
+    "Para lógica complexa (cálculos, consultas, mensagens dinâmicas)."
+   ],
+   [
+    "Momento de execução",
+    "A regra corre na interação/gravacao — bloqueia ou avisa conforme configurado."
+   ],
+   [
+    "Mensagem de utilizador",
+    "Texto claro do porquê do bloqueio — reduz chamadas ao suporte."
+   ]
+  ],
+  "e": [
+   "Regra que bloqueia sem mensagem explicativa (utilizador liga em pânico)",
+   "Testar só o caso feliz — validar também documentos antigos/anulações/reaberturas"
+  ]
+ },
+ "L46": {
+  "c": "Eventos são o coração do desenvolvimento desktop: pontos de extensão (Init, Clique, Ao Entrar/Sair, Após Atualizar, Tecla Pressionada, Refrescar...) onde corre código Xbase (sintaxe Visual FoxPro). Em cada evento existe o objeto ObjRecebido com Janela (o ecrã), Objecto (o próprio objeto, com Value/Parent) e MeusDados (repositório chave-valor para estado entre eventos). Return .F. cancela o comportamento padrão do objeto. Expressão vs programa: expressões retornam sozinhas (sem Return); programas permitem várias instruções. Erros? Análise Interna mostra a linha (0 = expressão).",
+  "s": [
+   [
+    "Xbase",
+    "Linguagem de personalização desktop (dialecto VFP) — eventos, regras, funções."
+   ],
+   [
+    "ObjRecebido.Janela",
+    "Apontador para o ecrã (Caption, BackColor...) — alterações duram enquanto o ecrã está aberto (repetir no Init)."
+   ],
+   [
+    "ObjRecebido.Objecto",
+    "O objeto do evento: Value, Parent (navegar a hierarquia), MeusDados."
+   ],
+   [
+    "MeusDados",
+    "Chave-valor do utilizador: AddParametro, GuardaParametro, ExisteParametro, GetNomeParametro, GetIndexParametro."
+   ],
+   [
+    "Return .F.",
+    "Cancela a ação de raiz (tecla não entra, calendário não abre). Expressões não usam Return."
+   ],
+   [
+    "Lista de eventos",
+    "Init, Ativar, Desativar, Refrescar, Clique, Duplo Clique, Clique Direito, Ao Entrar, Ao Sair, Após Atualizar, Após não Atualizado, Antes/Depois mudar Linha-Coluna, Mouse*, Tecla Pressionada."
+   ],
+   [
+    "Campo de Ligação",
+    "Objeto composto: .Lista1 (botão lista), .Procura (botão procura), .Nossocampo1 (texto)."
+   ]
+  ],
+  "e": [
+   "Alterar propriedades no Init esperando persistência na BD (só duram com o ecrã aberto — repor no evento certo)",
+   "Sempre esquecer de ver a Análise Interna quando 'o evento não faz nada' (o erro está lá)"
+  ]
+ },
+ "L47": {
+  "c": "Além dos eventos, a framework oferece utilitários reutilizáveis: Funções de Utilizador (procedimentos Xbase com parâmetros — ex.: calcular margem), Teclas de Utilizador (atalhos com descrição no rodapé), Instruções Internas (o 'manual da casa' escrito dentro de cada ecrã principal) e Alertas programados (funções internas como CriaAvs criam avisos a utilizadores; U_NAVEGA navega entre registos/ecrãs). Versões recentes acrescentam funções internas novas (ex.: envios SII; PromptFunction() para IA).",
+  "s": [
+   [
+    "Função de utilizador",
+    "Código Xbase reutilizável com parâmetros/retorno — DRY aplicado ao ERP."
+   ],
+   [
+    "Tecla de utilizador",
+    "Atalho de teclado personalizável (com descrição visível em rodapé)."
+   ],
+   [
+    "Instruções internas",
+    "Procedimento operacional escrito pelo utilizador, associado a cada ecrã principal."
+   ],
+   [
+    "CriaAvs",
+    "Função interna que cria avisos/avisos internos a utilizadores (parâmetros: stamp, userAv...)."
+   ],
+   [
+    "U_NAVEGA",
+    "Função interna de navegação programática (interage com o parâmetro 'mostrar último registo')."
+   ],
+   [
+    "PromptFunction()",
+    "Função da framework (202601) para invocar IA/Cegid Pulse — base dos Smart Tools."
+   ]
+  ],
+  "e": [
+   "Duplicar o mesmo código em 10 eventos em vez de criar 1 função de utilizador",
+   "Instruções internas desatualizadas (pior que não existirem)"
+  ]
+ },
+ "L48": {
+  "c": "IDUs (Ecrãs Personalizados) são ecrãs novos desenhados pelo utilizador no Desenhador de Ecrãs: páginas, campos ligados a tabelas, grelhas, botões — tudo com eventos Xbase e parâmetros de ecrã. Ligam-se a menus novos (Menus/Opções de Ecrã da framework) e entre si (Ligações entre IDUs). No POS touch há drag-and-drop de objetos. Um bom IDU resolve o que os ecrãs standard não cobrem: painéis de crédito, consolas de operação, wizards internos.",
+  "s": [
+   [
+    "Desenhador de ecrãs",
+    "Ferramenta que cria o IDU (objetos: texto, campos de ficheiro/ligação, grelhas, botões, árvore...)."
+   ],
+   [
+    "Menu de utilizador",
+    "Menus novos para organizar IDUs/análises criadas (framework)."
+   ],
+   [
+    "Ligações entre IDUs",
+    "Navegação de um ecrã personalizado para outro passando contexto."
+   ],
+   [
+    "Objetos deste ecrã",
+    "Opção que lista propriedades dos objetos do ecrã — útil ao programar eventos."
+   ],
+   [
+    "Parâmetros de ecrã",
+    "Configuração específica do comportamento do ecrã personalizado."
+   ]
+  ],
+  "e": [
+   "IDU a duplicar o que um mapa/análise standard já resolve (manutenção dupla)",
+   "Ecrã sem acessos configurados (toda a gente vê o que não devia)"
+  ]
+ },
+ "L49": {
+  "c": "Performance é medição, não opinião: cronometre a análise lenta (SET STATISTICS TIME no SSMS), veja o plano de execução, e ataque com as ferramentas certas — Índices de Utilizador (framework) cobrindo JOINs/filtros (INCLUDED COLUMNS para colunas de output), desfragmentação das tabelas principais (utilitário PHC) + manutenção de índices SQL, BD de arquivo para históricos, File Storage para anexos, e parâmetros de UI (ecrãs em memória ON, 'mostrar último registo' OFF em BDs grandes). Registe antes/depois — sem números não há otimização.",
+  "s": [
+   [
+    "Índice de utilizador",
+    "Índice via framework sobre tabelas do software — persiste em upgrades."
+   ],
+   [
+    "INCLUDED COLUMNS",
+    "Colunas 'de cobertura' no índice que evitam lookup à tabela (v19+)."
+   ],
+   [
+    "Desfragmentar tabelas principais",
+    "Utilitário PHC para manutenção de fragmentação."
+   ],
+   [
+    "BD de arquivo",
+    "Históricos movidos para BD própria — tabelas ativas mais rápidas."
+   ],
+   [
+    "Parâmetros de performance",
+    "Ecrãs em memória, mostrar último registo OFF, processamento assíncrono."
+   ],
+   [
+    "sp_spaceused / DMVs",
+    "Medição de espaço e fragmentação (sys.dm_db_index_physical_stats)."
+   ]
+  ],
+  "e": [
+   "Criar índices 'para tudo' (cada índice custa escrita nas gravações)",
+   "Otimizar sem medir antes/depois (pode piorar e nem saber)"
+  ]
+ },
+ "L50": {
+  "c": "O lado web (PHC CS Web — Gestão Web, Front Web, POS Web) partilha a BD e tem framework própria em C#: Editor de Código para Eventos e Regras, Ecrãs/Objetos de Utilizador, Templates, Monitores, Filtros, Valores por Defeito — e Scripts: programas executados quando se chama um URL (endpoints para integrações, ex.: devolver JSON de stock à loja online). O Log de Código é a Análise Interna da web. Relatórios web usam DevExpress. No Evolution, o acesso web está incluído na subscrição.",
+  "s": [
+   [
+    "Framework Web (C#)",
+    "Eventos, regras e ecrãs de utilizador programados em C# no Editor de Código."
+   ],
+   [
+    "Scripts por URL",
+    "Endpoint próprio: um URL identifica o script; a resposta pode ser JSON/HTML — base de integrações leves."
+   ],
+   [
+    "Log de Código",
+    "Diagnóstico da execução do código de utilizador na web."
+   ],
+   [
+    "Front Web",
+    "Extranet para clientes/fornecedores (documentos, encomendas, dossiers)."
+   ],
+   [
+    "DevExpress",
+    "Tecnologia dos relatórios no PHC CS Web (Clientes, Faturação, Recibos...)."
+   ]
+  ],
+  "e": [
+   "Scripts por URL sem autenticação/validação (qualquer pessoa com o URL acede — proteger!)",
+   "Assumir que o código Xbase do desktop 'funciona igual' na web (são frameworks/linguagens diferentes)"
+  ]
+ },
+ "L51": {
+  "c": "Projetos de personalização seguem um ciclo profissional: requisito → desenho (que objetos da framework usar) → implementação em clone → testes com cenários (feliz, limites, erro) → documentação → produção → revalidação pós-upgrade. A solução 'Controlo de Crédito' combina tudo o que aprendeu: campo de utilizador (limite), regra (bloqueio), alerta (aviso ao gestor), IDU (consulta), análise (exposição). Como as personalizações vivem na BD, sobrevivem à reinstalação do executável — mas NUNCA assuma: revalide após cada upgrade.",
+  "s": [
+   [
+    "Requisito → desenho",
+    "Traduzir o pedido do negócio em objetos da framework (campo? regra? evento? IDU?)."
+   ],
+   [
+    "Cenários de teste",
+    "Dentro do limite, acima, sem limite, documento a dinheiro, alteração do limite — os 5 mínimos."
+   ],
+   [
+    "Documentação viva",
+    "notas/projeto-X.md: o que foi criado, onde, código, testes — o próximo técnico (ou você em 6 meses) agradece."
+   ],
+   [
+    "Persistência na BD",
+    "Personalizações gravam na base de dados (framework) — reinstalar o exe não as apaga; upgrade exige revalidação."
+   ]
+  ],
+  "e": [
+   "Implementar direto em produção 'porque é só um campinho'",
+   "Não documentar (em 6 meses ninguém sabe o que aquele evento faz)"
+  ]
+ },
+ "L52": {
+  "c": "EyePeak é a plataforma de logística/WMS/e-commerce do ecossistema Cegid (Primavera) que sincroniza com o PHC: artigos, stocks, séries de documentos e fluxos documentais (ex.: encomendas de fornecedor → guias). No PHC, o ponto de contacto é o monitor 'EyePeak Sincronização' (menu Supervisor) e o Monitor de Configurações (consistência de séries). Para o técnico: entender o que sincroniza, em que direção, e como diagnosticar quando 'não bate' entre sistemas.",
+  "s": [
+   [
+    "EyePeak Sincronização",
+    "Monitor no Supervisor que comunica dados ERP ↔ EyePeak."
+   ],
+   [
+    "Sincronização de séries",
+    "Garantir consistência das séries de faturação entre ERP e EyePeak (Monitor de Configurações)."
+   ],
+   [
+    "Fluxo de fornecedores",
+    "Exemplo documentado: encomendas → guias entre Cegid PHC e EyePeak."
+   ],
+   [
+    "Direção dos dados",
+    "Quem é mestre de cada entidade (artigos no ERP? stock no WMS?) — definir antes de sincronizar."
+   ]
+  ],
+  "e": [
+   "Sincronizar sem definir a entidade mestre de cada dado (conflitos de sobrescrita)",
+   "Ignorar logs de sincronização quando os stocks 'não batem'"
+  ]
+ },
+ "L53": {
+  "c": "Faturação eletrónica = trocar faturas em formato estruturado (não PDF!). Em Portugal, a norma para o setor público é CIUS-PT (perfil nacional da norma europeia EN 16931); o envio faz-se por webservices/plataformas como SaphetyDoc (artigo oficial de configuração no Help Center) ou via Cegid Docs — que também faz arquivo digital legal: faturas de fornecedor CIUS-PT chegam, são anexadas em PDF e PRÉ-LANÇADAS automaticamente (202601). O módulo Documentos Eletrónicos trata de EAN/EDI. PDF não é fatura eletrónica — é impressão.",
+  "s": [
+   [
+    "CIUS-PT",
+    "Especificação portuguesa de faturação eletrónica (obrigatória em contratação pública)."
+   ],
+   [
+    "SaphetyDoc",
+    "Plataforma/webservice de troca de documentos eletrónicos com configuração documentada para o PHC."
+   ],
+   [
+    "Cegid Docs",
+    "Gestão documental cloud + arquivo digital legal; pré-lançamento de faturas de fornecedor (202601+)."
+   ],
+   [
+    "Documentos Eletrónicos (módulo)",
+    "EAN da empresa, EDI — infraestrutura de troca estruturada."
+   ],
+   [
+    "PDF/A-3 e anexos",
+    "Arquivo com comprovativos anexos — o File Storage separa o que é fiscalmente relevante (BD) do resto."
+   ]
+  ],
+  "e": [
+   "Enviar PDF por e-mail e chamar-lhe fatura eletrónica (para o setor público não é)",
+   "Pré-lançar faturas de fornecedor sem revisão humana inicial (validar o mapeamento antes de confiar)"
+  ]
+ },
+ "L54": {
+  "c": "Cegid Pulse é o ecossistema de IA do Evolution (plano Plus+): agentes que respondem em linguagem natural sobre os dados do ERP ('quais os clientes com faturas em atraso?'), assistentes de negócio por área (o primeiro: comercial) e Smart Tools que os PARCEIROS podem configurar e monetizar — com a função de framework PromptFunction() (202601). A ativação tem 3 passos: acesso ao módulo → ativar Cegid Account na ficha do utilizador → login (deteção automática). Dados confidenciais não saem do controlo do ecossistema Cegid. Antes do Pulse existiam a assistente Cris e o PHC CS GenAI (templates de Q&A, 202501).",
+  "s": [
+   [
+    "Cegid Pulse",
+    "Agentes de IA no ERP com analítica sobre dados reais (vendas, tesouraria, stocks)."
+   ],
+   [
+    "Ativação em 3 passos",
+    "1) acesso ao módulo; 2) Cegid Account na ficha do utilizador; 3) login detetado automaticamente."
+   ],
+   [
+    "Cegid Account",
+    "Identidade única do ecossistema (Microsoft/Google + 2FA), ativação por utilizador (202601)."
+   ],
+   [
+    "Assistentes de negócio",
+    "Assistentes por área configuráveis pelo utilizador (comercial primeiro)."
+   ],
+   [
+    "Smart Tools + PromptFunction()",
+    "Ferramentas de IA configuráveis/monetizáveis pelos parceiros via framework."
+   ],
+   [
+    "Cris / GenAI",
+    "Assistente e templates de perguntas-resposta anteriores ao Pulse (202501)."
+   ]
+  ],
+  "e": [
+   "Perguntar à IA e não validar contra os monitores/análises (a resposta deve conferir com os dados)",
+   "Esquecer que o Pulse requer plano Plus+ e Cegid Account ativo por utilizador"
+  ]
+ },
+ "L55": {
+  "c": "Upgrades são o teste de maturidade do técnico: a cada versão (agora anual: 202501, 202601...) mudam funcionalidades, parâmetros e obrigações legais. O ritual: ler a Listagem de Novidades da versão de destino → clonar a BD → fazer o upgrade no clone → validar TUDO (abertura, séries, emissão, SAF-T, personalizações: campos/regras/eventos/IDUs/análises, web, integrações, alertas) → verificar Análise Interna/Log de Código → corrigir → agendar produção com backup fresco e plano de rollback. Personalizações vivem na BD: 'sobrevivem' na teoria — na prática, revalidam-se sempre.",
+  "s": [
+   [
+    "Listagem de Novidades",
+    "Documento oficial por versão (Help Center/PDFs) — o mapa do que pode quebrar."
+   ],
+   [
+    "Clone primeiro",
+    "Upgrade testa-se em BD clonada, nunca direto em produção."
+   ],
+   [
+    "Checklist de validação",
+    "Lista escrita do que testar (séries, SAF-T, regras, eventos, IDUs, análises, web, integrações)."
+   ],
+   [
+    "Plano de rollback",
+    "Backup pré-upgrade + procedimento de retorno se algo falhar."
+   ],
+   [
+    "Janela de paragem",
+    "Upgrade faz-se sem utilizadores ligados (ficheiros/BD em uso bloqueiam)."
+   ]
+  ],
+  "e": [
+   "Upgrade 'à sexta às 18h sem clone' — o clássico que acaba em madrugada de domingo",
+   "Não reler as novidades (a solução para o seu bug pode estar documentada lá)"
+  ]
+ },
+ "L56": {
+  "c": "O projeto final simula a implementação real — o que um consultor faz num cliente: diagnóstico do negócio (processos, volumes, obrigações) → desenho da solução (séries, circuitos, acessos, integrações) → configuração → migração de dados (Excel/ODBC, validação de saldos e stocks) → testes de ciclo completo → formação dos utilizadores → arranque assistido (go-live) → pós-arranque (ajustes, métricas). A diferença entre técnico e consultor expert: o expert desenha o processo ANTES de configurar, antecipa fiscalidade e upgrade, e mede o sucesso (tempo de faturação, erros, adoção).",
+  "s": [
+   [
+    "Diagnóstico",
+    "Entrevistas + dados: o que a empresa vende/compra, como, volumes, obrigações, quem faz o quê."
+   ],
+   [
+    "Desenho da solução",
+    "Séries e circuitos documentais, plano de contas de integração, acessos por perfil, integrações necessárias."
+   ],
+   [
+    "Migração de dados",
+    "Carregamento de ficheiros (clientes, artigos, saldos, stock inicial via dossiers) com validação de totais."
+   ],
+   [
+    "Testes de aceitação",
+    "Ciclos completos com dados reais + SAF-T validado antes do go-live."
+   ],
+   [
+    "Formação + manuais",
+    "Utilizadores treinados nos SEUS processos (não nas funcionalidades genéricas)."
+   ],
+   [
+    "Go-live e pós-arranque",
+    "Arranque assistido, janela de acompanhamento, métricas de sucesso e lista de melhorias."
+   ]
+  ],
+  "e": [
+   "Configurar antes de desenhar o circuito documental (refazer séries depois custa caro)",
+   "Go-live sem saldos de abertura validados (C/C e stock errados desde o dia 1)"
+  ]
+ },
+ "L57": {
+  "c": "A Contabilidade do PHC é o destino final de tudo o que o Gestão produz: cada fatura, compra e recibo vira lançamento em contas SNC. Antes de automatizar, é preciso dominar a estrutura: o Plano de Contas (classes 1-8 do SNC), as propriedades de cada conta e a taxonomia (o mapa que liga as contas às rubricas das declarações fiscais). Sem esta base, qualquer integração automática gera lixo contabilístico. Âmbito oficial do módulo (ficha PHC): contabilidade geral e analítica, centros de custo, mapas (Balanço, DR, Modelo 22, rácios, ABDR, DFC, IES/DA), apuramentos automáticos (IVA, CEVMC, resultados, imposto de selo), SAF-T (PT) da Contabilidade, 17 meses de exercício, grelha de transição e integrações com Gestão, Imobilizado, InterOp, Consolidação e Pessoal.",
+  "s": [
+   [
+    "SNC",
+    "Sistema de Normalização Contabilística português: 8 classes de contas (1 Meios financeiros, 2 Terceiros, 3 Inventários, 4 Investimentos, 5 Capital, 6 Gastos, 7 Rendimentos, 8 Resultados)."
+   ],
+   [
+    "Conta",
+    "Código hierárquico (ex.: 211101) onde se registam movimentos; tem propriedades (IVA, moeda, integração)."
+   ],
+   [
+    "Taxonomia",
+    "Tabela oficial que associa contas SNC a rubricas fiscais — base da IES/Modelo 22."
+   ],
+   [
+    "Plano de contas da empresa",
+    "Desenho interno (subcontas por cliente/fornecedor/loja) que equilibra detalhe e manutenção."
+   ],
+   [
+    "Geral × analítica",
+    "O par oficial do módulo: a contabilidade GERAL produz as demonstrações legais (Balanço, DR, IES/Modelo 22); a ANALÍTICA acrescenta centros de custo/dimensões para gestão interna. O PHC CS Contabilidade cobre as duas."
+   ],
+   [
+    "BD Pronta",
+    "Base de dados oficial de demonstração da Contabilidade, já configurada e com dados de exemplo — é a que a PHC usa nas aulas e-learning (\"BD Pronta na Contabilidade\", 7 min) para praticar sem risco."
+   ]
+  ],
+  "e": [
+   "Criar subcontas em excesso (211 por cada cliente) sem processo de manutenção — o plano incha e ninguém o usa",
+   "Ignorar a taxonomia e descobrir o erro na entrega da IES",
+   "Confundir o SNC oficial (normalização) com o plano de contas da empresa (desenho interno) — o segundo é seu para desenhar e manter"
+  ]
+ },
+ "L58": {
+  "c": "O diário é o 'caderno' onde se agrupa a escrituração por natureza de operação (geral, vendas, compras, caixa, bancos…). Cada diário tem numeração própria de documentos contabilísticos — sequencial e auditável. Uma boa estrutura de diários acelera reconciliações e fechos; uma má estrutura transforma qualquer auditoria em pesadelo.",
+  "s": [
+   [
+    "Diário",
+    "Agrupamento lógico de lançamentos com numeração independente (ex.: Diário de Vendas = tudo o que vem da faturação)."
+   ],
+   [
+    "Documento contabilístico",
+    "Peça numerada dentro do diário (um lote de integração ou um movimento manual)."
+   ],
+   [
+    "Pré-numeração vs automática",
+    "Documentos podem receber número sugerido (pré-numerado) ou sequencial automático na gravação."
+   ],
+   [
+    "Período",
+    "Janela temporal (mês/ano) que controla o que pode ser lançado — períodos fechados bloqueiam movimentos."
+   ],
+   [
+    "Diários especializados",
+    "Além do diário geral, a prática oficial recomenda diários por natureza (vendas, compras, recebimentos, pagamentos, caixa, bancos) — cada um com numeração sequencial própria por ano, o que acelera reconciliações e auditoria."
+   ]
+  ],
+  "e": [
+   "Misturar operações de naturezas distintas no mesmo diário (reconciliação impossível)",
+   "Reabrir períodos fechados sem controlo — quebra a confiança nos números já reportados"
+  ]
+ },
+ "L59": {
+  "c": "O movimento contabilístico é a célula da contabilidade: linhas de débito e crédito que têm de somar igual (partida dobrada), com data, documento de suporte e período válido. No PHC, movimentos manuais coexistem com os automáticos (integração) — e ambos deixam rasto. Correções fazem-se por estorno/retificação, nunca por eliminação que destrua sequências.",
+  "s": [
+   [
+    "Partida dobrada",
+    "Todo o lançamento tem débito = crédito; o software bloqueia movimentos desequilibrados."
+   ],
+   [
+    "Razão da conta",
+    "Histórico de movimentos de uma conta — ferramenta de auditoria linha a linha."
+   ],
+   [
+    "Estorno/retificação",
+    "Lançamento inverso que anula o erro mantendo o rasto (documento próprio)."
+   ],
+   [
+    "Imputação analítica",
+    "Distribuição do movimento por centros/dimensões (departamento, projeto) quando a analítica está ativa."
+   ],
+   [
+    "Movimentos de regularização",
+    "Para o SAF-T (PT) da Contabilidade, os movimentos classificam-se em regulares e de regularização/correção de períodos anteriores — os estornos e acertos de fecho entram nesta segunda categoria e devem estar documentados."
+   ]
+  ],
+  "e": [
+   "Lançar sem documento de suporte (auditoria reprova)",
+   "Corrigir apagando movimentos integrados em vez de estornar"
+  ]
+ },
+ "L60": {
+  "c": "Documentos pré-definidos são o motor da contabilização automática: para cada tipo de documento do Gestão (fatura, compra, recibo, NC…) define-se QUE contas usar (clientes 21, fornecedores 22, IVA 243, vendas 71, compras 31…), em que diário, com que regras de IVA e contrapartidas. É aqui que o ERP se torna 'um só sistema' — e é aqui que um erro de configuração se multiplica por milhares de documentos.",
+  "s": [
+   [
+    "Regra de contabilização",
+    "Mapeamento tipo de documento → contas/diário/IVA, com exceções (intra-UE, adiantamentos, NC)."
+   ],
+   [
+    "Contas de integração",
+    "Contas por entidade (cliente/fornecedor) ou genéricas com subconta automática."
+   ],
+   [
+    "Contrapartida",
+    "O 'outro lado' do lançamento (ex.: venda: 21 débito × 71+243 crédito)."
+   ],
+   [
+    "Rejeições",
+    "Documentos sem mapping completo não integram — o relatório do lote lista-os."
+   ],
+   [
+    "Documentos pré-definidos na Gestão",
+    "O outro lado da mesma peça (aula oficial de 23 min): em cada tipo de documento do Gestão (FT, compra, recibo…) existe uma página Contabilidade onde se define o modo de integração (online ou em lote), o diário destino e o documento pré-definido a aplicar."
+   ]
+  ],
+  "e": [
+   "Configurar uma regra e não testar com documento real de cada tipo (NC, isento, intra-UE têm caminhos próprios)",
+   "Mudar contas a meio do ano sem documentar — balancetes deixam de ser comparáveis"
+  ]
+ },
+ "L61": {
+  "c": "A integração periódica (diária, semanal ou mensal) transforma documentos do Gestão em lotes de lançamentos. O ciclo profissional: correr o lote → ler o relatório de execução → tratar rejeições na origem → reconciliar totais Gestão × Contabilidade (vendas×71, compras×31, IVA×243, bancos×12). Estornos e reintegrações têm procedimento próprio — nunca 'integrar outra vez por cima'.",
+  "s": [
+   [
+    "Lote de integração",
+    "Conjunto de documentos processados numa corrida, com relatório e possibilidade de estorno."
+   ],
+   [
+    "Rejeição",
+    "Documento que falhou o mapping (conta em falta, entidade nova) — corrige-se e reintegra."
+   ],
+   [
+    "Reconciliação",
+    "Conferência de totais entre módulos: a diferença tem de ser zero ou explicada."
+   ],
+   [
+    "Estorno de lote",
+    "Anulação completa de um lote integrado, para correção e reintegração limpa."
+   ],
+   [
+    "Integração online × em lote",
+    "Dois modos oficiais: ONLINE (o lançamento é gerado no momento da gravação do documento do Gestão) e EM LOTE (integração periódica com relatório de execução). A escolha faz-se na página Contabilidade de cada tipo de documento/compras/recibos."
+   ],
+   [
+    "Mapas de gestão (importar/emitir)",
+    "As aulas oficiais cobrem os dois sentidos: Importação de Mapas de Gestão (13 min) e Emissão de Mapas de Gestão (22 min) — os mapas fluem entre módulos, ficheiros externos e o reporting da direção/contabilista."
+   ]
+  ],
+  "e": [
+   "Ignorar o relatório de execução ('integrou quase tudo') — o 'quase' são documentos perdidos",
+   "Reconciliar só no fim do ano (divergências acumuladas tornam-se irrecuperáveis)"
+  ]
+ },
+ "L62": {
+  "c": "O IVA é o imposto com operação mensal/trimestral mais sensível: o apuramento compara o IVA liquidado (das vendas, conta 243x) com o dedutível (das compras) e gera o valor a entregar ou recuperar. A Declaração Periódica de IVA sai do PHC com os campos do impresso oficial — e deve bater certo com o SAF-T de faturação e o e-Fatura. Prazos e regras (mensal vs trimestral) vêm do enquadramento do sujeito passivo. O âmbito oficial inclui ainda: regime especial de exigibilidade de caixa (\"IVA de caixa\"), inversão do sujeito passivo (autoliquidação), reembolsos de IVA e Modelo 30 (operações com não residentes).",
+  "s": [
+   [
+    "IVA liquidado",
+    "IVA cobrado aos clientes nas vendas — entregue ao Estado."
+   ],
+   [
+    "IVA dedutível",
+    "IVA pago nas compras/gastos — recuperável (regras de dedutibilidade)."
+   ],
+   [
+    "Apuramento",
+    "Liquidação do saldo do período: há IVA a pagar quando o IVA liquidado (2433) é maior do que o IVA dedutível (2432); no caso inverso há IVA a recuperar (reporte ou reembolso)."
+   ],
+   [
+    "Declaração Periódica",
+    "Impresso oficial (campos) gerado a partir dos movimentos do período."
+   ],
+   [
+    "Coerência SAF-T",
+    "Totais por taxa no SAF-T têm de coincidir com a declaração — divergência = inspeção."
+   ],
+   [
+    "Regime especial de caixa",
+    "\"IVA de caixa\" (DL 71/2013): o imposto só é exigível quando o cliente paga. O PHC marca os documentos abrangidos e o IVA entra na declaração periódica no momento do recebimento/pagamento — aulas e artigos oficiais distinguem bem este regime."
+   ],
+   [
+    "Inversão do sujeito passivo",
+    "Nas situações do art. 2.º, n.º 1 do CIVA (ex.: serviços de construção civil, sucatas, serviços adquiridos a não residentes) é o ADQUIRENTE que autoliquida o IVA: liquida e deduz em simultâneo, nos campos próprios da declaração periódica. As aquisições intracomunitárias de bens seguem um regime próprio (RITI) com a mesma lógica de autoliquidação."
+   ],
+   [
+    "Suporte informático (XML)",
+    "A Declaração Periódica produz-se com os campos do impresso oficial e em ficheiro XML/suporte informático para submissão no Portal das Finanças (artigo oficial: \"Produção da Declaração Periódica do IVA em XML\")."
+   ],
+   [
+    "Modelo 30 e reembolsos",
+    "O módulo produz o Modelo 30 (operações com não residentes) e trata pedidos de reembolso de IVA — ambos no âmbito oficial declarado pela PHC."
+   ]
+  ],
+  "e": [
+   "Deduzir IVA não dedutível (ex.: parte de viaturas de turismo, despesas não documentadas)",
+   "Declarar sem fechar o período (documentos lançados depois mudam os totais)",
+   "Esquecer a autoliquidação (inversão do sujeito passivo) em aquisições intracomunitárias/serviços — a declaração fica errada dos dois lados (liquidado e dedutível)"
+  ]
+ },
+ "L63": {
+  "c": "Do resultado bruto ao líquido: o CEVMC (custo do que foi vendido/consumido) deriva dos inventários do Gestão (existências iniciais + compras − finais, valorizadas a PCMP), os mapas de gestão (DR, Balanço, balancetes) são o output para direção e contabilista, e o apuramento de resultados fecha o ciclo do período. O report mensal de 1 página é o produto final que a gestão realmente lê. Mapas do âmbito oficial: Balanço, Demonstração de Resultados, Modelo 22 (com Pagamentos por Conta e PEC), rácios, ABDR (Anexo ao Balanço e à DR), DFC (Demonstração dos Fluxos de Caixa) e IES/DA — mais o apuramento automático do imposto de selo.",
+  "s": [
+   [
+    "CEVMC",
+    "Custo das Existências Vendidas e das Mercadorias Consumidas — alimentado pelos inventários valorizados."
+   ],
+   [
+    "Demonstração de Resultados (DR)",
+    "Mapa legal: rendimentos − gastos = resultado do período."
+   ],
+   [
+    "Balanço",
+    "Fotografia patrimonial: ativos = passivos + capital próprio."
+   ],
+   [
+    "Mapas de gestão",
+    "Conjunto de relatórios configuráveis (balancetes, DR, balanço, rácios) exportáveis."
+   ],
+   [
+    "Modelo 22 (IRC)",
+    "A declaração anual de IRC sai do PHC a partir dos saldos/taxonomia, com os Pagamentos por Conta (PPC) e o Pagamento Especial por Conta (PEC) — a PHC tem vídeo oficial dedicado a estas duas obrigações."
+   ],
+   [
+    "IES / DA",
+    "Informação Empresarial Simplificada (com a Declaração Anual): recebe os dados contabilísticos via taxonomia e acompanha o SAF-T (PT) da Contabilidade — é o \"exame final\" anual da estrutura de contas."
+   ],
+   [
+    "ABDR e DFC",
+    "Anexo ao Balanço e à Demonstração de Resultados (ABDR) e Demonstração dos Fluxos de Caixa (DFC) — mapas oficiais suportados pelo módulo, ao lado de Balanço, DR, rácios e Modelo 22."
+   ]
+  ],
+  "e": [
+   "Fechar resultados sem inventário valorizado atualizado (CEVMC errado = margem fictícia)",
+   "Enviar mapas sem reconciliar com o Gestão (a direção descobre as diferenças antes de si)"
+  ]
+ },
+ "L64": {
+  "c": "A contabilidade analítica acrescenta dimensões à geral: o MESMO movimento é imputado a centros (departamento, projeto, loja, viatura), permitindo responder 'quanto rende cada loja/projeto?'. No PHC, os centros analíticos alimentam-se de campos nos documentos do Gestão e nos movimentos, e o PHC XL dá músculo a grandes volumes. O desenho analítico (que dimensões, que regras de imputação) é decisão de gestão — técnico desenha, direção aprova.",
+  "s": [
+   [
+    "Centro analítico",
+    "Unidade de imputação (loja, projeto, departamento) com resultados próprios."
+   ],
+   [
+    "Imputação",
+    "Atribuição de valores de documentos/movimentos a centros (total ou rateio)."
+   ],
+   [
+    "Multidimensional",
+    "Análise cruzada de dimensões (loja × família × mês)."
+   ],
+   [
+    "PHC XL",
+    "Componente para grandes volumes e exploração analítica avançada."
+   ],
+   [
+    "Plano de Contas Paralelo",
+    "Funcionalidade exclusiva Enterprise (aula oficial de 14 min): uma segunda estrutura de contas em paralelo com a legal — para visão de gestão, grupo ou outro referencial — alimentada pelos mesmos movimentos."
+   ],
+   [
+    "Naturezas e Dimensões",
+    "Bloco Enterprise (aula oficial de 16 min): classificação multidimensional dos movimentos para lá dos centros analíticos — naturezas (tipos de gasto/rendimento) e dimensões (eixos de análise) para reporting avançado."
+   ]
+  ],
+  "e": [
+   "Criar dezenas de centros sem regra de imputação clara (ninguém sabe onde lançar)",
+   "Imputar 'a olho' rateios — sem critério documentado, a analítica perde credibilidade"
+  ]
+ },
+ "L65": {
+  "c": "A viragem de ano é a operação mais crítica do calendário contabilístico: pré-fecho (tudo integrado, IVA apurado, reconciliações zero, inventário valorizado), apuramento anual de resultados (classe 8 → resultados transitados), abertura do novo exercício com balanços de abertura e validação conta a conta. Sempre em clone primeiro, com backup testado e plano de reversão. Períodos do ano antigo fecham-se; acessos ajustam-se. Diferenciais oficiais do módulo no fecho: 17 meses (continuar a trabalhar o exercício anterior até ao prazo legal), grelha de transição e consulta direta de movimentos do ano anterior.",
+  "s": [
+   [
+    "Pré-fecho",
+    "Checklist de validações antes de encerrar: integrações, reconciliações, inventário, IVA, movimentos em rascunho."
+   ],
+   [
+    "Apuramento anual",
+    "Encerramento das contas de resultados (6/7/8) contra resultados transitados/reservas (5)."
+   ],
+   [
+    "Balanço de abertura",
+    "Primeiro documento do novo ano: saldos finais do anterior como iniciais."
+   ],
+   [
+    "Períodos fechados",
+    "Bloqueio de lançamentos em períodos encerrados — garante números reportados estáveis."
+   ],
+   [
+    "17 meses",
+    "Capacidade oficial de continuar a operar o exercício anterior durante os primeiros meses do novo ano (o fecho legal decorre até 31 de maio) — no limite, 12 meses do ano + 5 meses de correções em paralelo com o ano novo."
+   ],
+   [
+    "Grelha de transição",
+    "Mecanismo oficial de passagem entre exercícios/estruturas: transporta saldos e mapeamentos de forma controlada e validável, em vez de recomeçar do zero."
+   ],
+   [
+    "Movimentos do ano anterior",
+    "Consulta direta dos movimentos do ano anterior a partir do exercício corrente — comparação e auditoria sem trocar de contexto (funcionalidade declarada na ficha oficial do produto)."
+   ],
+   [
+    "SAF-T (PT) da Contabilidade",
+    "O ficheiro XML de auditoria anual da CONTABILIDADE (distinto do SAF-T de faturação): gera-se e valida-se no fecho e acompanha a IES. Software validado pela AT ostenta o selo SVAT."
+   ]
+  ],
+  "e": [
+   "Executar a abertura em produção sem simular no clone (erros de abertura são caríssimos de desfazer)",
+   "Virar o ano com reconciliações pendentes — o erro passa para o novo exercício ampliado",
+   "Deixar a validação do SAF-T (PT) da Contabilidade para a entrega da IES — erros de estrutura só aparecem nessa altura, sem tempo para corrigir"
+  ]
+ },
+ "L66": {
+  "c": "O Imobilizado gere o ciclo de vida dos ativos fixos: ficha (custo, data de entrada, taxa e método de depreciação), depreciações periódicas (com duodécimos no ano de entrada), reavaliações/revalorizações, imparidades e reversões, e abate/alienação com apuramento de ganhos/perdas. Cada evento integra na Contabilidade (ativo 43, acumuladas, gastos 64/65, resultados de alienação). As taxas seguem as tabelas legais (depreciações aceites fiscalmente).",
+  "s": [
+   [
+    "Ficha do ativo",
+    "Registo central: identificação, custo de aquisição/produção, data de entrada, vida útil/taxa, contas."
+   ],
+   [
+    "Depreciações",
+    "Gasto periódico do desgaste (linear/duodécimos), com mapa e integração automática."
+   ],
+   [
+    "Imparidade",
+    "Perda de valor recuperável reconhecida como gasto (e reversível quando deixa de existir)."
+   ],
+   [
+    "Abate/alianação",
+    "Saída do ativo (venda, abate): baixa do valor bruto e acumuladas, apuramento de ganho/perda."
+   ],
+   [
+    "Circuito genérico",
+    "Fluxo entrada → depreciações → eventos (imparidades/reavaliações) → saída, tudo integrado."
+   ],
+   [
+    "Reavaliação × revalorização",
+    "Dois eventos oficiais distintos do circuito do Imobilizado: REAVALIAÇÃO (atualização legal/fiscal do valor do ativo, ex.: regimes de reavaliação de ativos) e REVALORIZAÇÃO (correção do valor registado). Ambos alteram as depreciações futuras e integram na Contabilidade."
+   ]
+  ],
+  "e": [
+   "Depreciar sem validar taxa legal/vida útil (correções fiscais depois)",
+   "Esquecer o abate de ativos já inutilizados — balanço com 'fantasmas'"
+  ]
+ },
+ "L67": {
+  "c": "O módulo Pessoal começa na ficha do funcionário: identificação fiscal e social (NIF, NISS), contrato (tipo, data, categoria), retribuição (base, subsídio de alimentação, percentagem para parciais) e situação familiar (que determina a taxa de retenção de IRS). Uma ficha mal preenchida propaga erros a todos os recibos, declarações e pagamentos — a admissão é o momento de rigor máximo.",
+  "s": [
+   [
+    "NISS",
+    "Número de Identificação da Segurança Social — obrigatório para TSU e declarações; a admissão comunica-se à SS."
+   ],
+   [
+    "Categoria/profissão",
+    "Enquadra funções e, em alguns CCT, retribuições mínimas — aparece em mapas obrigatórios."
+   ],
+   [
+    "Situação familiar",
+    "Estado civil, titularidade e dependentes: determina a taxa de retenção de IRS pelas tabelas em vigor."
+   ],
+   [
+    "Outros Profissionais",
+    "Prestadores sem vínculo laboral (recibos verdes): processamento e declarações com regras próprias."
+   ],
+   [
+    "IBAN",
+    "Dados de pagamento — validados antes do ficheiro SEPA para evitar devoluções."
+   ]
+  ],
+  "e": [
+   "Admitir sem comunicar à Segurança Social dentro do prazo (coima)",
+   "Taxa de IRS 'a olho' em vez da tabelada pela situação familiar (acertos pesados no fim do ano)"
+  ]
+ },
+ "L68": {
+  "c": "O processamento mensal transforma contratos em recibos: abonos (base, subsídio de alimentação até ao limite isento, horas extra, subsídios) menos descontos (IRS retido + TSU 11% do trabalhador), resultando no líquido a pagar; a entidade patronal ainda suporta a TSU de 23,75%. O ciclo profissional: processar em lote → conferir casos especiais manualmente → fechar o mês (bloqueio) → gerar recibos e mapas. Reprocessar exige anulação formal — recibos emitidos não se 'apagam'.",
+  "s": [
+   [
+    "Abonos",
+    "Rubricas que somam: vencimento base, subsídio de alimentação, horas extra, prémios, subsídios de férias/Natal (duodécimos ou por inteiro, conforme opção)."
+   ],
+   [
+    "Descontos",
+    "Rubricas que subtraem: IRS (retenção na fonte), TSU 11%, adiantamentos, penhoras."
+   ],
+   [
+    "Matéria coletável",
+    "Base de cálculo de IRS/TSU após regras de exclusão (ex.: subsídio de alimentação dentro do limite)."
+   ],
+   [
+    "Fecho do mês",
+    "Bloqueio do processamento após validação — garante que recibos/mapas/declarações são consistentes."
+   ],
+   [
+    "Encargos patronais",
+    "TSU 23,75% + seguros/fundos quando aplicáveis — visíveis nos mapas de encargos."
+   ]
+  ],
+  "e": [
+   "Fechar o mês sem conferir um recibo complexo (entradas/saídas a meio do mês, faltas, extra)",
+   "Alterar fichas depois do fecho sem reprocessar (recibo ≠ ficha)"
+  ]
+ },
+ "L69": {
+  "c": "A retenção na fonte de IRS segue tabelas oficiais que mudam (por vezes a meio do ano): por situação familiar e escalão de remuneração. Desde a versão 202601 o PHC permite carregar tabelas com DATA DE VIGÊNCIA — antigas e novas coexistem e o processamento aplica automaticamente a correta pela data. O técnico deve saber carregar, validar vigências e tratar exceções (deficiência, taxas manual/fixa com justificação).",
+  "s": [
+   [
+    "Tabelas de retenção",
+    "Tabelas legais por situação familiar (não casado, casado 1/2 titulares, deficientes) e escalões."
+   ],
+   [
+    "Data de vigência",
+    "Cada tabela vale a partir de uma data — o processamento escolhe pela data do recibo (202601+)."
+   ],
+   [
+    "Taxa manual/fixa",
+    "Exceções justificadas (ex.: rendimento variável, pedido do trabalhador dentro das regras) — documentar sempre."
+   ],
+   [
+    "Acerto anual",
+    "A retenção é um adiantamento; o acerto faz-se na declaração de IRS do trabalhador (o empregador declara via DMR)."
+   ]
+  ],
+  "e": [
+   "Processar com a tabela errada no mês de transição (recalculado depois com atrasos e confusão)",
+   "Aceitar 'taxas a pedido' sem enquadramento legal"
+  ]
+ },
+ "L70": {
+  "c": "A gestão de tempo alimenta diretamente o recibo: férias (22 dias úteis + majorações), faltas (justificadas com/sem perda de retribuição, injustificadas), horas extra (com majorações por limite legal) e feriados. O Mapa de Férias é obrigatório e as ausências têm efeito automático no processamento do mês. Regras vêm do Código do Trabalho e de instrumento de regulamentação coletiva aplicável (CCT).",
+  "s": [
+   [
+    "Direito a férias",
+    "22 dias úteis por ano (regra geral), com majorações legais; férias não gozadas têm tratamento na cessação."
+   ],
+   [
+    "Tipos de falta",
+    "Justificada (com ou sem retribuição) vs injustificada (perda de retribuição e efeitos disciplinares) — cada tipo configura-se."
+   ],
+   [
+    "Horas extra",
+    "Majorações legais e limites anuais; registo por funcionário/período."
+   ],
+   [
+    "Meio-dia de férias",
+    "Funcionalidade específica para gozo parcial de dias."
+   ],
+   [
+    "Mapa de Férias",
+    "Documento obrigatório com o planeamento anual — gerado pelo módulo."
+   ]
+  ],
+  "e": [
+   "Marcar férias sem verificar o direito disponível (dias negativos no fim do ano)",
+   "Esquecer faltas por registar antes do fecho (recibos errados e reprocessamento)"
+  ]
+ },
+ "L71": {
+  "c": "O calendário declarativo de RH: DMR (Declaração Mensal de Remunerações) à AT todos os meses; declarações à Segurança Social (DRI) com os respetivos prazos; Relatório Único anual (vários anexos: quadro de pessoal, fluxos, prestação de serviços); mapas obrigatórios variados. Desde 12/05/2026 a SS Direta exige 2FA para empresas (software atualizado na 202601), e a DMR passou a ser emitida sem valores negativos (rejeições evitadas).",
+  "s": [
+   [
+    "DMR",
+    "Declaração mensal à AT com remunerações, retenções e contribuições por trabalhador — prazo: até ao fim do mês seguinte."
+   ],
+   [
+    "DRI/SS",
+    "Declaração de remunerações à Segurança Social (base da TSU) com entrega mensal."
+   ],
+   [
+    "Relatório Único",
+    "Obrigação anual (março/abril) com anexos de recursos humanos e prestação de serviços."
+   ],
+   [
+    "2FA SS Direta",
+    "Autenticação de dois fatores obrigatória para empresas desde 12/05/2026 — comunicações dependem dela."
+   ],
+   [
+    "DMR sem negativos",
+    "Validação 202601: a declaração não sai com valores negativos (correções fazem-se por declaração de substituição)."
+   ]
+  ],
+  "e": [
+   "Perder prazos declarativos (coimas automáticas)",
+   "Esquecer 'Outros Profissionais' nas declarações (prestadores de serviços também se declaram)"
+  ]
+ },
+ "L72": {
+  "c": "A cessação tem ritual próprio: aviso prévio (conforme o tipo de contrato e antiguidade), cálculo do acerto final (retribuição do período, férias vencidas não gozadas + subsídio, proporcionais de férias e subsídio de Natal conforme regime), tratamento de fundos (FGCT/FCT quando aplicáveis), último recibo com rubricas próprias e registo do motivo (efeitos em mapas/declarações). Prazos e valores seguem o Código do Trabalho — erros aqui geram litígios.",
+  "s": [
+   [
+    "Aviso de fim de contrato",
+    "Comunicação com antecedência legal (termo certo: 15/8 dias conforme duração; outras modalidades têm regras próprias)."
+   ],
+   [
+    "Valores à saída",
+    "Cálculo automático: férias não gozadas, proporcionais de subsídios, créditos/débitos pendentes (adiantamentos, faltas)."
+   ],
+   [
+    "FGCT/FCT",
+    "Fundos de compensação do trabalho (entregas semestrais do empregador) quando aplicáveis ao contrato."
+   ],
+   [
+    "Motivo de cessação",
+    "Classificação legal (caducidade, revogação, despedimento…) — determina direitos e mapas."
+   ],
+   [
+    "Últimas obrigações",
+    "Recibo final, certificados, comunicação à SS/AT e saída dos mapas periódicos."
+   ]
+  ],
+  "e": [
+   "Calcular o acerto 'de cabeça' sem usar a ferramenta de cálculo (esquece proporcionais/dias exatos)",
+   "Cessar sem verificar adiantamentos/dívidas do trabalhador (acerto fica incompleto)"
+  ]
+ },
+ "L73": {
+  "c": "Os casos especiais do processamento: adiantamentos (descontados no recibo seguinte), despesas reembolsáveis (com documento de suporte e regras de tributação), penhoras de vencimento (ofício judicial, com limites legais de impenhorabilidade — desde 202601 processáveis também na web), remunerações em espécie (viatura, alojamento — com enquadramento IRS/TSU) e vales sociais. Cada um tem rubrica e regra próprias — configurar uma vez, aplicar sempre.",
+  "s": [
+   [
+    "Adiantamento salarial",
+    "Pagamento antecipado descontado automaticamente no processamento seguinte."
+   ],
+   [
+    "Despesas de funcionário",
+    "Reembolsos com suporte documental; tributação conforme a natureza (ajudas de custo têm regras próprias)."
+   ],
+   [
+    "Penhora",
+    "Desconto judicial com limite legal (proteção do mínimo vital); 202601 trouxe penhoras ao processamento web."
+   ],
+   [
+    "Remuneração em espécie",
+    "Bens/serviços cedidos para uso pessoal (ex.: viatura) — relevância fiscal em IRS/TSU conforme regras."
+   ],
+   [
+    "Vales sociais",
+    "Apoios (ex.: infância) com tratamento fiscal específico."
+   ]
+  ],
+  "e": [
+   "Descontar penhora sem validar o limite legal (responsabilidade da empresa)",
+   "Reembolsar despesas sem suporte/regras (risco fiscal)"
+  ]
+ },
+ "L74": {
+  "c": "O ciclo de RH só fecha quando o dinheiro sai e os números entram na contabilidade: o processamento integra na Contabilidade por documentos pré-definidos (gastos 63 × remunerações a pagar 23 × retenções 24/SS), o pagamento faz-se por ficheiro SEPA em lote (validação de IBANs e totais), e a reconciliação final exige: líquidos dos recibos = total SEPA = movimento da conta 23 = valores declarados (DMR/SS). É o fecho mensal de RH — calendário fixo, sem improviso.",
+  "s": [
+   [
+    "Integração do processamento",
+    "Lançamento automático: débito 63 (gastos com pessoal), créditos 23 (líquidos a pagar), 24 (IRS retido) e contas de SS."
+   ],
+   [
+    "Ficheiro SEPA de salários",
+    "Transferências em lote normalizadas — validação de IBANs e totais antes da entrega ao banco."
+   ],
+   [
+    "Pagamento → baixa",
+    "Após pagamento, a conta 23 é debitada contra o banco (12) — a conta de pessoal fica saldada."
+   ],
+   [
+    "Reconciliação 4 vias",
+    "Recibos × SEPA × Contabilidade × Declarações — tudo igual ou o fecho não fecha."
+   ],
+   [
+    "Alertas de fim de mês",
+    "Notificações para não perder o calendário (processar, pagar, declarar)."
+   ]
+  ],
+  "e": [
+   "Pagar salários antes de integrar na contabilidade (mês desfechado)",
+   "SEPA com IBAN inválido devolvido pelo banco e salário em atraso (validar antes!)"
+  ]
+ },
+ "L75": {
+  "c": "O POS não é um programa à parte: é o braço de balcão do mesmo ERP. A loja (com o seu armazém), a série documental (FS), os operadores (com permissões granulares) e os meios de pagamento definem-se uma vez e tudo o que se vende no balcão cai no Gestão, na tesouraria e no SAF-T como qualquer documento. Escolher POS Desktop (backoffice), POS Front (toque) ou POS Web depende da operação.",
+  "s": [
+   [
+    "POS Desktop",
+    "Aplicação de backoffice da loja (venda com rato/teclado, gestão de caixas, fechos)."
+   ],
+   [
+    "POS Front",
+    "Interface de toque otimizada para venda rápida (o 'um dia na loja')."
+   ],
+   [
+    "Loja",
+    "Entidade com armazém próprio, caixa e operadores — o stock da loja é um armazém como outro qualquer."
+   ],
+   [
+    "Operador com permissões",
+    "Cada ação sensível (anular, descontar, reabrir gaveta, reimprimir) pode exigir permissão/autorização."
+   ],
+   [
+    "Série do POS",
+    "Tipicamente FS a consumidor final, com numeração e QR/ATCUD obrigatórios."
+   ]
+  ],
+  "e": [
+   "Vender no POS com série mal configurada (sem movimento de stock ou tesouraria) e descobrir no fim do mês",
+   "Operadores todos com permissões máximas (impossível auditar diferenças de caixa)"
+  ]
+ },
+ "L76": {
+  "c": "'Um dia na loja' é o teste real do POS: vender rápido (código de barras, famílias em ecrã de toque), receber em vários meios, devolver/trocar com reposição de stock, identificar cliente quando pedido (NIF na fatura), suspender talões para não bloquear a fila. A velocidade do caixa mede-se: 5 vendas completas em menos de 5 minutos é o padrão de um operador treinado.",
+  "s": [
+   [
+    "Venda por código de barras",
+    "Leitura EAN → linha no talão; a busca por designação/família é o plano B."
+   ],
+   [
+    "Pagamento multi-meio",
+    "Numerário (troco automático), TPA, MB — o talão discrimina e o fecho reconcilia."
+   ],
+   [
+    "Devolução/troca",
+    "Reposição de stock e NC (ou vale, conforme política) — com permissão e rasto."
+   ],
+   [
+    "Suspender talão",
+    "Pôr uma venda em pausa (cliente foi buscar mais artigos) sem perder a fila."
+   ],
+   [
+    "Consumidor final",
+    "Cliente genérico sem NIF; quando o cliente pede fatura com NIF, regista-se no documento."
+   ]
+  ],
+  "e": [
+   "Caixa sem formação em devoluções (faz NC errada ou devolve dinheiro sem documento)",
+   "Fila parada por artigo sem código — manter ficheiro de artigos com EAN atualizado"
+  ]
+ },
+ "L77": {
+  "c": "A caixa é onde o dinheiro físico e o sistema têm de coincidir ao cêntimo: abertura com fundo de maneio, sangrias para o cofre (reduzir risco), transferências entre caixas/banco e fecho com contagem física de notas e moedas. Diferenças apuram-se no fecho (quebra/sobra com responsável e justificação) e integram-se na tesouraria. Rotina diária disciplinada previne 90% dos problemas de caixa.",
+  "s": [
+   [
+    "Fundo de maneio",
+    "Numerário inicial para trocos — registado na abertura."
+   ],
+   [
+    "Sangria",
+    "Retirada programada de numerário para cofre (segurança + controlo)."
+   ],
+   [
+    "Transferência entre caixas",
+    "Movimento entre contas de tesouraria (caixa loja → caixa sede/banco)."
+   ],
+   [
+    "Fecho com contagem",
+    "Contagem física (notas e moedas) comparada com o sistema — diferenças documentadas."
+   ],
+   [
+    "Quebra/sobra de caixa",
+    "Registo da diferença com responsável e motivo — padrão recorrente exige investigação."
+   ]
+  ],
+  "e": [
+   "Fechar caixa sem contagem física ('o sistema diz que está certo')",
+   "Adiar sangrias em dias de muito numerário (gaveta cheia = risco)"
+  ]
+ },
+ "L78": {
+  "c": "Vales são instrumentos comerciais com pés fiscais: o vale de reembolso dá crédito de devolução sem saída de dinheiro (emissão na devolução, resgate numa compra futura, com validade); o cheque-oferta é vendido (regras de IVA próprias conforme tipo de voucher); o vale de desconto abate numa compra. Cada um precisa de política escrita: validades, acumulabilidade, troco, e relatório de emitidos/usados/expirados.",
+  "s": [
+   [
+    "Vale de reembolso",
+    "Crédito comercial emitido numa devolução — usado como meio de pagamento numa venda futura."
+   ],
+   [
+    "Cheque-oferta (vale oferta)",
+    "Valor pré-pago vendido a terceiros; resgate em compras. IVA conforme regras de vouchers."
+   ],
+   [
+    "Vale de desconto",
+    "Cupão promocional que abate valor/percentagem numa venda."
+   ],
+   [
+    "Circuito do vale",
+    "Emissão → validade → utilização (total/parcial) → expiração — auditável por relatório."
+   ],
+   [
+    "Assistente de vales (touch)",
+    "Fluxo guiado no POS Front para emissão rápida no balcão."
+   ]
+  ],
+  "e": [
+   "Vales sem validade definida (passivo comercial eterno no balanço)",
+   "Devolução em vale sem registar o documento fiscal correspondente (NC quando aplicável)"
+  ]
+ },
+ "L79": {
+  "c": "O dinheiro eletrónico no balcão tem dois lados: a venda (TPA/MB registam o meio de pagamento no talão e no fecho) e a liquidação (o banco credita dias depois, líquido de comissões). Por isso o fecho de caixa discrimina por meio de pagamento e a reconciliação é a três vias: talões do terminal × fecho POS × extrato bancário. O segundo monitor (Advanced+) mostra ao cliente totais/publicidade — e as referências MB permitem cobrar encomendas de balcão.",
+  "s": [
+   [
+    "TPA",
+    "Terminal de pagamento automático — a ligação ao POS evita digitação de valores (menos erros)."
+   ],
+   [
+    "Breakdown por meio de pagamento",
+    "O fecho separa numerário/TPA/MB — cada um reconcilia de forma diferente."
+   ],
+   [
+    "Comissões de TPA",
+    "Custo do meio de pagamento — visível no extrato, não no talão; entra na tesouraria real."
+   ],
+   [
+    "Segundo monitor",
+    "Ecrã virado ao cliente (totais, publicidade) — gama Advanced+ no POS desktop."
+   ],
+   [
+    "Referências Multibanco",
+    "Cobrança de pendentes/encomendas com identificação automática do recebimento."
+   ]
+  ],
+  "e": [
+   "Confiar só no total do fecho sem reconciliar TPA×banco (comissões e atrasos escondem-se aí)",
+   "Digitar valores no TPA manualmente quando há integração (erro humano clássico)"
+  ]
+ },
+ "L80": {
+  "c": "Promoção boa aumenta rotação sem destruir margem — e sem erro fiscal. Tipos: percentagem, valor, 2-por-1, packs, artigo oferta, com datas de validade e âmbito (artigos/famílias). Regras de prioridade entre promoção, tabela de preços e desconto de cliente têm de estar configuradas e testadas. O IVA incide sobre o preço efetivamente cobrado. No fim, mede-se: vendas dos promovidos antes/depois e margem realizada.",
+  "s": [
+   [
+    "Tipos de promoção",
+    "Percentagem, valor fixo, quantidade (2×1, leve 3 pague 2), pack/preço conjunto — conforme versão/gama."
+   ],
+   [
+    "Validades",
+    "Início/fim automáticos: a promoção liga e desliga sozinha."
+   ],
+   [
+    "Prioridade",
+    "Promoção vs tabela de preços vs desconto de cliente — ordem definida evita 'descontos duplos' acidentais."
+   ],
+   [
+    "Preço tributável",
+    "O IVA calcula-se sobre o valor efetivamente cobrado após promoção."
+   ],
+   [
+    "Medição",
+    "Relatório de vendas/margem dos artigos promovidos no período — sem medição, promoção é chute."
+   ]
+  ],
+  "e": [
+   "Promoção sem margem mínima validada (vende muito, perde dinheiro)",
+   "Esquecer o fim da promoção e o preço voltar à tabela a meio de uma campanha negociada"
+  ]
+ },
+ "L81": {
+  "c": "O valor do POS integrado: cada talão é um documento de faturação real (FS na tabela FT), com stock baixado no armazém da loja, tesouraria na caixa e SAF-T correto. O Monitor do POS vigia caixas e documentos; os templates definem o talão (logótipo, mensagens legais, QR/ATCUD). O fecho do dia produz o resumo para a direção. Quebras de rede têm procedimento (pendentes/offline conforme a solução) — teste antes de precisar.",
+  "s": [
+   [
+    "Talão = documento FT",
+    "O FS do POS vive na mesma tabela dos restantes documentos de faturação — análises e SAF-T unificados."
+   ],
+   [
+    "Templates do POS",
+    "Layout do talão e ecrãs (logótipo, mensagens, QR/ATCUD obrigatórios)."
+   ],
+   [
+    "Monitor do POS",
+    "Vigilância operacional: caixas abertas, estados de documentos, pendentes."
+   ],
+   [
+    "Resumo diário",
+    "Vendas por loja/meio/período para a direção — automatizável."
+   ],
+   [
+    "Contingência de rede",
+    "Comportamento sem ligação (venda pendente/offline) — conhecer ANTES da falha."
+   ]
+  ],
+  "e": [
+   "Tratar o POS como 'caixa registadora isolada' e reconciliar só no fim do mês",
+   "Template de talão sem QR/ATCUD após atualização (documento não conforme)"
+  ]
+ },
+ "L82": {
+  "c": "Retalho de moda e omnicanalidade exigem estrutura de dados certa: grelha de cores/tamanhos (um artigo-pai, variantes por combinação — stock e vendas por variante sem multiplicar referências), EAN por variante para etiquetas e leitura, e stock único partilhado com o canal online (via EyePeak ou sincronização documentada). Click & collect e devolução cruzada (comprar online, devolver em loja) são fluxos que se desenham e testam — o stock tem de estar certo nos dois mundos.",
+  "s": [
+   [
+    "Grelha cores/tamanhos",
+    "Matriz de variantes do artigo-pai (setor vestuário/calçado) — opção do módulo conforme versão."
+   ],
+   [
+    "EAN por variante",
+    "Cada combinação tem o seu código de barras para venda e etiquetagem."
+   ],
+   [
+    "Stock único",
+    "Loja física e online consomem o mesmo stock (sincronização EyePeak ou processo definido)."
+   ],
+   [
+    "Click & collect",
+    "Encomenda online levantada/paga em loja — movimento de stock e documento corretos."
+   ],
+   [
+    "Vendas por variante",
+    "Análise cor/tamanho guia compras e saldos — decisão baseada em dados."
+   ]
+  ],
+  "e": [
+   "Criar um artigo por variante em vez de usar grelha (ficheiro ingovernável)",
+   "Vender online stock que a loja já vendeu (sem sincronização, a rutura é pública)"
+  ]
+ },
+ "L83": {
+  "c": "O módulo Suporte transforma o pós-venda em processo: o Pedido de Assistência Técnica (PAT) é o documento central, desde a chamada do cliente até à faturação. Assenta em três registos-mestre — instalações (onde está), equipamentos (o quê, com nº de série) e contratos (em que condições) — e integra-se com o Gestão para peças (stock), serviços (tabelas de horas) e faturação. Configurar tipos, prioridades e SLA no início é o que separa suporte profissional de bombeiro.",
+  "s": [
+   [
+    "PAT",
+    "Pedido de Assistência Técnica: documento do pedido à resolução, com tempos, materiais e estados."
+   ],
+   [
+    "Tipos e prioridades",
+    "Classificação que define fila e SLA (instalação, reparação, manutenção; urgente, normal…)."
+   ],
+   [
+    "Equipa/competências",
+    "Técnicos com skills e disponibilidade — base da atribuição certa."
+   ],
+   [
+    "Integração Gestão",
+    "Peças saem do stock, serviços entram na fatura — nada de registos paralelos."
+   ]
+  ],
+  "e": [
+   "Registar intervenções fora do sistema (caderneta/WhatsApp) e perder histórico e faturação",
+   "Sem prioridades/SLA definidos, tudo é urgente e nada é medido"
+  ]
+ },
+ "L84": {
+  "c": "O parque instalado é o ativo de conhecimento do suporte: instalações (locais do cliente), equipamentos (unidades com número de série, garantia, histórico) e contratos (cobertura, SLA, avença ou pontos). Quando o cliente liga, o operador identifica o equipamento e vê em segundos: garantia, contrato, intervenções anteriores. Esta visão 360º é o que faz o atendimento parecer mágica — e é só disciplina de registo.",
+  "s": [
+   [
+    "Instalação",
+    "Local do cliente com os seus equipamentos (morada, contactos, acessos)."
+   ],
+   [
+    "Equipamento com nº série",
+    "Unidade individual: garantia, histórico de intervenções, peças associadas."
+   ],
+   [
+    "Contrato de manutenção",
+    "Cobertura (o quê, em que prazo), modelo (avença/pontos) e validade."
+   ],
+   [
+    "Visão 360º",
+    "Do equipamento chega-se a contrato, cliente, histórico e documentos — e vice-versa."
+   ]
+  ],
+  "e": [
+   "Vender equipamento sem registar nº de série (garantias e recalls impossíveis de gerir)",
+   "Contratos sem cobertura escrita clara — cada intervenção vira discussão comercial"
+  ]
+ },
+ "L85": {
+  "c": "O ciclo de vida do PAT: abertura (identificação rápida de cliente/equipamento/problema), classificação (tipo, prioridade, SLA), atribuição (técnico certo), agendamento (janela comunicada), intervenção (tempos e materiais registados NO ATO), estados atualizados com timestamp e fecho validado pelo cliente. Cada campo alimenta algo: SLA, faturação, histórico e KPIs. Registar depois 'à memória' é onde a qualidade morre.",
+  "s": [
+   [
+    "SLA",
+    "Compromisso de tempo (resposta/resolução) por prioridade — medido pelos timestamps dos estados."
+   ],
+   [
+    "Tempos de mão de obra",
+    "Horas por técnico/tabela — viram serviço faturável."
+   ],
+   [
+    "Materiais/peças",
+    "Consumos com baixa de stock automática no documento."
+   ],
+   [
+    "Estados com data",
+    "Aberto → atribuído → em curso → resolvido → fechado/faturado — a linha de tempo do serviço."
+   ],
+   [
+    "Validação do cliente",
+    "Confirmação no fecho (assinatura/aceitação) — proteção contra disputas."
+   ]
+  ],
+  "e": [
+   "Intervenção sem registo de tempos (serviço prestado de graça por desorganização)",
+   "Mudar prioridades sem critério — o SLA perde o significado"
+  ]
+ },
+ "L86": {
+  "c": "Escala exige ferramentas de coordenação: abertura especial (PAT pré-preenchido a partir do equipamento/contrato), agenda de marcações (janelas por técnico) e o Monitor de PATs (fila em tempo real: estados, atrasos de SLA, carga por técnico). O coordenador trabalha pelo monitor: atribui o que está parado, protege os SLA em risco e reage a urgências. Alertas automáticos (sem atribuição, SLA a estourar) tiram a vigilância manual da equação.",
+  "s": [
+   [
+    "Abertura especial",
+    "Criação de PAT com origem (equipamento/contrato/série) — menos digitação, mais dados corretos."
+   ],
+   [
+    "Agenda de Marcações",
+    "Planeamento por técnico/dia com janelas — comunica-se ao cliente o que se pode cumprir."
+   ],
+   [
+    "Monitor de PATs",
+    "Painel operacional: fila, SLA, carga, atrasos — a ferramenta do coordenador."
+   ],
+   [
+    "Alertas automáticos",
+    "Notificações por exceção (parados, sem técnico, SLA em risco)."
+   ]
+  ],
+  "e": [
+   "Coordenar por memória/planilha paralela (o monitor existe para isso)",
+   "Agendar sem verificar disponibilidade real do técnico (janela prometida ≠ janela cumprida)"
+  ]
+ },
+ "L87": {
+  "c": "O relatório de intervenção é a face visível do serviço: diagnóstico, ações executadas, peças usadas, tempos e recomendações — num template profissional, com assinatura digital do cliente capturada no ato e envio automático por e-mail. É documento de qualidade, prova de aceitação (incluindo de custos extra aprovados) e base de faturação sem disputas. Fotos e anexos (File Storage) completam o registo.",
+  "s": [
+   [
+    "Template de relatório",
+    "Estrutura padrão: identificação, diagnóstico, ações, peças, tempos, recomendações."
+   ],
+   [
+    "Assinatura digital",
+    "Captura no dispositivo (touch) — aceitação formal do serviço prestado."
+   ],
+   [
+    "Envio automático",
+    "E-mail ao cliente com o PDF (SMTP configurado) — profissionalismo e rasto."
+   ],
+   [
+    "Anexos",
+    "Fotos/documentos associados à intervenção (File Storage/Cegid Docs)."
+   ],
+   [
+    "Aprovação de custos",
+    "Peças/trabalhos fora de cobertura aprovados pelo cliente ANTES de executar (registado)."
+   ]
+  ],
+  "e": [
+   "Relatório vago ('reparado') — sem detalhe não há prova nem upsell de recomendações",
+   "Executar extras sem aprovação registada (a fatura vem devolvida)"
+  ]
+ },
+ "L88": {
+  "c": "Serviço prestado e não faturado é perda dupla (custo + receita). A faturação do Suporte cobre três fontes: PATs avulso (horas × tabela + peças), instalações (montagens/ativações) e contratos (avenças recorrentes via Dossier de Avenças ou consumo de pontos). Parciais existem (cliente aprova só parte) e o remanescente fica pendente. O fecho mensal reconcilia PATs resolvidos × documentos emitidos — nada pode escapar.",
+  "s": [
+   [
+    "Faturação de PAT",
+    "Mão de obra (tabelas de horas/serviços) + materiais (stock) no documento de faturação."
+   ],
+   [
+    "Faturação de instalações",
+    "Trabalhos de montagem/ativação com materiais e horas."
+   ],
+   [
+    "Faturação de contratos",
+    "Recorrência (avenças) ou consumo (pontos) — integração com emissão automática."
+   ],
+   [
+    "Faturação parcial",
+    "Aprovação parcial do orçamento: fatura-se o aprovado, o resto fica pendente/por decidir."
+   ],
+   [
+    "Reconciliação mensal",
+    "Resolvidos × faturados = zero diferenças (o controlo anti-fuga)."
+   ]
+  ],
+  "e": [
+   "Fecho mensal sem reconciliação (PATs 'esquecidos' acumulam-se)",
+   "Tabela de horas desatualizada (fatura-se 2023 em 2026)"
+  ]
+ },
+ "L89": {
+  "c": "O que se mede, melhora-se. Pontos: pacotes pré-pagos que o cliente consome por intervenção (saldo visível, receita antecipada, fidelização). Análises: tempos médios (atendimento/resolução), volume por técnico/cliente/tipo, first-time-fix e rentabilidade por contrato (receita − horas − peças). Com os números, o diretor decide: ajustar SLA, reforçar formação, renegociar contratos deficitários ou automatizar o que se repete.",
+  "s": [
+   [
+    "Gestão de pontos",
+    "Pacotes vendidos e consumidos por tipo de intervenção — saldo e extracto por cliente."
+   ],
+   [
+    "Tempo médio de resolução (TMR)",
+    "Do registo à resolução, por prioridade/tipo — o KPI de eficiência central."
+   ],
+   [
+    "First-time-fix",
+    "% de PATs resolvidos na primeira visita — qualidade + custos de deslocação."
+   ],
+   [
+    "Rentabilidade por contrato",
+    "Receita do contrato − (horas técnicas + peças + deslocações) — contratos negativos renegociam-se."
+   ],
+   [
+    "Dashboard de suporte",
+    "KPIs num painel para a direção (monitor/dashboard do PHC)."
+   ]
+  ],
+  "e": [
+   "Medir só volume de PATs (produtividade sem qualidade esconde retrabalho)",
+   "Manter contratos deficitários por inércia — a análise existe para os renegociar"
+  ]
+ },
+ "L90": {
+  "c": "O CRM transforma a atividade comercial de 'memória do vendedor' para 'processo da empresa'. O funil de vendas é o coração: cada oportunidade passa por fases com probabilidade, e o CRM mede onde se ganha e onde se perde. Configurar fases, motivos de perda e equipa ANTES de registar negócios é o que torna os dados úteis.",
+  "s": [
+   [
+    "Funil de vendas",
+    "Sequência de fases (Qualificação→Proposta→Negociação→Ganha/Perdida) por onde cada oportunidade progride."
+   ],
+   [
+    "Probabilidade por fase",
+    "% esperado de fecho em cada fase — base do pipeline ponderado."
+   ],
+   [
+    "Motivo de perda",
+    "Razão do fecho perdido (preço, concorrência…) — alimenta a análise de perdas."
+   ],
+   [
+    "Carteira/comercial",
+    "Atribuição de oportunidades a vendedores/equipas com permissões."
+   ]
+  ],
+  "e": [
+   "Configurar o funil depois de já haver oportunidades (dados inconsistentes)",
+   "Não definir motivos de perda (impossível analisar porque se perde)"
+  ]
+ },
+ "L91": {
+  "c": "A oportunidade é a unidade de trabalho do CRM: um negócio qualificado com valor, fecho previsto e probabilidade. Qualificar bem (separar leads de oportunidades) e mover as fases com disciplina é o que faz o funil refletir a realidade comercial.",
+  "s": [
+   [
+    "Lead vs oportunidade",
+    "Lead=contacto não qualificado; oportunidade=negócio qualificado no funil com valor/probabilidade."
+   ],
+   [
+    "Qualificação",
+    "Preencher necessidade, valor, fecho previsto — decidir se é mesmo oportunidade."
+   ],
+   [
+    "Histórico de mudanças",
+    "Registo de mudanças de fase/valor — auditoria do ciclo."
+   ]
+  ],
+  "e": [
+   "Criar oportunidade sem qualificar (funil inflado)",
+   "Mudar de fase sem registar interação (histórico vazio)"
+  ]
+ },
+ "L92": {
+  "c": "Sem seguimento, oportunidades morrem. As ações/tarefas do CRM garantem que cada negócio tem próximo passo com prazo e responsável, e a agenda comercial mostra o que fazer hoje. Recorrência automatiza follow-ups de ciclos longos.",
+  "s": [
+   [
+    "Ação/tarefa",
+    "Interação planeada (chamada/visita/email) ligada a uma oportunidade, com prazo e responsável."
+   ],
+   [
+    "Agenda comercial",
+    "Vista do dia/semana do comercial com as ações pendentes."
+   ],
+   [
+    "Recorrência",
+    "Follow-up periódico automático (ex.: semanal)."
+   ]
+  ],
+  "e": [
+   "Oportunidade sem próxima ação (fica abandonada)",
+   "Concluir ação sem registar resultado (perde-se o next-step)"
+  ]
+ },
+ "L93": {
+  "c": "Campanhas ligam marketing a vendas: definem um objetivo, segmentam o público-alvo por critérios de clientes e geram/acompanham oportunidades. Medir oportunidades geradas e ganhas por campanha fecha o loop de ROI de marketing.",
+  "s": [
+   [
+    "Segmento",
+    "Filtro de clientes/contactos (zona, CAE, volume, inatividade) = público-alvo."
+   ],
+   [
+    "Oportunidades em massa",
+    "Criar oportunidades a partir do segmento da campanha."
+   ],
+   [
+    "ROI de campanha",
+    "Oportunidades ganhas atribuídas à campanha vs esforço/custo."
+   ]
+  ],
+  "e": [
+   "Campanha sem segmento definido (dispara a todos)",
+   "Não atribuir oportunidades à campanha (impossível medir resultado)"
+  ]
+ },
+ "L94": {
+  "c": "O valor do CRM realiza-se na conversão: a proposta nasce da oportunidade e a fatura nasce da proposta, herdando cliente/valores/comercial. Isso dá rastreabilidade total e mede conversão real em vez de vendas 'órfãs'.",
+  "s": [
+   [
+    "Proposta/orçamento",
+    "Documento comercial gerado da oportunidade em negociação."
+   ],
+   [
+    "Conversão",
+    "Passar a oportunidade a documento de venda (FT) no Gestão, herdando dados."
+   ],
+   [
+    "Rastreabilidade",
+    "Ligação campanha→oportunidade→proposta→FT."
+   ]
+  ],
+  "e": [
+   "Criar FT à parte sem converter (perde rastreabilidade)",
+   "Proposta aceite sem marcar oportunidade como Ganha"
+  ]
+ },
+ "L95": {
+  "c": "O funil como ferramenta de gestão: pipeline ponderado (valor×probabilidade) dá a previsão realista; conversão por fase mostra onde o funil verte; motivos de perda explicam o porquê. É a leitura que a direção precisa.",
+  "s": [
+   [
+    "Pipeline ponderado",
+    "Σ(valor×probabilidade) — valor esperado, não bruto."
+   ],
+   [
+    "Conversão por fase",
+    "% que passa de cada fase — deteta gargalos."
+   ],
+   [
+    "Previsão de fecho",
+    "Pipeline ponderado das fases finais + fecho previsto."
+   ]
+  ],
+  "e": [
+   "Ler só o pipeline bruto (otimismo irreal)",
+   "Ignorar conversão por fase (não se encontra o gargalo)"
+  ]
+ },
+ "L96": {
+  "c": "A visão 360º reúne todo o relacionamento de um cliente — documentos, oportunidades, ações, campanhas, suporte — num só lugar. É o contexto completo antes de cada interação comercial e a prova de que CRM e Gestão partilham o mesmo cliente.",
+  "s": [
+   [
+    "Histórico 360º",
+    "Docs de venda + oportunidades + ações + campanhas (+suporte) do cliente."
+   ],
+   [
+    "Criação a partir do cliente",
+    "Nova oportunidade/ação diretamente da ficha do cliente."
+   ],
+   [
+    "Ligação CRM↔Gestão",
+    "Cliente/contacto comum + documentos partilhados."
+   ]
+  ],
+  "e": [
+   "Trabalhar oportunidades fora da ficha do cliente (perde o 360º)",
+   "Não registar ações no histórico (360º incompleto)"
+  ]
+ },
+ "L97": {
+  "c": "O capstone prova o ciclo completo: campanha→segmento→oportunidade→ações→proposta→FT→funil. Cada elo ligado ao anterior; qualquer quebra de rastreabilidade é um ciclo mal fechado. É a síntese de todo o módulo CRM.",
+  "s": [
+   [
+    "Ciclo lead→fatura",
+    "Cadeia completa com rastreabilidade em cada elo."
+   ],
+   [
+    "Validação no funil",
+    "A Ganha aparece no funil e na análise da campanha."
+   ],
+   [
+    "Evidências por etapa",
+    "Print em cada elo prova o ciclo."
+   ]
+  ],
+  "e": [
+   "Saltar a campanha (ciclo sem origem)",
+   "Oportunidade ganha sem documento ligado (rastreabilidade quebrada)"
+  ]
+ },
+ "L98": {
+  "c": "A produção começa nos dados: a ficha técnica/lista de materiais (BOM) é a 'receita' do artigo acabado. Sem BOM correta (componentes+quantidades+tempos), o MRP e as OF herdam erro.",
+  "s": [
+   [
+    "BOM/lista de materiais",
+    "Componentes e quantidades para fabricar o acabado."
+   ],
+   [
+    "Ficha técnica",
+    "BOM + tempos/rotas + parâmetros de produção do artigo."
+   ],
+   [
+    "Roll-up de custo",
+    "Custo do acabado calculado a partir dos consumos+tempos."
+   ]
+  ],
+  "e": [
+   "BOM sem tempos (custo de MO errado)",
+   "Componentes sem stock mín (MRP não propõe compra)"
+  ]
+ },
+ "L99": {
+  "c": "A ordem de fabrico (OF) é o documento de produção: reserva componentes, regista consumos (baixa de stock) e dá entrada do acabado. Tempos reais apontados alimentam o custeio real.",
+  "s": [
+   [
+    "OF",
+    "Documento que autoriza e regista a produção de uma quantidade num prazo."
+   ],
+   [
+    "Consumo",
+    "Baixa de stock dos componentes contra a OF."
+   ],
+   [
+    "Entrada do acabado",
+    "Aumento de stock do artigo fabricado ao concluir."
+   ]
+  ],
+  "e": [
+   "Concluir OF sem dar entrada do acabado (stock fantasma)",
+   "Não apontar tempos (custeio real impossível)"
+  ]
+ },
+ "L100": {
+  "c": "O MRP converte procura (encomendas/previsão) em necessidades líquidas (descontando stock e encomendas em curso) e propõe compra de componentes e produção de acabados com prazos. É o planeamento que evita ruturas e excessos.",
+  "s": [
+   [
+    "Necessidade líquida",
+    "Procura − stock − encomendas em curso."
+   ],
+   [
+    "Proposta de compra/produção",
+    "Sugestão do MRP convertível em encomenda/OF."
+   ],
+   [
+    "Prazo de aprovisionamento",
+    "Lead-time que o MRP usa para propor datas."
+   ]
+  ],
+  "e": [
+   "Correr MRP sem stock mín configurado (propostas erradas)",
+   "Ignorar encomendas em curso (comprar a mais)"
+  ]
+ },
+ "L101": {
+  "c": "Lotes/séries dão rastreabilidade: do componente (lote+validade) à OF, ao lote do acabado, à FT e ao cliente. Rastreabilidade direta e inversa permitem recall rápido e preciso.",
+  "s": [
+   [
+    "Lote/série",
+    "Identificador de rastreamento de um componente/acabado."
+   ],
+   [
+    "Rastreabilidade direta",
+    "Lote→onde foi usado (OF/FT/clientes)."
+   ],
+   [
+    "Recall",
+    "Listar clientes/documentos afetados por um lote."
+   ]
+  ],
+  "e": [
+   "Vender sem registar lote (recall impossível)",
+   "Consumir componente sem lote (rastreabilidade quebrada)"
+  ]
+ },
+ "L102": {
+  "c": "Multi-armazém exige gerir stock por localização: transferências movem stock entre armazéns; o inventário conta por armazém e o acerto alinha físico com sistema (e o valor/PCMP).",
+  "s": [
+   [
+    "Transferência",
+    "Movimento de stock entre armazéns (saída+entrada)."
+   ],
+   [
+    "Stock por armazém",
+    "Visão por localização + consolidada."
+   ],
+   [
+    "Acerto de inventário",
+    "Entradas/saídas que corrigem diferenças de contagem."
+   ]
+  ],
+  "e": [
+   "Contar inventário só consolidado (erro por armazém escondido)",
+   "Transferência sem validar stock de origem (stock negativo)"
+  ]
+ },
+ "L103": {
+  "c": "O capstone logístico prova a cadeia com rastreabilidade: encomenda→MRP→OF→lote→entrada→FT→recall. Cada elo ligado; qualquer quebra aparece no recall incompleto.",
+  "s": [
+   [
+    "Cadeia logística",
+    "Encomenda→MRP→OF→lote→FT com rastreabilidade."
+   ],
+   [
+    "Recall como teste",
+    "O recall completo prova rastreabilidade sem quebras."
+   ]
+  ],
+  "e": [
+   "Saltar o registo de lote na FT",
+   "MRP sem procura real (propostas sem origem)"
+  ]
+ },
+ "L104": {
+  "c": "O Ignios liga o ERP a fontes externas para preencher fichas automaticamente (NIF→cliente, EAN→artigo, matrícula→veículo), reduzindo digitação e erro de dados mestres.",
+  "s": [
+   [
+    "Auto-preenchimento",
+    "Preencher fichas a partir de fontes externas (NIF/EAN/matrícula)."
+   ],
+   [
+    "Validação humana",
+    "Corrigir/completar o que a fonte não tem."
+   ]
+  ],
+  "e": [
+   "Confiar cegamente no auto-preenchimento sem validar",
+   "Ignios inativo e fingir que preenche"
+  ]
+ },
+ "L105": {
+  "c": "O EyePeak sincroniza e-commerce↔ERP: artigos/stock/preços ERP→loja e encomendas loja→ERP. Sincronizar stock após venda web evita vender o que já não há.",
+  "s": [
+   [
+    "Sincronização bidirecional",
+    "Artigos/stock/preços e encomendas entre loja e ERP."
+   ],
+   [
+    "Stock pós-venda web",
+    "Baixa no ERP reflete na loja (sem rutura pública)."
+   ]
+  ],
+  "e": [
+   "Vender web sem sincronizar stock (rutura)",
+   "Encomendas web sem entrar no ERP (faturação perdida)"
+  ]
+ },
+ "L106": {
+  "c": "Cegid Docs/File Storage guarda documentação ligada aos registos (FT, clientes, OF), versionada e pesquisável — o contexto documental do processo.",
+  "s": [
+   [
+    "Anexo ligado a registo",
+    "Ficheiro (PDF/imagem) associado a um registo do ERP."
+   ],
+   [
+    "Versionamento",
+    "Histórico de versões do anexo, recuperável."
+   ]
+  ],
+  "e": [
+   "Anexos soltos sem ligação ao registo",
+   "Sem versionamento (perde-se o histórico do ficheiro)"
+  ]
+ },
+ "L107": {
+  "c": "Open banking liga o banco ao ERP: extratos automáticos e matching de pagamentos a faturas. A reconciliação fecha o ciclo de tesouraria com menos trabalho manual.",
+  "s": [
+   [
+    "Extrato automático",
+    "Importação de movimentos bancários via open banking."
+   ],
+   [
+    "Matching",
+    "Ligar movimento bancário à fatura que liquida."
+   ],
+   [
+    "Reconciliação",
+    "Saldo ERP vs banco alinhado no fecho."
+   ]
+  ],
+  "e": [
+   "Matching automático sem validar duvidosos",
+   "Não reconciliar (diferenças acumuladas)"
+  ]
+ },
+ "L108": {
+  "c": "A IA embutida (Cegid Pulse) dá resumos, next-best-action e respostas-a-dados dentro do ERP. Acelera análise/comunicação, mas decisões fiscais/dados mestres continuam humanas.",
+  "s": [
+   [
+    "Resumo de registo",
+    "Síntese de histórico/risco/próximas ações de um cliente."
+   ],
+   [
+    "Next-best-action",
+    "Sugestão de próxima ação comercial."
+   ],
+   [
+    "Pergunta-a-dados",
+    "Responder perguntas sobre dados (top clientes, etc.)."
+   ]
+  ],
+  "e": [
+   "Deixar a IA decidir dados mestres/fiscal sem humano",
+   "Confiar em resposta-a-dados sem validar a fonte"
+  ]
+ },
+ "L109": {
+  "c": "O PHC CS Web é outra camada de apresentação sobre a mesma BD do desktop: mesmas permissões, mesmos registos, acesso via browser (HTTPS). Entender a arquitetura evita tratar o web como sistema separado.",
+  "s": [
+   [
+    "Camada web",
+    "Apresentação via browser sobre a BD partilhada."
+   ],
+   [
+    "Permissões partilhadas",
+    "Perfis/acessos da BD aplicados no web e desktop."
+   ]
+  ],
+  "e": [
+   "Tratar o web como BD separada (duplicação)",
+   "Assumir permissões diferentes no web"
+  ]
+ },
+ "L110": {
+  "c": "IDU web são ecrãs/apps web personalizados: desenhados no designer, ligados a tabelas/consultas, com ações e validações, publicados para perfis. É a personalização do web.",
+  "s": [
+   [
+    "IDU web",
+    "Ecrã web personalizado ligado a dados do ERP."
+   ],
+   [
+    "Ações/validações",
+    "Operações e regras no ecrã publicado."
+   ],
+   [
+    "Publicação/perfis",
+    "Disponibilizar o ecrã a perfis/utilizadores."
+   ]
+  ],
+  "e": [
+   "Publicar sem testar permissões",
+   "Ecrã sem validações (dados inválidos)"
+  ]
+ },
+ "L111": {
+  "c": "Na cloud (PHC ON/Evolution) o fornecedor gere infraestrutura/updates/backups; o cliente gere utilizadores/dados/processos. O modelo de responsabilidades partilhadas define quem faz o quê.",
+  "s": [
+   [
+    "Subscrição",
+    "Modelo cloud com updates/backups geridos."
+   ],
+   [
+    "Tenant",
+    "Instância do cliente na cloud."
+   ],
+   [
+    "Responsabilidades partilhadas",
+    "Fornecedor=plataforma; cliente=dados/acessos."
+   ]
+  ],
+  "e": [
+   "Assumir que o fornecedor gere dados mestres (é o cliente)",
+   "Ignorar janelas de manutenção/updates"
+  ]
+ },
+ "L112": {
+  "c": "Mobilidade = apps móveis + offline: operações registadas sem ligação ficam pendentes e sincronizam ao reconectar, com política de conflitos. É o ERP no terreno.",
+  "s": [
+   [
+    "Offline-first",
+    "Registar sem ligação, sincronizar depois."
+   ],
+   [
+    "Pendências",
+    "Operações offline à espera de sincronização."
+   ],
+   [
+    "Conflitos",
+    "Resolução (último-a-escrever ou manual)."
+   ]
+  ],
+  "e": [
+   "Assumir que offline perde dados",
+   "Ignorar conflitos de sincronização"
+  ]
+ },
+ "L113": {
+  "c": "Dashboards web (PHC Dashboard) transformam análises em painéis visuais partilháveis com refresh e filtros interativos — a gestão a ler KPIs em tempo real sem abrir o ERP.",
+  "s": [
+   [
+    "KPI",
+    "Indicador visual (vendas, margem, stock, tesouraria)."
+   ],
+   [
+    "Refresh/partilha",
+    "Painel atualizado e partilhado com a direção."
+   ],
+   [
+    "Filtro interativo",
+    "Período/loja/comercial a alterar o painel."
+   ]
+  ],
+  "e": [
+   "Dashboard sem refresh (dados velhos)",
+   "KPIs sem ligação a consultas reais"
+  ]
+ }
+}
