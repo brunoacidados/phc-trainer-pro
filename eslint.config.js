@@ -17,6 +17,8 @@ export default tseslint.config(
       "sw.js",
       "worker/**",
       "scripts/**",
+      // app Next.js autónoma (edição TDAH) — tem o seu próprio ESLint/tsconfig
+      "apps-next/**",
     ],
   },
   js.configs.recommended,

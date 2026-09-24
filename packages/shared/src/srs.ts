@@ -92,7 +92,11 @@ export function rateCard(
   today = todayISO(),
 ): void {
   const c = cardSt(s, idx);
-  if (q === 0) c.due = addDays(today, 1);
+  if (q === 0) {
+    // FIX: lapso volta à 1ª caixa (Leitner/SM-2); antes mantinha o contador
+    c.c = 0;
+    c.due = addDays(today, 1);
+  }
   else if (q === 1) c.due = addDays(today, 2);
   else {
     c.c++;
@@ -151,10 +155,12 @@ export function xpTotal(s: ProgressState): number {
 }
 
 export function overallPct(s: ProgressState): number {
+  // FIX: devolvia 0 ou 1 (Math.round de uma fração ≤ 1) — agora 0–100
   return Math.round(
-    (labsMastered(s) / LABS.length) * 0.7 +
+    ((labsMastered(s) / LABS.length) * 0.7 +
       (quizzesPassed(s) / QUIZZES.length) * 0.2 +
-      (cardsMastered(s) / CARDS.length) * 0.1,
+      (cardsMastered(s) / CARDS.length) * 0.1) *
+      100,
   );
 }
 
@@ -169,7 +175,7 @@ export function beltUnlocked(s: ProgressState, lv: number): boolean {
 export function currentBelt(s: ProgressState): number {
   let b = 0;
   for (let lv = 0; lv < BELTS.length; lv++) {
-    if (beltUnlocked(s, lv)) b = Math.min(lv + 1, 12);
+    if (beltUnlocked(s, lv)) b = Math.min(lv + 1, BELTS.length - 1) // FIX: teto era 12 fixo (há 17 níveis);
     else break;
   }
   return b;

@@ -240,7 +240,10 @@
         "Serviço vs artigo",
         "Serviço não movimenta stock; o resto do ciclo (faturação, C/C) funciona igual."
       ],
-      ["EAN/código de barras", "Usado em POS, PDAs e documentos eletrónicos."]
+      [
+        "EAN/código de barras",
+        "Usado em POS, PDAs e documentos eletrónicos."
+      ]
     ],
     "e": [
       "Criar artigos duplicados por falta de convenção de referências (defina uma: ex., FAM-TAM-COR)",
@@ -271,8 +274,14 @@
   "L10": {
     "c": "Stock existe SEMPRE num armazém (pode haver vários: principal, loja, trânsito...). Artigos com lotes ganham rastreabilidade (lote, validade) — obrigatório em sectores como alimentar/farma; números de série (módulo Equipamentos) identificam unidades individuais. Para carregar stocks de arranque não se usam compras: usa-se o Dossier de Stock Inicial, uma regularização valorizada sem fornecedor. Movimentos de stock são tipificados por Códigos de Movimentos (entrada, saída, quebra, sobra, transferência...).",
     "s": [
-      ["Armazém", "Local lógico de stock; cada movimento indica origem/destino."],
-      ["Lote", "Sub-divisão do stock com validade/rastreio; entradas e saídas referenciam o lote."],
+      [
+        "Armazém",
+        "Local lógico de stock; cada movimento indica origem/destino."
+      ],
+      [
+        "Lote",
+        "Sub-divisão do stock com validade/rastreio; entradas e saídas referenciam o lote."
+      ],
       [
         "Nº de série",
         "Identificador único por unidade (com PHC Equipamentos) — para garantias e manutenção."
@@ -281,7 +290,10 @@
         "Dossier de Stock Inicial",
         "DI que carrega existências de arranque (com lotes e valores) sem documento de compra."
       ],
-      ["Códigos de movimentos", "Tipificam operações de stock para análises e controlo."]
+      [
+        "Códigos de movimentos",
+        "Tipificam operações de stock para análises e controlo."
+      ]
     ],
     "e": [
       "Dar entrada inicial por fatura de compra 'falsa' (distorce compras, IVA e PCMP)",
@@ -307,7 +319,10 @@
         "Promoções/campanhas",
         "Descontos temporários por artigo/família com datas; há opções específicas na gama Advanced/Enterprise."
       ],
-      ["Rappel", "Desconto retroativo por volume atingido no período (cliente ou fornecedor)."]
+      [
+        "Rappel",
+        "Desconto retroativo por volume atingido no período (cliente ou fornecedor)."
+      ]
     ],
     "e": [
       "Criar tabelas de preços sem validade e ter dois preços 'válidos' em conflito",
@@ -462,7 +477,10 @@
         "Stock reservado",
         "A encomenda de cliente pode cativar/reservar quantidade — visível na ficha do artigo."
       ],
-      ["Análises de DI", "Pendentes, convertidos, taxas de conversão — gestão comercial."],
+      [
+        "Análises de DI",
+        "Pendentes, convertidos, taxas de conversão — gestão comercial."
+      ],
       [
         "Aprovação de dossiers",
         "Circuito de aprovação formal (Enterprise); workflow operacional aparece no Advanced+."
@@ -488,7 +506,10 @@
         "Cód. Ident. AT",
         "Código devolvido pelo webservice que prova a comunicação — pode ir por SMS ao motorista (série + módulo SMS)."
       ],
-      ["ShipFrom/ShipTo", "Elementos XML do SAF-T com locais de carga/descarga."],
+      [
+        "ShipFrom/ShipTo",
+        "Elementos XML do SAF-T com locais de carga/descarga."
+      ],
       [
         "Data efetiva de entrega",
         "Quando bens/serviços foram/serão disponibilizados — obrigatória e comunicada no SAF-T."
@@ -510,8 +531,14 @@
         "Recibo de adiantamento",
         "Entrada de dinheiro sem documento fiscal ainda emitido; regulariza-se na fatura futura."
       ],
-      ["Estorno/anulação de recibo", "Desfaz a liquidação e repõe a dívida (com rasto)."],
-      ["Cheques em carteira", "Títulos recebidos ainda não cobrados — gestão própria na C/C."]
+      [
+        "Estorno/anulação de recibo",
+        "Desfaz a liquidação e repõe a dívida (com rasto)."
+      ],
+      [
+        "Cheques em carteira",
+        "Títulos recebidos ainda não cobrados — gestão própria na C/C."
+      ]
     ],
     "e": [
       "Registar recebimento sem liquidar o documento (aging fica errado e as cobranças duplicam trabalho)",
@@ -575,7 +602,10 @@
         "Encomenda a Fornecedor (DI)",
         "Documento interno de compra: o que se pretende receber, de quem, a que preço."
       ],
-      ["Comprar a Encomenda", "Conversão do DI em documento de compra (total ou parcial)."],
+      [
+        "Comprar a Encomenda",
+        "Conversão do DI em documento de compra (total ou parcial)."
+      ],
       [
         "Receção parcial",
         "Entrada de só parte das quantidades; a encomenda mantém o resto pendente."
@@ -601,7 +631,10 @@
         "Margem/contribuição",
         "Preço de venda vs PCMP — as análises de rentabilidade dependem do custo estar certo."
       ],
-      ["IVA na compra", "Dedutível (recupera) ou não; artigos isentos usam motivo de isenção."],
+      [
+        "IVA na compra",
+        "Dedutível (recupera) ou não; artigos isentos usam motivo de isenção."
+      ],
       [
         "Custos acessórios",
         "Fretes/taxas que devem integrar o custo do artigo (conforme configuração)."
@@ -623,7 +656,10 @@
         "Pagamento de adiantamento",
         "Saída de dinheiro sem fatura ainda — fica como saldo adiantado na C/C do fornecedor."
       ],
-      ["Regularização", "Quando a fatura chega, o adiantamento abate-lhe o valor (total/parcial)."],
+      [
+        "Regularização",
+        "Quando a fatura chega, o adiantamento abate-lhe o valor (total/parcial)."
+      ],
       [
         "Aprovação de pagamentos",
         "Circuito que exige autorização antes de pagar (gestão de aprovações; Enterprise tem aprovação de dossiers)."
@@ -641,7 +677,10 @@
         "Código de movimento",
         "Tipo da operação de stock (entrada, saída, quebra, sobra, transferência...) — base das análises."
       ],
-      ["Dossier de Transferência", "Move quantidades entre armazéns com rasto documental."],
+      [
+        "Dossier de Transferência",
+        "Move quantidades entre armazéns com rasto documental."
+      ],
       [
         "Stock cativo/pré-cativo",
         "Reservas (comprometidas ou indicativas) que reduzem a disponibilidade efetiva."
@@ -650,7 +689,10 @@
         "Histórico de movimentos",
         "Rasto completo por artigo/lote/armazém — ferramenta de auditoria de stock."
       ],
-      ["PDA/terminais portáteis", "Captura física (contagens, picking) integrada no módulo."]
+      [
+        "PDA/terminais portáteis",
+        "Captura física (contagens, picking) integrada no módulo."
+      ]
     ],
     "e": [
       "Corrigir stock 'direto' sem código de movimento adequado (perde-se o porquê)",
@@ -664,8 +706,14 @@
         "Stock teórico vs contado",
         "O sistema sabe quanto 'deveria' haver; a contagem diz quanto há; a diferença é o acerto."
       ],
-      ["Quebra/Sobra", "Acerto negativo/positivo lançado automaticamente no movimento de stock."],
-      ["Valor de inventário", "Quantidades × PCMP — o valor das existências para balanço/CEVMC."],
+      [
+        "Quebra/Sobra",
+        "Acerto negativo/positivo lançado automaticamente no movimento de stock."
+      ],
+      [
+        "Valor de inventário",
+        "Quantidades × PCMP — o valor das existências para balanço/CEVMC."
+      ],
       [
         "Comunicação à AT",
         "Ficheiro de inventário (SAF-T/CSV/XML conforme regras) entregue até 31 de janeiro."
@@ -691,7 +739,10 @@
         "Ranking/ABC",
         "Ordenação por vendas/margem — os A (20% dos artigos, 80% do valor) merecem controlo fino."
       ],
-      ["Rotação vs stock morto", "Sai pouco e vale muito = candidato a promoção/descontinuação."]
+      [
+        "Rotação vs stock morto",
+        "Sai pouco e vale muito = candidato a promoção/descontinuação."
+      ]
     ],
     "e": [
       "Comprar 'por intuição' ignorando ponto de encomenda e stock máximo",
@@ -713,8 +764,14 @@
         "Extracto de conta",
         "Documento periódico com movimentos e saldo — comunicação formal com o cliente."
       ],
-      ["Mailing de C/C", "Preparação de avisos/carta de cobrança por documento em atraso."],
-      ["Recibos incobráveis", "Registo e tratamento fiscal de dívidas consideradas perdidas."]
+      [
+        "Mailing de C/C",
+        "Preparação de avisos/carta de cobrança por documento em atraso."
+      ],
+      [
+        "Recibos incobráveis",
+        "Registo e tratamento fiscal de dívidas consideradas perdidas."
+      ]
     ],
     "e": [
       "Lançar 'acertos' na C/C sem código adequado (o aging deixa de fazer sentido)",
@@ -728,7 +785,10 @@
         "Monitor de dívidas",
         "Vista operacional de valores em atraso com critérios (dias, montante) e ordenações — o 'painel de controlo' das cobranças."
       ],
-      ["Mailing de C/C", "Geração de avisos de cobrança por documento (carta/e-mail)."],
+      [
+        "Mailing de C/C",
+        "Geração de avisos de cobrança por documento (carta/e-mail)."
+      ],
       [
         "Promessa de pagamento",
         "Registo do compromisso do cliente (nota/anexo) para seguimento — sem registo, a equipa perde o fio."
@@ -787,7 +847,10 @@
         "Orçamento de tesouraria",
         "Plano mensal/anual de receitas e despesas para comparar com o realizado."
       ],
-      ["Títulos", "Letras/cheques com data futura — dinheiro 'prometido' que entra na previsão."],
+      [
+        "Títulos",
+        "Letras/cheques com data futura — dinheiro 'prometido' que entra na previsão."
+      ],
       [
         "Alertas de saldo",
         "Notificações quando uma conta desce do mínimo definido (framework de alertas)."
@@ -805,12 +868,18 @@
         "Vendedor",
         "Ficha com percentagens/regras; associa-se ao cliente (vendedor da conta) e/ou ao documento (vendedor da venda)."
       ],
-      ["Critérios de comissão", "Por vendedor, tipo de cliente, família de artigos, etc."],
+      [
+        "Critérios de comissão",
+        "Por vendedor, tipo de cliente, família de artigos, etc."
+      ],
       [
         "Faturado vs cobrado",
         "Comissão sobre a venda emitida ou sobre o dinheiro recebido — muda radicalmente o comportamento da equipa."
       ],
-      ["Mapa de comissões", "Apuramento por vendedor/período para pagamento."]
+      [
+        "Mapa de comissões",
+        "Apuramento por vendedor/período para pagamento."
+      ]
     ],
     "e": [
       "Comissão só sobre faturado em empresas com muito incobrável (paga-se comissão de vendas nunca recebidas)",
@@ -836,7 +905,10 @@
         "Validador",
         "Ferramenta (Portal das Finanças/contabilistas) que verifica estrutura e regras antes da entrega."
       ],
-      ["TaxExemptionReason", "Código M01-M99 obrigatório em linhas isentas com valores."]
+      [
+        "TaxExemptionReason",
+        "Código M01-M99 obrigatório em linhas isentas com valores."
+      ]
     ],
     "e": [
       "Exportar o SAF-T e não validar (descobrir o erro no prazo da entrega)",
@@ -908,9 +980,18 @@
         "Agente de retenção",
         "Quem paga e retém (cliente empresarial, tipicamente) — a ficha do cliente marca o enquadramento."
       ],
-      ["Taxa/valor de retenção", "Campos do documento; o total a pagar = total − retenção."],
-      ["Líquido na C/C", "A dívida do cliente é pelo líquido — aging e cobranças refletem isso."],
-      ["Imposto do Selo", "Taxa sobre operações específicas (ex.: crédito) com verbas legais."],
+      [
+        "Taxa/valor de retenção",
+        "Campos do documento; o total a pagar = total − retenção."
+      ],
+      [
+        "Líquido na C/C",
+        "A dívida do cliente é pelo líquido — aging e cobranças refletem isso."
+      ],
+      [
+        "Imposto do Selo",
+        "Taxa sobre operações específicas (ex.: crédito) com verbas legais."
+      ],
       [
         "Modelo 30",
         "Declaração de rendimentos pagos a não residentes — guia passo-a-passo oficial no Help Center."
@@ -924,7 +1005,10 @@
   "L37": {
     "c": "O módulo trata dados pessoais (nomes, NIFs, contactos, moradas) — o RGPD exige base legal, transparência (aviso legal), minimização e direitos do titular (acesso, retificação, ESQUECIMENTO). O PHC implementa: aviso legal configurável, registo do tratamento de dados, processo de esquecimento/anonimização (remove dados identificativos preservando documentos fiscais — que por lei NÃO podem ser apagados) e histórico de utilizadores. O técnico opera estes pedidos com procedimento documentado.",
     "s": [
-      ["Aviso legal", "Texto de privacidade apresentado/documentado conforme configuração."],
+      [
+        "Aviso legal",
+        "Texto de privacidade apresentado/documentado conforme configuração."
+      ],
       [
         "Registo do tratamento",
         "Inventário dos tratamentos de dados feitos pela empresa (obrigação RGPD)."
@@ -933,7 +1017,10 @@
         "Direito ao esquecimento",
         "Anonimização de dados pessoais do titular — preservando integridade fiscal dos documentos emitidos."
       ],
-      ["Histórico de utilizadores", "Rasto de quem fez o quê (auditoria interna)."],
+      [
+        "Histórico de utilizadores",
+        "Rasto de quem fez o quê (auditoria interna)."
+      ],
       [
         "Prazo de conservação fiscal",
         "Documentos fiscais guardam-se anos (10 em regra) — o 'esquecimento' é anonimização, não eliminação total."
@@ -947,12 +1034,18 @@
   "L38": {
     "c": "A integração Gestão→Contabilidade transforma documentos comerciais em lançamentos contabilísticos automáticos via Documentos Pré-Definidos: para cada tipo de documento definem-se contas (clientes, fornecedores, IVA liquidado/dedutível, vendas, compras, contrapartidas) e regras (diário, documento pré-numerado). O contabilístico fecha o ciclo: apuramento do IVA, declaração periódica, CEVMC, resultados. Mesmo sem o módulo Contabilidade instalado, o técnico de Gestão DEVE conhecer o esquema de integração — é o que faz o ERP ser 'um só sistema'.",
     "s": [
-      ["Documentos pré-definidos", "Modelos de contabilização por tipo de documento do Gestão."],
+      [
+        "Documentos pré-definidos",
+        "Modelos de contabilização por tipo de documento do Gestão."
+      ],
       [
         "Contas de integração",
         "Contas SNC mapeadas: clientes (21), fornecedores (22), IVA (24), vendas (71/72), compras (31/22)..."
       ],
-      ["Diários", "Agrupamentos de lançamentos (vendas, compras, recebimentos, pagamentos)."],
+      [
+        "Diários",
+        "Agrupamentos de lançamentos (vendas, compras, recebimentos, pagamentos)."
+      ],
       [
         "Apuramento do IVA",
         "Confronto do IVA liquidado (vendas) vs dedutível (compras) → declaração periódica."
@@ -982,7 +1075,10 @@
         "Parâmetros de faturação",
         "Retenção IRS, método de envio à AT, validações de transporte, isenção nas linhas..."
       ],
-      ["Acessos a parâmetros", "Pode-se libertar parâmetros específicos a utilizadores não-admin."],
+      [
+        "Acessos a parâmetros",
+        "Pode-se libertar parâmetros específicos a utilizadores não-admin."
+      ],
       [
         "Documentação in-app",
         "O botão Ajuda de cada parâmetro abre o manual oficial — fonte primária."
@@ -1087,7 +1183,10 @@
         "Alerta de utilizador",
         "Condição → aviso automático; funções internas (ex.: CriaAvs) criam avisos a utilizadores."
       ],
-      ["Canais de notificação", "Aviso interno na app, PHC Notify, e-mail SMTP, SMS."],
+      [
+        "Canais de notificação",
+        "Aviso interno na app, PHC Notify, e-mail SMTP, SMS."
+      ],
       [
         "Workflow/aprovações",
         "Circuitos formais de autorização (Workflow Operacional no Advanced+; Aprovação de Dossiers no Enterprise)."
@@ -1134,12 +1233,18 @@
         "Assistente de Regras",
         "Construtor visual para condições simples (campo X obrigatório quando Y)."
       ],
-      ["Regra em código Xbase", "Para lógica complexa (cálculos, consultas, mensagens dinâmicas)."],
+      [
+        "Regra em código Xbase",
+        "Para lógica complexa (cálculos, consultas, mensagens dinâmicas)."
+      ],
       [
         "Momento de execução",
         "A regra corre na interação/gravacao — bloqueia ou avisa conforme configurado."
       ],
-      ["Mensagem de utilizador", "Texto claro do porquê do bloqueio — reduz chamadas ao suporte."]
+      [
+        "Mensagem de utilizador",
+        "Texto claro do porquê do bloqueio — reduz chamadas ao suporte."
+      ]
     ],
     "e": [
       "Regra que bloqueia sem mensagem explicativa (utilizador liga em pânico)",
@@ -1149,7 +1254,10 @@
   "L46": {
     "c": "Eventos são o coração do desenvolvimento desktop: pontos de extensão (Init, Clique, Ao Entrar/Sair, Após Atualizar, Tecla Pressionada, Refrescar...) onde corre código Xbase (sintaxe Visual FoxPro). Em cada evento existe o objeto ObjRecebido com Janela (o ecrã), Objecto (o próprio objeto, com Value/Parent) e MeusDados (repositório chave-valor para estado entre eventos). Return .F. cancela o comportamento padrão do objeto. Expressão vs programa: expressões retornam sozinhas (sem Return); programas permitem várias instruções. Erros? Análise Interna mostra a linha (0 = expressão).",
     "s": [
-      ["Xbase", "Linguagem de personalização desktop (dialecto VFP) — eventos, regras, funções."],
+      [
+        "Xbase",
+        "Linguagem de personalização desktop (dialecto VFP) — eventos, regras, funções."
+      ],
       [
         "ObjRecebido.Janela",
         "Apontador para o ecrã (Caption, BackColor...) — alterações duram enquanto o ecrã está aberto (repetir no Init)."
@@ -1220,13 +1328,22 @@
         "Desenhador de ecrãs",
         "Ferramenta que cria o IDU (objetos: texto, campos de ficheiro/ligação, grelhas, botões, árvore...)."
       ],
-      ["Menu de utilizador", "Menus novos para organizar IDUs/análises criadas (framework)."],
-      ["Ligações entre IDUs", "Navegação de um ecrã personalizado para outro passando contexto."],
+      [
+        "Menu de utilizador",
+        "Menus novos para organizar IDUs/análises criadas (framework)."
+      ],
+      [
+        "Ligações entre IDUs",
+        "Navegação de um ecrã personalizado para outro passando contexto."
+      ],
       [
         "Objetos deste ecrã",
         "Opção que lista propriedades dos objetos do ecrã — útil ao programar eventos."
       ],
-      ["Parâmetros de ecrã", "Configuração específica do comportamento do ecrã personalizado."]
+      [
+        "Parâmetros de ecrã",
+        "Configuração específica do comportamento do ecrã personalizado."
+      ]
     ],
     "e": [
       "IDU a duplicar o que um mapa/análise standard já resolve (manutenção dupla)",
@@ -1240,14 +1357,26 @@
         "Índice de utilizador",
         "Índice via framework sobre tabelas do software — persiste em upgrades."
       ],
-      ["INCLUDED COLUMNS", "Colunas 'de cobertura' no índice que evitam lookup à tabela (v19+)."],
-      ["Desfragmentar tabelas principais", "Utilitário PHC para manutenção de fragmentação."],
-      ["BD de arquivo", "Históricos movidos para BD própria — tabelas ativas mais rápidas."],
+      [
+        "INCLUDED COLUMNS",
+        "Colunas 'de cobertura' no índice que evitam lookup à tabela (v19+)."
+      ],
+      [
+        "Desfragmentar tabelas principais",
+        "Utilitário PHC para manutenção de fragmentação."
+      ],
+      [
+        "BD de arquivo",
+        "Históricos movidos para BD própria — tabelas ativas mais rápidas."
+      ],
       [
         "Parâmetros de performance",
         "Ecrãs em memória, mostrar último registo OFF, processamento assíncrono."
       ],
-      ["sp_spaceused / DMVs", "Medição de espaço e fragmentação (sys.dm_db_index_physical_stats)."]
+      [
+        "sp_spaceused / DMVs",
+        "Medição de espaço e fragmentação (sys.dm_db_index_physical_stats)."
+      ]
     ],
     "e": [
       "Criar índices 'para tudo' (cada índice custa escrita nas gravações)",
@@ -1265,9 +1394,18 @@
         "Scripts por URL",
         "Endpoint próprio: um URL identifica o script; a resposta pode ser JSON/HTML — base de integrações leves."
       ],
-      ["Log de Código", "Diagnóstico da execução do código de utilizador na web."],
-      ["Front Web", "Extranet para clientes/fornecedores (documentos, encomendas, dossiers)."],
-      ["DevExpress", "Tecnologia dos relatórios no PHC CS Web (Clientes, Faturação, Recibos...)."]
+      [
+        "Log de Código",
+        "Diagnóstico da execução do código de utilizador na web."
+      ],
+      [
+        "Front Web",
+        "Extranet para clientes/fornecedores (documentos, encomendas, dossiers)."
+      ],
+      [
+        "DevExpress",
+        "Tecnologia dos relatórios no PHC CS Web (Clientes, Faturação, Recibos...)."
+      ]
     ],
     "e": [
       "Scripts por URL sem autenticação/validação (qualquer pessoa com o URL acede — proteger!)",
@@ -1302,7 +1440,10 @@
   "L52": {
     "c": "EyePeak é a plataforma de logística/WMS/e-commerce do ecossistema Cegid (Primavera) que sincroniza com o PHC: artigos, stocks, séries de documentos e fluxos documentais (ex.: encomendas de fornecedor → guias). No PHC, o ponto de contacto é o monitor 'EyePeak Sincronização' (menu Supervisor) e o Monitor de Configurações (consistência de séries). Para o técnico: entender o que sincroniza, em que direção, e como diagnosticar quando 'não bate' entre sistemas.",
     "s": [
-      ["EyePeak Sincronização", "Monitor no Supervisor que comunica dados ERP ↔ EyePeak."],
+      [
+        "EyePeak Sincronização",
+        "Monitor no Supervisor que comunica dados ERP ↔ EyePeak."
+      ],
       [
         "Sincronização de séries",
         "Garantir consistência das séries de faturação entre ERP e EyePeak (Monitor de Configurações)."
@@ -1373,7 +1514,10 @@
         "Smart Tools + PromptFunction()",
         "Ferramentas de IA configuráveis/monetizáveis pelos parceiros via framework."
       ],
-      ["Cris / GenAI", "Assistente e templates de perguntas-resposta anteriores ao Pulse (202501)."]
+      [
+        "Cris / GenAI",
+        "Assistente e templates de perguntas-resposta anteriores ao Pulse (202501)."
+      ]
     ],
     "e": [
       "Perguntar à IA e não validar contra os monitores/análises (a resposta deve conferir com os dados)",
@@ -1387,12 +1531,18 @@
         "Listagem de Novidades",
         "Documento oficial por versão (Help Center/PDFs) — o mapa do que pode quebrar."
       ],
-      ["Clone primeiro", "Upgrade testa-se em BD clonada, nunca direto em produção."],
+      [
+        "Clone primeiro",
+        "Upgrade testa-se em BD clonada, nunca direto em produção."
+      ],
       [
         "Checklist de validação",
         "Lista escrita do que testar (séries, SAF-T, regras, eventos, IDUs, análises, web, integrações)."
       ],
-      ["Plano de rollback", "Backup pré-upgrade + procedimento de retorno se algo falhar."],
+      [
+        "Plano de rollback",
+        "Backup pré-upgrade + procedimento de retorno se algo falhar."
+      ],
       [
         "Janela de paragem",
         "Upgrade faz-se sem utilizadores ligados (ficheiros/BD em uso bloqueiam)."
@@ -1539,8 +1689,14 @@
         "Contas de integração",
         "Contas por entidade (cliente/fornecedor) ou genéricas com subconta automática."
       ],
-      ["Contrapartida", "O 'outro lado' do lançamento (ex.: venda: 21 débito × 71+243 crédito)."],
-      ["Rejeições", "Documentos sem mapping completo não integram — o relatório do lote lista-os."],
+      [
+        "Contrapartida",
+        "O 'outro lado' do lançamento (ex.: venda: 21 débito × 71+243 crédito)."
+      ],
+      [
+        "Rejeições",
+        "Documentos sem mapping completo não integram — o relatório do lote lista-os."
+      ],
       [
         "Documentos pré-definidos na Gestão",
         "O outro lado da mesma peça (aula oficial de 23 min): em cada tipo de documento do Gestão (FT, compra, recibo…) existe uma página Contabilidade onde se define o modo de integração (online ou em lote), o diário destino e o documento pré-definido a aplicar."
@@ -1587,9 +1743,18 @@
   "L62": {
     "c": "O IVA é o imposto com operação mensal/trimestral mais sensível: o apuramento compara o IVA liquidado (das vendas, conta 243x) com o dedutível (das compras) e gera o valor a entregar ou recuperar. A Declaração Periódica de IVA sai do PHC com os campos do impresso oficial — e deve bater certo com o SAF-T de faturação e o e-Fatura. Prazos e regras (mensal vs trimestral) vêm do enquadramento do sujeito passivo. O âmbito oficial inclui ainda: regime especial de exigibilidade de caixa (\"IVA de caixa\"), inversão do sujeito passivo (autoliquidação), reembolsos de IVA e Modelo 30 (operações com não residentes).",
     "s": [
-      ["IVA liquidado", "IVA cobrado aos clientes nas vendas — entregue ao Estado."],
-      ["IVA dedutível", "IVA pago nas compras/gastos — recuperável (regras de dedutibilidade)."],
-      ["Apuramento", "Liquidação do saldo: a pagar quando o IVA liquidado (2433) é maior do que o dedutível (2432); a recuperar/crédito no caso inverso."],
+      [
+        "IVA liquidado",
+        "IVA cobrado aos clientes nas vendas — entregue ao Estado."
+      ],
+      [
+        "IVA dedutível",
+        "IVA pago nas compras/gastos — recuperável (regras de dedutibilidade)."
+      ],
+      [
+        "Apuramento",
+        "Liquidação do saldo: a pagar quando o IVA liquidado (2433) é maior do que o dedutível (2432); a recuperar/crédito no caso inverso."
+      ],
       [
         "Declaração Periódica",
         "Impresso oficial (campos) gerado a partir dos movimentos do período."
@@ -1632,7 +1797,10 @@
         "Demonstração de Resultados (DR)",
         "Mapa legal: rendimentos − gastos = resultado do período."
       ],
-      ["Balanço", "Fotografia patrimonial: ativos = passivos + capital próprio."],
+      [
+        "Balanço",
+        "Fotografia patrimonial: ativos = passivos + capital próprio."
+      ],
       [
         "Mapas de gestão",
         "Conjunto de relatórios configuráveis (balancetes, DR, balanço, rácios) exportáveis."
@@ -1662,9 +1830,18 @@
         "Centro analítico",
         "Unidade de imputação (loja, projeto, departamento) com resultados próprios."
       ],
-      ["Imputação", "Atribuição de valores de documentos/movimentos a centros (total ou rateio)."],
-      ["Multidimensional", "Análise cruzada de dimensões (loja × família × mês)."],
-      ["PHC XL", "Componente para grandes volumes e exploração analítica avançada."],
+      [
+        "Imputação",
+        "Atribuição de valores de documentos/movimentos a centros (total ou rateio)."
+      ],
+      [
+        "Multidimensional",
+        "Análise cruzada de dimensões (loja × família × mês)."
+      ],
+      [
+        "PHC XL",
+        "Componente para grandes volumes e exploração analítica avançada."
+      ],
       [
         "Plano de Contas Paralelo",
         "Funcionalidade exclusiva Enterprise (aula oficial de 14 min): uma segunda estrutura de contas em paralelo com a legal — para visão de gestão, grupo ou outro referencial — alimentada pelos mesmos movimentos."
@@ -1773,7 +1950,10 @@
         "Outros Profissionais",
         "Prestadores sem vínculo laboral (recibos verdes): processamento e declarações com regras próprias."
       ],
-      ["IBAN", "Dados de pagamento — validados antes do ficheiro SEPA para evitar devoluções."]
+      [
+        "IBAN",
+        "Dados de pagamento — validados antes do ficheiro SEPA para evitar devoluções."
+      ]
     ],
     "e": [
       "Admitir sem comunicar à Segurança Social dentro do prazo (coima)",
@@ -1845,9 +2025,18 @@
         "Tipos de falta",
         "Justificada (com ou sem retribuição) vs injustificada (perda de retribuição e efeitos disciplinares) — cada tipo configura-se."
       ],
-      ["Horas extra", "Majorações legais e limites anuais; registo por funcionário/período."],
-      ["Meio-dia de férias", "Funcionalidade específica para gozo parcial de dias."],
-      ["Mapa de Férias", "Documento obrigatório com o planeamento anual — gerado pelo módulo."]
+      [
+        "Horas extra",
+        "Majorações legais e limites anuais; registo por funcionário/período."
+      ],
+      [
+        "Meio-dia de férias",
+        "Funcionalidade específica para gozo parcial de dias."
+      ],
+      [
+        "Mapa de Férias",
+        "Documento obrigatório com o planeamento anual — gerado pelo módulo."
+      ]
     ],
     "e": [
       "Marcar férias sem verificar o direito disponível (dias negativos no fim do ano)",
@@ -1861,7 +2050,10 @@
         "DMR",
         "Declaração mensal à AT com remunerações, retenções e contribuições por trabalhador — prazo: até ao fim do mês seguinte."
       ],
-      ["DRI/SS", "Declaração de remunerações à Segurança Social (base da TSU) com entrega mensal."],
+      [
+        "DRI/SS",
+        "Declaração de remunerações à Segurança Social (base da TSU) com entrega mensal."
+      ],
       [
         "Relatório Único",
         "Obrigação anual (março/abril) com anexos de recursos humanos e prestação de serviços."
@@ -1928,7 +2120,10 @@
         "Remuneração em espécie",
         "Bens/serviços cedidos para uso pessoal (ex.: viatura) — relevância fiscal em IRS/TSU conforme regras."
       ],
-      ["Vales sociais", "Apoios (ex.: infância) com tratamento fiscal específico."]
+      [
+        "Vales sociais",
+        "Apoios (ex.: infância) com tratamento fiscal específico."
+      ]
     ],
     "e": [
       "Descontar penhora sem validar o limite legal (responsabilidade da empresa)",
@@ -1971,7 +2166,10 @@
         "POS Desktop",
         "Aplicação de backoffice da loja (venda com rato/teclado, gestão de caixas, fechos)."
       ],
-      ["POS Front", "Interface de toque otimizada para venda rápida (o 'um dia na loja')."],
+      [
+        "POS Front",
+        "Interface de toque otimizada para venda rápida (o 'um dia na loja')."
+      ],
       [
         "Loja",
         "Entidade com armazém próprio, caixa e operadores — o stock da loja é um armazém como outro qualquer."
@@ -1980,7 +2178,10 @@
         "Operador com permissões",
         "Cada ação sensível (anular, descontar, reabrir gaveta, reimprimir) pode exigir permissão/autorização."
       ],
-      ["Série do POS", "Tipicamente FS a consumidor final, com numeração e QR/ATCUD obrigatórios."]
+      [
+        "Série do POS",
+        "Tipicamente FS a consumidor final, com numeração e QR/ATCUD obrigatórios."
+      ]
     ],
     "e": [
       "Vender no POS com série mal configurada (sem movimento de stock ou tesouraria) e descobrir no fim do mês",
@@ -2019,8 +2220,14 @@
   "L77": {
     "c": "A caixa é onde o dinheiro físico e o sistema têm de coincidir ao cêntimo: abertura com fundo de maneio, sangrias para o cofre (reduzir risco), transferências entre caixas/banco e fecho com contagem física de notas e moedas. Diferenças apuram-se no fecho (quebra/sobra com responsável e justificação) e integram-se na tesouraria. Rotina diária disciplinada previne 90% dos problemas de caixa.",
     "s": [
-      ["Fundo de maneio", "Numerário inicial para trocos — registado na abertura."],
-      ["Sangria", "Retirada programada de numerário para cofre (segurança + controlo)."],
+      [
+        "Fundo de maneio",
+        "Numerário inicial para trocos — registado na abertura."
+      ],
+      [
+        "Sangria",
+        "Retirada programada de numerário para cofre (segurança + controlo)."
+      ],
       [
         "Transferência entre caixas",
         "Movimento entre contas de tesouraria (caixa loja → caixa sede/banco)."
@@ -2050,12 +2257,18 @@
         "Cheque-oferta (vale oferta)",
         "Valor pré-pago vendido a terceiros; resgate em compras. IVA conforme regras de vouchers."
       ],
-      ["Vale de desconto", "Cupão promocional que abate valor/percentagem numa venda."],
+      [
+        "Vale de desconto",
+        "Cupão promocional que abate valor/percentagem numa venda."
+      ],
       [
         "Circuito do vale",
         "Emissão → validade → utilização (total/parcial) → expiração — auditável por relatório."
       ],
-      ["Assistente de vales (touch)", "Fluxo guiado no POS Front para emissão rápida no balcão."]
+      [
+        "Assistente de vales (touch)",
+        "Fluxo guiado no POS Front para emissão rápida no balcão."
+      ]
     ],
     "e": [
       "Vales sem validade definida (passivo comercial eterno no balanço)",
@@ -2098,12 +2311,18 @@
         "Tipos de promoção",
         "Percentagem, valor fixo, quantidade (2×1, leve 3 pague 2), pack/preço conjunto — conforme versão/gama."
       ],
-      ["Validades", "Início/fim automáticos: a promoção liga e desliga sozinha."],
+      [
+        "Validades",
+        "Início/fim automáticos: a promoção liga e desliga sozinha."
+      ],
       [
         "Prioridade",
         "Promoção vs tabela de preços vs desconto de cliente — ordem definida evita 'descontos duplos' acidentais."
       ],
-      ["Preço tributável", "O IVA calcula-se sobre o valor efetivamente cobrado após promoção."],
+      [
+        "Preço tributável",
+        "O IVA calcula-se sobre o valor efetivamente cobrado após promoção."
+      ],
       [
         "Medição",
         "Relatório de vendas/margem dos artigos promovidos no período — sem medição, promoção é chute."
@@ -2121,12 +2340,18 @@
         "Talão = documento FT",
         "O FS do POS vive na mesma tabela dos restantes documentos de faturação — análises e SAF-T unificados."
       ],
-      ["Templates do POS", "Layout do talão e ecrãs (logótipo, mensagens, QR/ATCUD obrigatórios)."],
+      [
+        "Templates do POS",
+        "Layout do talão e ecrãs (logótipo, mensagens, QR/ATCUD obrigatórios)."
+      ],
       [
         "Monitor do POS",
         "Vigilância operacional: caixas abertas, estados de documentos, pendentes."
       ],
-      ["Resumo diário", "Vendas por loja/meio/período para a direção — automatizável."],
+      [
+        "Resumo diário",
+        "Vendas por loja/meio/período para a direção — automatizável."
+      ],
       [
         "Contingência de rede",
         "Comportamento sem ligação (venda pendente/offline) — conhecer ANTES da falha."
@@ -2144,7 +2369,10 @@
         "Grelha cores/tamanhos",
         "Matriz de variantes do artigo-pai (setor vestuário/calçado) — opção do módulo conforme versão."
       ],
-      ["EAN por variante", "Cada combinação tem o seu código de barras para venda e etiquetagem."],
+      [
+        "EAN por variante",
+        "Cada combinação tem o seu código de barras para venda e etiquetagem."
+      ],
       [
         "Stock único",
         "Loja física e online consomem o mesmo stock (sincronização EyePeak ou processo definido)."
@@ -2174,7 +2402,10 @@
         "Tipos e prioridades",
         "Classificação que define fila e SLA (instalação, reparação, manutenção; urgente, normal…)."
       ],
-      ["Equipa/competências", "Técnicos com skills e disponibilidade — base da atribuição certa."],
+      [
+        "Equipa/competências",
+        "Técnicos com skills e disponibilidade — base da atribuição certa."
+      ],
       [
         "Integração Gestão",
         "Peças saem do stock, serviços entram na fatura — nada de registos paralelos."
@@ -2188,7 +2419,10 @@
   "L84": {
     "c": "O parque instalado é o ativo de conhecimento do suporte: instalações (locais do cliente), equipamentos (unidades com número de série, garantia, histórico) e contratos (cobertura, SLA, avença ou pontos). Quando o cliente liga, o operador identifica o equipamento e vê em segundos: garantia, contrato, intervenções anteriores. Esta visão 360º é o que faz o atendimento parecer mágica — e é só disciplina de registo.",
     "s": [
-      ["Instalação", "Local do cliente com os seus equipamentos (morada, contactos, acessos)."],
+      [
+        "Instalação",
+        "Local do cliente com os seus equipamentos (morada, contactos, acessos)."
+      ],
       [
         "Equipamento com nº série",
         "Unidade individual: garantia, histórico de intervenções, peças associadas."
@@ -2214,8 +2448,14 @@
         "SLA",
         "Compromisso de tempo (resposta/resolução) por prioridade — medido pelos timestamps dos estados."
       ],
-      ["Tempos de mão de obra", "Horas por técnico/tabela — viram serviço faturável."],
-      ["Materiais/peças", "Consumos com baixa de stock automática no documento."],
+      [
+        "Tempos de mão de obra",
+        "Horas por técnico/tabela — viram serviço faturável."
+      ],
+      [
+        "Materiais/peças",
+        "Consumos com baixa de stock automática no documento."
+      ],
       [
         "Estados com data",
         "Aberto → atribuído → em curso → resolvido → fechado/faturado — a linha de tempo do serviço."
@@ -2245,7 +2485,10 @@
         "Monitor de PATs",
         "Painel operacional: fila, SLA, carga, atrasos — a ferramenta do coordenador."
       ],
-      ["Alertas automáticos", "Notificações por exceção (parados, sem técnico, SLA em risco)."]
+      [
+        "Alertas automáticos",
+        "Notificações por exceção (parados, sem técnico, SLA em risco)."
+      ]
     ],
     "e": [
       "Coordenar por memória/planilha paralela (o monitor existe para isso)",
@@ -2267,7 +2510,10 @@
         "Envio automático",
         "E-mail ao cliente com o PDF (SMTP configurado) — profissionalismo e rasto."
       ],
-      ["Anexos", "Fotos/documentos associados à intervenção (File Storage/Cegid Docs)."],
+      [
+        "Anexos",
+        "Fotos/documentos associados à intervenção (File Storage/Cegid Docs)."
+      ],
       [
         "Aprovação de custos",
         "Peças/trabalhos fora de cobertura aprovados pelo cliente ANTES de executar (registado)."
@@ -2285,7 +2531,10 @@
         "Faturação de PAT",
         "Mão de obra (tabelas de horas/serviços) + materiais (stock) no documento de faturação."
       ],
-      ["Faturação de instalações", "Trabalhos de montagem/ativação com materiais e horas."],
+      [
+        "Faturação de instalações",
+        "Trabalhos de montagem/ativação com materiais e horas."
+      ],
       [
         "Faturação de contratos",
         "Recorrência (avenças) ou consumo (pontos) — integração com emissão automática."
@@ -2294,7 +2543,10 @@
         "Faturação parcial",
         "Aprovação parcial do orçamento: fatura-se o aprovado, o resto fica pendente/por decidir."
       ],
-      ["Reconciliação mensal", "Resolvidos × faturados = zero diferenças (o controlo anti-fuga)."]
+      [
+        "Reconciliação mensal",
+        "Resolvidos × faturados = zero diferenças (o controlo anti-fuga)."
+      ]
     ],
     "e": [
       "Fecho mensal sem reconciliação (PATs 'esquecidos' acumulam-se)",
@@ -2320,7 +2572,10 @@
         "Rentabilidade por contrato",
         "Receita do contrato − (horas técnicas + peças + deslocações) — contratos negativos renegociam-se."
       ],
-      ["Dashboard de suporte", "KPIs num painel para a direção (monitor/dashboard do PHC)."]
+      [
+        "Dashboard de suporte",
+        "KPIs num painel para a direção (monitor/dashboard do PHC)."
+      ]
     ],
     "e": [
       "Medir só volume de PATs (produtividade sem qualidade esconde retrabalho)",
@@ -2334,12 +2589,18 @@
         "Funil de vendas",
         "Sequência de fases (Qualificação→Proposta→Negociação→Ganha/Perdida) por onde cada oportunidade progride."
       ],
-      ["Probabilidade por fase", "% esperado de fecho em cada fase — base do pipeline ponderado."],
+      [
+        "Probabilidade por fase",
+        "% esperado de fecho em cada fase — base do pipeline ponderado."
+      ],
       [
         "Motivo de perda",
         "Razão do fecho perdido (preço, concorrência…) — alimenta a análise de perdas."
       ],
-      ["Carteira/comercial", "Atribuição de oportunidades a vendedores/equipas com permissões."]
+      [
+        "Carteira/comercial",
+        "Atribuição de oportunidades a vendedores/equipas com permissões."
+      ]
     ],
     "e": [
       "Configurar o funil depois de já haver oportunidades (dados inconsistentes)",
@@ -2357,7 +2618,10 @@
         "Qualificação",
         "Preencher necessidade, valor, fecho previsto — decidir se é mesmo oportunidade."
       ],
-      ["Histórico de mudanças", "Registo de mudanças de fase/valor — auditoria do ciclo."]
+      [
+        "Histórico de mudanças",
+        "Registo de mudanças de fase/valor — auditoria do ciclo."
+      ]
     ],
     "e": [
       "Criar oportunidade sem qualificar (funil inflado)",
@@ -2371,8 +2635,14 @@
         "Ação/tarefa",
         "Interação planeada (chamada/visita/email) ligada a uma oportunidade, com prazo e responsável."
       ],
-      ["Agenda comercial", "Vista do dia/semana do comercial com as ações pendentes."],
-      ["Recorrência", "Follow-up periódico automático (ex.: semanal)."]
+      [
+        "Agenda comercial",
+        "Vista do dia/semana do comercial com as ações pendentes."
+      ],
+      [
+        "Recorrência",
+        "Follow-up periódico automático (ex.: semanal)."
+      ]
     ],
     "e": [
       "Oportunidade sem próxima ação (fica abandonada)",
@@ -2382,9 +2652,18 @@
   "L93": {
     "c": "Campanhas ligam marketing a vendas: definem um objetivo, segmentam o público-alvo por critérios de clientes e geram/acompanham oportunidades. Medir oportunidades geradas e ganhas por campanha fecha o loop de ROI de marketing.",
     "s": [
-      ["Segmento", "Filtro de clientes/contactos (zona, CAE, volume, inatividade) = público-alvo."],
-      ["Oportunidades em massa", "Criar oportunidades a partir do segmento da campanha."],
-      ["ROI de campanha", "Oportunidades ganhas atribuídas à campanha vs esforço/custo."]
+      [
+        "Segmento",
+        "Filtro de clientes/contactos (zona, CAE, volume, inatividade) = público-alvo."
+      ],
+      [
+        "Oportunidades em massa",
+        "Criar oportunidades a partir do segmento da campanha."
+      ],
+      [
+        "ROI de campanha",
+        "Oportunidades ganhas atribuídas à campanha vs esforço/custo."
+      ]
     ],
     "e": [
       "Campanha sem segmento definido (dispara a todos)",
@@ -2394,9 +2673,18 @@
   "L94": {
     "c": "O valor do CRM realiza-se na conversão: a proposta nasce da oportunidade e a fatura nasce da proposta, herdando cliente/valores/comercial. Isso dá rastreabilidade total e mede conversão real em vez de vendas 'órfãs'.",
     "s": [
-      ["Proposta/orçamento", "Documento comercial gerado da oportunidade em negociação."],
-      ["Conversão", "Passar a oportunidade a documento de venda (FT) no Gestão, herdando dados."],
-      ["Rastreabilidade", "Ligação campanha→oportunidade→proposta→FT."]
+      [
+        "Proposta/orçamento",
+        "Documento comercial gerado da oportunidade em negociação."
+      ],
+      [
+        "Conversão",
+        "Passar a oportunidade a documento de venda (FT) no Gestão, herdando dados."
+      ],
+      [
+        "Rastreabilidade",
+        "Ligação campanha→oportunidade→proposta→FT."
+      ]
     ],
     "e": [
       "Criar FT à parte sem converter (perde rastreabilidade)",
@@ -2406,9 +2694,18 @@
   "L95": {
     "c": "O funil como ferramenta de gestão: pipeline ponderado (valor×probabilidade) dá a previsão realista; conversão por fase mostra onde o funil verte; motivos de perda explicam o porquê. É a leitura que a direção precisa.",
     "s": [
-      ["Pipeline ponderado", "Σ(valor×probabilidade) — valor esperado, não bruto."],
-      ["Conversão por fase", "% que passa de cada fase — deteta gargalos."],
-      ["Previsão de fecho", "Pipeline ponderado das fases finais + fecho previsto."]
+      [
+        "Pipeline ponderado",
+        "Σ(valor×probabilidade) — valor esperado, não bruto."
+      ],
+      [
+        "Conversão por fase",
+        "% que passa de cada fase — deteta gargalos."
+      ],
+      [
+        "Previsão de fecho",
+        "Pipeline ponderado das fases finais + fecho previsto."
+      ]
     ],
     "e": [
       "Ler só o pipeline bruto (otimismo irreal)",
@@ -2422,8 +2719,14 @@
         "Histórico 360º",
         "Docs de venda + oportunidades + ações + campanhas (+suporte) do cliente."
       ],
-      ["Criação a partir do cliente", "Nova oportunidade/ação diretamente da ficha do cliente."],
-      ["Ligação CRM↔Gestão", "Cliente/contacto comum + documentos partilhados."]
+      [
+        "Criação a partir do cliente",
+        "Nova oportunidade/ação diretamente da ficha do cliente."
+      ],
+      [
+        "Ligação CRM↔Gestão",
+        "Cliente/contacto comum + documentos partilhados."
+      ]
     ],
     "e": [
       "Trabalhar oportunidades fora da ficha do cliente (perde o 360º)",
@@ -2433,9 +2736,18 @@
   "L97": {
     "c": "O capstone prova o ciclo completo: campanha→segmento→oportunidade→ações→proposta→FT→funil. Cada elo ligado ao anterior; qualquer quebra de rastreabilidade é um ciclo mal fechado. É a síntese de todo o módulo CRM.",
     "s": [
-      ["Ciclo lead→fatura", "Cadeia completa com rastreabilidade em cada elo."],
-      ["Validação no funil", "A Ganha aparece no funil e na análise da campanha."],
-      ["Evidências por etapa", "Print em cada elo prova o ciclo."]
+      [
+        "Ciclo lead→fatura",
+        "Cadeia completa com rastreabilidade em cada elo."
+      ],
+      [
+        "Validação no funil",
+        "A Ganha aparece no funil e na análise da campanha."
+      ],
+      [
+        "Evidências por etapa",
+        "Print em cada elo prova o ciclo."
+      ]
     ],
     "e": [
       "Saltar a campanha (ciclo sem origem)",
@@ -2445,9 +2757,18 @@
   "L98": {
     "c": "A produção começa nos dados: a ficha técnica/lista de materiais (BOM) é a 'receita' do artigo acabado. Sem BOM correta (componentes+quantidades+tempos), o MRP e as OF herdam erro.",
     "s": [
-      ["BOM/lista de materiais", "Componentes e quantidades para fabricar o acabado."],
-      ["Ficha técnica", "BOM + tempos/rotas + parâmetros de produção do artigo."],
-      ["Roll-up de custo", "Custo do acabado calculado a partir dos consumos+tempos."]
+      [
+        "BOM/lista de materiais",
+        "Componentes e quantidades para fabricar o acabado."
+      ],
+      [
+        "Ficha técnica",
+        "BOM + tempos/rotas + parâmetros de produção do artigo."
+      ],
+      [
+        "Roll-up de custo",
+        "Custo do acabado calculado a partir dos consumos+tempos."
+      ]
     ],
     "e": [
       "BOM sem tempos (custo de MO errado)",
@@ -2457,9 +2778,18 @@
   "L99": {
     "c": "A ordem de fabrico (OF) é o documento de produção: reserva componentes, regista consumos (baixa de stock) e dá entrada do acabado. Tempos reais apontados alimentam o custeio real.",
     "s": [
-      ["OF", "Documento que autoriza e regista a produção de uma quantidade num prazo."],
-      ["Consumo", "Baixa de stock dos componentes contra a OF."],
-      ["Entrada do acabado", "Aumento de stock do artigo fabricado ao concluir."]
+      [
+        "OF",
+        "Documento que autoriza e regista a produção de uma quantidade num prazo."
+      ],
+      [
+        "Consumo",
+        "Baixa de stock dos componentes contra a OF."
+      ],
+      [
+        "Entrada do acabado",
+        "Aumento de stock do artigo fabricado ao concluir."
+      ]
     ],
     "e": [
       "Concluir OF sem dar entrada do acabado (stock fantasma)",
@@ -2469,9 +2799,18 @@
   "L100": {
     "c": "O MRP converte procura (encomendas/previsão) em necessidades líquidas (descontando stock e encomendas em curso) e propõe compra de componentes e produção de acabados com prazos. É o planeamento que evita ruturas e excessos.",
     "s": [
-      ["Necessidade líquida", "Procura − stock − encomendas em curso."],
-      ["Proposta de compra/produção", "Sugestão do MRP convertível em encomenda/OF."],
-      ["Prazo de aprovisionamento", "Lead-time que o MRP usa para propor datas."]
+      [
+        "Necessidade líquida",
+        "Procura − stock − encomendas em curso."
+      ],
+      [
+        "Proposta de compra/produção",
+        "Sugestão do MRP convertível em encomenda/OF."
+      ],
+      [
+        "Prazo de aprovisionamento",
+        "Lead-time que o MRP usa para propor datas."
+      ]
     ],
     "e": [
       "Correr MRP sem stock mín configurado (propostas erradas)",
@@ -2481,9 +2820,18 @@
   "L101": {
     "c": "Lotes/séries dão rastreabilidade: do componente (lote+validade) à OF, ao lote do acabado, à FT e ao cliente. Rastreabilidade direta e inversa permitem recall rápido e preciso.",
     "s": [
-      ["Lote/série", "Identificador de rastreamento de um componente/acabado."],
-      ["Rastreabilidade direta", "Lote→onde foi usado (OF/FT/clientes)."],
-      ["Recall", "Listar clientes/documentos afetados por um lote."]
+      [
+        "Lote/série",
+        "Identificador de rastreamento de um componente/acabado."
+      ],
+      [
+        "Rastreabilidade direta",
+        "Lote→onde foi usado (OF/FT/clientes)."
+      ],
+      [
+        "Recall",
+        "Listar clientes/documentos afetados por um lote."
+      ]
     ],
     "e": [
       "Vender sem registar lote (recall impossível)",
@@ -2493,9 +2841,18 @@
   "L102": {
     "c": "Multi-armazém exige gerir stock por localização: transferências movem stock entre armazéns; o inventário conta por armazém e o acerto alinha físico com sistema (e o valor/PCMP).",
     "s": [
-      ["Transferência", "Movimento de stock entre armazéns (saída+entrada)."],
-      ["Stock por armazém", "Visão por localização + consolidada."],
-      ["Acerto de inventário", "Entradas/saídas que corrigem diferenças de contagem."]
+      [
+        "Transferência",
+        "Movimento de stock entre armazéns (saída+entrada)."
+      ],
+      [
+        "Stock por armazém",
+        "Visão por localização + consolidada."
+      ],
+      [
+        "Acerto de inventário",
+        "Entradas/saídas que corrigem diferenças de contagem."
+      ]
     ],
     "e": [
       "Contar inventário só consolidado (erro por armazém escondido)",
@@ -2505,16 +2862,31 @@
   "L103": {
     "c": "O capstone logístico prova a cadeia com rastreabilidade: encomenda→MRP→OF→lote→entrada→FT→recall. Cada elo ligado; qualquer quebra aparece no recall incompleto.",
     "s": [
-      ["Cadeia logística", "Encomenda→MRP→OF→lote→FT com rastreabilidade."],
-      ["Recall como teste", "O recall completo prova rastreabilidade sem quebras."]
+      [
+        "Cadeia logística",
+        "Encomenda→MRP→OF→lote→FT com rastreabilidade."
+      ],
+      [
+        "Recall como teste",
+        "O recall completo prova rastreabilidade sem quebras."
+      ]
     ],
-    "e": ["Saltar o registo de lote na FT", "MRP sem procura real (propostas sem origem)"]
+    "e": [
+      "Saltar o registo de lote na FT",
+      "MRP sem procura real (propostas sem origem)"
+    ]
   },
   "L104": {
     "c": "O Ignios liga o ERP a fontes externas para preencher fichas automaticamente (NIF→cliente, EAN→artigo, matrícula→veículo), reduzindo digitação e erro de dados mestres.",
     "s": [
-      ["Auto-preenchimento", "Preencher fichas a partir de fontes externas (NIF/EAN/matrícula)."],
-      ["Validação humana", "Corrigir/completar o que a fonte não tem."]
+      [
+        "Auto-preenchimento",
+        "Preencher fichas a partir de fontes externas (NIF/EAN/matrícula)."
+      ],
+      [
+        "Validação humana",
+        "Corrigir/completar o que a fonte não tem."
+      ]
     ],
     "e": [
       "Confiar cegamente no auto-preenchimento sem validar",
@@ -2524,8 +2896,14 @@
   "L105": {
     "c": "O EyePeak sincroniza e-commerce↔ERP: artigos/stock/preços ERP→loja e encomendas loja→ERP. Sincronizar stock após venda web evita vender o que já não há.",
     "s": [
-      ["Sincronização bidirecional", "Artigos/stock/preços e encomendas entre loja e ERP."],
-      ["Stock pós-venda web", "Baixa no ERP reflete na loja (sem rutura pública)."]
+      [
+        "Sincronização bidirecional",
+        "Artigos/stock/preços e encomendas entre loja e ERP."
+      ],
+      [
+        "Stock pós-venda web",
+        "Baixa no ERP reflete na loja (sem rutura pública)."
+      ]
     ],
     "e": [
       "Vender web sem sincronizar stock (rutura)",
@@ -2535,8 +2913,14 @@
   "L106": {
     "c": "Cegid Docs/File Storage guarda documentação ligada aos registos (FT, clientes, OF), versionada e pesquisável — o contexto documental do processo.",
     "s": [
-      ["Anexo ligado a registo", "Ficheiro (PDF/imagem) associado a um registo do ERP."],
-      ["Versionamento", "Histórico de versões do anexo, recuperável."]
+      [
+        "Anexo ligado a registo",
+        "Ficheiro (PDF/imagem) associado a um registo do ERP."
+      ],
+      [
+        "Versionamento",
+        "Histórico de versões do anexo, recuperável."
+      ]
     ],
     "e": [
       "Anexos soltos sem ligação ao registo",
@@ -2546,18 +2930,39 @@
   "L107": {
     "c": "Open banking liga o banco ao ERP: extratos automáticos e matching de pagamentos a faturas. A reconciliação fecha o ciclo de tesouraria com menos trabalho manual.",
     "s": [
-      ["Extrato automático", "Importação de movimentos bancários via open banking."],
-      ["Matching", "Ligar movimento bancário à fatura que liquida."],
-      ["Reconciliação", "Saldo ERP vs banco alinhado no fecho."]
+      [
+        "Extrato automático",
+        "Importação de movimentos bancários via open banking."
+      ],
+      [
+        "Matching",
+        "Ligar movimento bancário à fatura que liquida."
+      ],
+      [
+        "Reconciliação",
+        "Saldo ERP vs banco alinhado no fecho."
+      ]
     ],
-    "e": ["Matching automático sem validar duvidosos", "Não reconciliar (diferenças acumuladas)"]
+    "e": [
+      "Matching automático sem validar duvidosos",
+      "Não reconciliar (diferenças acumuladas)"
+    ]
   },
   "L108": {
     "c": "A IA embutida (Cegid Pulse) dá resumos, next-best-action e respostas-a-dados dentro do ERP. Acelera análise/comunicação, mas decisões fiscais/dados mestres continuam humanas.",
     "s": [
-      ["Resumo de registo", "Síntese de histórico/risco/próximas ações de um cliente."],
-      ["Next-best-action", "Sugestão de próxima ação comercial."],
-      ["Pergunta-a-dados", "Responder perguntas sobre dados (top clientes, etc.)."]
+      [
+        "Resumo de registo",
+        "Síntese de histórico/risco/próximas ações de um cliente."
+      ],
+      [
+        "Next-best-action",
+        "Sugestão de próxima ação comercial."
+      ],
+      [
+        "Pergunta-a-dados",
+        "Responder perguntas sobre dados (top clientes, etc.)."
+      ]
     ],
     "e": [
       "Deixar a IA decidir dados mestres/fiscal sem humano",
@@ -2567,26 +2972,56 @@
   "L109": {
     "c": "O PHC CS Web é outra camada de apresentação sobre a mesma BD do desktop: mesmas permissões, mesmos registos, acesso via browser (HTTPS). Entender a arquitetura evita tratar o web como sistema separado.",
     "s": [
-      ["Camada web", "Apresentação via browser sobre a BD partilhada."],
-      ["Permissões partilhadas", "Perfis/acessos da BD aplicados no web e desktop."]
+      [
+        "Camada web",
+        "Apresentação via browser sobre a BD partilhada."
+      ],
+      [
+        "Permissões partilhadas",
+        "Perfis/acessos da BD aplicados no web e desktop."
+      ]
     ],
-    "e": ["Tratar o web como BD separada (duplicação)", "Assumir permissões diferentes no web"]
+    "e": [
+      "Tratar o web como BD separada (duplicação)",
+      "Assumir permissões diferentes no web"
+    ]
   },
   "L110": {
     "c": "IDU web são ecrãs/apps web personalizados: desenhados no designer, ligados a tabelas/consultas, com ações e validações, publicados para perfis. É a personalização do web.",
     "s": [
-      ["IDU web", "Ecrã web personalizado ligado a dados do ERP."],
-      ["Ações/validações", "Operações e regras no ecrã publicado."],
-      ["Publicação/perfis", "Disponibilizar o ecrã a perfis/utilizadores."]
+      [
+        "IDU web",
+        "Ecrã web personalizado ligado a dados do ERP."
+      ],
+      [
+        "Ações/validações",
+        "Operações e regras no ecrã publicado."
+      ],
+      [
+        "Publicação/perfis",
+        "Disponibilizar o ecrã a perfis/utilizadores."
+      ]
     ],
-    "e": ["Publicar sem testar permissões", "Ecrã sem validações (dados inválidos)"]
+    "e": [
+      "Publicar sem testar permissões",
+      "Ecrã sem validações (dados inválidos)"
+    ]
   },
   "L111": {
     "c": "Na cloud (PHC ON/Evolution) o fornecedor gere infraestrutura/updates/backups; o cliente gere utilizadores/dados/processos. O modelo de responsabilidades partilhadas define quem faz o quê.",
     "s": [
-      ["Subscrição", "Modelo cloud com updates/backups geridos."],
-      ["Tenant", "Instância do cliente na cloud."],
-      ["Responsabilidades partilhadas", "Fornecedor=plataforma; cliente=dados/acessos."]
+      [
+        "Subscrição",
+        "Modelo cloud com updates/backups geridos."
+      ],
+      [
+        "Tenant",
+        "Instância do cliente na cloud."
+      ],
+      [
+        "Responsabilidades partilhadas",
+        "Fornecedor=plataforma; cliente=dados/acessos."
+      ]
     ],
     "e": [
       "Assumir que o fornecedor gere dados mestres (é o cliente)",
@@ -2596,19 +3031,43 @@
   "L112": {
     "c": "Mobilidade = apps móveis + offline: operações registadas sem ligação ficam pendentes e sincronizam ao reconectar, com política de conflitos. É o ERP no terreno.",
     "s": [
-      ["Offline-first", "Registar sem ligação, sincronizar depois."],
-      ["Pendências", "Operações offline à espera de sincronização."],
-      ["Conflitos", "Resolução (último-a-escrever ou manual)."]
+      [
+        "Offline-first",
+        "Registar sem ligação, sincronizar depois."
+      ],
+      [
+        "Pendências",
+        "Operações offline à espera de sincronização."
+      ],
+      [
+        "Conflitos",
+        "Resolução (último-a-escrever ou manual)."
+      ]
     ],
-    "e": ["Assumir que offline perde dados", "Ignorar conflitos de sincronização"]
+    "e": [
+      "Assumir que offline perde dados",
+      "Ignorar conflitos de sincronização"
+    ]
   },
   "L113": {
     "c": "Dashboards web (PHC Dashboard) transformam análises em painéis visuais partilháveis com refresh e filtros interativos — a gestão a ler KPIs em tempo real sem abrir o ERP.",
     "s": [
-      ["KPI", "Indicador visual (vendas, margem, stock, tesouraria)."],
-      ["Refresh/partilha", "Painel atualizado e partilhado com a direção."],
-      ["Filtro interativo", "Período/loja/comercial a alterar o painel."]
+      [
+        "KPI",
+        "Indicador visual (vendas, margem, stock, tesouraria)."
+      ],
+      [
+        "Refresh/partilha",
+        "Painel atualizado e partilhado com a direção."
+      ],
+      [
+        "Filtro interativo",
+        "Período/loja/comercial a alterar o painel."
+      ]
     ],
-    "e": ["Dashboard sem refresh (dados velhos)", "KPIs sem ligação a consultas reais"]
+    "e": [
+      "Dashboard sem refresh (dados velhos)",
+      "KPIs sem ligação a consultas reais"
+    ]
   }
 }

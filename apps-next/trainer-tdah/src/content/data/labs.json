@@ -47,7 +47,9 @@
     "lv": 0,
     "min": 60,
     "meta": "30 min",
-    "pre": ["L00"],
+    "pre": [
+      "L00"
+    ],
     "ref": "Cap. 2.3 e 3.1",
     "goal": "Dominar o servidor de base de dados que sustenta o PHC: instalação, protocolos, logins, collation.",
     "steps": [
@@ -91,7 +93,9 @@
     "lv": 0,
     "min": 90,
     "meta": "45 min",
-    "pre": ["L01"],
+    "pre": [
+      "L01"
+    ],
     "ref": "Cap. 3.1",
     "goal": "Executar a instalação do PHC (exe único), criar/apontar a empresa demo e mapear os menus principais.",
     "steps": [
@@ -135,7 +139,9 @@
     "lv": 0,
     "min": 60,
     "meta": "25 min",
-    "pre": ["L02"],
+    "pre": [
+      "L02"
+    ],
     "ref": "Cap. 3.2 e 3.3",
     "goal": "Saber proteger e mover bases de dados PHC — a habilidade que salva empregos.",
     "steps": [
@@ -179,7 +185,9 @@
     "lv": 0,
     "min": 60,
     "meta": "30 min",
-    "pre": ["L02"],
+    "pre": [
+      "L02"
+    ],
     "ref": "Cap. 2.4 e 5.1",
     "goal": "Dominar segurança: quem entra, o que vê, o que pode fazer — incluindo acessos a parâmetros.",
     "steps": [
@@ -223,7 +231,9 @@
     "lv": 0,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L02"],
+    "pre": [
+      "L02"
+    ],
     "ref": "Cap. 7.2 e 8.2",
     "goal": "Conhecer as 3 ferramentas de diagnóstico/consulta que um técnico PHC usa todos os dias.",
     "steps": [
@@ -267,7 +277,9 @@
     "lv": 1,
     "min": 60,
     "meta": "25 min",
-    "pre": ["L05"],
+    "pre": [
+      "L05"
+    ],
     "ref": "Cap. 4.1",
     "goal": "Dominar a tabela de Clientes (CL/CL2) e os seus comportamentos especiais.",
     "steps": [
@@ -311,7 +323,9 @@
     "lv": 1,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L06"],
+    "pre": [
+      "L06"
+    ],
     "ref": "Cap. 4.1 e 5.2",
     "goal": "Configurar o lado das compras: fornecedores e as tabelas de condições/formas de pagamento.",
     "steps": [
@@ -351,7 +365,9 @@
     "lv": 1,
     "min": 60,
     "meta": "25 min",
-    "pre": ["L06"],
+    "pre": [
+      "L06"
+    ],
     "ref": "Cap. 4.1",
     "goal": "Dominar o ficheiro de Stocks e Serviços — a base de tudo (vendas, compras, produção).",
     "steps": [
@@ -395,7 +411,9 @@
     "lv": 1,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L08"],
+    "pre": [
+      "L08"
+    ],
     "ref": "Cap. 4.1",
     "goal": "Configurar produtos compostos e referências cruzadas cliente/fornecedor.",
     "steps": [
@@ -433,7 +451,9 @@
     "lv": 1,
     "min": 60,
     "meta": "25 min",
-    "pre": ["L08"],
+    "pre": [
+      "L08"
+    ],
     "ref": "Cap. 4.5",
     "goal": "Estruturar armazéns e ativar rastreabilidade por lotes com entrada por dossier de stock inicial.",
     "steps": [
@@ -472,7 +492,9 @@
     "lv": 1,
     "min": 60,
     "meta": "25 min",
-    "pre": ["L08"],
+    "pre": [
+      "L08"
+    ],
     "ref": "Cap. 4.8",
     "goal": "Dominar política de preços: tabelas com validade, tipos de desconto e a sua aplicação automática.",
     "steps": [
@@ -512,7 +534,9 @@
     "lv": 1,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L05"],
+    "pre": [
+      "L05"
+    ],
     "ref": "Cap. 5.2 e 6.5",
     "goal": "Configurar IVA, motivos de isenção, países, moedas e câmbios — a base fiscal do módulo.",
     "steps": [
@@ -551,7 +575,9 @@
     "lv": 2,
     "min": 75,
     "meta": "30 min",
-    "pre": ["L12"],
+    "pre": [
+      "L12"
+    ],
     "ref": "Cap. 5.3",
     "goal": "O coração da configuração: criar e configurar séries dos 5 tipos de documento com mapping SAF-T.",
     "steps": [
@@ -596,7 +622,9 @@
     "lv": 2,
     "min": 60,
     "meta": "15 min",
-    "pre": ["L13"],
+    "pre": [
+      "L13"
+    ],
     "ref": "Cap. 4.2",
     "goal": "Emitir uma fatura e comprovar que stocks, C/C e ficha do cliente são atualizados automaticamente.",
     "steps": [
@@ -640,7 +668,9 @@
     "lv": 2,
     "min": 45,
     "meta": "15 min",
-    "pre": ["L14"],
+    "pre": [
+      "L14"
+    ],
     "ref": "Cap. 4.2 e 6",
     "goal": "Tratar o retalho/consumidor final: fatura simplificada, NIF genérico, regras de impressão.",
     "steps": [
@@ -679,7 +709,9 @@
     "lv": 2,
     "min": 45,
     "meta": "15 min",
-    "pre": ["L14"],
+    "pre": [
+      "L14"
+    ],
     "ref": "Cap. 4.2 e 6.1",
     "goal": "Corrigir faturas legalmente: NC total/parcial, ND, motivo de retificação, devoluções com stock.",
     "steps": [
@@ -722,7 +754,9 @@
     "lv": 2,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L13"],
+    "pre": [
+      "L13"
+    ],
     "ref": "Cap. 4.3",
     "goal": "Dominar o conceito central de DI e as conversões do circuito comercial.",
     "steps": [
@@ -766,7 +800,9 @@
     "lv": 2,
     "min": 75,
     "meta": "30 min",
-    "pre": ["L17"],
+    "pre": [
+      "L17"
+    ],
     "ref": "Cap. 4.2, 5.3 e 6.3",
     "goal": "Emitir documentos de transporte corretos (tipo 4) e conhecer os dois métodos de comunicação à AT.",
     "steps": [
@@ -810,7 +846,9 @@
     "lv": 2,
     "min": 60,
     "meta": "25 min",
-    "pre": ["L14"],
+    "pre": [
+      "L14"
+    ],
     "ref": "Cap. 4.6",
     "goal": "Fechar o ciclo de recebimento: recibos de C/C, liquidação total/parcial, adiantamentos de cliente.",
     "steps": [
@@ -849,7 +887,9 @@
     "lv": 2,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L17"],
+    "pre": [
+      "L17"
+    ],
     "ref": "Cap. 4.2 e 4.3",
     "goal": "Faturar em massa sem esforço: preparação automática e avenças mensais.",
     "steps": [
@@ -888,7 +928,9 @@
     "lv": 2,
     "min": 75,
     "meta": "30 min",
-    "pre": ["L14"],
+    "pre": [
+      "L14"
+    ],
     "ref": "Cap. 5.3 e 6.3",
     "goal": "Controlar totalmente a saída impressa: templates, campos, QR Code e ATCUD.",
     "steps": [
@@ -932,7 +974,9 @@
     "lv": 3,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L17"],
+    "pre": [
+      "L17"
+    ],
     "ref": "Cap. 4.3 e 4.4",
     "goal": "Dominar o circuito de aprovisionamento: DI de compra → documento de compra.",
     "steps": [
@@ -971,7 +1015,9 @@
     "lv": 3,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L22"],
+    "pre": [
+      "L22"
+    ],
     "ref": "Cap. 4.4 e 4.5",
     "goal": "Registar compras com impacto correto no custo médio ponderado (PCMP).",
     "steps": [
@@ -1010,7 +1056,9 @@
     "lv": 3,
     "min": 45,
     "meta": "15 min",
-    "pre": ["L23"],
+    "pre": [
+      "L23"
+    ],
     "ref": "Cap. 4.1 e 4.4",
     "goal": "Pagar antes de receber a fatura e regularizar depois — com controlo.",
     "steps": [
@@ -1044,7 +1092,9 @@
     "lv": 3,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L10"],
+    "pre": [
+      "L10"
+    ],
     "ref": "Cap. 4.5",
     "goal": "Operar o armazém: códigos de movimento, transferências, rastreio total.",
     "steps": [
@@ -1083,7 +1133,9 @@
     "lv": 3,
     "min": 75,
     "meta": "30 min",
-    "pre": ["L25"],
+    "pre": [
+      "L25"
+    ],
     "ref": "Cap. 4.5 e 6",
     "goal": "Executar um inventário completo com lançamento automático de acertos (quebras/sobras).",
     "steps": [
@@ -1127,7 +1179,9 @@
     "lv": 3,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L26"],
+    "pre": [
+      "L26"
+    ],
     "ref": "Cap. 4.5 e 4.9",
     "goal": "Usar o stock como ferramenta de decisão: ruturas, máx/mín, rankings, margens.",
     "steps": [
@@ -1166,7 +1220,9 @@
     "lv": 4,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L19"],
+    "pre": [
+      "L19"
+    ],
     "ref": "Cap. 4.6",
     "goal": "Dominar a C/C: códigos de movimento, saldos por idades, extractos e mailing.",
     "steps": [
@@ -1205,7 +1261,9 @@
     "lv": 4,
     "min": 45,
     "meta": "15 min",
-    "pre": ["L28"],
+    "pre": [
+      "L28"
+    ],
     "ref": "Cap. 4.6 e 4.9",
     "goal": "Operar cobranças com o monitor e ferramentas dedicadas.",
     "steps": [
@@ -1244,7 +1302,9 @@
     "lv": 4,
     "min": 75,
     "meta": "30 min",
-    "pre": ["L28"],
+    "pre": [
+      "L28"
+    ],
     "ref": "Cap. 4.7",
     "goal": "Fechar o mês bancário: extractos, reconciliação, transferências e ficheiros SEPA.",
     "steps": [
@@ -1283,7 +1343,9 @@
     "lv": 4,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L30"],
+    "pre": [
+      "L30"
+    ],
     "ref": "Cap. 4.7",
     "goal": "Projetar o futuro financeiro: previsões por vencimentos, orçamentos e títulos.",
     "steps": [
@@ -1322,7 +1384,9 @@
     "lv": 4,
     "min": 45,
     "meta": "15 min",
-    "pre": ["L14"],
+    "pre": [
+      "L14"
+    ],
     "ref": "Cap. 4.8",
     "goal": "Configurar e apurar comissões de vendas.",
     "steps": [
@@ -1357,7 +1421,9 @@
     "lv": 5,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L21"],
+    "pre": [
+      "L21"
+    ],
     "ref": "Cap. 6.2",
     "goal": "Gerar o SAF-T e saber LER o ficheiro — não apenas exportá-lo.",
     "steps": [
@@ -1400,7 +1466,9 @@
     "lv": 5,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L33"],
+    "pre": [
+      "L33"
+    ],
     "ref": "Cap. 6.3",
     "goal": "Dominar o fluxo completo de validação de séries e ATCUD.",
     "steps": [
@@ -1443,7 +1511,10 @@
     "lv": 5,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L18", "L33"],
+    "pre": [
+      "L18",
+      "L33"
+    ],
     "ref": "Cap. 6.2 e 6.3",
     "goal": "Conhecer os dois métodos de comunicação de guias à AT e os seus artefactos.",
     "steps": [
@@ -1482,7 +1553,9 @@
     "lv": 5,
     "min": 45,
     "meta": "15 min",
-    "pre": ["L14"],
+    "pre": [
+      "L14"
+    ],
     "ref": "Cap. 6.5",
     "goal": "Emitir documentos com retenção e perceber o impacto em C/C e fiscais.",
     "steps": [
@@ -1521,7 +1594,9 @@
     "lv": 5,
     "min": 45,
     "meta": "15 min",
-    "pre": ["L06"],
+    "pre": [
+      "L06"
+    ],
     "ref": "Cap. 2.4 e 6.7",
     "goal": "Operar as ferramentas RGPD do módulo (dados pessoais de clientes).",
     "steps": [
@@ -1559,7 +1634,9 @@
     "lv": 5,
     "min": 90,
     "meta": "30 min",
-    "pre": ["L14"],
+    "pre": [
+      "L14"
+    ],
     "ref": "Cap. 4.10",
     "goal": "Automatizar a contabilização dos documentos do Gestão (requer módulo Contabilidade; senão, estudar configuração + manuais).",
     "steps": [
@@ -1603,7 +1680,9 @@
     "lv": 6,
     "min": 75,
     "meta": "30 min",
-    "pre": ["L14"],
+    "pre": [
+      "L14"
+    ],
     "ref": "Cap. 5.2",
     "goal": "Perder o medo dos parâmetros: método seguro para auditar e alterar configuração.",
     "steps": [
@@ -1641,7 +1720,9 @@
     "lv": 6,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L21"],
+    "pre": [
+      "L21"
+    ],
     "ref": "Cap. 4.9",
     "goal": "Criar relatórios standard à medida sem programar.",
     "steps": [
@@ -1680,7 +1761,9 @@
     "lv": 6,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L05"],
+    "pre": [
+      "L05"
+    ],
     "ref": "Cap. 4.9 e 7.2",
     "goal": "Construir análises SQL reutilizáveis dentro do PHC.",
     "steps": [
@@ -1719,7 +1802,9 @@
     "lv": 6,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L41"],
+    "pre": [
+      "L41"
+    ],
     "ref": "Cap. 4.9",
     "goal": "Construir a camada de business intelligence do utilizador (gamas Advanced/Enterprise).",
     "steps": [
@@ -1758,7 +1843,9 @@
     "lv": 6,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L29"],
+    "pre": [
+      "L29"
+    ],
     "ref": "Cap. 4.9, 6.2 e 7.2",
     "goal": "Automatizar a vigilância do negócio: monitores + alertas + circuitos de aprovação.",
     "steps": [
@@ -1797,7 +1884,9 @@
     "lv": 7,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L05"],
+    "pre": [
+      "L05"
+    ],
     "ref": "Cap. 7.2",
     "goal": "Estender o modelo de dados SEM tocar no core — a base de toda a personalização.",
     "steps": [
@@ -1837,7 +1926,9 @@
     "lv": 7,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L44"],
+    "pre": [
+      "L44"
+    ],
     "ref": "Cap. 7.2 e 7.6",
     "goal": "Impor política de negócio no momento da introdução de dados.",
     "steps": [
@@ -1876,7 +1967,9 @@
     "lv": 7,
     "min": 90,
     "meta": "30 min",
-    "pre": ["L44"],
+    "pre": [
+      "L44"
+    ],
     "ref": "Cap. 7.3",
     "goal": "Programar comportamento dinâmico nos ecrãs — o coração do desenvolvimento desktop PHC.",
     "steps": [
@@ -1923,7 +2016,9 @@
     "lv": 7,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L46"],
+    "pre": [
+      "L46"
+    ],
     "ref": "Cap. 7.2 e 7.3",
     "goal": "Criar utilitários reutilizáveis dentro da aplicação.",
     "steps": [
@@ -1961,7 +2056,9 @@
     "lv": 7,
     "min": 120,
     "meta": "45 min",
-    "pre": ["L46"],
+    "pre": [
+      "L46"
+    ],
     "ref": "Cap. 7.2 e 7.6",
     "goal": "Construir um ecrã novo: 'Crédito do Cliente EMPRESA MODELO'.",
     "steps": [
@@ -2000,7 +2097,9 @@
     "lv": 7,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L41"],
+    "pre": [
+      "L41"
+    ],
     "ref": "Cap. 7.2, 8 e 10.2",
     "goal": "Medir e otimizar: índices, desfragmentação, parâmetros de performance.",
     "steps": [
@@ -2039,7 +2138,9 @@
     "lv": 7,
     "min": 90,
     "meta": "30 min",
-    "pre": ["L46"],
+    "pre": [
+      "L46"
+    ],
     "ref": "Cap. 7.4",
     "goal": "Personalizar o PHC CS Web incluído no Evolution (requer package web).",
     "steps": [
@@ -2078,7 +2179,12 @@
     "lv": 7,
     "min": 180,
     "meta": "90 min",
-    "pre": ["L44", "L45", "L46", "L48"],
+    "pre": [
+      "L44",
+      "L45",
+      "L46",
+      "L48"
+    ],
     "ref": "Cap. 7.6 e 7.7",
     "goal": "Entregar uma solução completa como um parceiro faria: campo+regra+evento+IDU+análise+alerta.",
     "steps": [
@@ -2120,7 +2226,9 @@
     "lv": 8,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L02"],
+    "pre": [
+      "L02"
+    ],
     "ref": "Cap. 9",
     "goal": "Conhecer a integração ERP ↔ EyePeak (logística/e-commerce).",
     "steps": [
@@ -2154,7 +2262,9 @@
     "lv": 8,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L33"],
+    "pre": [
+      "L33"
+    ],
     "ref": "Cap. 6.4 e 9",
     "goal": "Conhecer o circuito de faturação eletrónica e arquivo digital legal.",
     "steps": [
@@ -2188,7 +2298,9 @@
     "lv": 8,
     "min": 45,
     "meta": "15 min",
-    "pre": ["L02"],
+    "pre": [
+      "L02"
+    ],
     "ref": "Cap. 1.2 e 9",
     "goal": "Usar a IA do ERP (plano Plus+) e perceber o que um parceiro pode construir.",
     "steps": [
@@ -2222,7 +2334,9 @@
     "lv": 8,
     "min": 120,
     "meta": "60 min",
-    "pre": ["L51"],
+    "pre": [
+      "L51"
+    ],
     "ref": "Cap. 10.3",
     "goal": "Executar o ritual completo de atualização sem sustos.",
     "steps": [
@@ -2261,7 +2375,11 @@
     "lv": 8,
     "min": 600,
     "meta": "—",
-    "pre": ["L51", "L53", "L55"],
+    "pre": [
+      "L51",
+      "L53",
+      "L55"
+    ],
     "ref": "Todo o guia + Cap. 12",
     "goal": "Simular uma implementação real de ponta a ponta e apresentar como um consultor sénior.",
     "steps": [
@@ -2307,7 +2425,9 @@
     "lv": 9,
     "min": 75,
     "meta": "30 min",
-    "pre": ["L05"],
+    "pre": [
+      "L05"
+    ],
     "ref": "Cap. 4.10 do guia + manuais in-app do módulo Contabilidade",
     "goal": "Dominar a estrutura contabilística: SNC, contas, taxonomia e navegação no módulo (requer módulo Contabilidade instalado ou empresa demo com ele).",
     "steps": [
@@ -2387,7 +2507,9 @@
     "lv": 9,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L57"],
+    "pre": [
+      "L57"
+    ],
     "ref": "Cap. 4.10 + certificação (Diários, Documentos Pré-Definidos)",
     "goal": "Organizar a escrituração: diários por natureza de operação e documentos contabilísticos numerados.",
     "steps": [
@@ -2443,7 +2565,9 @@
     "lv": 9,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L58"],
+    "pre": [
+      "L58"
+    ],
     "ref": "Cap. 4.10 (Introdução de Movimentos Contabilísticos)",
     "goal": "Lançar movimentos manuais corretos: débito=crédito, datas, períodos, documentos de suporte.",
     "steps": [
@@ -2503,7 +2627,9 @@
     "lv": 9,
     "min": 90,
     "meta": "30 min",
-    "pre": ["L59"],
+    "pre": [
+      "L59"
+    ],
     "ref": "Cap. 4.10 (Documentos pré-definidos na Gestão: 23 min do programa oficial)",
     "goal": "Configurar a contabilização automática de TODOS os tipos de documento do Gestão.",
     "steps": [
@@ -2555,7 +2681,9 @@
     "lv": 9,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L60"],
+    "pre": [
+      "L60"
+    ],
     "ref": "Cap. 4.10 (Integrações da Gestão na Contabilidade)",
     "goal": "Operar a integração periódica com segurança e reconciliar Gestão × Contabilidade ao cêntimo.",
     "steps": [
@@ -2616,7 +2744,9 @@
     "lv": 9,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L61"],
+    "pre": [
+      "L61"
+    ],
     "ref": "Cap. 4.10 e 6.5 (Apuramento do IVA, Declaração Periódica)",
     "goal": "Fechar o IVA do período: apuramento, declaração e coerência com e-Fatura.",
     "steps": [
@@ -2693,7 +2823,9 @@
     "lv": 9,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L62"],
+    "pre": [
+      "L62"
+    ],
     "ref": "Cap. 4.10 (CEVMC, Apuramento de Resultados, Mapas de Gestão)",
     "goal": "Do resultado bruto ao resultado líquido: consumos, mapas e reporting de gestão.",
     "steps": [
@@ -2765,7 +2897,9 @@
     "lv": 9,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L63"],
+    "pre": [
+      "L63"
+    ],
     "ref": "Cap. 4.10 (Imputações em Centros Analíticos, PHC XL)",
     "goal": "Acrescentar dimensões à contabilidade: departamentos, projetos, lojas — e medir rentabilidade por cada um.",
     "steps": [
@@ -2831,7 +2965,9 @@
     "lv": 9,
     "min": 90,
     "meta": "30 min",
-    "pre": ["L64"],
+    "pre": [
+      "L64"
+    ],
     "ref": "Cap. 4.10 (Rotinas de Abertura de Novo Ano Contabilístico)",
     "goal": "Executar as rotinas de viragem de ano com segurança: pré-fecho, encerramento, abertura, validação.",
     "steps": [
@@ -2898,7 +3034,9 @@
     "lv": 9,
     "min": 90,
     "meta": "30 min",
-    "pre": ["L57"],
+    "pre": [
+      "L57"
+    ],
     "ref": "Programa oficial (Criação da Ficha do Ativo, Depreciações, Reavaliações, Revalorizações, Imparidades, Abate/Alienação)",
     "goal": "Gerir o ciclo de vida completo de um ativo fixo tangível no módulo Imobilizado.",
     "steps": [
@@ -2960,7 +3098,9 @@
     "lv": 10,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L02"],
+    "pre": [
+      "L02"
+    ],
     "ref": "Programa oficial (registo de funcionários) + manuais in-app do módulo Pessoal",
     "goal": "Registar e contratar corretamente: a ficha do funcionário é a base de todo o processamento (requer módulo Pessoal ou empresa demo com ele).",
     "steps": [
@@ -3003,7 +3143,9 @@
     "lv": 10,
     "min": 90,
     "meta": "30 min",
-    "pre": ["L67"],
+    "pre": [
+      "L67"
+    ],
     "ref": "Programa oficial (Processamento de Vencimentos)",
     "goal": "Processar um mês completo de salários com rigor: abonos, descontos, líquidos e recibos.",
     "steps": [
@@ -3047,7 +3189,9 @@
     "lv": 10,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L68"],
+    "pre": [
+      "L68"
+    ],
     "ref": "Novidades 202601 (tabelas com data de vigência) + Calendário PHC",
     "goal": "Dominar as tabelas de retenção na fonte: carregamento, vigências e casos especiais.",
     "steps": [
@@ -3086,7 +3230,9 @@
     "lv": 10,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L68"],
+    "pre": [
+      "L68"
+    ],
     "ref": "Programa oficial (Marcação de férias, Horas e Faltas, Mapa de Férias)",
     "goal": "Gerir o tempo: direitos de férias, marcações, faltas justificadas/injustificadas e horas extra.",
     "steps": [
@@ -3129,7 +3275,9 @@
     "lv": 10,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L68"],
+    "pre": [
+      "L68"
+    ],
     "ref": "Programa oficial (Mapas Obrigatórios) + novidades 202601 (DMR sem negativos, 2FA SS)",
     "goal": "Cumprir o calendário declarativo sem falhas: AT e Segurança Social.",
     "steps": [
@@ -3172,7 +3320,9 @@
     "lv": 10,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L70"],
+    "pre": [
+      "L70"
+    ],
     "ref": "Programa oficial (Avisos de Fim de contrato, Cálculo de valores a pagar à saída, Fundo Compensação)",
     "goal": "Desligar corretamente: pré-aviso, acerto final e obrigações associadas.",
     "steps": [
@@ -3211,7 +3361,9 @@
     "lv": 10,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L68"],
+    "pre": [
+      "L68"
+    ],
     "ref": "Programa oficial (Despesas de Funcionários, Penhoras de vencimentos, Remunerações em espécie, Vales Sociais)",
     "goal": "Dominar os casos especiais que aparecem todos os meses em qualquer empresa.",
     "steps": [
@@ -3250,7 +3402,10 @@
     "lv": 10,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L68", "L60"],
+    "pre": [
+      "L68",
+      "L60"
+    ],
     "ref": "Programa oficial (Automatização de transferências de vencimentos) + Cap. 4.10",
     "goal": "Fechar o ciclo RH: contabilização automática dos salários e pagamento em lote ao banco.",
     "steps": [
@@ -3293,7 +3448,9 @@
     "lv": 11,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L15"],
+    "pre": [
+      "L15"
+    ],
     "ref": "Programa oficial (Acessos no módulo POS, Tabela de Lojas) + manuais in-app do POS",
     "goal": "Montar a base do retalho: loja, operadores, série de talão/FS e permissões (requer módulo POS ou demo com ele).",
     "steps": [
@@ -3337,7 +3494,9 @@
     "lv": 11,
     "min": 90,
     "meta": "30 min",
-    "pre": ["L75"],
+    "pre": [
+      "L75"
+    ],
     "ref": "Programa oficial (Um dia na Loja, 36 min + POS Front)",
     "goal": "Operar o ponto de venda de ponta a ponta como um caixa treinado.",
     "steps": [
@@ -3377,7 +3536,9 @@
     "lv": 11,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L76"],
+    "pre": [
+      "L76"
+    ],
     "ref": "Programa oficial (Transferências entre Caixas, Histórico de Caixa, Contar Notas e Moedas, Reimprimir Fecho)",
     "goal": "Controlar o numerário do dia: abertura, sangrias, transferências e fecho com contagem.",
     "steps": [
@@ -3421,7 +3582,9 @@
     "lv": 11,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L76"],
+    "pre": [
+      "L76"
+    ],
     "ref": "Programa oficial (Vales de Reembolso + circuito, Assistente em Touch, Cheques Oferta, Vales de Desconto)",
     "goal": "Dominar os instrumentos promocionais e de devolução de dinheiro do retalho.",
     "steps": [
@@ -3465,7 +3628,9 @@
     "lv": 11,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L76"],
+    "pre": [
+      "L76"
+    ],
     "ref": "Programa oficial (Ligação com TPA's, Suporte para segundo monitor no POS desktop)",
     "goal": "Integrar meios de pagamento e a experiência do cliente no balcão.",
     "steps": [
@@ -3504,7 +3669,10 @@
     "lv": 11,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L76", "L11"],
+    "pre": [
+      "L76",
+      "L11"
+    ],
     "ref": "Programa oficial (Tipos de promoções) + Cap. 4.8 (Promoções e campanhas)",
     "goal": "Configurar e validar promoções de loja sem furar margens nem a fiscalidade.",
     "steps": [
@@ -3544,7 +3712,9 @@
     "lv": 11,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L77"],
+    "pre": [
+      "L77"
+    ],
     "ref": "Programa oficial (Monitor do PHC POS, Templates no POS Desktop) + Cap. 4.2",
     "goal": "Ver a loja como parte do ERP: fluxos, monitorização e templates.",
     "steps": [
@@ -3583,7 +3753,9 @@
     "lv": 11,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L08"],
+    "pre": [
+      "L08"
+    ],
     "ref": "Cap. 4.1 (grelha de cores e tamanhos, códigos de barras) + Cap. 9 (EyePeak/e-commerce)",
     "goal": "Preparar a loja para moda/Calçado e para o canal online.",
     "steps": [
@@ -3622,7 +3794,9 @@
     "lv": 12,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L06"],
+    "pre": [
+      "L06"
+    ],
     "ref": "Programa oficial (Conceito do PHC Suporte, Circuito de Compra e Venda) + manuais in-app",
     "goal": "Montar a base do pós-venda: configuração do módulo e o circuito compra→venda com serviços (requer módulo Suporte ou demo).",
     "steps": [
@@ -3665,7 +3839,9 @@
     "lv": 12,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L83"],
+    "pre": [
+      "L83"
+    ],
     "ref": "Programa oficial (Instalações e Equipamentos, Faturação de Instalações, Faturação de Contratos)",
     "goal": "Registar o parque instalado dos clientes e os contratos que geram receita recorrente.",
     "steps": [
@@ -3705,7 +3881,9 @@
     "lv": 12,
     "min": 90,
     "meta": "30 min",
-    "pre": ["L84"],
+    "pre": [
+      "L84"
+    ],
     "ref": "Programa oficial (Abertura de PAT, Monitor de PATs)",
     "goal": "Executar o fluxo completo de um pedido de assistência com qualidade e tempos controlados.",
     "steps": [
@@ -3749,7 +3927,9 @@
     "lv": 12,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L85"],
+    "pre": [
+      "L85"
+    ],
     "ref": "Programa oficial (Abertura Especial de PAT, Monitor de PATs, Agenda de Marcações)",
     "goal": "Ganhar escala: entradas automáticas, agenda de técnicos e visão operacional em tempo real.",
     "steps": [
@@ -3792,7 +3972,9 @@
     "lv": 12,
     "min": 60,
     "meta": "20 min",
-    "pre": ["L85"],
+    "pre": [
+      "L85"
+    ],
     "ref": "Cap. 7.4 (Definição de Assinaturas) + manuais do Suporte",
     "goal": "Profissionalizar a intervenção no terreno: relatório claro, assinatura do cliente e envio automático.",
     "steps": [
@@ -3831,7 +4013,10 @@
     "lv": 12,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L87", "L20"],
+    "pre": [
+      "L87",
+      "L20"
+    ],
     "ref": "Programa oficial (Faturar Instalações, Faturação de Contratos)",
     "goal": "Transformar serviço prestado em receita faturada, sem fugas.",
     "steps": [
@@ -3875,7 +4060,9 @@
     "lv": 12,
     "min": 75,
     "meta": "25 min",
-    "pre": ["L88"],
+    "pre": [
+      "L88"
+    ],
     "ref": "Programa oficial (Gestão de Pontos no Suporte, Análises do PHC Suporte)",
     "goal": "Medir e melhorar: sistema de pontos, indicadores de serviço e rentabilidade.",
     "steps": [
@@ -3914,7 +4101,9 @@
     "lv": 13,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L89"],
+    "pre": [
+      "L89"
+    ],
     "ref": "Módulo CRM · configuração",
     "goal": "Deixar o CRM pronto a usar: definir as fases do funil de vendas, perfis/comercial e parâmetros base antes de registar oportunidades.",
     "steps": [
@@ -3952,7 +4141,9 @@
     "lv": 13,
     "min": 50,
     "meta": "25 min",
-    "pre": ["L90"],
+    "pre": [
+      "L90"
+    ],
     "ref": "CRM · Oportunidades",
     "goal": "Dominar o ciclo de uma oportunidade: criação, qualificação, mudança de fase, valor/probabilidade e fecho (ganha/perdida).",
     "steps": [
@@ -3990,7 +4181,9 @@
     "lv": 13,
     "min": 40,
     "meta": "20 min",
-    "pre": ["L91"],
+    "pre": [
+      "L91"
+    ],
     "ref": "CRM · Ações/Agenda",
     "goal": "Garantir que nenhuma oportunidade fica sem seguimento: criar ações/tarefas com prazo, responsável e lembrete, ligadas à oportunidade.",
     "steps": [
@@ -4028,7 +4221,9 @@
     "lv": 13,
     "min": 50,
     "meta": "25 min",
-    "pre": ["L91"],
+    "pre": [
+      "L91"
+    ],
     "ref": "CRM · Campanhas",
     "goal": "Criar uma campanha de marketing: definir objetivo, segmentar o público (clientes por critério), associar oportunidades e medir resultado.",
     "steps": [
@@ -4066,7 +4261,10 @@
     "lv": 13,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L91", "L13"],
+    "pre": [
+      "L91",
+      "L13"
+    ],
     "ref": "CRM↔Gestão · conversão",
     "goal": "Fechar o ciclo comercial: gerar proposta/orçamento a partir da oportunidade e convertê-la em documento de faturação no Gestão.",
     "steps": [
@@ -4104,7 +4302,10 @@
     "lv": 13,
     "min": 40,
     "meta": "20 min",
-    "pre": ["L91", "L42"],
+    "pre": [
+      "L91",
+      "L42"
+    ],
     "ref": "CRM · Análises",
     "goal": "Ler o funil como gestor: pipeline por fase, pipeline ponderado por probabilidade, taxa de conversão e previsão de fecho.",
     "steps": [
@@ -4142,7 +4343,10 @@
     "lv": 13,
     "min": 40,
     "meta": "20 min",
-    "pre": ["L94", "L06"],
+    "pre": [
+      "L94",
+      "L06"
+    ],
     "ref": "CRM↔Gestão · 360º",
     "goal": "Ter a visão 360º do cliente: oportunidades, ações, campanhas, documentos e suporte num só lugar, ligando CRM e Gestão.",
     "steps": [
@@ -4180,7 +4384,11 @@
     "lv": 13,
     "min": 70,
     "meta": "35 min",
-    "pre": ["L93", "L94", "L95"],
+    "pre": [
+      "L93",
+      "L94",
+      "L95"
+    ],
     "ref": "CRM · capstone",
     "goal": "Executar ponta-a-ponta: campanha→segmento→oportunidade→ações→proposta→FT→análise de funil, sem erros e com evidências.",
     "steps": [
@@ -4223,7 +4431,9 @@
     "lv": 14,
     "min": 50,
     "meta": "25 min",
-    "pre": ["L97"],
+    "pre": [
+      "L97"
+    ],
     "ref": "Manufactor · dados base",
     "goal": "Preparar os dados de produção: artigos de produção (semi-acabado/acabado), fichas técnicas e listas de materiais (BOM) com consumos.",
     "steps": [
@@ -4261,7 +4471,9 @@
     "lv": 14,
     "min": 55,
     "meta": "25 min",
-    "pre": ["L98"],
+    "pre": [
+      "L98"
+    ],
     "ref": "Manufactor · OF",
     "goal": "Executar produção: criar OF a partir de encomenda/stock, lançar, consumir componentes (baixa de stock) e dar entrada do acabado.",
     "steps": [
@@ -4299,7 +4511,10 @@
     "lv": 14,
     "min": 50,
     "meta": "25 min",
-    "pre": ["L99", "L20"],
+    "pre": [
+      "L99",
+      "L20"
+    ],
     "ref": "Manufactor · MRP",
     "goal": "Deixar o MRP calcular necessidades: propostas de compra (componentes) e de produção (acabados) a partir de procura (encomendas/previsão).",
     "steps": [
@@ -4337,7 +4552,9 @@
     "lv": 14,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L99"],
+    "pre": [
+      "L99"
+    ],
     "ref": "Logística · séries/lotes",
     "goal": "Rastrear de ponta a ponta: lote/série do componente → OF → lote do acabado → documento de venda → cliente (recall inverso e direto).",
     "steps": [
@@ -4375,7 +4592,9 @@
     "lv": 14,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L20"],
+    "pre": [
+      "L20"
+    ],
     "ref": "Logística · armazéns",
     "goal": "Gerir vários armazéns: transferências entre armazéns, stock por armazém e contagem de inventário com acerto.",
     "steps": [
@@ -4413,7 +4632,10 @@
     "lv": 14,
     "min": 70,
     "meta": "35 min",
-    "pre": ["L100", "L101"],
+    "pre": [
+      "L100",
+      "L101"
+    ],
     "ref": "Logística · capstone",
     "goal": "Ciclo logístico completo com rastreabilidade: encomenda→MRP→OF→lote→entrada→FT→recall, sem quebras de rastreabilidade.",
     "steps": [
@@ -4455,7 +4677,9 @@
     "lv": 15,
     "min": 40,
     "meta": "20 min",
-    "pre": ["L06"],
+    "pre": [
+      "L06"
+    ],
     "ref": "Ignios · auto-preenchimento",
     "goal": "Usar o Ignios para preencher fichas automaticamente (cliente por NIF, artigo por EAN, matrícula) e reduzir erro de digitação.",
     "steps": [
@@ -4493,7 +4717,9 @@
     "lv": 15,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L94"],
+    "pre": [
+      "L94"
+    ],
     "ref": "EyePeak · e-commerce",
     "goal": "Ligar a loja online ao ERP: sincronizar artigos/stock/preços e receber encomendas web como documentos no Gestão.",
     "steps": [
@@ -4531,7 +4757,9 @@
     "lv": 15,
     "min": 40,
     "meta": "20 min",
-    "pre": ["L94"],
+    "pre": [
+      "L94"
+    ],
     "ref": "Cegid Docs · anexos",
     "goal": "Guardar documentação ligada aos registos (faturas, clientes, OF): anexar, versionar e recuperar ficheiros do File Storage/Cegid Docs.",
     "steps": [
@@ -4570,7 +4798,9 @@
     "lv": 15,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L30"],
+    "pre": [
+      "L30"
+    ],
     "ref": "Open banking · pagamentos",
     "goal": "Automatizar tesouraria: extratos bancários via open banking, matching automático de pagamentos a faturas e reconciliação.",
     "steps": [
@@ -4608,7 +4838,9 @@
     "lv": 15,
     "min": 40,
     "meta": "20 min",
-    "pre": ["L104"],
+    "pre": [
+      "L104"
+    ],
     "ref": "Cegid Pulse · IA",
     "goal": "Usar a IA embutida (Cegid Pulse/assistentes): resumos de registos, sugestões de next-best-action e respostas a perguntas sobre dados.",
     "steps": [
@@ -4646,7 +4878,9 @@
     "lv": 16,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L02"],
+    "pre": [
+      "L02"
+    ],
     "ref": "PHC CS Web · base",
     "goal": "Entender e aceder ao PHC CS Web: arquitetura (servidor web + BD), autenticação, e navegação nas apps web base.",
     "steps": [
@@ -4684,7 +4918,10 @@
     "lv": 16,
     "min": 50,
     "meta": "25 min",
-    "pre": ["L109", "L46"],
+    "pre": [
+      "L109",
+      "L46"
+    ],
     "ref": "PHC CS Web · IDU web",
     "goal": "Criar ecrãs web personalizados (IDU web): desenhar layout, ligar a dados (tabelas/consultas) e publicar para utilizadores.",
     "steps": [
@@ -4723,7 +4960,9 @@
     "lv": 16,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L109"],
+    "pre": [
+      "L109"
+    ],
     "ref": "PHC ON · cloud",
     "goal": "Administrar o PHC na cloud (PHC ON/Evolution): modelo de subscrição, tenants, updates geridos e backups geridos.",
     "steps": [
@@ -4761,7 +5000,9 @@
     "lv": 16,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L109"],
+    "pre": [
+      "L109"
+    ],
     "ref": "Mobility · offline",
     "goal": "Trabalhar em mobilidade: apps móveis do PHC, sincronização e comportamento offline (vendas/visitas sem ligação).",
     "steps": [
@@ -4799,7 +5040,10 @@
     "lv": 16,
     "min": 45,
     "meta": "20 min",
-    "pre": ["L42", "L109"],
+    "pre": [
+      "L42",
+      "L109"
+    ],
     "ref": "PHC Dashboard · KPIs",
     "goal": "Construir dashboards web de gestão: KPIs de vendas/stock/tesouraria em painéis partilháveis com refresh.",
     "steps": [

@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+/*
+ * Sistema visual orientado a TDAH
+ * - 3 temas: claro, escuro, calmo (baixo estímulo: cores dessaturadas, sem animação, emoji a cinzento)
+ * - Contraste de texto ≥ 7:1 (WCAG 2.2 AAA 1.4.6) nos temas claro/escuro
+ * - Texto base 18px, entrelinha 1.7, linhas ≤ 68ch (legibilidade)
+ * - Estados de foco muito visíveis (WCAG 2.4.13 Focus Appearance)
+ */
+
+:root,
+[data-theme="claro"] {
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --surface-2: #f1f0ec;
+  --fg: #16181d;
+  --muted: #474c56; /* 8.3:1 sobre --bg */
+  --line: #d6d3cc;
+  --primary: #1e40af; /* 8.6:1 */
+  --primary-fg: #ffffff;
+  --primary-soft: #e3e9fb;
+  --success: #14532d;
+  --success-soft: #def5e5;
+  --warn: #7c2d12;
+  --warn-soft: #fdeede;
+  --danger: #8b1c1c;
+  --danger-soft: #fbe3e3;
+  --focus: #b45309;
+  color-scheme: light;
+}
+
+[data-theme="escuro"] {
+  --bg: #111418;
+  --surface: #181c22;
+  --surface-2: #20252d;
+  --fg: #eef1f5;
+  --muted: #b9c0cb;
+  --line: #333a45;
+  --primary: #9cc3ff;
+  --primary-fg: #0b1220;
+  --primary-soft: #1c2a44;
+  --success: #8fe3aa;
+  --success-soft: #16301f;
+  --warn: #ffcf85;
+  --warn-soft: #3a2a12;
+  --danger: #ffadad;
+  --danger-soft: #3d1a1a;
+  --focus: #ffcf85;
+  color-scheme: dark;
+}
+
+/* Baixo estímulo: paleta quase monocromática e quente, sem saturação, sem movimento */
+[data-theme="calmo"] {
+  --bg: #efebe3;
+  --surface: #f6f3ed;
+  --surface-2: #e6e1d7;
+  --fg: #2a2926;
+  --muted: #56534c;
+  --line: #cfc8bb;
+  --primary: #3d4a57;
+  --primary-fg: #f6f3ed;
+  --primary-soft: #dfe0dc;
+  --success: #3c5540;
+  --success-soft: #dde3d6;
+  --warn: #6b4b2a;
+  --warn-soft: #eadfcd;
+  --danger: #6e3434;
+  --danger-soft: #eadad3;
+  --focus: #6b4b2a;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+  --color-primary-soft: var(--primary-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --font-sans: "Atkinson Hyperlegible", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+}
+
+/* Escala de letra escolhida pelo aluno (100 / 112 / 125 %) */
+html {
+  font-size: 100%;
+}
+html[data-scale="112"] {
+  font-size: 112.5%;
+}
+html[data-scale="125"] {
+  font-size: 125%;
+}
+
+/* Espaçamento extra (ajuda na leitura; WCAG 1.4.12 Text Spacing) */
+html[data-spacing="extra"] body {
+  letter-spacing: 0.03em;
+  word-spacing: 0.12em;
+  line-height: 1.9;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+.prose-limit {
+  max-width: 68ch;
+}
+
+/* Foco visível e grosso — nunca removido */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Emoji decorativos: a cinzento no tema calmo */
+[data-theme="calmo"] .emoji {
+  filter: grayscale(1);
+  opacity: 0.75;
+}
+
+/* Movimento: respeita a preferência do sistema e a escolha do aluno */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+html[data-motion="reduce"] *,
+html[data-motion="reduce"] *::before,
+html[data-motion="reduce"] *::after,
+[data-theme="calmo"] *,
+[data-theme="calmo"] *::before,
+[data-theme="calmo"] *::after {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+}
+
+/* Modo foco: esconde tudo o que é secundário */
+html[data-focus="on"] .distraction {
+  display: none !important;
+}
+
+/* Barra de progresso suave */
+.bar {
+  transition: width 400ms ease;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.pop {
+  animation: pop 220ms ease-out;
+}
+
+details > summary {
+  cursor: pointer;
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details > summary .chev {
+  transition: transform 200ms ease;
+}
+details[open] > summary .chev {
+  transform: rotate(90deg);
+}
+
+pre code {
+  font-family: var(--font-mono);
+}

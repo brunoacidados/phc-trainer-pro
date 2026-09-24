@@ -1,5 +1,11 @@
 # 🧠 PHC Trainer Pro — Formação Profissional · Gestão Cegid PHC Evolution
 
+> ### 🧪 Branch `claude` — edição TDAH (para revisão)
+> - **Dossiê completo** (bugs, validação de conceitos com fontes, UX para TDAH, plano, riscos): [`docs/DOSSIE-MELHORIAS.md`](docs/DOSSIE-MELHORIAS.md)
+> - **Nova app** Next.js 16 + PostgreSQL, autónoma e fora do workspace pnpm: [`apps-next/trainer-tdah/`](apps-next/trainer-tdah/README.md)
+> - **Correções no monorepo atual**: `overallPct` (devolvia 0/1), `currentBelt` (teto 12 de 17), lapso SRS, errata de conteúdo ([`docs/ERRATA.md`](docs/ERRATA.md))
+
+
 > Plataforma **multiutilizador** de formação prática para dominar o módulo **Gestão do Cegid PHC Evolution / PHC CS Desktop**: 90 missões passo-a-passo num PHC real, **tutor de IA** (auto-router de 6 fornecedores, agora **no servidor**), flashcards com repetição espaçada, testes por nível, portefólio de evidências e **painel de progresso de equipa** — com contas, autenticação e dados guardados na cloud.
 
 **Material educativo não oficial**, baseado em fontes públicas da Cegid PHC. _Cegid PHC® é marca dos respetivos proprietários — projeto sem afiliação._

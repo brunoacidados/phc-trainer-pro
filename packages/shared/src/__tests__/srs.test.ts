@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { LABS } from "@phc/content";
 import {
+  overallPct,
   LADDER,
   addDays,
   bumpDaily,
@@ -92,6 +94,24 @@ describe("SRS de cartas e testes", () => {
     rateCard(s, 0, 2, t);
     expect(s.cards["0"].c).toBe(1);
     expect(s.cards["0"].due).toBe("2026-09-02"); // +1d (1ª vez na escada)
+  });
+
+  it("FIX: lapso reinicia o contador da carta", () => {
+    const s = defaultProgress();
+    const t = "2026-09-01";
+    for (let i = 0; i < 4; i++) rateCard(s, 0, 2, t);
+    expect(s.cards["0"].c).toBe(4);
+    rateCard(s, 0, 0, t);
+    expect(s.cards["0"].c).toBe(0);
+    rateCard(s, 0, 2, t);
+    expect(s.cards["0"].due).toBe("2026-09-02");
+  });
+
+  it("FIX: overallPct devolve 0–100", () => {
+    const s = defaultProgress();
+    expect(overallPct(s)).toBe(0);
+    for (const l of LABS) s.labs[l.id] = { c: 5, due: null, mem: true, steps: {}, proofs: {}, hist: [] };
+    expect(overallPct(s)).toBe(70);
   });
 
   it("submitQuiz: aprovação ≥80 e 'passed' nunca volta atrás", () => {

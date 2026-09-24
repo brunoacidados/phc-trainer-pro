@@ -1,0 +1,478 @@
+[
+  {
+    "t": "AT — Autoridade Tributária e Aduaneira",
+    "d": "O 'fisco' português: entidade que fiscaliza impostos, certifica software de faturação e recebe as comunicações (e-fatura, SAF-T, documentos de transporte).",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "ATCUD — Código Único de Documento",
+    "d": "Código impresso em todas as faturas: código de validação da série (dado pela AT) + número sequencial. Ex.: ABC12345-6789. Vem acompanhado do QR Code.",
+    "x": "Desde 2021 é obrigatório. Sem o código de validação da série associado no PHC, o software bloqueia a impressão dos documentos. A série comunica-se à AT no Portal das Finanças antes de ser usada.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "SAF-T (PT) — Standard Audit File for Tax",
+    "d": "Ficheiro XML normalizado que 'fotografa' a atividade da empresa para auditoria fiscal. Existem 4 sabores: faturação, transportes (resumido), inventário e contabilidade.",
+    "x": "O SAF-T de faturação exporta-se mensalmente (substitui a comunicação e-fatura manual) e contém Header (nº certificado do software), Customer, Product e Invoice com totais por taxa de IVA, hashes e tipos FT/FS/FR/NC/ND. Valide sempre num validador antes de entregar.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "e-Fatura",
+    "d": "Sistema da AT que recebe as suas faturas (por webservice em tempo real ou via SAF-T mensal) para o consumidor pedir CPF na fatura e a AT cruzar dados.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "Software certificado pela AT",
+    "d": "Programas de faturação validados pela AT (nº de certificado impresso nos documentos). O PHC é certificado — por isso documentos emitidos não se apagam: anulam-se com motivo e corrigem-se com NC.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "Hash / assinatura digital qualificada",
+    "d": "Cada documento gera uma hash encadeada ao documento anterior da série: se alguém alterar um documento antigo, a cadeia quebra e a fraude deteta-se.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "QR Code em faturas",
+    "d": "Código bidimensional obrigatório nos documentos fiscalmente relevantes desde 2021: contém NIFs, valores por taxa, tipo de documento, ATCUD, hash, etc. Qualquer smartphone o lê.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "Documento de transporte (Guia de Remessa)",
+    "d": "Documento que acompanha mercadorias em circulação (tipo 4 na configuração de séries). Tem de indicar locais de carga/descarga, data e hora de início do transporte.",
+    "x": "Comunica-se à AT ANTES do transporte começar: por webservice (devolve o Cód. Ident. AT) ou por SAF-T (PT) resumido (elementos ShipFrom/ShipTo em MovementOfGoods). Na estrada, a fiscalização exige o código de identificação.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "Motivo de isenção (M01–M99)",
+    "d": "Código legal que justifica por que uma linha não tem IVA (ex.: M01 — isento art. 15.º; M08 — isento art. 9.º; M99 — não sujeito). Obrigatório no SAF-T quando há valores isentos.",
+    "x": "Com 'Método de envio de faturas' = Webservice, o PHC só deixa escolher códigos M01-M99 normalizados — motivos inventados pelo utilizador são avisados/rejeitados.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "Retenção na fonte (IRS/IRC)",
+    "d": "O cliente retém parte do pagamento e entrega ao Estado por conta do fornecedor (típico em serviços de profissionais liberais/sociedades). Na fatura aparece a taxa e o valor; a C/C fica pelo líquido.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "Imposto do Selo",
+    "d": "Imposto sobre operações específicas (crédito, juros, recibos de quitação com prazo, etc.), com verbas da Tabela Geral. Aparece em operações financeiras da tesouraria.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "IVA — Imposto sobre o Valor Acrescentado",
+    "d": "Imposto sobre o consumo: taxas de 23% (normal), 13% (intermédia) e 6% (reduzida) em Portugal continental (Açores/Madeira têm taxas próprias). Cobra-se nas vendas (liquidado) e recupera-se nas compras (dedutível).",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "Reverse charge / autoliquidação",
+    "d": "Em operações intra-UE de serviços e certas vendas, o IVA é liquidado pelo CLIENTE no país dele: a fatura sai sem IVA com menção 'autoliquidação/reverse charge' (Diretiva 2006/112).",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "Operação triangular (UE)",
+    "d": "Venda em cadeia entre 3 operadores de países UE diferentes com transporte direto do 1.º para o 3.º — regras de IVA próprias; o PHC tem campo próprio no documento.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "Intrastat",
+    "d": "Declaração estatística de trocas de bens intra-UE (acima de limiares definidos anualmente). Alimenta-se dos documentos de compra/venda intra-comunitários.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "Comunicação de inventário à AT",
+    "d": "Empresas acima de certo volume de negócios entregam até 31 de janeiro o inventário valorizado (ficheiro SAF-T/CSV/XML conforme regras). O PHC gera os formatos.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "CIUS-PT",
+    "d": "Especificação portuguesa de faturação eletrónica (Core Invoice Usage Specification da EN 16931): obrigatória na contratação pública. O PHC envia via webservices/plataformas (ex.: SaphetyDoc) e o Cegid Docs arquiva/pré-lança.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "SDR — Sistema de Depósito e Recolha",
+    "d": "Desde 10/04/2026: depósito de 0,10 € por embalagem de bebida de uso único (até 3 L), cobrado automaticamente na venda (configuração 202601+). O consumidor recupera-o devolvendo a embalagem.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "SII / TicketBAI (Espanha)",
+    "d": "Regimes fiscais espanhóis suportados pelo executável ES do PHC: SII (envio imediato de informação à AEAT) e TicketBAI (País Basco).",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "RGPD",
+    "d": "Regulamento de proteção de dados: aviso legal, registo de tratamentos, direito ao esquecimento (anonimização preservando documentos fiscais) e histórico de acessos — ferramentas nativas do PHC.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "NIF / NIPC",
+    "d": "Número de Identificação Fiscal (11 = pessoa singular, 9 dígitos; empresas: 5XX XXX XXX com dígito de controlo mod-11). NIPC é o mesmo número para pessoas coletivas.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "CAE",
+    "d": "Código de Atividade Económica (ex.: 55110 hotéis, 47410 retalho de computadores): classifica a atividade da empresa — influencia obrigações fiscais e estatísticas.",
+    "tag": "Fiscal"
+  },
+  {
+    "t": "SNC / TOC(CC)",
+    "d": "Sistema de Normalização Contabilística (plano de contas português) e Técnico/Contabilista Certificado — o contabilista que recebe o seu SAF-T e integra a contabilidade.",
+    "tag": "Contabilidade"
+  },
+  {
+    "t": "CEVMC",
+    "d": "Custo das Existências Vendidas e das Mercadorias Consumidas: o 'custo do que vendeu' apurado na contabilidade (compras ± variação de existências), essencial para o resultado e o Modelo 22.",
+    "tag": "Contabilidade"
+  },
+  {
+    "t": "Modelo 22 / Modelo 30 / DMR",
+    "d": "Declarações fiscais: Modelo 22 (IRC anual), Modelo 30 (rendimentos pagos a não residentes), DMR (Declaração Mensal de Remunerações — trabalho). Saem dos módulos Contabilidade/Pessoal.",
+    "tag": "Contabilidade"
+  },
+  {
+    "t": "Declaração Periódica de IVA",
+    "d": "Declaração (mensal ou trimestral) do IVA liquidado menos dedutível, apurada na Contabilidade a partir dos documentos do Gestão.",
+    "tag": "Contabilidade"
+  },
+  {
+    "t": "Documento pré-definido",
+    "d": "Modelo de contabilização automática: mapeia cada tipo de documento do Gestão (fatura, compra, recibo) para lançamentos com contas SNC (21 clientes, 22 fornecedores, 24 IVA, 71/72 vendas…).",
+    "tag": "Contabilidade"
+  },
+  {
+    "t": "PCMP — Preço de Custo Médio Ponderado",
+    "d": "Método de custeio do stock: cada entrada valorizada recalcula o custo médio = (valor anterior + valor entrada) / (qty anterior + qty entrada). Valoriza saídas, margens e inventário.",
+    "x": "Se lançar compras a custo 0 'para despachar', destrói PCMP, margens e CEVMC. Confira o novo PCMP após entradas grandes.",
+    "tag": "Stocks"
+  },
+  {
+    "t": "Lote",
+    "d": "Subdivisão do stock com rastreabilidade (produção, validade): entradas e saídas referenciam o lote. Obrigatório em alimentar/farma; útil em qualquer perecível.",
+    "tag": "Stocks"
+  },
+  {
+    "t": "Número de série",
+    "d": "Identificador único por unidade física (com o módulo Equipamentos): eletrónica, máquinas, garantias. Cada saída fica associada ao nº de série vendido.",
+    "tag": "Stocks"
+  },
+  {
+    "t": "Stock cativo / pré-cativo",
+    "d": "Reservas de stock: cativo (comprometido, ex.: encomenda) e pré-cativo (indicativo). Reduzem a disponibilidade efetiva sem sair do armazém.",
+    "tag": "Stocks"
+  },
+  {
+    "t": "Ponto de encomenda",
+    "d": "Nível de stock que dispara a recomendação de compra (considera consumo e lead time do fornecedor). A análise 'a encomendar' usa-o.",
+    "tag": "Stocks"
+  },
+  {
+    "t": "Rutura de stock",
+    "d": "Artigo sem stock para vender = venda perdida. A análise de ruturas é o alerta vermelho do aprovisionamento.",
+    "tag": "Stocks"
+  },
+  {
+    "t": "Inventário físico / contagem",
+    "d": "Contagem real do armazém confrontada com o stock teórico; diferenças geram acertos automáticos (quebra = falta, sobra = excesso) que atualizam quantidades e valor.",
+    "tag": "Stocks"
+  },
+  {
+    "t": "Composto (Kit)",
+    "d": "Artigo formado por componentes (pack, refeição, conjunto): configura-se a composição e o comportamento na faturação/stock.",
+    "tag": "Stocks"
+  },
+  {
+    "t": "Unidade alternativa / factor de conversão",
+    "d": "Vender caixas de 10 unidades: a unidade alternativa + factor converte quantidades e preços entre unidade base e alternativa (com opção de inversão).",
+    "tag": "Stocks"
+  },
+  {
+    "t": "Referência alternativa",
+    "d": "Código do artigo na linguagem do cliente ou do fornecedor: digita-se o código deles e o PHC assume o artigo certo.",
+    "tag": "Stocks"
+  },
+  {
+    "t": "Armazém",
+    "d": "Local lógico de stock (principal, loja, trânsito, estaleiro). Todo o movimento tem armazém origem/destino; transferências usam dossier próprio.",
+    "tag": "Stocks"
+  },
+  {
+    "t": "Dossier Interno (DI)",
+    "d": "Documento não fiscal parametrizável (tabela BO): orçamentos, encomendas, propostas, folhas de obra, consignações, avenças, transferências, stock inicial. O 'rascunho estruturado' que se converte em faturas/compras.",
+    "x": "O circuito clássico: Orçamento → Encomenda → Guia → Fatura. Encomendas podem reservar stock; o fecho/estado controla pendentes. Aprovação formal de dossiers existe na gama Enterprise.",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Série (de documentos)",
+    "d": "Configuração que dá identidade a um documento: tipo (1-5), mapping SAF-T, numeração e o que movimenta (stock, C/C, tesouraria). O objeto mais importante da faturação.",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Tipos de documento (1-5)",
+    "d": "1/2/3 = fatura, fatura simplificada, fatura-recibo (e ND/NC via SAF-T); 4 = documento de transporte (guia); 5 = outro (proforma — não movimenta nada).",
+    "tag": "Documentos"
+  },
+  {
+    "t": "FT / FS / FR / ND / NC / GT",
+    "d": "Códigos SAF-T dos documentos: Fatura (FT), Fatura Simplificada (FS), Fatura-Recibo (FR), Nota de Débito (ND), Nota de Crédito (NC), Guia de Transporte (GT/GA/GC).",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Fatura-recibo (FR)",
+    "d": "Fatura e recibo num só documento: emite-se e recebe-se no ato (típico de serviços pontuais/clínicas).",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Nota de Crédito (NC)",
+    "d": "Documento que anula/devolve valor (ou stock) de uma fatura: total ou parcial. Exige Motivo de Retificação e referencia o documento original.",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Nota de Débito (ND)",
+    "d": "Documento que acrescenta valor em falta a um cliente (juros, correções). Também exige motivo de retificação.",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Proforma",
+    "d": "Documento tipo 5 sem valor fiscal (proposta formal de venda): não movimenta stock, C/C nem tesouraria.",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Venda a dinheiro",
+    "d": "Venda de balcão a consumidor final com pagamento no ato (cliente genérico 'Consumidor Final', NIF 999999990 quando não é fornecido).",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Data efetiva de entrega",
+    "d": "Data em que bens/serviços foram/serão disponibilizados ao adquirente — campo obrigatório por lei, comunicado no SAF-T.",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Motivo de anulação",
+    "d": "Campo obrigatório ao anular um documento (a aplicação insiste até preencher). Documento anulado nunca desaparece — fica marcado para auditoria.",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Avença",
+    "d": "Dossier de faturação recorrente (mensalidades, contratos, rendas): configura-se uma vez e o motor gera o documento de cada período.",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Folha de obra",
+    "d": "DI que acumula trabalho de uma obra/intervenção (horas, materiais, subcontratos) para faturar por medições/fases — clássico da construção e oficinas.",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Consignação",
+    "d": "Mercadoria entregue a terceiro para vender por conta do dono (não há faturação até a venda acontecer): DI próprio controla o stock à responsabilidade de terceiros.",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Emissão automática de faturação",
+    "d": "Ecrã de preparação que fatura em lote (guias, encomendas, avenças) por período/cliente — poupa horas no fim do mês.",
+    "tag": "Documentos"
+  },
+  {
+    "t": "Conta corrente (C/C)",
+    "d": "O livro de dívidas/créditos por cliente ou fornecedor: movimentos tipificados (códigos de C/C), saldo corrente e saldo por idades.",
+    "tag": "Financeiro"
+  },
+  {
+    "t": "Aging / saldos por idades",
+    "d": "Distribuição da dívida por escalões de atraso (0-30, 31-60, 61-90, +90): O indicador de risco de crédito e o mapa de trabalho das cobranças.",
+    "tag": "Financeiro"
+  },
+  {
+    "t": "Liquidação",
+    "d": "Casar recibos/pagamentos com faturas (total ou parcial): o que sobra fica como saldo pendente no aging.",
+    "tag": "Financeiro"
+  },
+  {
+    "t": "Recibo de adiantamento",
+    "d": "Dinheiro recebido antes da fatura: fica como crédito na C/C e regulariza-se quando a fatura é emitida (pode gerar NC de retificação automática).",
+    "tag": "Financeiro"
+  },
+  {
+    "t": "Recibo incobrável",
+    "d": "Classificação de dívida perdida (com tratamento fiscal próprio) — encerra a cobrança ativa sem apagar o histórico.",
+    "tag": "Financeiro"
+  },
+  {
+    "t": "SEPA",
+    "d": "Zona Única de Pagamentos em Euros: ficheiros normalizados de débitos diretos (cobranças) e transferências (pagamentos) que o PHC gera para o banco.",
+    "tag": "Financeiro"
+  },
+  {
+    "t": "Referência Multibanco",
+    "d": "Entidade+referência gerada por documento/cliente para pagamento na rede MB — identificação automática do recebimento.",
+    "tag": "Financeiro"
+  },
+  {
+    "t": "Open banking",
+    "d": "No Evolution: ligação direta aos bancos para importar movimentos, acelerar reconciliações e melhorar previsões de tesouraria.",
+    "tag": "Financeiro"
+  },
+  {
+    "t": "Tesouraria real / previsional / orçamental",
+    "d": "Real = movimentos ocorridos; previsional = entradas/saídas esperadas (vencimentos, títulos, avenças); orçamental = plano aprovado. Comparar as três responde 'chega para os salários?'.",
+    "tag": "Financeiro"
+  },
+  {
+    "t": "Títulos (letras/cheques)",
+    "d": "Instrumentos de pagamento com data futura em carteira — entram na tesouraria previsional e têm circuito de cobrança/pagamento próprio.",
+    "tag": "Financeiro"
+  },
+  {
+    "t": "Reconciliação bancária",
+    "d": "Confrontar extracto do banco × movimentos do ERP, movimento a movimento: deteta omissões, duplicações e comissões não lançadas.",
+    "tag": "Financeiro"
+  },
+  {
+    "t": "Condição de pagamento",
+    "d": "Prazo/vencimento combinado (30 dias, 30/60/90, pronto pagamento) que alimenta C/C e tesouraria previsional.",
+    "tag": "Comercial"
+  },
+  {
+    "t": "Tabela de preços (com validades)",
+    "d": "Conjunto nomeado de preços (Revenda, Retalho, Promo) com início/fim de validade: o documento assume o preço válido na data para a tabela do cliente.",
+    "tag": "Comercial"
+  },
+  {
+    "t": "Rappel",
+    "d": "Desconto retroativo por volume atingido no período (cliente ou fornecedor): apura-se no fim e paga-se/emite-se por NC ou crédito.",
+    "tag": "Comercial"
+  },
+  {
+    "t": "Comissões",
+    "d": "Remuneração de vendedores configurável por vendedor, tipo de cliente ou família de artigos — sobre faturado ou cobrado (decisão política com impacto enorme).",
+    "tag": "Comercial"
+  },
+  {
+    "t": "Promoções e campanhas",
+    "d": "Descontos temporários por artigo/família com datas de validade (opções extra nas gamas Advanced/Enterprise).",
+    "tag": "Comercial"
+  },
+  {
+    "t": "Ficheiro (tabela)",
+    "d": "No vocabulário PHC, 'ficheiros' são as tabelas mestras: clientes, fornecedores, artigos (Stocks e Serviços), etc.",
+    "tag": "Plataforma"
+  },
+  {
+    "t": "Gama vs Plano",
+    "d": "Gama = nível funcional histórico (Corporate/Advanced/Enterprise); Plano = modelo de subscrição do Evolution (Standard→Ultimate). Juntos definem o que pode configurar/desenvolver.",
+    "tag": "Plataforma"
+  },
+  {
+    "t": "PHC On",
+    "d": "Acordo anual de atualizações (software + legislação) com portal de formação, truques e dicas e o Calendário PHC de obrigações legais.",
+    "tag": "Plataforma"
+  },
+  {
+    "t": "Comunidade PHC",
+    "d": "Portal de parceiros/clientes (community.phcsoftware.com): área técnica e comercial com login Nº Cliente + ID Técnico.",
+    "tag": "Plataforma"
+  },
+  {
+    "t": "Help Center",
+    "d": "Manuais e artigos oficiais públicos (helpcenter.phccs.net / phc.pt portal) + botão Ajuda dentro da aplicação — a fonte primária de verdade.",
+    "tag": "Plataforma"
+  },
+  {
+    "t": "ODBC / DSN",
+    "d": "Ponte standard entre a aplicação e o SQL Server; o instalador (exe único) cria o DSN. Metade dos problemas de ligação diagnosticam-se aqui.",
+    "tag": "Plataforma"
+  },
+  {
+    "t": "Empresa = base de dados",
+    "d": "Cada empresa PHC é uma BD SQL Server própria; multiempresa = várias BDs no mesmo servidor.",
+    "tag": "Plataforma"
+  },
+  {
+    "t": "Detach / Attach",
+    "d": "Desanexar/anexar BDs no SQL Server: a forma rápida de clonar ambientes para teste de upgrades e personalizações.",
+    "tag": "Plataforma"
+  },
+  {
+    "t": "stamp / ref",
+    "d": "Campos estruturais das tabelas PHC: ref identifica o registo; stamp marca a versão do registo (concorrência/navegação; aparece em snapshots como #stamp#).",
+    "tag": "Plataforma"
+  },
+  {
+    "t": "Dicionário de Dados",
+    "d": "Ferramenta (Supervisor → Tratamento da base de dados) que mostra campos, tipos e RELAÇÕES de qualquer tabela — o mapa do tesouro do programador PHC.",
+    "tag": "Dev"
+  },
+  {
+    "t": "Framework PHC",
+    "d": "Conjunto de ferramentas de personalização (Supervisor → Framework): campos/tabelas/índices/regras/eventos/funções de utilizador, IDUs, monitores, alertas — tudo gravado na BD.",
+    "tag": "Dev"
+  },
+  {
+    "t": "Xbase",
+    "d": "Linguagem de personalização do desktop (sintaxe Visual FoxPro): eventos, regras e funções de utilizador.",
+    "tag": "Dev"
+  },
+  {
+    "t": "ObjRecebido",
+    "d": "Objeto disponível nos eventos Xbase: .Janela (o ecrã), .Objecto (o objeto, com Value/Parent) e .MeusDados (repositório chave-valor entre eventos).",
+    "tag": "Dev"
+  },
+  {
+    "t": "Return .F.",
+    "d": "Num evento Xbase, cancela o comportamento padrão do objeto (a tecla não entra, o calendário não abre…). Em expressões não se usa Return.",
+    "tag": "Dev"
+  },
+  {
+    "t": "IDU / Ecrã personalizado",
+    "d": "Ecrã novo desenhado pelo utilizador (desenhador de ecrãs): campos, grelhas, botões com eventos — ligado a menus próprios.",
+    "tag": "Dev"
+  },
+  {
+    "t": "Análise Interna",
+    "d": "O log de erros do código de utilizador (desktop) — primeiro sítio a ver quando um evento 'não faz nada'. Na web chama-se Log de Código.",
+    "tag": "Dev"
+  },
+  {
+    "t": "Snapshot",
+    "d": "Consulta T-SQL contextualizada (variáveis como #stamp#) exibida em painéis: dados do registo em foco no ecrã.",
+    "tag": "Dev"
+  },
+  {
+    "t": "Análise de utilizador / multidimensional",
+    "d": "Consulta SQL do utilizador em grelha (Advanced+); promovível a multidimensional com drill-down por dimensões (ano→mês→cliente).",
+    "tag": "Dev"
+  },
+  {
+    "t": "Script (web) por URL",
+    "d": "Na framework web (C#): programa executado quando se chama um URL — endpoint leve para integrações (ex.: stock para a loja online).",
+    "tag": "Dev"
+  },
+  {
+    "t": "EyePeak",
+    "d": "Plataforma de logística/WMS/e-commerce (Cegid Primavera) que sincroniza com o PHC via monitor 'EyePeak Sincronização' (Supervisor).",
+    "tag": "Módulos"
+  },
+  {
+    "t": "Cegid Pulse",
+    "d": "Ecossistema de IA do Evolution (plano Plus+): assistentes de negócio, perguntas em linguagem natural e Smart Tools configuráveis (PromptFunction()).",
+    "tag": "Módulos"
+  },
+  {
+    "t": "Cegid Docs",
+    "d": "Gestão documental/arquivo digital legal na cloud: faturas CIUS-PT anexadas em PDF e pré-lançadas automaticamente (202601+).",
+    "tag": "Módulos"
+  },
+  {
+    "t": "PHC CS Web / Front Web",
+    "d": "Plataforma web sobre a mesma BD (Gestão Web, POS Web…) e extranet para clientes/fornecedores consultarem documentos e dossiers.",
+    "tag": "Módulos"
+  },
+  {
+    "t": "File Storage",
+    "d": "Armazenamento de anexos em diretoria física, na BD ou ambos (202501+); documentos fiscalmente relevantes ficam sempre na BD.",
+    "tag": "Plataforma"
+  },
+  {
+    "t": "Processamento assíncrono",
+    "d": "Parâmetro que grava/processa documentos em background: se algo inibir, o documento fica 'não processado' — estado a verificar em diagnósticos.",
+    "tag": "Plataforma"
+  }
+]

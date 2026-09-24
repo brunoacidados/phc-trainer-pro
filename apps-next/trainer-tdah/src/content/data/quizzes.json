@@ -1,0 +1,1186 @@
+[
+  {
+    "lv": 0,
+    "nome": "Plataforma & Instalação",
+    "qs": [
+      {
+        "q": "O Cegid PHC Evolution é o sucessor de que produto?",
+        "o": ["PHC GO", "PHC CS (desktop)", "Cegid Pulse", "PHC FX"],
+        "a": 1,
+        "why": "O Evolution é a evolução natural do PHC CS: mesma plataforma, agora por subscrição com web, IA e cloud incluídos."
+      },
+      {
+        "q": "O 'exe único' de instalação do PHC faz automaticamente:",
+        "o": [
+          "Apenas copia os ficheiros do programa",
+          "Instala a aplicação, cria/attacha a BD e configura o ODBC",
+          "Instala o SQL Server completo",
+          "Cria a licença na cloud"
+        ],
+        "a": 1,
+        "why": "O instalador trata da aplicação + base de dados (criação/attach) + DSN ODBC."
+      },
+      {
+        "q": "Segundo os termos de licenciamento, o PHC CS funciona exclusivamente sobre:",
+        "o": ["MySQL 5.7+", "Oracle 12+", "SQL Server 2008R2 ou posterior", "PostgreSQL 10+"],
+        "a": 2,
+        "why": "SQL Server é a única BD suportada (2008R2+ nos termos; instalações atuais tipicamente 2012+; Express no Corporate)."
+      },
+      {
+        "q": "Onde ficam registados os erros de execução dos eventos Xbase do utilizador?",
+        "o": [
+          "No Log de Código da web",
+          "Na Análise Interna",
+          "No Event Viewer do Windows",
+          "No ficheiro error.txt da pasta"
+        ],
+        "a": 1,
+        "why": "A Análise Interna guarda os erros dos eventos/código desktop; na web usa-se o Log de Código."
+      },
+      {
+        "q": "O Dicionário de Dados permite:",
+        "o": [
+          "Editar dados das tabelas",
+          "Consultar campos, tipos e relações de qualquer tabela",
+          "Criar utilizadores",
+          "Exportar o SAF-T"
+        ],
+        "a": 1,
+        "why": "Mostra estrutura (campos, descrições, tipos, tamanhos) e relações entre tabelas; acessível via Supervisor > Tratamento da base de dados ou menu de opções do ecrã."
+      },
+      {
+        "q": "O acordo PHC On dá direito a:",
+        "o": [
+          "Apenas suporte telefónico",
+          "Atualizações e upgrades durante 1 ano + portal com formação e Calendário PHC",
+          "Hardware homologado",
+          "Licenças ilimitadas"
+        ],
+        "a": 1,
+        "why": "PHC On = atualizações (incl. legislativas) durante um ano + on.phc.pt (formação online, autoformação, truques e dicas) + Calendário PHC de obrigações."
+      }
+    ]
+  },
+  {
+    "lv": 1,
+    "nome": "Ficheiros",
+    "qs": [
+      {
+        "q": "Na ficha de cliente, o número à direita do nº de cliente indica:",
+        "o": [
+          "A versão do registo",
+          "Sede (0) ou filial/estabelecimento (1-999)",
+          "O código postal",
+          "O tipo de IVA"
+        ],
+        "a": 1,
+        "why": "Sede = 0; filiais numeradas de 1 a 999, criadas por duplicação do registo."
+      },
+      {
+        "q": "O país da morada do cliente fica guardado em que tabela?",
+        "o": ["CL", "CL2 (Clientes - Outros Dados)", "FT", "ZZ"],
+        "a": 1,
+        "why": "O manual indica que o campo País é gravado na tabela 'Clientes - Outros Dados' (CL2)."
+      },
+      {
+        "q": "Um cliente 'Inativo':",
+        "o": [
+          "É apagado da BD",
+          "Não permite novos documentos mas continua em análises e dossiers antigos faturáveis",
+          "Bloqueia toda a empresa",
+          "Só pode ser reativado pelo suporte"
+        ],
+        "a": 1,
+        "why": "Inativos saem das opções de documentos novos; mantêm-se em análises e é possível faturar dossiers anteriores."
+      },
+      {
+        "q": "O serviço Ignios (Advanced+):",
+        "o": [
+          "Gera o SAF-T",
+          "Preenche automaticamente dados da empresa a partir do NIF",
+          "Comunica guias à AT",
+          "Cria backups na cloud"
+        ],
+        "a": 1,
+        "why": "Ao digitar o NIF, a aplicação preenche nome/morada/localidade/código postal com dados disponibilizados pelo serviço Ignios."
+      },
+      {
+        "q": "Tabelas de preços no PHC Gestão caracterizam-se por:",
+        "o": [
+          "Preço fixo por artigo",
+          "Validades atribuídas — o preço atual é o da tabela válida na data",
+          "Só existirem 2 tabelas",
+          "Serem exclusivas de compras"
+        ],
+        "a": 1,
+        "why": "As tabelas têm validades (início/fim) para se saber sempre qual o preço atual; associam-se a clientes/fornecedores."
+      },
+      {
+        "q": "Uma unidade alternativa com factor de conversão serve para:",
+        "o": [
+          "Traduzir a designação",
+          "Vender/comprar noutra unidade (ex.: caixa=10un) convertendo quantidades e preços",
+          "Definir lotes",
+          "Numerar artigos"
+        ],
+        "a": 1,
+        "why": "O factor (e a sua inversão) converte entre unidade base e alternativa nos documentos e stocks."
+      }
+    ]
+  },
+  {
+    "lv": 2,
+    "nome": "Ciclo de Vendas",
+    "qs": [
+      {
+        "q": "Na configuração de uma série, o 'tipo 4' corresponde a:",
+        "o": [
+          "Fatura",
+          "Fatura Simplificada",
+          "Documento de transporte (Guia de Remessa)",
+          "Proforma"
+        ],
+        "a": 2,
+        "why": "Tipo 4 = documento de transporte (guias); tipo 5 = outro (proforma); tipos 1-3 cobrem fatura/simplificada/fatura-recibo/ND/NC."
+      },
+      {
+        "q": "Os tipos de documento para SAF-T são:",
+        "o": ["FA, FB, FC", "FT, FS, FR, NC, ND (e GT no transporte)", "A, B, C, D", "V1, V2, V3"],
+        "a": 1,
+        "why": "O mapping da série define o documento SAF-T: FT, FS, FR, NC, ND; guias vão no SAF-T de transporte (GT...)."
+      },
+      {
+        "q": "Ao gravar uma fatura que movimenta stocks e C/C, o programa atualiza:",
+        "o": [
+          "Só o PDF",
+          "Stocks (baixa), conta corrente (saldo/idades) e ficha do cliente (faturação acumulada)",
+          "Apenas o stock",
+          "Nada — é manual"
+        ],
+        "a": 1,
+        "why": "É a integração automática do módulo: existências, conta corrente e acumulados do cliente."
+      },
+      {
+        "q": "Numa Nota de Crédito é obrigatório preencher:",
+        "o": ["O motorista", "O Motivo de Retificação", "A matrícula", "O lote"],
+        "a": 1,
+        "why": "NC/ND exigem o Motivo de Retificação (ex.: retificação de fatura de adiantamento surge automático na regularização)."
+      },
+      {
+        "q": "O circuito típico de Dossiers Internos é:",
+        "o": [
+          "Fatura → Orçamento → Encomenda",
+          "Orçamento → Encomenda → Guia → Fatura → Recibo",
+          "Recibo → Fatura → Guia",
+          "Encomenda → Orçamento → Recibo"
+        ],
+        "a": 1,
+        "why": "DIs alimentam o circuito: proposta/orçamento, encomenda, guia, faturação e recebimento, por conversões/cópias."
+      },
+      {
+        "q": "A Emissão Automática de Faturação serve para:",
+        "o": [
+          "Enviar e-mails",
+          "Faturar em lote por cópia de dossiers/guias num intervalo de datas",
+          "Criar séries",
+          "Anular documentos"
+        ],
+        "a": 1,
+        "why": "O ecrã de preparação lista documentos a faturar (ex.: encomendas do período) e emite as faturas em massa."
+      }
+    ]
+  },
+  {
+    "lv": 3,
+    "nome": "Compras & Stocks",
+    "qs": [
+      {
+        "q": "'Comprar a Encomenda a Fornecedor' é:",
+        "o": [
+          "Um mapa de compras",
+          "A conversão do DI de compra em documento de compra (receção total/parcial)",
+          "Um alerta",
+          "Uma análise"
+        ],
+        "a": 1,
+        "why": "Gera guia/fatura de compra a partir da encomenda, suportando receções parciais com remanescente na encomenda."
+      },
+      {
+        "q": "PCMP significa:",
+        "o": [
+          "Plano de Compras a Médio Prazo",
+          "Preço de Custo Médio Ponderado",
+          "Processo de Contagem Manual de Produtos",
+          "Preço de Catálogo Máximo Permitido"
+        ],
+        "a": 1,
+        "why": "É o método de custeio: o custo médio do stock é recalculado a cada entrada valorizada."
+      },
+      {
+        "q": "No inventário físico, contagem menor que o stock teórico gera:",
+        "o": ["Sobra", "Quebra (acerto negativo)", "Transferência", "Nada"],
+        "a": 1,
+        "why": "Os acertos lançam-se automaticamente nos movimentos como quebra (falta) ou sobra (excesso)."
+      },
+      {
+        "q": "A transferência de stock entre armazéns usa tipicamente:",
+        "o": ["Uma fatura", "O Dossier de Transferência de Armazém", "Um recibo", "O SAF-T"],
+        "a": 1,
+        "why": "Existe um dossier específico para transferências entre armazéns (com códigos de movimento próprios)."
+      },
+      {
+        "q": "'Encomendado a fornecedor' na ficha do artigo indica:",
+        "o": [
+          "Vendas pendentes",
+          "Quantidades em encomendas de compra ainda por receber",
+          "Stock cativo",
+          "Devoluções"
+        ],
+        "a": 1,
+        "why": "É a procura/oferta em curso: soma das linhas de encomendas a fornecedor não rececionadas."
+      },
+      {
+        "q": "Que análise apoia a decisão de reposição?",
+        "o": [
+          "Ranking de clientes",
+          "Artigos a encomendar (ponto de encomenda) e ruturas",
+          "Aging",
+          "Comissões"
+        ],
+        "a": 1,
+        "why": "Ponto de encomenda + ruturas + máx/mín orientam quando e quanto comprar."
+      }
+    ]
+  },
+  {
+    "lv": 4,
+    "nome": "C/C & Tesouraria",
+    "qs": [
+      {
+        "q": "Saldo por idades (aging) é:",
+        "o": [
+          "Saldo total do cliente",
+          "Distribuição da dívida por escalões de antiguidade dos documentos em aberto",
+          "Histórico de compras",
+          "Lista de recibos"
+        ],
+        "a": 1,
+        "why": "Escalões (0-30, 31-60…) — ferramenta central de crédito e cobranças."
+      },
+      {
+        "q": "Um recibo de adiantamento:",
+        "o": [
+          "Liquida faturas existentes",
+          "Regista uma entrada de dinheiro antes do documento fiscal, a regularizar depois",
+          "Paga a fornecedores",
+          "Anula a fatura"
+        ],
+        "a": 1,
+        "why": "Adiantamentos de clientes são recebidos antes e regularizados na fatura (podendo gerar NC de retificação)."
+      },
+      {
+        "q": "As 3 visões da tesouraria no módulo são:",
+        "o": [
+          "Diária, semanal, mensal",
+          "Real, previsional e orçamental",
+          "Curta, média, longa",
+          "Bancos, caixa, cartões"
+        ],
+        "a": 1,
+        "why": "Real (ocorrida), previsional (vencimentos/títulos) e orçamental (plano) — comparáveis entre si."
+      },
+      {
+        "q": "Ficheiros SEPA servem para:",
+        "o": [
+          "Exportar o SAF-T",
+          "Débitos diretos e pagamentos bancários normalizados na UE",
+          "Enviar SMS",
+          "Criar backups"
+        ],
+        "a": 1,
+        "why": "Cobranças (débitos diretos) e pagamentos em lote por ficheiro bancário normalizado."
+      },
+      {
+        "q": "A reconciliação bancária compara:",
+        "o": [
+          "Stocks e vendas",
+          "Movimentos do ERP com o extracto do banco",
+          "Clientes e fornecedores",
+          "IVA e IRS"
+        ],
+        "a": 1,
+        "why": "Garante que tesouraria do ERP = banco, detetando omissões/duplicações/erros."
+      },
+      {
+        "q": "O Monitor de controlo de dívidas de clientes:",
+        "o": [
+          "Emite faturas",
+          "Lista/organiza valores em atraso para ação de cobrança",
+          "Faz backups",
+          "Calcula comissões"
+        ],
+        "a": 1,
+        "why": "É o painel operacional de cobranças (critérios de atraso/valor, ordenações, ações)."
+      }
+    ]
+  },
+  {
+    "lv": 5,
+    "nome": "Fiscal & Contabilidade",
+    "qs": [
+      {
+        "q": "Os dois métodos de comunicação de documentos de transporte à AT são:",
+        "o": [
+          "E-mail e carta",
+          "Webservice em tempo real ou SAF-T (PT) resumido",
+          "FTP e CSV",
+          "Só webservice"
+        ],
+        "a": 1,
+        "why": "Webservice devolve o Cód. Ident. AT; no SAF-T resumido os locais viajam em ShipFrom/ShipTo (MovementOfGoods)."
+      },
+      {
+        "q": "O ATCUD é composto por:",
+        "o": [
+          "NIF + data",
+          "Código de validação da série (dado pela AT) + sequencial do documento",
+          "Hash + certificado",
+          "QR + EAN"
+        ],
+        "a": 1,
+        "why": "Impresso com o QR Code; séries sem código de validação têm a impressão bloqueada desde 2021."
+      },
+      {
+        "q": "Com 'Método de Envio de Faturas emitidas' = Webservice, os motivos de isenção aceites são:",
+        "o": [
+          "Livres",
+          "Apenas os códigos M01 a M99",
+          "Numéricos 1-99",
+          "Texto livre até 60 chars"
+        ],
+        "a": 1,
+        "why": "O webservice da AT só aceita os códigos normalizados; motivos de utilizador fora disso geram aviso."
+      },
+      {
+        "q": "A comunicação de inventário à AT ocorre (quando aplicável):",
+        "o": ["Até 31 de março", "Até 31 de janeiro", "Até 30 de junho", "Todos os meses"],
+        "a": 1,
+        "why": "Ficheiro de inventário (SAF-T/CSV/XML conforme volume) entregue até 31 de janeiro."
+      },
+      {
+        "q": "O SDR (desde 10/04/2026) obriga a:",
+        "o": [
+          "QR em guias",
+          "Cobrar 0,10 € de depósito por embalagem de bebida de uso único (até 3 L)",
+          "Novo SAF-T diário",
+          "2FA na AT"
+        ],
+        "a": 1,
+        "why": "Configuram-se os itens SDR uma vez; o depósito é aplicado automaticamente em cada venda (202601)."
+      },
+      {
+        "q": "Documentos pré-definidos na integração Gestão→Contabilidade definem:",
+        "o": [
+          "Layouts de impressão",
+          "Contas e regras de contabilização automática por tipo de documento",
+          "Séries de faturação",
+          "Acessos de utilizador"
+        ],
+        "a": 1,
+        "why": "Mapeiam cada documento (fatura, compra, recibo, pagamento) para lançamentos com contas de clientes/fornecedores/IVA/vendas/compras."
+      }
+    ]
+  },
+  {
+    "lv": 6,
+    "nome": "Configuração & Análises",
+    "qs": [
+      {
+        "q": "Análises Multidimensionais criam-se a partir de:",
+        "o": ["Mapas definidos", "Análises de Utilizador (gama Advanced+)", "Snapshots", "IDUs"],
+        "a": 1,
+        "why": "A análise SQL do utilizador é promovida a multidimensional para drill-down por dimensões."
+      },
+      {
+        "q": "A variável #stamp# num snapshot serve para:",
+        "o": [
+          "Numerar páginas",
+          "Parametrizar a consulta com o registo em foco (contexto do ecrã)",
+          "Assinar documentos",
+          "Criar índices"
+        ],
+        "a": 1,
+        "why": "Snapshots mostram dados contextuais ao registo atual usando o stamp como parâmetro."
+      },
+      {
+        "q": "O Sistema de Aprovação de Dossiers está disponível:",
+        "o": ["Em todas as gamas", "Apenas na gama Enterprise", "Só no Corporate", "Só na web"],
+        "a": 1,
+        "why": "O folheto do módulo indica aprovação de dossiers apenas na gama Enterprise (workflow operacional surge no Advanced+)."
+      },
+      {
+        "q": "Para ativar 'Campos de Utilizador' é preciso:",
+        "o": [
+          "Reinstalar o PHC",
+          "Ativar o parâmetro geral e reentrar na aplicação (menu Supervisor > Framework)",
+          "Licença à parte por campo",
+          "Editar o registo do Windows"
+        ],
+        "a": 1,
+        "why": "Parâmetros do tipo 'Utiliza campos do utilizador?' ligam as ferramentas da framework no menu Supervisor."
+      },
+      {
+        "q": "As personalizações da framework ficam gravadas:",
+        "o": [
+          "Nos ficheiros do programa",
+          "Na base de dados",
+          "Num XML externo",
+          "Na cloud da Cegid"
+        ],
+        "a": 1,
+        "why": "Por isso sobrevivem à reinstalação do executável — mas devem ser revalidadas em cada upgrade."
+      },
+      {
+        "q": "Índices de Utilizador (framework) suportam:",
+        "o": [
+          "Apenas colunas únicas",
+          "INCLUDED COLUMNS (v19+)",
+          "Índices só em tabelas de utilizador",
+          "Nada de especial"
+        ],
+        "a": 1,
+        "why": "Permitem índices SQL avançados sobre tabelas do software sem tocar no core."
+      }
+    ]
+  },
+  {
+    "lv": 7,
+    "nome": "Desenvolvimento",
+    "qs": [
+      {
+        "q": "As duas propriedades SEMPRE disponíveis no ObjRecebido são:",
+        "o": ["Value e Parent", "Janela e Objecto", "Form e Screen", "Dados e Tela"],
+        "a": 1,
+        "why": "Janela (ecrã) e Objecto (o objeto do evento, com Value/Parent/MeusDados)."
+      },
+      {
+        "q": "Return .F. num evento:",
+        "o": [
+          "Confirma a ação",
+          "Cancela o comportamento de raiz do objeto para esse evento",
+          "Fecha o ecrã",
+          "Grava o registo"
+        ],
+        "a": 1,
+        "why": "Ex.: em Tecla Pressionada, a tecla não chega ao campo; em Clique Direito de data, o calendário não abre."
+      },
+      {
+        "q": "MeusDados serve para:",
+        "o": [
+          "Guardar ficheiros",
+          "Repositório chave-valor para passar dados entre eventos (GuardaParametro, ExisteParametro…)",
+          "Criar tabelas SQL",
+          "Enviar e-mails"
+        ],
+        "a": 1,
+        "why": "Estado do utilizador entre eventos do mesmo objeto (ex.: guardar a cor antiga no Init e repor no Refrescar)."
+      },
+      {
+        "q": "Um erro num evento onde se diagnostica primeiro?",
+        "o": [
+          "No SQL Server Profiler",
+          "Na Análise Interna (linha do erro; linha 0 = expressão)",
+          "No Windows Logs",
+          "No SAF-T"
+        ],
+        "a": 1,
+        "why": "A Análise Interna regista erros de execução do código do utilizador."
+      },
+      {
+        "q": "Scripts na framework web são:",
+        "o": [
+          "Relatórios Excel",
+          "Programas executados quando se chama um URL (endpoints)",
+          "Backups automáticos",
+          "Templates de e-mail"
+        ],
+        "a": 1,
+        "why": "Cada URL identifica um script cujo código é executado — útil para integrações."
+      },
+      {
+        "q": "A função PromptFunction() (202601) permite:",
+        "o": [
+          "Criar backups",
+          "Invocar IA (Cegid Pulse) a partir de código — base dos Smart Tools",
+          "Imprimir QR",
+          "Sincronizar EyePeak"
+        ],
+        "a": 1,
+        "why": "Nova função da framework para agentes/Smart Tools de IA configuráveis pelos parceiros."
+      }
+    ]
+  },
+  {
+    "lv": 8,
+    "nome": "Integrações & Ecossistema",
+    "qs": [
+      {
+        "q": "O EyePeak é:",
+        "o": [
+          "Um módulo de RH",
+          "Plataforma de logística/WMS/e-commerce que sincroniza com o PHC",
+          "O validador do SAF-T",
+          "A cloud da AT"
+        ],
+        "a": 1,
+        "why": "Sincroniza artigos/stocks/séries e fluxos documentais (ex.: encomendas → guias) via monitor 'EyePeak Sincronização' no Supervisor."
+      },
+      {
+        "q": "A ativação do Cegid Pulse faz-se em 3 passos:",
+        "o": [
+          "Comprar, instalar, reiniciar",
+          "Acesso ao módulo + ativar Cegid Account na ficha do utilizador + login",
+          "Ligar à AT, validar série, imprimir",
+          "Configurar SMTP, DNS, firewall"
+        ],
+        "a": 1,
+        "why": "O software deteta automaticamente o login Cegid Account após o acesso ao módulo."
+      },
+      {
+        "q": "O Front Web é:",
+        "o": [
+          "O POS",
+          "Extranet web para clientes/fornedores consultarem documentos/dossiers",
+          "O editor de mapas",
+          "O instalador"
+        ],
+        "a": 1,
+        "why": "Aplicação PHC CS Web orientada a terceiros (clientes/fornecedores) sobre a mesma BD."
+      },
+      {
+        "q": "A migração PHC CS perpétuo → Evolution:",
+        "o": [
+          "Perde as personalizações",
+          "Mantém dados, configurações e desenvolvimentos/addons (migração técnica acompanhada)",
+          "Exige reinstalar tudo do zero",
+          "Só muda o nome"
+        ],
+        "a": 1,
+        "why": "É a evolução da mesma plataforma: plano de migração com diagnóstico, migração técnica e pós-arranque."
+      },
+      {
+        "q": "A formação oficial prática para técnicos chama-se:",
+        "o": [
+          "PHC Bootcamp",
+          "PEP — Cegid PHC Evolution Program (140 h, Cegid Academy)",
+          "Cegid Masters",
+          "PHC Academy Basic"
+        ],
+        "a": 1,
+        "why": "Programa intensivo pós-laboral online: administração, SQL, módulos e processos, com certificação oficial."
+      },
+      {
+        "q": "As novidades de cada versão publicam-se:",
+        "o": [
+          "Só por e-mail",
+          "No Help Center (página de Novidades) + Listagens em PDF + blog",
+          "Apenas na Comunidade",
+          "No Diário da República"
+        ],
+        "a": 1,
+        "why": "Página 'Novidades' do Help Center (ex.: versão 202601), PDFs de listagem e artigos do blog."
+      }
+    ]
+  },
+  {
+    "lv": 9,
+    "nome": "Contabilidade",
+    "qs": [
+      {
+        "q": "As classes do SNC organizam-se de 1 a 8. A classe 2 é:",
+        "o": [
+          "Meios financeiros líquidos",
+          "Terceiros (clientes, fornecedores, Estado…)",
+          "Inventários",
+          "Capital próprio"
+        ],
+        "a": 1,
+        "why": "Classe 2 = Terceiros: 21 Clientes, 22 Fornecedores, 24 Estado (IVA, IRS…), 23 Pessoal."
+      },
+      {
+        "q": "Documentos pré-definidos servem para:",
+        "o": [
+          "Numerar faturas",
+          "Definir regras de contabilização automática por tipo de documento do Gestão",
+          "Criar séries de documentos",
+          "Configurar acessos"
+        ],
+        "a": 1,
+        "why": "Mapeiam cada tipo de documento (fatura, compra, recibo…) para contas/diários/IVA — o motor da integração Gestão→Contabilidade."
+      },
+      {
+        "q": "O apuramento do IVA compara:",
+        "o": [
+          "Vendas e compras totais",
+          "IVA liquidado (vendas) com IVA dedutível (compras)",
+          "IRC com IRS",
+          "Ativo com passivo"
+        ],
+        "a": 1,
+        "why": "A diferença é entregue ao Estado (a pagar) ou recuperada (crédito de IVA); alimenta a Declaração Periódica."
+      },
+      {
+        "q": "O CEVMC deriva diretamente de:",
+        "o": [
+          "Vendas menos IVA",
+          "Existências iniciais + compras − existências finais (inventários valorizados a PCMP)",
+          "Apenas das faturas de compra",
+          "Dos salários do período"
+        ],
+        "a": 1,
+        "why": "Custo das Existências Vendidas e das Mercadorias Consumidas — por isso o inventário valorizado correto é crítico."
+      },
+      {
+        "q": "Antes da abertura de novo ano contabilístico é obrigatório:",
+        "o": [
+          "Comprar licenças novas",
+          "Backup testado + simulação em clone + reconciliações e apuramentos do ano concluídos",
+          "Mudar o NIF da empresa",
+          "Reinstalar o SQL Server"
+        ],
+        "a": 1,
+        "why": "A viragem de ano é irreversível na prática: valida-se sempre em clone, com pré-fecho completo."
+      },
+      {
+        "q": "Centros analíticos permitem:",
+        "o": [
+          "Numerar documentos",
+          "Medir resultados por dimensão (loja, projeto, departamento)",
+          "Controlar acessos",
+          "Gerar o SAF-T"
+        ],
+        "a": 1,
+        "why": "Contabilidade multidimensional: o mesmo movimento é imputado a centros, revelando rentabilidade por dimensão (PHC XL em grandes volumes)."
+      },
+      {
+        "q": "Para que serve a taxonomia SNC na Contabilidade PHC?",
+        "o": [
+          "Definir as taxas de IVA de cada conta",
+          "Ligar cada conta às rubricas das declarações fiscais (base da IES/Modelo 22)",
+          "Numerar os diários por ano",
+          "Controlar acessos de utilizador ao módulo"
+        ],
+        "a": 1,
+        "why": "A taxonomia associa as contas da empresa à estrutura fiscal normalizada — sem ela bem configurada, IES e Modelo 22 saem errados."
+      },
+      {
+        "q": "O SAF-T (PT) da Contabilidade é:",
+        "o": [
+          "O ficheiro mensal de faturas enviado à AT (e-fatura)",
+          "O ficheiro XML anual de auditoria da contabilidade, entregue com a IES",
+          "Um formato de importação de extratos bancários",
+          "O ficheiro de documentos de transporte"
+        ],
+        "a": 1,
+        "why": "Não confundir: SAF-T de FATURAÇÃO é mensal (e-fatura); SAF-T da CONTABILIDADE é anual, de auditoria, e acompanha a IES."
+      },
+      {
+        "q": "O selo SVAT atribuído pela AT garante que:",
+        "o": [
+          "O contabilista está inscrito na Ordem",
+          "O programa informático foi validado pela AT (incl. produção do SAF-T)",
+          "A empresa tem a situação fiscal regularizada",
+          "As faturas têm assinatura digital qualificada"
+        ],
+        "a": 1,
+        "why": "SVAT = Selo de Validação de software: a AT valida os programas (faturação/SAF-T) e o selo comprova a conformidade — a PHC tem vídeo oficial sobre o tema."
+      },
+      {
+        "q": "No regime especial de exigibilidade de caixa ('IVA de caixa'), o imposto é exigível:",
+        "o": [
+          "Na emissão da fatura",
+          "No recebimento do pagamento pelo cliente",
+          "No fecho do exercício",
+          "Na entrega das mercadorias, sempre"
+        ],
+        "a": 1,
+        "why": "DL 71/2013: no regime de caixa o IVA só entra na declaração periódica quando há recebimento — o PHC marca os documentos abrangidos."
+      },
+      {
+        "q": "Qual é o efeito da inversão do sujeito passivo?",
+        "o": [
+          "O fornecedor fica isento de IVA",
+          "O adquirente autoliquida o IVA: liquida e deduz em simultâneo",
+          "O IVA é sempre reembolsado",
+          "A operação passa a estar fora do âmbito do imposto"
+        ],
+        "a": 1,
+        "why": "Em aquisições intracomunitárias e certos serviços, quem compra liquida E deduz o IVA — a declaração reflete os dois lados nos campos próprios."
+      },
+      {
+        "q": "O que significa a funcionalidade oficial '17 meses' na Contabilidade PHC?",
+        "o": [
+          "O prazo máximo de uma auditoria tributária",
+          "Poder continuar a trabalhar o exercício anterior nos primeiros meses do novo ano (até ao fecho legal)",
+          "O prazo de conservação obrigatória dos documentos",
+          "A duração do acordo PHC On"
+        ],
+        "a": 1,
+        "why": "12 meses do exercício + até 5 meses do ano seguinte para correções de fecho (o prazo legal de aprovação/fecho decorre até 31 de maio) — em paralelo com o ano novo já aberto."
+      },
+      {
+        "q": "O Plano de Contas Paralelo (Enterprise) é:",
+        "o": [
+          "Uma cópia do diário geral para auditoria",
+          "Uma segunda estrutura de contas, em paralelo com a legal, para gestão/grupo",
+          "Um ficheiro Excel de orçamentos",
+          "O arquivo histórico de contas desativadas"
+        ],
+        "a": 1,
+        "why": "Aula oficial do bloco Enterprise (14 min): os mesmos movimentos alimentam o plano legal e o paralelo (outra visão: gestão, grupo, outro referencial)."
+      },
+      {
+        "q": "No Modelo 22 (IRC), o Pagamento por Conta (PPC) e o Pagamento Especial por Conta (PEC) são:",
+        "o": [
+          "Dois regimes de reembolso de IVA",
+          "Antecipações do imposto devido, declaradas no Modelo 22",
+          "Contribuições para a Segurança Social",
+          "Modalidades de imposto de selo"
+        ],
+        "a": 1,
+        "why": "PPC e PEC são pagamentos antecipados de IRC — a PHC tem vídeo oficial 'Pagamento por Conta e Pagamento Especial por Conta' e o módulo preenche o Modelo 22 em conformidade."
+      }
+    ]
+  },
+  {
+    "lv": 10,
+    "nome": "Pessoal & Vencimentos",
+    "qs": [
+      {
+        "q": "Taxa geral de TSU a cargo do trabalhador:",
+        "o": ["23,75%", "11%", "14,2%", "8%"],
+        "a": 1,
+        "why": "11% retidos ao trabalhador; a entidade patronal suporta 23,75% sobre a matéria coletável (regra geral)."
+      },
+      {
+        "q": "A DMR (Declaração Mensal de Remunerações) entrega-se:",
+        "o": [
+          "À Segurança Social, anualmente",
+          "À AT, mensalmente (até ao fim do mês seguinte)",
+          "Ao banco, por lote",
+          "Não é obrigatória"
+        ],
+        "a": 1,
+        "why": "Declaração mensal à AT com remunerações e retenções por trabalhador; desde 202601 emitida sem valores negativos."
+      },
+      {
+        "q": "Desde 12/05/2026, o acesso de empresas à Segurança Social Direta exige:",
+        "o": [
+          "Certificado digital",
+          "Autenticação de dois fatores (2FA)",
+          "Novo número de entidade",
+          "VPN"
+        ],
+        "a": 1,
+        "why": "2FA obrigatória para empresas — o software foi atualizado (202601) para manter as comunicações."
+      },
+      {
+        "q": "As tabelas de retenção de IRS com data de vigência (202601) permitem:",
+        "o": [
+          "Uma tabela única para sempre",
+          "Carregar tabelas futuras que coexistem com as anteriores e se aplicam automaticamente pela data",
+          "Ignorar tabelas",
+          "Taxas livres por empresa"
+        ],
+        "a": 1,
+        "why": "Transições de tabelas sem sobressaltos: o processamento aplica a tabela vigente na data do recibo."
+      },
+      {
+        "q": "Numa cessação de contrato, o acerto final inclui tipicamente:",
+        "o": [
+          "Só o salário do mês",
+          "Retribuição do período + férias vencidas não gozadas + proporcionais de subsídios (conforme regime)",
+          "Apenas indemnização",
+          "Nada além do recibo normal"
+        ],
+        "a": 1,
+        "why": "O cálculo automático de valores à saída considera férias, subsídios e créditos/débitos pendentes — conferir sempre manualmente."
+      },
+      {
+        "q": "O pagamento de salários em lote faz-se por:",
+        "o": [
+          "Cheques manuais obrigatórios",
+          "Ficheiro SEPA de transferências validado (IBANs e totais)",
+          "Dinheiro vivo apenas",
+          "MB Way individual"
+        ],
+        "a": 1,
+        "why": "O módulo automatiza as transferências de vencimentos via SEPA; valida-se o ficheiro (totais = líquidos) antes da entrega ao banco."
+      }
+    ]
+  },
+  {
+    "lv": 11,
+    "nome": "POS & Retalho",
+    "qs": [
+      {
+        "q": "O documento fiscal típico de uma venda de balcão a consumidor final é:",
+        "o": ["Fatura-recibo sempre", "Fatura Simplificada (FS)", "Nota de crédito", "Proforma"],
+        "a": 1,
+        "why": "FS no talão do POS (com QR/ATCUD); fatura completa quando o cliente pede documento com NIF/requisitos próprios."
+      },
+      {
+        "q": "No fecho de caixa, a contagem de notas e moedas serve para:",
+        "o": [
+          "Cumprir horário",
+          "Apurar quebras/sobras face ao sistema e responsabilizar o turno",
+          "Somar vendas do mês",
+          "Gerar o SAF-T"
+        ],
+        "a": 1,
+        "why": "A diferença física×sistema documenta-se (quebra/sobra) com responsável — base do controlo interno de caixa."
+      },
+      {
+        "q": "A reconciliação de pagamentos por TPA é a quantas vias?",
+        "o": [
+          "1 (talão)",
+          "2 (talão×fecho)",
+          "3 (talões do terminal × fecho POS × extrato bancário)",
+          "Não é necessária"
+        ],
+        "a": 2,
+        "why": "O banco credita dias depois, líquido de comissões: só as três vias apanham diferenças de tempo e custo."
+      },
+      {
+        "q": "A grelha de cores e tamanhos resolve que problema?",
+        "o": [
+          "Impressão de etiquetas",
+          "Gerir variantes (cor/tamanho) de um artigo-pai sem multiplicar referências",
+          "Preços em moeda estrangeira",
+          "Fechos de caixa"
+        ],
+        "a": 1,
+        "why": "Setor vestuário/calçado: stock e vendas por combinação, ficheiro de artigos governável."
+      },
+      {
+        "q": "Um vale de reembolso é:",
+        "o": [
+          "Dinheiro devolvido em numerário",
+          "Crédito comercial emitido (tipicamente numa devolução) para uso numa compra futura",
+          "Um desconto imediato",
+          "Um documento fiscal de venda"
+        ],
+        "a": 1,
+        "why": "Não há saída de dinheiro: o vale resgata-se como meio de pagamento numa venda futura (com validade e política definidas)."
+      },
+      {
+        "q": "Vender no POS com a série bem configurada atualiza automaticamente:",
+        "o": [
+          "Só o talão",
+          "Stock da loja, tesouraria da caixa e conta corrente (se aplicável)",
+          "Apenas vendas",
+          "Nada — é preciso lançar depois"
+        ],
+        "a": 1,
+        "why": "O POS é o braço de balcão do ERP: o talão é um documento de faturação com todos os efeitos (e SAF-T)."
+      }
+    ]
+  },
+  {
+    "lv": 12,
+    "nome": "Suporte & Pós-venda",
+    "qs": [
+      {
+        "q": "PAT significa:",
+        "o": [
+          "Plano de Assistência Técnica",
+          "Pedido de Assistência Técnica",
+          "Programa de Atendimento Telefónico",
+          "Protocolo de Assistência ao Trabalhador"
+        ],
+        "a": 1,
+        "why": "É o documento central do pós-venda: do pedido do cliente à resolução e faturação."
+      },
+      {
+        "q": "Os três registos-mestre do Suporte são:",
+        "o": [
+          "Clientes, faturas, recibos",
+          "Instalações, equipamentos (nº série) e contratos",
+          "Armazéns, lotes, séries",
+          "Diários, contas, movimentos"
+        ],
+        "a": 1,
+        "why": "Onde está (instalação), o quê (equipamento com série/garantia) e em que condições (contrato/SLA)."
+      },
+      {
+        "q": "SLA de suporte mede-se graças a:",
+        "o": [
+          "Memória do técnico",
+          "Estados do PAT com timestamps (resposta e resolução)",
+          "Faturas emitidas",
+          "Nº de telefone"
+        ],
+        "a": 1,
+        "why": "Sem estados datados não há tempo de resposta/resolução — nem KPI, nem penalização, nem melhoria."
+      },
+      {
+        "q": "A fuga de receita clássica do Suporte é:",
+        "o": [
+          "Vender contratos",
+          "PAT resolvido não faturado (horas e peças perdidas)",
+          "Assinar relatórios",
+          "Agendar visitas"
+        ],
+        "a": 1,
+        "why": "Por isso o fecho mensal reconcilia PATs resolvidos × documentos faturados."
+      },
+      {
+        "q": "No modelo de pontos, o cliente:",
+        "o": [
+          "Paga cada intervenção avulso",
+          "Compra pacotes pré-pagos consumidos por intervenção (saldo visível)",
+          "Não paga",
+          "Paga só no fim do ano"
+        ],
+        "a": 1,
+        "why": "Receita antecipada + fidelização; o saldo extrai-se por cliente e o consumo regista-se no PAT."
+      },
+      {
+        "q": "A assinatura digital no relatório de intervenção serve para:",
+        "o": [
+          "Decorar o PDF",
+          "Provar a aceitação do serviço (e de custos extra aprovados) pelo cliente",
+          "Substituir a fatura",
+          "Cumprir o RGPD"
+        ],
+        "a": 1,
+        "why": "Capturada no ato (touch), reduz disputas e suporta a faturação do que foi executado/aprovado."
+      }
+    ]
+  },
+  {
+    "lv": 13,
+    "nome": "CRM & Marketing",
+    "qs": [
+      {
+        "q": "A probabilidade por fase do funil serve para:",
+        "o": [
+          "Decorar o funil",
+          "Calcular pipeline ponderado/previsão",
+          "Obrigar a fechar",
+          "Esconder perdas"
+        ],
+        "a": 1,
+        "why": "Probabilidade×valor dá o pipeline ponderado (valor esperado), base da previsão."
+      },
+      {
+        "q": "Um lead torna-se oportunidade quando:",
+        "o": [
+          "É um cliente antigo",
+          "É qualificado com valor/probabilidade e entra no funil",
+          "Recebe uma campanha",
+          "Pede um preço"
+        ],
+        "a": 1,
+        "why": "Oportunidade=negócio qualificado no funil; lead é contacto não qualificado."
+      },
+      {
+        "q": "Pipeline ponderado é:",
+        "o": [
+          "Soma de todos os valores",
+          "Σ(valor×probabilidade)",
+          "Só as ganhas",
+          "O valor da maior oportunidade"
+        ],
+        "a": 1,
+        "why": "Pondera cada oportunidade pela sua probabilidade de fecho."
+      },
+      {
+        "q": "Uma ação de seguimento sem prazo/responsável:",
+        "o": [
+          "É boa prática",
+          "Fica abandonada e o funil reflete negócio morto",
+          "Converte sozinha",
+          "É uma campanha"
+        ],
+        "a": 1,
+        "why": "Sem prazo/responsável não há seguimento garantido — a oportunidade morre."
+      },
+      {
+        "q": "Converter oportunidade em FT garante:",
+        "o": [
+          "Rastreabilidade comercial ligada à fatura",
+          "Menos IVA",
+          "Eliminar o cliente",
+          "Fechar o funil a Perdida"
+        ],
+        "a": 0,
+        "why": "A conversão herda cliente/valores/comercial/campanha, dando rastreabilidade e medindo conversão."
+      },
+      {
+        "q": "A visão 360º do cliente reúne:",
+        "o": [
+          "Só faturas",
+          "Docs+oportunidades+ações+campanhas(+suporte)",
+          "Só contactos",
+          "Só o funil"
+        ],
+        "a": 1,
+        "why": "O 360º agrega todo o relacionamento do cliente num só histórico."
+      }
+    ]
+  },
+  {
+    "lv": 14,
+    "nome": "Logística & Manufactor",
+    "qs": [
+      {
+        "q": "A BOM serve para:",
+        "o": [
+          "Decorar o artigo",
+          "Listar componentes+quantidades do acabado",
+          "Faturar",
+          "Definir o cliente"
+        ],
+        "a": 1,
+        "why": "A BOM é a receita de produção: componentes e quantidades do acabado."
+      },
+      {
+        "q": "Ao concluir uma OF:",
+        "o": [
+          "Baixa o acabado",
+          "Dá entrada do acabado e baixa os consumos",
+          "Apaga a OF",
+          "Não mexe no stock"
+        ],
+        "a": 1,
+        "why": "Consome componentes (baixa) e entra o acabado."
+      },
+      {
+        "q": "Necessidade líquida =",
+        "o": ["Procura+stock", "Procura−stock−encomendas em curso", "Só stock", "Só encomendas"],
+        "a": 1,
+        "why": "MRP desconta o que já existe/está a caminho."
+      },
+      {
+        "q": "Recall por lote permite:",
+        "o": [
+          "Apagar lotes",
+          "Listar clientes/documentos afetados por um lote",
+          "Criar lotes",
+          "Mudar o preço"
+        ],
+        "a": 1,
+        "why": "Rastreabilidade direta do lote→clientes/documentos."
+      },
+      {
+        "q": "O acerto de inventário alinha:",
+        "o": ["Preços", "Stock físico vs sistema por armazém", "Clientes", "Fornecedores"],
+        "a": 1,
+        "why": "Corrige diferenças de contagem por armazém (e valor/PCMP)."
+      }
+    ]
+  },
+  {
+    "lv": 15,
+    "nome": "Ignios & Ecossistema Digital",
+    "qs": [
+      {
+        "q": "O Ignios reduz:",
+        "o": ["Stock", "Erro/digitação em dados mestres", "IVA", "Utilizadores"],
+        "a": 1,
+        "why": "Preenche fichas por fontes externas (NIF/EAN/matrícula)."
+      },
+      {
+        "q": "EyePeak sincroniza:",
+        "o": [
+          "Só preços",
+          "Artigos/stock/preços e encomendas loja↔ERP",
+          "Só clientes",
+          "Só anexos"
+        ],
+        "a": 1,
+        "why": "Sincronização bidirecional e-commerce↔ERP."
+      },
+      {
+        "q": "Matching liga:",
+        "o": [
+          "Clientes a fornecedores",
+          "Movimento bancário à fatura que liquida",
+          "OF a FT",
+          "Lotes a séries"
+        ],
+        "a": 1,
+        "why": "Reconcilia pagamentos bancários com faturas em aberto."
+      },
+      {
+        "q": "Cegid Docs acrescenta:",
+        "o": [
+          "Anexos versionados ligados a registos",
+          "Mais IVA",
+          "Novos utilizadores",
+          "Mais armazéns"
+        ],
+        "a": 0,
+        "why": "Documentação ligada ao registo, versionada e pesquisável."
+      },
+      {
+        "q": "A IA embutida NÃO deve decidir sozinha:",
+        "o": [
+          "Resumos de cliente",
+          "Dados mestres/fiscal sem humano",
+          "Next-best-action",
+          "Perguntas-a-dados"
+        ],
+        "a": 1,
+        "why": "Decisões fiscais/dados mestres exigem validação humana."
+      }
+    ]
+  },
+  {
+    "lv": 16,
+    "nome": "PHC Web & Mobility",
+    "qs": [
+      {
+        "q": "O PHC CS Web acede:",
+        "o": [
+          "A uma BD separada",
+          "À mesma BD do desktop (outra camada)",
+          "A um ficheiro",
+          "A nada"
+        ],
+        "a": 1,
+        "why": "O web é outra camada de apresentação sobre a mesma BD."
+      },
+      {
+        "q": "Um IDU web é:",
+        "o": [
+          "Um relatório",
+          "Um ecrã web personalizado ligado a dados",
+          "Um backup",
+          "Um utilizador"
+        ],
+        "a": 1,
+        "why": "Ecrã/app web personalizado desenhado e publicado."
+      },
+      {
+        "q": "Na cloud, updates/backups são geridos:",
+        "o": ["Pelo cliente", "Pelo fornecedor (PHC ON/Evolution)", "Por ninguém", "Pelo desktop"],
+        "a": 1,
+        "why": "Modelo de subscrição cloud com infraestrutura gerida."
+      },
+      {
+        "q": "Operações offline ficam:",
+        "o": ["Perdidas", "Pendentes e sincronizam ao reconectar", "Impressas", "Bloqueadas"],
+        "a": 1,
+        "why": "Offline-first: pendentes no dispositivo, sincronizam depois."
+      },
+      {
+        "q": "Um dashboard web dá:",
+        "o": ["KPIs visuais partilháveis c/ refresh", "Só tabelas", "Só impressões", "Só backups"],
+        "a": 0,
+        "why": "Painéis visuais partilháveis com refresh e filtros interativos."
+      }
+    ]
+  }
+]
